@@ -1,1 +1,62 @@
-index.html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>730 SKIN EAR THERAPY</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="search-area" role="search">
+        <button type="button" class="search-btn" aria-label="이어밸런스체크 페이지로 이동">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"></circle>
+            <line x1="16.65" y1="16.65" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+          </svg>
+        </button>
+        <input type="text" class="search-box" placeholder="검색" aria-label="검색어 입력, Enter 키를 누르면 이어밸런스체크 페이지로 이동합니다">
+      </div>
+
+      <button type="button" class="hamburger-btn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="main-nav">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+
+    <h1 class="logo">
+      <a href="#/" class="brand-logo" data-route="home" aria-label="730 스킨이어테라피 홈으로 이동">730SKINEARTHERAPY</a>
+    </h1>
+
+    <nav class="main-nav" id="main-nav" aria-label="주요 메뉴">
+      <ul>
+        <li><a href="#/ear-check" data-route="ear-check">이어밸런스체크</a></li>
+        <li><a href="#/ear-point" data-route="ear-point">이어포인트</a></li>
+        <li><a href="#/seminar" data-route="seminar">세미나신청</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="site-footer"></footer>
+
+<script src="js/jquery-4.0.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+<script src="js/slider.js"></script>
+<script src="js/header.js"></script>
+<script src="js/header-scroll.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/ear-point-likes.js"></script>
+<script src="js/pages.js"></script>
+<script src="js/router.js"></script>
+</body>
+</html>
