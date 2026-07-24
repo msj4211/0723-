@@ -1,73 +1,51 @@
 window.Pages = {
   home: function (container) {
+    // 슬라이드 데이터: 순서대로 배너에 표시된다. 여름 시즌에 맞춰 고른 3개만 유지한다.
+    var bannerSlides = [
+      {
+        img: '면역력강화.PNG',
+        title: '면역력 강화',
+        desc: '무더운 계절,<br>몸의 균형을 위한 이어테라피'
+      },
+      {
+        img: '충분한수면.PNG',
+        title: '충분한 수면',
+        desc: '열대야에도<br>편안한 휴식을 위한 혈자리'
+      },
+      {
+        img: '무릎통증.PNG',
+        title: '무릎 통증',
+        desc: '활동량이 많은 여름,<br>가벼운 움직임을 위한 관리'
+      }
+    ];
+
+    var slidesHtml = bannerSlides.map(function (slide) {
+      return '<li class="splide__slide">' +
+        '<div class="banner-slide">' +
+        '<img class="banner-img" src="images/' + slide.img + '" alt="' + slide.title + '">' +
+        '<div class="banner-caption">' +
+        '<p class="banner-caption-title">' + slide.title + '</p>' +
+        '<p class="banner-caption-desc">' + slide.desc + '</p>' +
+        '</div>' +
+        '</div>' +
+        '</li>';
+    }).join('');
+
     container.innerHTML = `
       <section class="ad-banner">
-        <div class="splide" aria-label="이벤트 배너">
-          <div class="splide__track">
-            <ul class="splide__list">
-              <li class="splide__slide"><img class="banner-img" src="images/귀.png" alt="귀"></li>
-              <li class="splide__slide"><img class="banner-img" src="images/위.png" alt="위"></li>
-              <li class="splide__slide"><img class="banner-img" src="images/충분한수면.PNG" alt="충분한 수면"></li>
-              <li class="splide__slide"><img class="banner-img" src="images/면역력강화.PNG" alt="면역력 강화"></li>
-              <li class="splide__slide"><img class="banner-img" src="images/무릎통증.PNG" alt="무릎 통증"></li>
-              <li class="splide__slide"><img class="banner-img" src="images/탈모예방.PNG" alt="탈모 예방"></li>
-              <li class="splide__slide"><img class="banner-img" src="images/아이들키성장.png" alt="아이들 키 성장"></li>
-            </ul>
+        <div class="banner-content">
+          <div class="section-title"><h2>여름에 추천하는 혈자리</h2></div>
+          <div class="splide" aria-label="여름 추천 이어테라피">
+            <div class="splide__track">
+              <ul class="splide__list">${slidesHtml}</ul>
+            </div>
           </div>
         </div>
       </section>
-
-      <div class="site-main">${window.Pages.renderMenuSections(window.Pages.homeSections)}</div>
     `;
 
     if (window.initHomeSlider) window.initHomeSlider();
-  },
-
-  // 섹션 데이터: 나중에 실제 혈자리를 추가할 때는 이 배열에 항목만 추가/수정하면 된다.
-  // title은 섹션 제목, items는 그 섹션 안에 들어갈 카드 3개(name/img/href).
-  homeSections: [
-    {
-      title: '여름에 추천하는 혈자리',
-      items: [
-        { name: '메뉴 1', img: '', href: '#' },
-        { name: '메뉴 2', img: '', href: '#' },
-        { name: '메뉴 3', img: '', href: '#' }
-      ]
-    },
-    {
-      title: '스트레스 완화 혈자리',
-      items: [
-        { name: '메뉴 1', img: '', href: '#' },
-        { name: '메뉴 2', img: '', href: '#' },
-        { name: '메뉴 3', img: '', href: '#' }
-      ]
-    },
-    {
-      title: '불면에 추천하는 혈자리',
-      items: [
-        { name: '메뉴 1', img: '', href: '#' },
-        { name: '메뉴 2', img: '', href: '#' },
-        { name: '메뉴 3', img: '', href: '#' }
-      ]
-    }
-  ],
-
-  // sections 배열을 받아 <section class="menu-section"> 뭉치의 HTML 문자열을 만들어준다.
-  // 다른 페이지(교육 콘텐츠 목록 등)에서도 같은 카드 그리드가 필요하면 재사용할 수 있다.
-  renderMenuSections: function (sections) {
-    return sections.map(function (section) {
-      var cardsHtml = section.items.map(function (item) {
-        return '<a class="menu-card" href="' + item.href + '">' +
-          '<img src="' + item.img + '" alt="' + item.name + '">' +
-          '<span>' + item.name + '</span>' +
-          '</a>';
-      }).join('');
-
-      return '<section class="menu-section">' +
-        '<div class="section-title"><h2>' + section.title + '</h2></div>' +
-        '<div class="menu-grid">' + cardsHtml + '</div>' +
-        '</section>';
-    }).join('');
+    if (window.Landing) window.Landing.init(container);
   },
 
   earCheck: function (container) {
@@ -82,6 +60,8 @@ window.Pages = {
     `;
 
     var frame = container.querySelector('.embed-frame');
+    var hasLoadedOnce = false;
+
     frame.addEventListener('load', function () {
       // 배포 후에는 이 사이트와 730skin-check가 같은 origin(msj4211.github.io)이라
       // 실제 문서 높이를 읽어와 iframe이 내용만큼만 커지도록 맞출 수 있다.
@@ -94,6 +74,20 @@ window.Pages = {
       } catch (e) {
         // cross-origin: 접근 불가, CSS min-height 폴백을 그대로 사용
       }
+
+      // 730skin-check는 "결과 확인하기" 클릭 시 result.html로 실제 페이지
+      // 이동을 하므로, 그 순간 iframe에도 load 이벤트가 다시 발생한다.
+      // cross-origin이라 iframe 내부(#ear-check-result 같은 요소)에는
+      // 접근할 수 없지만, 이 load 이벤트 자체는 부모 문서에서 항상 감지되므로
+      // 이걸 "결과 화면이 떴다"는 신호로 사용해 iframe을 화면 안으로 스크롤한다.
+      // 첫 로드(설문 화면이 처음 뜨는 시점)는 라우터가 이미 맨 위로 스크롤해둔
+      // 상태라 건너뛴다.
+      if (hasLoadedOnce) {
+        window.requestAnimationFrame(function () {
+          frame.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+      hasLoadedOnce = true;
     });
   },
 

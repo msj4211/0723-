@@ -29,6 +29,7 @@
     routes[routeName](app);
     updateActiveNav(routeName);
     window.scrollTo(0, 0);
+    if (window.HeaderScroll) window.HeaderScroll.reset();
   }
 
   window.addEventListener('hashchange', renderRoute);
