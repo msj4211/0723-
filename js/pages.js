@@ -126,42 +126,81 @@ window.Pages = {
 
   seminar: function (container) {
     container.innerHTML = `
-      <section class="page-section">
-        <div class="section-title"><h2>세미나 신청</h2></div>
-        <form class="app-form" id="seminar-form">
-          <div class="form-field">
-            <label for="sm-name">이름</label>
-            <input type="text" id="sm-name" name="name" required>
-          </div>
-          <div class="form-field">
-            <label for="sm-phone">연락처</label>
-            <input type="tel" id="sm-phone" name="phone" placeholder="010-0000-0000" required>
-          </div>
-          <div class="form-field">
-            <label for="sm-email">이메일</label>
-            <input type="email" id="sm-email" name="email" required>
-          </div>
-          <div class="form-field">
-            <label for="sm-date">참석 희망 일정</label>
-            <input type="date" id="sm-date" name="date" required>
-          </div>
-          <div class="form-field">
-            <label for="sm-message">문의사항</label>
-            <textarea id="sm-message" name="message" rows="4"></textarea>
-          </div>
-          <button type="submit" class="app-btn">신청하기</button>
-        </form>
-        <div class="form-result" id="sm-result" hidden></div>
+      <section class="seminar-embed-page">
+        <iframe
+          class="seminar-signup-frame"
+          src="https://msj4211.github.io/730skin-check/signup/"
+          title="730스킨 이어테라피 세미나 신청"
+          loading="eager"
+          allow="clipboard-write"
+        ></iframe>
       </section>
     `;
+  },
 
-    var form = container.querySelector('#seminar-form');
-    var result = container.querySelector('#sm-result');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var name = form.querySelector('#sm-name').value.trim();
-      result.hidden = false;
-      result.textContent = (name || '고객') + '님, 세미나 신청이 접수되었습니다. 담당자가 연락드리겠습니다.';
-    });
-  }
+  products: function (container) {
+    container.innerHTML =
+      '<section class="page-section products-page">' +
+      '<div class="section-title"><h2>상품</h2></div>' +
+      '<div class="products-state" id="products-state">' +
+      '<p class="products-loading">상품을 불러오는 중...</p>' +
+      '</div>' +
+      '</section>';
+
+    var stateEl = container.querySelector('#products-state');
+    var client = window.supabaseClient;
+
+    function formatPrice(price) {
+      var num = Number(price);
+      return isNaN(num) ? price : num.toLocaleString('ko-KR') + '원';
+    }
+
+    function renderUnavailable() {
+      stateEl.innerHTML = '<p class="products-empty">상품을 준비 중이에요. 조금만 기다려 주세요.</p>';
+    }
+
+    function renderProducts(products) {
+      if (!products || products.length === 0) {
+        renderUnavailable();
+        return;
+      }
+
+      stateEl.innerHTML = '<div class="products-grid">' +
+        products.map(function (p) {
+          var thumb = p.thumbnail_url || p.image_url || '';
+          return '<div class="product-card">' +
+            '<div class="product-thumb">' +
+            (p.is_featured ? '<span class="product-badge">추천</span>' : '') +
+            (thumb ? '<img src="' + thumb + '" alt="' + (p.name || '') + '">' : '') +
+            '</div>' +
+            '<p class="product-name">' + (p.name || '') + '</p>' +
+            (p.summary ? '<p class="product-summary">' + p.summary + '</p>' : '') +
+            (p.price != null ? '<p class="product-price">' + formatPrice(p.price) + '</p>' : '') +
+            (p.purchase_url
+              ? '<a class="product-buy-btn" href="' + p.purchase_url + '" target="_blank" rel="noopener">구매하기</a>'
+              : '') +
+            '</div>';
+        }).join('') +
+        '</div>';
+    }
+
+    if (!client) {
+      renderUnavailable();
+      return;
+    }
+
+    client
+      .from('products')
+      .select('*')
+      .eq('status', 'active')
+      .order('sort_order', { ascending: true })
+      .then(function (res) {
+        if (res.error) {
+          console.error('[Products] 상품을 불러오지 못했습니다:', res.error);
+          renderUnavailable();
+          return;
+        }
+        renderProducts(res.data);
+      });
+  },
 };

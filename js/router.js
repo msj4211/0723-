@@ -3,7 +3,8 @@
     '': window.Pages.home,
     'ear-check': window.Pages.earCheck,
     'ear-point': window.Pages.earPoint,
-    'seminar': window.Pages.seminar
+    'seminar': window.Pages.seminar,
+    'products': window.Pages.products
   };
 
   var app = document.getElementById('app');

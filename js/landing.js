@@ -71,6 +71,9 @@ window.Landing = (function () {
     `;
   }
 
+  /* Firestore 기반 백업 — Supabase 전환 테스트가 끝나면 이 블록과
+     firebase-config.js, Firebase 스크립트 태그를 함께 제거한다.
+
   function loadTopList() {
     var db = window.earPointsDb;
     var listEl = document.getElementById('landing-top-list');
@@ -114,6 +117,68 @@ window.Landing = (function () {
       .catch(function (err) {
         console.error('[Landing] 통계를 불러오지 못했습니다:', err);
       });
+  }
+
+  */
+
+  // Supabase 기반 구현. user_favorites 행 수를 이어포인트별로 집계해서 쓴다.
+  function loadTopList() {
+    var client = window.supabaseClient;
+    var listEl = document.getElementById('landing-top-list');
+    if (!client || !listEl) return;
+
+    Promise.all([
+      client.from('ear_points').select('id, name'),
+      client.from('user_favorites').select('ear_point_id')
+    ]).then(function (results) {
+      var pointsRes = results[0];
+      var favoritesRes = results[1];
+      if (pointsRes.error || favoritesRes.error) {
+        console.error('[Landing] 인기 이어포인트를 불러오지 못했습니다:', pointsRes.error || favoritesRes.error);
+        return;
+      }
+
+      var counts = {};
+      favoritesRes.data.forEach(function (row) {
+        counts[row.ear_point_id] = (counts[row.ear_point_id] || 0) + 1;
+      });
+
+      var ranked = pointsRes.data
+        .map(function (point) {
+          return { name: point.name, count: counts[point.id] || 0 };
+        })
+        .sort(function (a, b) { return b.count - a.count; })
+        .slice(0, 5);
+
+      listEl.innerHTML = ranked.map(function (item, index) {
+        return '<li class="top-list-item">' +
+          '<span class="top-list-rank">' + (index + 1) + '</span>' +
+          '<span class="top-list-name">' + item.name + '</span>' +
+          '<span class="top-list-count">' + item.count + '명</span>' +
+          '</li>';
+      }).join('');
+    });
+  }
+
+  function loadStats() {
+    var client = window.supabaseClient;
+    var pointsEl = document.getElementById('stat-points');
+    var likesEl = document.getElementById('stat-likes');
+    if (!client || !pointsEl || !likesEl) return;
+
+    Promise.all([
+      client.from('ear_points').select('id', { count: 'exact', head: true }),
+      client.from('user_favorites').select('ear_point_id', { count: 'exact', head: true })
+    ]).then(function (results) {
+      var pointsRes = results[0];
+      var favoritesRes = results[1];
+      if (pointsRes.error || favoritesRes.error) {
+        console.error('[Landing] 통계를 불러오지 못했습니다:', pointsRes.error || favoritesRes.error);
+        return;
+      }
+      pointsEl.textContent = pointsRes.count || 0;
+      likesEl.textContent = favoritesRes.count || 0;
+    });
   }
 
   // 라우트를 옮겼다 홈으로 돌아올 때마다 섹션이 새로 그려지므로, 기존
