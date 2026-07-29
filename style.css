@@ -8,7 +8,7 @@ body {
   margin: 2px;
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
   color: #ffffff;
-  background-color: #af614b
+  background-color: #FFCC00;
 }
 
 .site-header {
@@ -19,7 +19,7 @@ body {
   z-index: 1000;
   width: 100%;
   padding: clamp(0.85rem, 2vw, 1rem) clamp(1.5rem, 8vw, 6rem);
-  background-color: #af614b;
+  background-color: #ffffff;
   border-bottom: 1px solid #DDD6C8;
   transform: translateY(0);
   transition: transform 0.3s ease;
@@ -70,6 +70,7 @@ body {
   gap: 0.5rem;
   padding: 0.35rem 0.9rem;
   border: 1px solid #DDD6C8;
+  box-shadow: inset 0 0 0 1px #000000;
   border-radius: 999px;
   background-color: #FFFDFA;
   cursor: pointer;
@@ -170,7 +171,7 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   line-height: 1.15;
   letter-spacing: 0.02em;
-  color: #FFF9F5;
+  color: #000000;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
@@ -206,7 +207,7 @@ body {
   justify-content: center;
   min-height: 44px;
   padding: 0 24px;
-  color: #FFF9F5;
+  color: #000000;
   text-decoration: none;
   background: rgba(255, 255, 255, 0.10);
   border: 1px solid rgba(255, 255, 255, 0.42);
@@ -388,7 +389,7 @@ body.no-scroll {
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: #FFF9F2;
+  background-color: #ffffff;
   color: #292929;
 }
 
@@ -443,7 +444,7 @@ body.no-scroll {
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.08em;
-  color: #B9634C;
+  color: #585757;
   margin-bottom: 1rem;
 }
 
@@ -484,8 +485,8 @@ body.no-scroll {
 }
 
 .hero-btn-primary {
-  background-color: #B9634C;
-  color: #FFFDFA;
+  background-color: #FFCC00;
+  color: #000000;
   box-shadow: 0 8px 20px rgba(185, 99, 76, 0.28);
 }
 
@@ -507,12 +508,20 @@ body.no-scroll {
 
 .hero-visual {
   flex-shrink: 0;
-  width: clamp(220px, 30vw, 360px);
+  width: min(38vw, 500px);
+  height: min(38vw, 500px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero-visual svg {
-  width: 100%;
-  height: auto;
+.hero-visual-image {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 32px;
+  display: block;
 }
 
 @media (max-width: 900px) {
@@ -529,9 +538,19 @@ body.no-scroll {
   .hero-actions {
     justify-content: center;
   }
+}
 
+@media (max-width: 768px) {
   .hero-visual {
-    width: clamp(180px, 55vw, 280px);
+    width: min(82vw, 340px);
+    height: min(82vw, 340px);
+    margin: 0 auto;
+  }
+
+  .hero-visual-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 }
 
@@ -661,8 +680,8 @@ body.no-scroll {
   padding: 0 1.5rem;
   border: none;
   border-radius: 999px;
-  background-color: #B9634C;
-  color: #FFFDFA;
+  background-color: #FFCC00;
+  color: #000000;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
@@ -759,7 +778,7 @@ body.no-scroll {
 .iframe-page {
   width: 100%;
   /* Header의 테라코타와 끊김 없이 이어지도록 동일한 배경색을 쓴다. */
-  background-color: #AF614B;
+  background-color: #FFCC00;
   padding-top: 52px;
   padding-left: clamp(1.5rem, 8vw, 2.75rem);
   padding-right: clamp(1.5rem, 8vw, 2.75rem);
@@ -1031,7 +1050,7 @@ body.no-scroll {
   padding: 0 1.5rem;
   margin-top: auto;
   border-radius: 999px;
-  background-color: #FFF9F2;
+  background-color: #ffffff;
   border: 1px solid #E9E1D8;
   color: #292929;
   font-size: 0.9rem;
@@ -1222,7 +1241,7 @@ body.no-scroll {
 .stat-value {
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 700;
-  color: #B9634C;
+  color: #585757
   margin-bottom: 0.5rem;
 }
 

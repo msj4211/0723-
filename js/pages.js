@@ -71,18 +71,12 @@ window.Pages = {
                 <a href="#/ear-point" class="hero-btn-secondary">이어포인트 둘러보기</a>
               </div>
             </div>
-            <div class="hero-visual" aria-hidden="true">
-              <svg viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="210" cy="210" r="200" fill="#FDEFE3"/>
-                <circle cx="130" cy="150" r="70" fill="#F9D978" opacity="0.55"/>
-                <circle cx="290" cy="270" r="90" fill="#F49B83" opacity="0.4"/>
-                <path d="M235 120c45 0 78 38 78 84 0 38-22 60-48 78-14 10-18 20-18 34 0 16-12 26-27 26-17 0-29-13-29-30 0-13 6-22 14-30-16-4-27-19-27-36 0-16 10-27 24-30-12-8-19-21-19-36 0-33 26-60 52-60z"
-                  stroke="#B9634C" stroke-width="6" stroke-linejoin="round" fill="#FFFDF9"/>
-                <circle cx="222" cy="150" r="7" fill="#B9634C"/>
-                <circle cx="252" cy="196" r="6" fill="#F49B83"/>
-                <circle cx="214" cy="236" r="6" fill="#BFDCCB"/>
-                <circle cx="236" cy="270" r="6" fill="#D5C7E8"/>
-              </svg>
+            <div class="hero-visual">
+              <img
+                src="./images/hero-ear-photo.jpg"
+                alt="꽃과 함께 연출된 귀 이미지"
+                class="hero-visual-image"
+              >
             </div>
           </div>
         </section>
