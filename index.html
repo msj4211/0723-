@@ -12,35 +12,40 @@
 <header class="site-header">
   <div class="header-inner">
     <div class="header-top">
-      <div class="search-area" role="search">
-        <button type="button" class="search-btn" aria-label="이어밸런스체크 페이지로 이동">
-          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"></circle>
-            <line x1="16.65" y1="16.65" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
-          </svg>
-        </button>
-        <input type="text" class="search-box" placeholder="검색" aria-label="검색어 입력, Enter 키를 누르면 이어밸런스체크 페이지로 이동합니다">
-      </div>
+      <h1 class="logo">
+        <a href="#/" class="brand-logo" data-route="home" aria-label="730 스킨이어테라피 홈으로 이동">
+          <span class="brand-logo-line">730 SKIN</span>
+          <span class="brand-logo-line">EAR THERAPY</span>
+        </a>
+      </h1>
 
-      <div class="auth-area" id="auth-area">
-        <button type="button" class="auth-login-btn" id="auth-login-btn">로그인</button>
-        <div class="auth-user" id="auth-user" hidden>
-          <span class="auth-user-email" id="auth-user-email"></span>
-          <button type="button" class="auth-profile-btn" id="auth-profile-btn">내 프로필</button>
-          <button type="button" class="auth-logout-btn" id="auth-logout-btn">로그아웃</button>
+      <div class="header-top-right">
+        <div class="search-area" role="search">
+          <button type="button" class="search-btn" aria-label="이어밸런스체크 페이지로 이동">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"></circle>
+              <line x1="16.65" y1="16.65" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+            </svg>
+          </button>
+          <input type="text" class="search-box" placeholder="검색" aria-label="검색어 입력, Enter 키를 누르면 이어밸런스체크 페이지로 이동합니다">
         </div>
+
+        <div class="auth-area" id="auth-area">
+          <button type="button" class="auth-login-btn" id="auth-login-btn">로그인</button>
+          <div class="auth-user" id="auth-user" hidden>
+            <span class="auth-user-email" id="auth-user-email"></span>
+            <button type="button" class="auth-profile-btn" id="auth-profile-btn">내 프로필</button>
+            <button type="button" class="auth-logout-btn" id="auth-logout-btn">로그아웃</button>
+          </div>
+        </div>
+
+        <button type="button" class="hamburger-btn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="main-nav">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
       </div>
-
-      <button type="button" class="hamburger-btn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="main-nav">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
     </div>
-
-    <h1 class="logo">
-      <a href="#/" class="brand-logo" data-route="home" aria-label="730 스킨이어테라피 홈으로 이동">730SKINEARTHERAPY</a>
-    </h1>
 
     <nav class="main-nav" id="main-nav" aria-label="주요 메뉴">
       <ul>

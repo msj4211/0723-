@@ -5,47 +5,125 @@ window.Pages = {
       {
         img: '면역력강화.PNG',
         title: '면역력 강화',
-        desc: '무더운 계절,<br>몸의 균형을 위한 이어테라피'
+        desc: '무더운 계절,<br>몸의 균형을 위한 이어테라피',
+        icon: '🌿'
       },
       {
         img: '충분한수면.PNG',
         title: '충분한 수면',
-        desc: '열대야에도<br>편안한 휴식을 위한 혈자리'
+        desc: '열대야에도<br>편안한 휴식을 위한 혈자리',
+        icon: '🌙'
       },
       {
         img: '무릎통증.PNG',
         title: '무릎 통증',
-        desc: '활동량이 많은 여름,<br>가벼운 움직임을 위한 관리'
+        desc: '활동량이 많은 여름,<br>가벼운 움직임을 위한 관리',
+        icon: '🦵'
       }
+    ];
+
+    var purposeCards = [
+      { text: '푹 자고 싶어요', tone: 'lavender' },
+      { text: '마음이 편안해지고 싶어요', tone: 'mint' },
+      { text: '소화가 편했으면 좋겠어요', tone: 'yellow' },
+      { text: '피로를 덜고 싶어요', tone: 'coral' },
+      { text: '목과 어깨를 관리하고 싶어요', tone: 'blue' },
+      { text: '여성 건강을 관리하고 싶어요', tone: 'pink' }
     ];
 
     var slidesHtml = bannerSlides.map(function (slide) {
       return '<li class="splide__slide">' +
         '<div class="banner-slide">' +
+        '<div class="banner-face">' +
+        '<span class="banner-face-icon" aria-hidden="true">' + slide.icon + '</span>' +
+        '<p class="banner-face-title">' + slide.title + '</p>' +
+        '<p class="banner-face-desc">' + slide.desc + '</p>' +
+        '<button type="button" class="banner-detail-btn">자세히 보기</button>' +
+        '</div>' +
+        '<div class="banner-detail">' +
         '<img class="banner-img" src="images/' + slide.img + '" alt="' + slide.title + '">' +
         '<div class="banner-caption">' +
         '<p class="banner-caption-title">' + slide.title + '</p>' +
         '<p class="banner-caption-desc">' + slide.desc + '</p>' +
         '</div>' +
+        '<button type="button" class="banner-detail-close" aria-label="닫기">×</button>' +
+        '</div>' +
         '</div>' +
         '</li>';
     }).join('');
 
+    var purposeCardsHtml = purposeCards.map(function (card) {
+      return '<a href="#/ear-point" class="purpose-card purpose-card--' + card.tone + ' reveal">' +
+        '<p>' + card.text + '</p>' +
+        '</a>';
+    }).join('');
+
     container.innerHTML = `
-      <section class="ad-banner">
-        <div class="banner-content">
-          <div class="section-title"><h2>여름에 추천하는 혈자리</h2></div>
-          <div class="splide" aria-label="여름 추천 이어테라피">
-            <div class="splide__track">
-              <ul class="splide__list">${slidesHtml}</ul>
+      <div class="home-page">
+        <section class="hero">
+          <div class="hero-inner">
+            <div class="hero-content">
+              <p class="hero-eyebrow">730 SKIN EAR THERAPY</p>
+              <h2 class="hero-title">귀에서 시작하는<br>가벼운 웰니스 루틴</h2>
+              <p class="hero-desc">오늘의 몸 상태를 확인하고<br>나에게 필요한 귀 혈자리를 찾아보세요</p>
+              <div class="hero-actions">
+                <a href="#/ear-check" class="hero-btn-primary">이어밸런스 시작하기</a>
+                <a href="#/ear-point" class="hero-btn-secondary">이어포인트 둘러보기</a>
+              </div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+              <svg viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="210" cy="210" r="200" fill="#FDEFE3"/>
+                <circle cx="130" cy="150" r="70" fill="#F9D978" opacity="0.55"/>
+                <circle cx="290" cy="270" r="90" fill="#F49B83" opacity="0.4"/>
+                <path d="M235 120c45 0 78 38 78 84 0 38-22 60-48 78-14 10-18 20-18 34 0 16-12 26-27 26-17 0-29-13-29-30 0-13 6-22 14-30-16-4-27-19-27-36 0-16 10-27 24-30-12-8-19-21-19-36 0-33 26-60 52-60z"
+                  stroke="#B9634C" stroke-width="6" stroke-linejoin="round" fill="#FFFDF9"/>
+                <circle cx="222" cy="150" r="7" fill="#B9634C"/>
+                <circle cx="252" cy="196" r="6" fill="#F49B83"/>
+                <circle cx="214" cy="236" r="6" fill="#BFDCCB"/>
+                <circle cx="236" cy="270" r="6" fill="#D5C7E8"/>
+              </svg>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        <section class="purpose-section">
+          <div class="section-heading">
+            <h2>오늘 어떤 관리가 필요하신가요</h2>
+            <p>지금 필요한 관리를 선택하면<br>관련 이어포인트를 쉽게 확인할 수 있어요</p>
+          </div>
+          <div class="purpose-grid">${purposeCardsHtml}</div>
+        </section>
+
+        <section class="ad-banner">
+          <div class="banner-content">
+            <div class="section-heading section-heading--compact">
+              <h2>이번 주 추천 이어포인트</h2>
+            </div>
+            <div class="splide" aria-label="이번 주 추천 이어테라피">
+              <div class="splide__track">
+                <ul class="splide__list">${slidesHtml}</ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     `;
 
     if (window.initHomeSlider) window.initHomeSlider();
-    if (window.Landing) window.Landing.init(container);
+
+    container.querySelectorAll('.banner-detail-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        btn.closest('.banner-slide').classList.add('is-revealed');
+      });
+    });
+    container.querySelectorAll('.banner-detail-close').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        btn.closest('.banner-slide').classList.remove('is-revealed');
+      });
+    });
+
+    if (window.Landing) window.Landing.init(container.querySelector('.home-page'));
   },
 
   earCheck: function (container) {

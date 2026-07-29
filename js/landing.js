@@ -1,23 +1,47 @@
 window.Landing = (function () {
-  var RECOMMEND_ITEMS = [
-    '잠이 잘 오지 않는 분',
-    '목과 어깨가 자주 뭉치는 분',
-    '스트레스로 몸과 마음이 지친 분',
-    '건강을 미리 관리하고 싶은 분',
-    '가족과 함께 셀프케어를 하고 싶은 분',
-    '하루 5분 건강 습관을 만들고 싶은 분'
-  ];
-
   var observer = null;
-
-  function renderRecommendCards() {
-    return RECOMMEND_ITEMS.map(function (text) {
-      return '<div class="recommend-card reveal"><p>' + text + '</p></div>';
-    }).join('');
-  }
 
   function template() {
     return `
+      <section class="feature-section">
+        <div class="section-heading">
+          <h2>필요한 기능을 바로 시작해보세요</h2>
+        </div>
+        <div class="feature-grid">
+          <div class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">🩺</span>
+            <h3>이어밸런스체크</h3>
+            <p>간단한 질문을 통해 오늘 필요한 관리 방향을 확인해보세요</p>
+            <a href="#/ear-check" class="feature-card-btn">체크 시작하기</a>
+          </div>
+          <div class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">📍</span>
+            <h3>이어포인트</h3>
+            <p>증상과 관리 목적에 맞는 귀 혈자리를 쉽게 찾아보세요</p>
+            <a href="#/ear-point" class="feature-card-btn">이어포인트 보기</a>
+          </div>
+          <div class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">🎓</span>
+            <h3>이어테라피 배우기</h3>
+            <p>이어테라피 세미나와 교육 일정을 확인해보세요</p>
+            <a href="#/seminar" class="feature-card-btn">세미나 확인하기</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="offer-section">
+        <div class="offer-card offer-card--product reveal">
+          <h3>이어테라피를 위한 제품</h3>
+          <p>셀프케어와 전문 관리를 위한<br>이어테라피 제품을 확인해보세요</p>
+          <a href="#/products" class="offer-card-btn">상품 보러가기</a>
+        </div>
+        <div class="offer-card offer-card--seminar reveal">
+          <h3>이어테라피를 더 깊이 배우고 싶다면</h3>
+          <p>현재 진행 중인 세미나와<br>교육 일정을 확인해보세요</p>
+          <a href="#/seminar" class="offer-card-btn">세미나 일정 보기</a>
+        </div>
+      </section>
+
       <section class="landing" aria-label="730 스킨이어테라피 소개">
         <div class="landing-block reveal">
           <h2 class="landing-title">당신의 몸은<br>작은 신호를 보내고 있습니다.</h2>
@@ -30,11 +54,6 @@ window.Landing = (function () {
             몸의 균형을 이해하고<br>
             건강한 일상을 위한 셀프케어를 제안합니다.
           </p>
-        </div>
-
-        <div class="landing-block reveal">
-          <h2 class="landing-subtitle">이런 분들에게 추천합니다</h2>
-          <div class="recommend-grid">${renderRecommendCards()}</div>
         </div>
 
         <div class="landing-block reveal">
@@ -60,12 +79,6 @@ window.Landing = (function () {
               <p class="stat-label">누적 조회수</p>
             </div>
           </div>
-        </div>
-
-        <div class="landing-block reveal">
-          <h2 class="landing-title">하루 5분의 작은 습관이<br>건강한 내일을 만듭니다.</h2>
-          <p class="landing-body">오늘도 나에게 맞는<br>이어포인트를 찾아보세요.</p>
-          <a href="#/ear-point" class="landing-cta-btn" aria-label="이어포인트 페이지로 이동">이어포인트 찾기 →</a>
         </div>
       </section>
     `;
