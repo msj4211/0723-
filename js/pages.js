@@ -62,17 +62,35 @@ window.Pages = {
     var frame = container.querySelector('.embed-frame');
     var hasLoadedOnce = false;
 
+    // 이전 라우트 진입 때 등록해둔 리스너가 남아있으면 정리한다(재진입 시 중복 방지).
+    if (window.__earCheckMessageHandler) {
+      window.removeEventListener('message', window.__earCheckMessageHandler);
+    }
+
+    // 체크리스트 → 결과지로 iframe 내부에서 페이지가 바뀌면 콘텐츠 높이도 크게
+    // 달라진다(체크리스트는 길고, 결과지는 훨씬 짧다). contentDocument 직접 접근은
+    // 로컬 개발 서버처럼 부모와 origin이 다른 환경에서 항상 실패하므로, iframe
+    // 문서(730skin-check/index.html, result.html)가 보내는 postMessage로 실제
+    // 높이를 전달받아 반영한다 — origin에 상관없이 항상 동작한다.
+    window.__earCheckMessageHandler = function (e) {
+      if (!e.data || e.data.source !== '730skin-check-embed') return;
+      if (!frame.isConnected) return;
+      if (typeof e.data.height === 'number' && e.data.height > 0) {
+        frame.style.minHeight = '0';
+        frame.style.height = e.data.height + 'px';
+      }
+    };
+    window.addEventListener('message', window.__earCheckMessageHandler);
+
     frame.addEventListener('load', function () {
-      // 배포 후에는 이 사이트와 730skin-check가 같은 origin(msj4211.github.io)이라
-      // 실제 문서 높이를 읽어와 iframe이 내용만큼만 커지도록 맞출 수 있다.
-      // 로컬 개발 서버(localhost)에서는 origin이 달라 접근이 막히므로,
-      // 이 경우 CSS의 min-height(넉넉한 고정값)가 그대로 대체 역할을 한다.
+      // 같은 origin으로 배포된 경우, postMessage 스크립트가 실행되기 전
+      // 첫 시점에 한 번 더 시도해 초기 여백을 최소화하는 보조 수단이다.
       try {
         var docHeight = frame.contentDocument.documentElement.scrollHeight;
         frame.style.minHeight = '0';
         frame.style.height = docHeight + 'px';
       } catch (e) {
-        // cross-origin: 접근 불가, CSS min-height 폴백을 그대로 사용
+        // cross-origin: 접근 불가, 위 postMessage 응답을 기다린다.
       }
 
       // 730skin-check는 "결과 확인하기" 클릭 시 result.html로 실제 페이지

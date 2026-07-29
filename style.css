@@ -512,11 +512,11 @@ body.no-scroll {
 .embed-frame {
   display: block;
   width: 100%;
-  /* 뷰포트 높이에 맞추면 바깥 페이지에 스크롤할 내용이 없어져서
-     window의 scroll 이벤트가 발생하지 않는다(헤더 숨김이 동작 안 함).
-     대신 내용 전체가 들어갈 만큼 넉넉한 높이를 기본값으로 두고,
-     같은 origin에서는 js/pages.js가 실제 높이로 다시 맞춘다. */
-  min-height: 2600px;
+  /* iframe 문서가 postMessage로 실제 높이를 알려주면 js/pages.js가 바로 정확한
+     값으로 맞춘다(체크리스트/결과지 모두, origin 무관하게 동작). 이 값은 그
+     메시지가 도착하기 전 아주 짧은 순간에만 쓰이는 최소 기본값이라, 예전처럼
+     결과지(내용이 짧음)에서 수백~수천 px의 빈 여백이 남지 않는다. */
+  min-height: 400px;
   border: none;
   border-radius: 0;
   box-shadow: none;
