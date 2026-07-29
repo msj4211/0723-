@@ -1298,6 +1298,10 @@ body.no-scroll {
   margin-top: 0.5rem;
 }
 
+.auth-checkbox-field[hidden] {
+  display: none;
+}
+
 .auth-checkbox-field {
   display: flex;
   align-items: flex-start;
@@ -1399,6 +1403,10 @@ body.no-scroll {
   text-align: center;
   line-height: 1.5;
   margin: -0.35rem 0 0;
+}
+
+.auth-resend-btn[hidden] {
+  display: none;
 }
 
 .auth-resend-btn {

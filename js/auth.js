@@ -5,6 +5,7 @@
   var PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
   var PHONE_REGEX = /^\d{2,3}-\d{3,4}-\d{4}$/;
   var PENDING_PROFILE_KEY = 'pendingSignupProfile';
+  var PENDING_SIGNUP_EMAIL_KEY = 'pendingSignupEmail';
 
   var loginBtn = document.getElementById('auth-login-btn');
   var userBox = document.getElementById('auth-user');
@@ -35,6 +36,7 @@
   var errorEl = document.getElementById('auth-error');
   var noticeEl = document.getElementById('auth-notice');
   var resendBtn = document.getElementById('auth-resend-btn');
+  var gotoLoginBtn = document.getElementById('auth-goto-login-btn');
   var submitBtn = document.getElementById('auth-submit-btn');
   var switchTextEl = document.getElementById('auth-switch-text');
   var switchLinkEl = document.getElementById('auth-switch-link');
@@ -87,6 +89,7 @@
     resendBtn.hidden = true;
     resendBtn.disabled = false;
     resendBtn.textContent = RESEND_LABEL;
+    gotoLoginBtn.hidden = true;
   }
 
   function showError(message) {
@@ -99,15 +102,61 @@
     errorEl.hidden = true;
   }
 
-  function showNotice(message) {
-    errorEl.hidden = true;
-    noticeEl.innerHTML = String(message).replace(/\n/g, '<br>');
-    noticeEl.hidden = false;
-  }
-
   function clearNotice() {
     noticeEl.hidden = true;
     hideResend();
+  }
+
+  function stashPendingSignupEmail(email) {
+    try { localStorage.setItem(PENDING_SIGNUP_EMAIL_KEY, email); } catch (e) {}
+  }
+
+  function getPendingSignupEmail() {
+    try { return localStorage.getItem(PENDING_SIGNUP_EMAIL_KEY); } catch (e) { return null; }
+  }
+
+  function clearPendingSignupEmail() {
+    try { localStorage.removeItem(PENDING_SIGNUP_EMAIL_KEY); } catch (e) {}
+  }
+
+  // 이메일 인증 대기 중임을 안내하고, 재발송 버튼을 보여준다.
+  function showAwaitingConfirmation() {
+    errorEl.hidden = true;
+    gotoLoginBtn.hidden = true;
+    noticeEl.innerHTML = '가입 확인 이메일을 보냈습니다<br>메일함과 스팸메일함을 확인해 주세요';
+    noticeEl.hidden = false;
+    resendBtn.hidden = false;
+  }
+
+  // 이메일 인증이 완료된 상태를 안내하고, 로그인하기 버튼을 보여준다.
+  function showConfirmationComplete() {
+    errorEl.hidden = true;
+    clearResendCooldown();
+    resendBtn.hidden = true;
+    noticeEl.innerHTML = '인증이 완료되었습니다';
+    noticeEl.hidden = false;
+    gotoLoginBtn.hidden = false;
+  }
+
+  // 로컬에 저장된 가입 대기 이메일이 있으면, 현재 세션 기준으로 인증 완료
+  // 여부를 다시 판단해 모달에 알맞은 안내를 보여준다. 새로고침이나 재방문
+  // 후에도 이 함수가 다시 실행되어 화면이 최신 인증 상태로 갱신된다.
+  function checkPendingConfirmation() {
+    var pendingEmail = getPendingSignupEmail();
+    if (!pendingEmail) return;
+
+    lastSignupEmail = pendingEmail;
+
+    client.auth.getSession().then(function (res) {
+      var session = res.data.session;
+      var user = session ? session.user : null;
+
+      if (user && user.email === pendingEmail && isEmailConfirmed(user)) {
+        showConfirmationComplete();
+      } else {
+        showAwaitingConfirmation();
+      }
+    });
   }
 
   // Supabase가 돌려주는 영문 에러 메시지를 상황에 맞는 한국어 안내로 바꾼다.
@@ -225,6 +274,7 @@
     modal.hidden = false;
     document.body.classList.add('no-scroll');
     emailInput.focus();
+    checkPendingConfirmation();
   }
 
   function closeModal() {
@@ -389,6 +439,7 @@
       }
 
       if (mode === 'login') {
+        clearPendingSignupEmail();
         closeModal();
         return;
       }
@@ -397,12 +448,13 @@
 
       if (res.data.session) {
         saveProfileNow(res.data.session.user.id, profileData);
+        clearPendingSignupEmail();
         closeModal();
       } else {
         stashPendingProfile(profileData);
         lastSignupEmail = email;
-        showNotice('가입 확인 이메일을 보냈습니다\n메일함과 스팸메일함을 확인해 주세요');
-        resendBtn.hidden = false;
+        stashPendingSignupEmail(email);
+        showAwaitingConfirmation();
         startResendCooldown();
       }
     }).catch(function () {
@@ -428,6 +480,12 @@
     }).catch(function () {
       showError('인증메일을 보내지 못했습니다\n잠시 후 다시 시도해 주세요');
     });
+  });
+
+  gotoLoginBtn.addEventListener('click', function () {
+    clearPendingSignupEmail();
+    setMode('login');
+    emailInput.focus();
   });
 
   // ===== 프로필(이름/휴대폰/성별/나이) =====
@@ -533,6 +591,11 @@
     renderAuthState(session);
     if (event === 'SIGNED_IN' && session && isEmailConfirmed(session.user)) {
       flushPendingProfile(session.user);
+    }
+    // 모달이 열려 있는 상태에서 다른 탭 등을 통해 인증이 완료되면
+    // 안내 화면을 즉시 최신 상태로 갱신한다.
+    if (!modal.hidden) {
+      checkPendingConfirmation();
     }
   });
 
