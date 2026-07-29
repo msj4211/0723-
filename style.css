@@ -1009,6 +1009,11 @@ body.no-scroll {
   min-width: 0;
 }
 
+.auth-login-btn[hidden],
+.auth-user[hidden] {
+  display: none;
+}
+
 .auth-login-btn {
   display: inline-flex;
   align-items: center;
@@ -1394,6 +1399,34 @@ body.no-scroll {
   text-align: center;
   line-height: 1.5;
   margin: -0.35rem 0 0;
+}
+
+.auth-resend-btn {
+  display: block;
+  width: 100%;
+  border: none;
+  background: none;
+  color: rgba(255, 255, 255, 0.98);
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  padding: 0;
+  margin: 0.15rem 0 0;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.auth-resend-btn:hover:not(:disabled),
+.auth-resend-btn:focus-visible:not(:disabled) {
+  color: #F4C6B2;
+}
+
+.auth-resend-btn:disabled {
+  opacity: 0.65;
+  cursor: default;
+  text-decoration: none;
 }
 
 .auth-submit-btn {

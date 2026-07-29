@@ -34,12 +34,17 @@
   var marketingCheckbox = document.getElementById('auth-marketing-agree');
   var errorEl = document.getElementById('auth-error');
   var noticeEl = document.getElementById('auth-notice');
+  var resendBtn = document.getElementById('auth-resend-btn');
   var submitBtn = document.getElementById('auth-submit-btn');
   var switchTextEl = document.getElementById('auth-switch-text');
   var switchLinkEl = document.getElementById('auth-switch-link');
 
   var mode = 'login';
   var submitting = false;
+  var lastSignupEmail = '';
+  var resendCooldownTimer = null;
+  var RESEND_LABEL = '인증메일 다시 보내기';
+  var RESEND_COOLDOWN_SECONDS = 60;
 
   var COPY = {
     login: {
@@ -52,15 +57,41 @@
     signup: {
       desc: '이메일로 간편하게 시작해보세요.',
       submit: '회원가입',
-      submitting: '가입하는 중...',
+      submitting: '처리 중...',
       switchText: '이미 계정이 있으신가요?',
       switchLink: '로그인 →'
     }
   };
 
+  function clearResendCooldown() {
+    if (resendCooldownTimer) {
+      clearTimeout(resendCooldownTimer);
+      resendCooldownTimer = null;
+    }
+  }
+
+  // 재발송 버튼을 60초간 비활성화해 반복 요청(429 오류)을 막는다.
+  function startResendCooldown() {
+    clearResendCooldown();
+    resendBtn.disabled = true;
+    resendBtn.textContent = '60초 후 다시 요청할 수 있습니다';
+    resendCooldownTimer = setTimeout(function () {
+      resendCooldownTimer = null;
+      resendBtn.disabled = false;
+      resendBtn.textContent = RESEND_LABEL;
+    }, RESEND_COOLDOWN_SECONDS * 1000);
+  }
+
+  function hideResend() {
+    clearResendCooldown();
+    resendBtn.hidden = true;
+    resendBtn.disabled = false;
+    resendBtn.textContent = RESEND_LABEL;
+  }
+
   function showError(message) {
     noticeEl.hidden = true;
-    errorEl.textContent = message;
+    errorEl.innerHTML = String(message).replace(/\n/g, '<br>');
     errorEl.hidden = false;
   }
 
@@ -68,31 +99,42 @@
     errorEl.hidden = true;
   }
 
-  function showNotice() {
+  function showNotice(message) {
     errorEl.hidden = true;
+    noticeEl.innerHTML = String(message).replace(/\n/g, '<br>');
     noticeEl.hidden = false;
   }
 
   function clearNotice() {
     noticeEl.hidden = true;
+    hideResend();
   }
 
   // Supabase가 돌려주는 영문 에러 메시지를 상황에 맞는 한국어 안내로 바꾼다.
   function signupErrorMessage(error) {
     var message = (error && error.message) || '';
     var lower = message.toLowerCase();
+    var status = error && error.status;
 
+    if (status === 429 || lower.indexOf('rate limit') !== -1 || lower.indexOf('too many') !== -1) {
+      return '인증메일 요청이 너무 많습니다\n잠시 후 다시 시도해 주세요';
+    }
     if (lower.indexOf('already registered') !== -1 || lower.indexOf('already exists') !== -1) {
       return '이미 가입된 이메일입니다.';
-    }
-    if (lower.indexOf('rate limit') !== -1) {
-      return '요청이 많아 잠시 제한되었습니다. 잠시 후 다시 시도해 주세요.';
     }
     if (lower.indexOf('invalid') !== -1 && lower.indexOf('email') !== -1) {
       return '올바른 이메일 주소를 입력해 주세요.';
     }
     if (lower.indexOf('password') !== -1) {
       return '비밀번호 조건을 다시 확인해 주세요.';
+    }
+    if (
+      lower.indexOf('sending') !== -1 ||
+      lower.indexOf('smtp') !== -1 ||
+      lower.indexOf('confirmation email') !== -1 ||
+      (lower.indexOf('email') !== -1 && (lower.indexOf('fail') !== -1 || lower.indexOf('error') !== -1))
+    ) {
+      return '인증메일을 보내지 못했습니다\n잠시 후 다시 시도해 주세요';
     }
     return '회원가입에 실패했습니다. 입력값을 확인해 주세요.';
   }
@@ -190,7 +232,23 @@
     document.body.classList.remove('no-scroll');
   }
 
-  function renderAuthState(user) {
+  function isEmailConfirmed(user) {
+    return !!(user && user.email_confirmed_at);
+  }
+
+  // 세션은 있지만 이메일 인증이 끝나지 않은 사용자는 로그인 상태로 표시하지 않고,
+  // 남아있는 세션을 즉시 정리해 로그인 버튼만 보이도록 한다.
+  function renderAuthState(session) {
+    var user = session ? session.user : null;
+
+    if (user && !isEmailConfirmed(user)) {
+      loginBtn.hidden = false;
+      userBox.hidden = true;
+      userEmailEl.textContent = '';
+      client.auth.signOut();
+      return;
+    }
+
     if (user) {
       loginBtn.hidden = true;
       userBox.hidden = false;
@@ -270,6 +328,7 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    if (submitting) return;
     clearError();
     clearNotice();
 
@@ -341,8 +400,33 @@
         closeModal();
       } else {
         stashPendingProfile(profileData);
-        showNotice();
+        lastSignupEmail = email;
+        showNotice('가입 확인 이메일을 보냈습니다\n메일함과 스팸메일함을 확인해 주세요');
+        resendBtn.hidden = false;
+        startResendCooldown();
       }
+    }).catch(function () {
+      submitting = false;
+      submitBtn.textContent = copy.submit;
+      refreshSubmitState();
+      showError(
+        mode === 'login'
+          ? '로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.'
+          : '인증메일을 보내지 못했습니다\n잠시 후 다시 시도해 주세요'
+      );
+    });
+  });
+
+  resendBtn.addEventListener('click', function () {
+    if (resendBtn.disabled || !lastSignupEmail) return;
+    clearError();
+    startResendCooldown();
+    client.auth.resend({ type: 'signup', email: lastSignupEmail }).then(function (res) {
+      if (res.error) {
+        showError(signupErrorMessage(res.error));
+      }
+    }).catch(function () {
+      showError('인증메일을 보내지 못했습니다\n잠시 후 다시 시도해 주세요');
     });
   });
 
@@ -446,14 +530,14 @@
   });
 
   client.auth.onAuthStateChange(function (event, session) {
-    renderAuthState(session ? session.user : null);
-    if (event === 'SIGNED_IN' && session) {
+    renderAuthState(session);
+    if (event === 'SIGNED_IN' && session && isEmailConfirmed(session.user)) {
       flushPendingProfile(session.user);
     }
   });
 
   client.auth.getSession().then(function (res) {
-    renderAuthState(res.data.session ? res.data.session.user : null);
+    renderAuthState(res.data.session);
   });
 
   // 다른 모듈(이어포인트 좋아요 등)이 로그인 여부를 확인하고,
