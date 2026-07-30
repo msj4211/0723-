@@ -7,7 +7,7 @@
 body {
   margin: 2px;
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
-  color: #ffffff;
+  color: #000000;
   background-color: #FFCC00;
 }
 
@@ -980,16 +980,17 @@ body.no-scroll {
 .point-name {
   font-weight: 700;
   font-size: 0.95rem;
+  color: #111111;
 }
 
 .like-count {
   font-size: 0.8rem;
-  color: #ffffff;
+  color: #111111;
 }
 
 .point-desc {
   font-size: 0.8rem;
-  color: #ffffff;
+  color: #111111;
   line-height: 1.4;
 }
 
