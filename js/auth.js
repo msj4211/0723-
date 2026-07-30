@@ -45,25 +45,25 @@
   var submitting = false;
   var lastSignupEmail = '';
   var resendCooldownTimer = null;
-  var RESEND_LABEL = '인증메일 다시 보내기';
   var RESEND_COOLDOWN_SECONDS = 60;
 
-  var COPY = {
-    login: {
-      desc: '이어포인트를 저장하고<br>세미나를 더욱 편리하게 이용하세요.',
-      submit: '로그인',
-      submitting: '로그인하는 중...',
-      switchText: '아직 회원이 아니신가요?',
-      switchLink: '회원가입 →'
-    },
-    signup: {
-      desc: '이메일로 간편하게 시작해보세요.',
-      submit: '회원가입',
-      submitting: '처리 중...',
-      switchText: '이미 계정이 있으신가요?',
-      switchLink: '로그인 →'
-    }
-  };
+  function getCopy(currentMode) {
+    return currentMode === 'signup'
+      ? {
+          desc: window.t('authModalDescSignup'),
+          submit: window.t('authSubmitSignup'),
+          submitting: window.t('authSubmittingSignup'),
+          switchText: window.t('authSwitchTextSignup'),
+          switchLink: window.t('authSwitchLinkSignup')
+        }
+      : {
+          desc: window.t('authModalDescLogin'),
+          submit: window.t('authSubmitLogin'),
+          submitting: window.t('authSubmittingLogin'),
+          switchText: window.t('authSwitchTextLogin'),
+          switchLink: window.t('authSwitchLinkLogin')
+        };
+  }
 
   function clearResendCooldown() {
     if (resendCooldownTimer) {
@@ -76,11 +76,11 @@
   function startResendCooldown() {
     clearResendCooldown();
     resendBtn.disabled = true;
-    resendBtn.textContent = '60초 후 다시 요청할 수 있습니다';
+    resendBtn.textContent = window.t('authResendCooldown');
     resendCooldownTimer = setTimeout(function () {
       resendCooldownTimer = null;
       resendBtn.disabled = false;
-      resendBtn.textContent = RESEND_LABEL;
+      resendBtn.textContent = window.t('authResendLabel');
     }, RESEND_COOLDOWN_SECONDS * 1000);
   }
 
@@ -88,7 +88,7 @@
     clearResendCooldown();
     resendBtn.hidden = true;
     resendBtn.disabled = false;
-    resendBtn.textContent = RESEND_LABEL;
+    resendBtn.textContent = window.t('authResendLabel');
     gotoLoginBtn.hidden = true;
   }
 
@@ -123,7 +123,7 @@
   function showAwaitingConfirmation() {
     errorEl.hidden = true;
     gotoLoginBtn.hidden = true;
-    noticeEl.innerHTML = '가입 확인 이메일을 보냈습니다<br>메일함과 스팸메일함을 확인해 주세요';
+    noticeEl.innerHTML = window.t('authAwaitingConfirmation');
     noticeEl.hidden = false;
     resendBtn.hidden = false;
   }
@@ -133,7 +133,7 @@
     errorEl.hidden = true;
     clearResendCooldown();
     resendBtn.hidden = true;
-    noticeEl.innerHTML = '인증이 완료되었습니다';
+    noticeEl.innerHTML = window.t('authConfirmationComplete');
     noticeEl.hidden = false;
     gotoLoginBtn.hidden = false;
   }
@@ -166,16 +166,16 @@
     var status = error && error.status;
 
     if (status === 429 || lower.indexOf('rate limit') !== -1 || lower.indexOf('too many') !== -1) {
-      return '인증메일 요청이 너무 많습니다\n잠시 후 다시 시도해 주세요';
+      return window.t('errRateLimit');
     }
     if (lower.indexOf('already registered') !== -1 || lower.indexOf('already exists') !== -1) {
-      return '이미 가입된 이메일입니다.';
+      return window.t('errAlreadyRegistered');
     }
     if (lower.indexOf('invalid') !== -1 && lower.indexOf('email') !== -1) {
-      return '올바른 이메일 주소를 입력해 주세요.';
+      return window.t('errInvalidEmail');
     }
     if (lower.indexOf('password') !== -1) {
-      return '비밀번호 조건을 다시 확인해 주세요.';
+      return window.t('errPasswordCondition');
     }
     if (
       lower.indexOf('sending') !== -1 ||
@@ -183,9 +183,9 @@
       lower.indexOf('confirmation email') !== -1 ||
       (lower.indexOf('email') !== -1 && (lower.indexOf('fail') !== -1 || lower.indexOf('error') !== -1))
     ) {
-      return '인증메일을 보내지 못했습니다\n잠시 후 다시 시도해 주세요';
+      return window.t('errSendFail');
     }
-    return '회원가입에 실패했습니다. 입력값을 확인해 주세요.';
+    return window.t('errSignupGeneric');
   }
 
   function formatPhone(value) {
@@ -230,7 +230,7 @@
   }
 
   function applyMode() {
-    var copy = COPY[mode];
+    var copy = getCopy(mode);
     descEl.innerHTML = copy.desc;
     submitBtn.textContent = copy.submit;
     switchTextEl.textContent = copy.switchText;
@@ -269,7 +269,7 @@
     form.reset();
     passwordInput.type = 'password';
     togglePasswordBtn.setAttribute('aria-pressed', 'false');
-    togglePasswordBtn.setAttribute('aria-label', '비밀번호 표시');
+    togglePasswordBtn.setAttribute('aria-label', window.t('authPasswordShow'));
     passwordConfirmError.hidden = true;
     modal.hidden = false;
     document.body.classList.add('no-scroll');
@@ -322,7 +322,7 @@
     var isHidden = passwordInput.type === 'password';
     passwordInput.type = isHidden ? 'text' : 'password';
     togglePasswordBtn.setAttribute('aria-pressed', isHidden ? 'true' : 'false');
-    togglePasswordBtn.setAttribute('aria-label', isHidden ? '비밀번호 숨기기' : '비밀번호 표시');
+    togglePasswordBtn.setAttribute('aria-label', isHidden ? window.t('authPasswordHide') : window.t('authPasswordShow'));
   });
 
   phoneInput.addEventListener('input', function () {
@@ -388,38 +388,38 @@
     var password = passwordInput.value;
 
     if (!email || !password) {
-      showError('이메일과 비밀번호를 입력해 주세요.');
+      showError(window.t('errEmailPasswordRequired'));
       return;
     }
 
     if (mode === 'signup') {
       if (!name) {
-        showError('이름을 입력해 주세요.');
+        showError(window.t('errNameRequired'));
         return;
       }
       if (!EMAIL_REGEX.test(email)) {
-        showError('올바른 이메일 형식을 입력해 주세요.');
+        showError(window.t('errEmailFormat'));
         return;
       }
       if (!PHONE_REGEX.test(phone)) {
-        showError('휴대폰 번호를 정확히 입력해 주세요.');
+        showError(window.t('errPhoneFormat'));
         return;
       }
       if (!PASSWORD_REGEX.test(password)) {
-        showError('비밀번호는 영문과 숫자를 포함해 8자 이상이어야 합니다.');
+        showError(window.t('errPasswordFormat'));
         return;
       }
       if (!passwordsMatch()) {
-        showError('비밀번호가 일치하지 않습니다.');
+        showError(window.t('errPasswordMismatch'));
         return;
       }
       if (!privacyCheckbox.checked) {
-        showError('개인정보 처리방침에 동의해 주세요.');
+        showError(window.t('errPrivacyRequired'));
         return;
       }
     }
 
-    var copy = COPY[mode];
+    var copy = getCopy(mode);
     submitting = true;
     refreshSubmitState();
     submitBtn.textContent = copy.submitting;
@@ -434,7 +434,7 @@
       refreshSubmitState();
 
       if (res.error) {
-        showError(mode === 'login' ? '이메일 또는 비밀번호가 올바르지 않습니다.' : signupErrorMessage(res.error));
+        showError(mode === 'login' ? window.t('errLoginWrong') : signupErrorMessage(res.error));
         return;
       }
 
@@ -461,11 +461,7 @@
       submitting = false;
       submitBtn.textContent = copy.submit;
       refreshSubmitState();
-      showError(
-        mode === 'login'
-          ? '로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.'
-          : '인증메일을 보내지 못했습니다\n잠시 후 다시 시도해 주세요'
-      );
+      showError(mode === 'login' ? window.t('errLoginFail') : window.t('errSendFail'));
     });
   });
 
@@ -478,7 +474,7 @@
         showError(signupErrorMessage(res.error));
       }
     }).catch(function () {
-      showError('인증메일을 보내지 못했습니다\n잠시 후 다시 시도해 주세요');
+      showError(window.t('errSendFail'));
     });
   });
 
@@ -513,6 +509,8 @@
   function openProfileModal(profileRow) {
     profileForm.reset();
     clearProfileError();
+    profileSubmitBtn.disabled = false;
+    profileSubmitBtn.textContent = window.t('profileSave');
     if (profileRow) {
       profileNameInput.value = profileRow.name || '';
       profilePhoneInput.value = profileRow.phone || '';
@@ -558,7 +556,7 @@
       var marketingAgreed = profileMarketingCheckbox.checked;
 
       profileSubmitBtn.disabled = true;
-      profileSubmitBtn.textContent = '저장하는 중...';
+      profileSubmitBtn.textContent = window.t('profileSaving');
 
       client.from('profiles').upsert({
         id: session.user.id,
@@ -570,10 +568,10 @@
         updated_at: new Date().toISOString()
       }).then(function (res2) {
         profileSubmitBtn.disabled = false;
-        profileSubmitBtn.textContent = '저장';
+        profileSubmitBtn.textContent = window.t('profileSave');
 
         if (res2.error) {
-          showProfileError('저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
+          showProfileError(window.t('profileSaveError'));
           return;
         }
         closeProfileModal();
@@ -618,4 +616,25 @@
     },
     openModal: openModal
   };
+
+  // 로그인/프로필 모달이 열려 있는 동안 언어를 바꾸면, 이 모듈이 직접
+  // textContent로 채운 부분(설명 문구, 버튼, 안내 메시지 등)은 data-i18n으로
+  // 잡히지 않으므로 여기서 다시 그려준다.
+  if (window.i18nOnLanguageChange) {
+    window.i18nOnLanguageChange.push(function () {
+      if (!modal.hidden) {
+        applyMode();
+        var isHidden = passwordInput.type === 'password';
+        togglePasswordBtn.setAttribute('aria-label', isHidden ? window.t('authPasswordShow') : window.t('authPasswordHide'));
+        if (!resendBtn.hidden && resendBtn.disabled) {
+          resendBtn.textContent = window.t('authResendCooldown');
+        } else if (!resendBtn.hidden) {
+          resendBtn.textContent = window.t('authResendLabel');
+        }
+      }
+      if (!profileModal.hidden) {
+        profileSubmitBtn.textContent = window.t('profileSave');
+      }
+    });
+  }
 })();

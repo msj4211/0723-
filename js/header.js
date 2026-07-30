@@ -21,7 +21,7 @@
     mainNav.classList.add('is-open');
     hamburgerBtn.classList.add('is-active');
     hamburgerBtn.setAttribute('aria-expanded', 'true');
-    hamburgerBtn.setAttribute('aria-label', '메뉴 닫기');
+    hamburgerBtn.setAttribute('aria-label', window.t ? window.t('hamburgerClose') : '메뉴 닫기');
     document.body.classList.add('no-scroll');
   }
 
@@ -29,7 +29,7 @@
     mainNav.classList.remove('is-open');
     hamburgerBtn.classList.remove('is-active');
     hamburgerBtn.setAttribute('aria-expanded', 'false');
-    hamburgerBtn.setAttribute('aria-label', '메뉴 열기');
+    hamburgerBtn.setAttribute('aria-label', window.t ? window.t('hamburgerOpen') : '메뉴 열기');
     document.body.classList.remove('no-scroll');
   }
 

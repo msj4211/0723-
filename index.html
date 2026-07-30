@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>730 SKIN EAR THERAPY</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,7 +12,7 @@
   <div class="header-inner">
     <div class="header-top">
       <h1 class="logo">
-        <a href="#/" class="brand-logo" data-route="home" aria-label="730 스킨이어테라피 홈으로 이동">
+        <a href="#/" class="brand-logo" data-route="home" aria-label="730 스킨이어테라피 홈으로 이동" data-i18n-aria-label="brandAriaLabel">
           <span class="brand-logo-line">730SKIN</span>
           <span class="brand-logo-line">EARTHERAPY</span>
         </a>
@@ -21,25 +20,46 @@
 
       <div class="header-top-right">
         <div class="search-area" role="search">
-          <button type="button" class="search-btn" aria-label="이어밸런스체크 페이지로 이동">
+          <button type="button" class="search-btn" aria-label="이어밸런스체크 페이지로 이동" data-i18n-aria-label="searchBtnAriaLabel">
             <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"></circle>
               <line x1="16.65" y1="16.65" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
             </svg>
           </button>
-          <input type="text" class="search-box" placeholder="검색" aria-label="검색어 입력, Enter 키를 누르면 이어밸런스체크 페이지로 이동합니다">
+          <input type="text" class="search-box" placeholder="검색" aria-label="검색어 입력, Enter 키를 누르면 이어밸런스체크 페이지로 이동합니다" data-i18n-placeholder="searchPlaceholder" data-i18n-aria-label="searchInputAriaLabel">
         </div>
 
         <div class="auth-area" id="auth-area">
-          <button type="button" class="auth-login-btn" id="auth-login-btn">로그인</button>
+          <button type="button" class="auth-login-btn" id="auth-login-btn" data-i18n="login">로그인</button>
           <div class="auth-user" id="auth-user" hidden>
             <span class="auth-user-email" id="auth-user-email"></span>
-            <button type="button" class="auth-profile-btn" id="auth-profile-btn">내 프로필</button>
-            <button type="button" class="auth-logout-btn" id="auth-logout-btn">로그아웃</button>
+            <button type="button" class="auth-profile-btn" id="auth-profile-btn" data-i18n="profileBtn">내 프로필</button>
+            <button type="button" class="auth-logout-btn" id="auth-logout-btn" data-i18n="logout">로그아웃</button>
           </div>
         </div>
 
-        <button type="button" class="hamburger-btn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="main-nav">
+        <a
+          href="https://www.instagram.com/730_skin/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="header-instagram-link"
+          aria-label="730스킨 인스타그램 새 창에서 열기"
+          data-i18n-aria-label="instagramAriaLabel"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+            <circle cx="12" cy="12" r="4.2"></circle>
+            <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle>
+          </svg>
+        </a>
+
+        <div class="header-language-switcher" role="group" aria-label="언어 선택">
+          <button type="button" class="header-language-button is-active" data-lang="ko" aria-pressed="true">한국어</button>
+          <span class="header-language-divider" aria-hidden="true">|</span>
+          <button type="button" class="header-language-button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+
+        <button type="button" class="hamburger-btn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="main-nav" data-i18n-aria-label="hamburgerOpen">
           <span class="hamburger-line"></span>
           <span class="hamburger-line"></span>
           <span class="hamburger-line"></span>
@@ -49,10 +69,10 @@
 
     <nav class="main-nav" id="main-nav" aria-label="주요 메뉴">
       <ul>
-        <li><a href="#/ear-check" data-route="ear-check">이어밸런스체크</a></li>
-        <li><a href="#/ear-point" data-route="ear-point">이어포인트</a></li>
-        <li><a href="#/products" data-route="products">상품</a></li>
-        <li><a href="#/seminar" data-route="seminar">세미나신청</a></li>
+        <li><a href="#/ear-check" data-route="ear-check" data-i18n="navEarCheck">이어밸런스체크</a></li>
+        <li><a href="#/ear-point" data-route="ear-point" data-i18n="navEarPoints">이어포인트</a></li>
+        <li><a href="#/products" data-route="products" data-i18n="navProducts">상품</a></li>
+        <li><a href="#/seminar" data-route="seminar" data-i18n="navSeminar">세미나신청</a></li>
       </ul>
     </nav>
   </div>
@@ -62,7 +82,7 @@
 
 <footer class="site-footer"></footer>
 
-<button type="button" id="scroll-top-btn" class="scroll-top-btn" aria-label="맨 위로 이동">
+<button type="button" id="scroll-top-btn" class="scroll-top-btn" aria-label="맨 위로 이동" data-i18n-aria-label="scrollTopAriaLabel">
   <svg class="scroll-top-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
     <path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
   </svg>
@@ -71,7 +91,7 @@
 <div class="auth-modal" id="auth-modal" hidden>
   <div class="auth-modal-backdrop" id="auth-modal-backdrop"></div>
   <div class="auth-modal-card" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
-    <button type="button" class="auth-modal-close" id="auth-modal-close" aria-label="닫기">×</button>
+    <button type="button" class="auth-modal-close" id="auth-modal-close" aria-label="닫기" data-i18n-aria-label="close">×</button>
 
     <div class="auth-modal-icon" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none">
@@ -85,15 +105,15 @@
 
     <form class="auth-form" id="auth-form">
       <div class="auth-field auth-signup-only" id="auth-name-field" hidden>
-        <label for="auth-name">이름</label>
+        <label for="auth-name" data-i18n="authNameLabel">이름</label>
         <div class="auth-input-wrap">
           <svg class="auth-input-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M5 19c1.2-3.4 4-5 7-5s5.8 1.6 7 5" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
-          <input type="text" id="auth-name" name="name" autocomplete="name" placeholder="이름">
+          <input type="text" id="auth-name" name="name" autocomplete="name" placeholder="이름" data-i18n-placeholder="authNameLabel">
         </div>
       </div>
 
       <div class="auth-field">
-        <label for="auth-email">이메일</label>
+        <label for="auth-email" data-i18n="authEmailLabel">이메일</label>
         <div class="auth-input-wrap">
           <svg class="auth-input-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6.5h15v11h-15z" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4.5 7.2l7.5 5.6 7.5-5.6" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <input type="email" id="auth-email" name="email" autocomplete="email" placeholder="you@example.com" required>
@@ -101,7 +121,7 @@
       </div>
 
       <div class="auth-field auth-signup-only" id="auth-phone-field" hidden>
-        <label for="auth-phone">휴대폰 번호</label>
+        <label for="auth-phone" data-i18n="authPhoneLabel">휴대폰 번호</label>
         <div class="auth-input-wrap">
           <svg class="auth-input-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M10.5 17.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
           <input type="tel" id="auth-phone" name="phone" autocomplete="tel" inputmode="numeric" placeholder="010-1234-5678" maxlength="13">
@@ -109,7 +129,7 @@
       </div>
 
       <div class="auth-field">
-        <label for="auth-password">비밀번호</label>
+        <label for="auth-password" data-i18n="authPasswordLabel">비밀번호</label>
         <div class="auth-input-wrap">
           <svg class="auth-input-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M8.3 10.5V7.8a3.7 3.7 0 0 1 7.4 0v2.7" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
           <input type="password" id="auth-password" name="password" autocomplete="current-password" placeholder="••••••••" required minlength="6">
@@ -117,32 +137,32 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1.5 12S5.5 5.5 12 5.5 22.5 12 22.5 12 18.5 18.5 12 18.5 1.5 12 1.5 12Z" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
           </button>
         </div>
-        <p class="auth-field-hint auth-signup-only" id="auth-password-hint" hidden>영문과 숫자를 포함해 8자 이상 입력해주세요.</p>
+        <p class="auth-field-hint auth-signup-only" id="auth-password-hint" hidden data-i18n="authPasswordHint">영문과 숫자를 포함해 8자 이상 입력해주세요.</p>
       </div>
 
       <div class="auth-field auth-signup-only" id="auth-password-confirm-field" hidden>
-        <label for="auth-password-confirm">비밀번호 확인</label>
+        <label for="auth-password-confirm" data-i18n="authPasswordConfirmLabel">비밀번호 확인</label>
         <div class="auth-input-wrap">
           <svg class="auth-input-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M8.3 10.5V7.8a3.7 3.7 0 0 1 7.4 0v2.7" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
           <input type="password" id="auth-password-confirm" name="password_confirm" autocomplete="new-password" placeholder="••••••••">
         </div>
-        <p class="auth-field-error" id="auth-password-confirm-error" hidden>비밀번호가 일치하지 않습니다.</p>
+        <p class="auth-field-error" id="auth-password-confirm-error" hidden data-i18n="authPasswordConfirmError">비밀번호가 일치하지 않습니다.</p>
       </div>
 
       <label class="auth-checkbox-field auth-signup-only" id="auth-privacy-field" hidden>
         <input type="checkbox" id="auth-privacy-agree">
-        <span>개인정보 처리방침에 동의합니다. <span class="auth-required">(필수)</span></span>
+        <span><span data-i18n="authPrivacyAgree">개인정보 처리방침에 동의합니다.</span> <span class="auth-required" data-i18n="authRequired">(필수)</span></span>
       </label>
 
       <label class="auth-checkbox-field auth-signup-only" id="auth-marketing-field" hidden>
         <input type="checkbox" id="auth-marketing-agree">
-        <span>이벤트 · 교육 · 신제품 안내 수신에 동의합니다. <span class="auth-optional">(선택)</span></span>
+        <span><span data-i18n="authMarketingAgree">이벤트 · 교육 · 신제품 안내 수신에 동의합니다.</span> <span class="auth-optional" data-i18n="authOptional">(선택)</span></span>
       </label>
 
       <p class="auth-error" id="auth-error" hidden></p>
       <p class="auth-notice" id="auth-notice" hidden></p>
       <button type="button" class="auth-resend-btn" id="auth-resend-btn" hidden>인증메일 다시 보내기</button>
-      <button type="button" class="auth-resend-btn" id="auth-goto-login-btn" hidden>로그인하기</button>
+      <button type="button" class="auth-resend-btn" id="auth-goto-login-btn" hidden data-i18n="authGotoLogin">로그인하기</button>
 
       <button type="submit" class="auth-submit-btn" id="auth-submit-btn">로그인</button>
     </form>
@@ -157,26 +177,26 @@
 <div class="auth-modal" id="profile-modal" hidden>
   <div class="auth-modal-backdrop" id="profile-modal-backdrop"></div>
   <div class="auth-modal-card" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
-    <button type="button" class="auth-modal-close" id="profile-modal-close" aria-label="닫기">×</button>
+    <button type="button" class="auth-modal-close" id="profile-modal-close" aria-label="닫기" data-i18n-aria-label="close">×</button>
 
     <div class="auth-modal-icon" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.5" r="3.5" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 20c1.4-4 4.5-6 7.5-6s6.1 2 7.5 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
     </div>
 
-    <h2 class="auth-modal-title" id="profile-modal-title">내 프로필</h2>
-    <p class="auth-modal-desc">몇 가지 정보를 더 알려주시면<br>더 편리하게 이용하실 수 있어요.</p>
+    <h2 class="auth-modal-title" id="profile-modal-title" data-i18n="profileModalTitle">내 프로필</h2>
+    <p class="auth-modal-desc" data-i18n="profileModalDesc">몇 가지 정보를 더 알려주시면<br>더 편리하게 이용하실 수 있어요.</p>
 
     <form class="auth-form" id="profile-form">
       <div class="auth-field">
-        <label for="profile-name">이름</label>
+        <label for="profile-name" data-i18n="profileNameLabel">이름</label>
         <div class="auth-input-wrap">
           <svg class="auth-input-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M5 19c1.2-3.4 4-5 7-5s5.8 1.6 7 5" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
-          <input type="text" id="profile-name" name="name" placeholder="이름">
+          <input type="text" id="profile-name" name="name" placeholder="이름" data-i18n-placeholder="profileNameLabel">
         </div>
       </div>
 
       <div class="auth-field">
-        <label for="profile-phone">휴대폰 번호</label>
+        <label for="profile-phone" data-i18n="profilePhoneLabel">휴대폰 번호</label>
         <div class="auth-input-wrap">
           <svg class="auth-input-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M10.5 17.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
           <input type="tel" id="profile-phone" name="phone" placeholder="010-0000-0000">
@@ -184,28 +204,28 @@
       </div>
 
       <div class="auth-field">
-        <label for="profile-gender">성별</label>
+        <label for="profile-gender" data-i18n="profileGenderLabel">성별</label>
         <div class="auth-input-wrap">
           <svg class="auth-input-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="14" r="5" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M14 10l5.5-5.5M19.5 4.5h-4M19.5 4.5v4" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <select id="profile-gender" name="gender">
-            <option value="">선택 안 함</option>
-            <option value="female">여성</option>
-            <option value="male">남성</option>
+            <option value="" data-i18n="profileGenderNone">선택 안 함</option>
+            <option value="female" data-i18n="profileGenderFemale">여성</option>
+            <option value="male" data-i18n="profileGenderMale">남성</option>
           </select>
         </div>
       </div>
 
       <div class="auth-field">
-        <label for="profile-age">나이</label>
+        <label for="profile-age" data-i18n="profileAgeLabel">나이</label>
         <div class="auth-input-wrap">
           <svg class="auth-input-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 9.5h16M8 3v3M16 3v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-          <input type="number" id="profile-age" name="age" placeholder="나이" min="1" max="120">
+          <input type="number" id="profile-age" name="age" placeholder="나이" min="1" max="120" data-i18n-placeholder="profileAgeLabel">
         </div>
       </div>
 
       <label class="auth-checkbox-field" id="profile-marketing-field">
         <input type="checkbox" id="profile-marketing-agree">
-        <span>이벤트 · 교육 · 신제품 안내 수신에 동의합니다.</span>
+        <span data-i18n="profileMarketingAgree">이벤트 · 교육 · 신제품 안내 수신에 동의합니다.</span>
       </label>
 
       <p class="auth-error" id="profile-error" hidden></p>
@@ -216,8 +236,8 @@
 </div>
 
 <script src="js/jquery-4.0.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-<script src="js/slider.js"></script>
+<script src="js/translations.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/header.js"></script>
 <script src="js/header-scroll.js"></script>
 <script src="js/scroll-top.js"></script>

@@ -20,9 +20,13 @@ window.EarPointLikes = (function () {
   }
 
   function renderCount(countEl, count) {
-    countEl.textContent = count > 0
-      ? '♥ ' + count + '명이 관심 있어요'
-      : '♡ 아직 관심 표시가 없어요';
+    if (count <= 0) {
+      countEl.textContent = window.t('likeCountNone');
+      return;
+    }
+    countEl.textContent = window.currentLanguage === 'en'
+      ? '♥ ' + count + (count === 1 ? ' person is interested' : ' people are interested')
+      : '♥ ' + count + '명이 관심 있어요';
   }
 
   function getCards(container) {
