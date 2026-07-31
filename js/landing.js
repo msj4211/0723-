@@ -3,19 +3,6 @@ window.Landing = (function () {
 
   function template() {
     return `
-      <section class="offer-section">
-        <div class="offer-card offer-card--product reveal">
-          <h3 data-i18n="offerProductTitle">이어테라피를 위한 제품</h3>
-          <p data-i18n="offerProductDesc">셀프케어와 전문 관리를 위한<br>이어테라피 제품을 확인해보세요</p>
-          <a href="#/products" class="offer-card-btn" data-i18n="offerProductBtn">상품 보러가기</a>
-        </div>
-        <div class="offer-card offer-card--seminar reveal">
-          <h3 data-i18n="offerSeminarTitle">이어테라피를 더 깊이 배우고 싶다면</h3>
-          <p data-i18n="offerSeminarDesc">현재 진행 중인 세미나와<br>교육 일정을 확인해보세요</p>
-          <a href="#/seminar" class="offer-card-btn" data-i18n="offerSeminarBtn">세미나 일정 보기</a>
-        </div>
-      </section>
-
       <section class="landing" aria-label="730 스킨이어테라피 소개" data-i18n-aria-label="landingAriaLabel">
         <div class="landing-block reveal">
           <h2 class="landing-title" data-i18n="landingIntroTitle">당신의 몸은<br>작은 신호를 보내고 있습니다.</h2>
@@ -28,6 +15,19 @@ window.Landing = (function () {
             몸의 균형을 이해하고<br>
             건강한 일상을 위한 셀프케어를 제안합니다.
           </p>
+        </div>
+      </section>
+
+      <section class="offer-section">
+        <div class="offer-card offer-card--product reveal">
+          <h3 data-i18n="offerProductTitle">이어테라피를 위한 제품</h3>
+          <p data-i18n="offerProductDesc">셀프케어와 전문 관리를 위한<br>이어테라피 제품을 확인해보세요</p>
+          <a href="#/products" class="offer-card-btn" data-i18n="offerProductBtn">상품 보러가기</a>
+        </div>
+        <div class="offer-card offer-card--seminar reveal">
+          <h3 data-i18n="offerSeminarTitle">이어테라피를 더 깊이 배우고 싶다면</h3>
+          <p data-i18n="offerSeminarDesc">현재 진행 중인 세미나와<br>교육 일정을 확인해보세요</p>
+          <a href="#/seminar" class="offer-card-btn" data-i18n="offerSeminarBtn">세미나 일정 보기</a>
         </div>
       </section>
     `;

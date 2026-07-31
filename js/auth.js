@@ -8,7 +8,6 @@
   var PENDING_SIGNUP_EMAIL_KEY = 'pendingSignupEmail';
 
   var loginBtn = document.getElementById('auth-login-btn');
-  var userBox = document.getElementById('auth-user');
   var userEmailEl = document.getElementById('auth-user-email');
   var logoutBtn = document.getElementById('auth-logout-btn');
   var profileBtn = document.getElementById('auth-profile-btn');
@@ -288,12 +287,21 @@
 
   // 세션은 있지만 이메일 인증이 끝나지 않은 사용자는 로그인 상태로 표시하지 않고,
   // 남아있는 세션을 즉시 정리해 로그인 버튼만 보이도록 한다.
+  // userEmailEl/profileBtn/logoutBtn은 모바일 화면에서 header.js가 각각을
+  // 개별적으로 헤더 밖(햄버거 메뉴)으로 옮겨 배치하므로, 로그인 상태 표시는
+  // 이 셋을 감싸는 userBox 하나가 아니라 각 요소에 직접 적용해야 한다.
+  function setLoggedInUiVisible(visible) {
+    userEmailEl.hidden = !visible;
+    profileBtn.hidden = !visible;
+    logoutBtn.hidden = !visible;
+  }
+
   function renderAuthState(session) {
     var user = session ? session.user : null;
 
     if (user && !isEmailConfirmed(user)) {
       loginBtn.hidden = false;
-      userBox.hidden = true;
+      setLoggedInUiVisible(false);
       userEmailEl.textContent = '';
       client.auth.signOut();
       return;
@@ -301,11 +309,11 @@
 
     if (user) {
       loginBtn.hidden = true;
-      userBox.hidden = false;
+      setLoggedInUiVisible(true);
       userEmailEl.textContent = user.email;
     } else {
       loginBtn.hidden = false;
-      userBox.hidden = true;
+      setLoggedInUiVisible(false);
       userEmailEl.textContent = '';
     }
   }

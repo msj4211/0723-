@@ -15,6 +15,29 @@ window.Pages = {
         '</a>';
     }).join('');
 
+    var rollingBannerPhrases = [
+      '오늘의 컨디션을 확인해 보세요',
+      '증상에 맞는 귀 혈자리를 찾아보세요',
+      '귀로 시작하는 가벼운 셀프케어',
+      '나에게 필요한 이어테라피를 만나보세요'
+    ];
+
+    // 두 그룹을 나란히 이어붙이고 트랙을 -50% 만큼 옮기면, 그룹1이 화면
+    // 밖으로 나가는 순간 그룹2가 정확히 그 자리를 채워서 이음새 없이
+    // 무한 반복되는 것처럼 보인다.
+    var rollingBannerGroupHtml = rollingBannerPhrases.map(function (phrase) {
+      return '<span class="rolling-banner-item">' + phrase + '</span>' +
+        '<span class="rolling-banner-dot" aria-hidden="true">●</span>';
+    }).join('');
+
+    var rollingBannerHtml =
+      '<div class="rolling-banner" aria-hidden="true">' +
+      '<div class="rolling-banner-track">' +
+      '<div class="rolling-banner-group">' + rollingBannerGroupHtml + '</div>' +
+      '<div class="rolling-banner-group">' + rollingBannerGroupHtml + '</div>' +
+      '</div>' +
+      '</div>';
+
     container.innerHTML = `
       <div class="home-page">
         <section class="hero">
@@ -38,6 +61,8 @@ window.Pages = {
             </div>
           </div>
         </section>
+
+        ${rollingBannerHtml}
 
         <section class="purpose-section">
           <div class="section-heading">

@@ -31,10 +31,10 @@
 
         <div class="auth-area" id="auth-area">
           <button type="button" class="auth-login-btn" id="auth-login-btn" data-i18n="login">로그인</button>
-          <div class="auth-user" id="auth-user" hidden>
-            <span class="auth-user-email" id="auth-user-email"></span>
-            <button type="button" class="auth-profile-btn" id="auth-profile-btn" data-i18n="profileBtn">내 프로필</button>
-            <button type="button" class="auth-logout-btn" id="auth-logout-btn" data-i18n="logout">로그아웃</button>
+          <div class="auth-user" id="auth-user">
+            <span class="auth-user-email" id="auth-user-email" hidden></span>
+            <button type="button" class="auth-profile-btn" id="auth-profile-btn" data-i18n="profileBtn" hidden>내 프로필</button>
+            <button type="button" class="auth-logout-btn" id="auth-logout-btn" data-i18n="logout" hidden>로그아웃</button>
           </div>
         </div>
 
@@ -51,6 +51,7 @@
             <circle cx="12" cy="12" r="4.2"></circle>
             <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle>
           </svg>
+          <span class="header-instagram-label" data-i18n="instagram">Instagram</span>
         </a>
 
         <div class="header-language-switcher" role="group" aria-label="언어 선택">
@@ -74,9 +75,15 @@
         <li><a href="#/products" data-route="products" data-i18n="navProducts">상품</a></li>
         <li><a href="#/seminar" data-route="seminar" data-i18n="navSeminar">세미나신청</a></li>
       </ul>
+
+      <!-- 모바일 화면에서만 header.js가 로그인/프로필/인스타그램/언어선택/로그아웃
+           요소를 이 안으로 옮겨 담는다(요소를 복제하지 않고 실제 DOM 노드를 이동). -->
+      <div class="mobile-account-section" id="mobile-account-section"></div>
     </nav>
   </div>
 </header>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
 
 <main id="app"></main>
 
