@@ -1,5 +1,5 @@
-window.Pages = {
-  home: function (container) {
+window.Pages = (function () {
+  function renderHome(container) {
     var purposeCards = [
       { key: 'purposeSleep', tone: 'lavender', href: '#/recommend/sleep' },
       { key: 'purposeCalm', tone: 'mint' },
@@ -113,9 +113,9 @@ window.Pages = {
         </div>
       </footer>
     `);
-  },
+  }
 
-  earCheck: function (container) {
+  function renderEarCheckEmbed(container) {
     container.innerHTML = `
       <div class="iframe-page">
         <iframe
@@ -174,69 +174,94 @@ window.Pages = {
       }
       hasLoadedOnce = true;
     });
-  },
+  }
 
-  earPoint: function (container) {
-    var lang = window.currentLanguage;
-
-    // id는 Firestore 문서 ID와 그대로 짝지어진다(js/ear-point-likes.js, earPoints 컬렉션).
-    // name/desc는 표시용 한국어, name_en/desc_en은 영어 버전이다.
-    var points = [
-      { id: 'ear', img: '귀.png', name: '귀 건강', desc: '귀 전체 혈액순환과 청력 관리를 돕는 이어포인트입니다.', name_en: 'Ear Health', desc_en: 'An ear point that supports overall ear circulation and hearing care.' },
-      { id: 'stomach', img: '위.png', name: '소화 · 위', desc: '소화 기능과 위 컨디션을 관리하는 이어포인트입니다.', name_en: 'Digestion · Stomach', desc_en: 'An ear point that helps manage digestive function and stomach condition.' },
-      { id: 'sleep', img: '충분한수면.PNG', name: '숙면', desc: '깊고 편안한 수면을 돕는 이어포인트입니다.', name_en: 'Restful Sleep', desc_en: 'An ear point that supports deep, comfortable sleep.' },
-      { id: 'immune', img: '면역력강화.PNG', name: '면역력 강화', desc: '몸의 면역 밸런스를 강화하는 이어포인트입니다.', name_en: 'Immune Support', desc_en: "An ear point that helps strengthen your body's immune balance." },
-      { id: 'knee', img: '무릎통증.PNG', name: '무릎 통증', desc: '무릎 통증 완화에 도움을 주는 이어포인트입니다.', name_en: 'Knee Pain', desc_en: 'An ear point that may help ease knee discomfort.' },
-      { id: 'hairloss', img: '탈모예방.PNG', name: '탈모 예방', desc: '두피와 모발 건강을 돕는 이어포인트입니다.', name_en: 'Hair Loss Prevention', desc_en: 'An ear point that supports scalp and hair health.' },
-      { id: 'growth', img: '아이들키성장.png', name: '아이들 키 성장', desc: '성장기 어린이의 건강한 성장을 돕는 이어포인트입니다.', name_en: "Children's Growth", desc_en: "An ear point that supports healthy growth during a child's growing years." }
-    ];
-
-    var cards = points.map(function (p) {
-      var name = lang === 'en' ? p.name_en : p.name;
-      var desc = lang === 'en' ? p.desc_en : p.desc;
-      return '<div class="point-card" data-point-id="' + p.id + '" data-point-name="' + p.name + '">' +
-        '<div class="point-media">' +
-        '<img src="images/' + p.img + '" alt="' + name + '">' +
-        '<button type="button" class="like-btn" aria-label="' + name + window.t('likeAriaLabelSuffix') + '" aria-pressed="false">♡</button>' +
-        '</div>' +
-        '<p class="point-name">' + name + '</p>' +
-        '<p class="like-count" aria-live="polite" data-i18n="likeCountLoading">' + window.t('likeCountLoading') + '</p>' +
-        '<p class="point-desc">' + desc + '</p>' +
-        '</div>';
-    }).join('');
-
+  // 이어포인트 이름/설명/이미지는 js/ear-points-data.js가 Supabase(RLS로
+  // 승인된 교육생만 조회 가능)에서 불러온다. 실제 ear_points 테이블에는
+  // id/name/description/image_url만 있어서(영문 이름·정렬순서·키워드 컬럼
+  // 없음), 여기서는 그 4개 필드만 그대로 그린다 — 언어를 영어로 바꿔도
+  // 이 DB 기반 이름/설명 자체는 바뀌지 않는다(사이트 UI 문구만 번역됨).
+  function renderEarPointList(container, queryString) {
     container.innerHTML =
       '<section class="page-section">' +
       '<div class="section-title"><h2 data-i18n="navEarPoints">' + window.t('navEarPoints') + '</h2></div>' +
-      '<div class="point-grid">' + cards + '</div>' +
+      '<div class="point-grid" id="ear-point-grid"><p class="products-loading">' + window.t('productsLoading') + '</p></div>' +
       '</section>';
 
-    if (window.EarPointLikes) window.EarPointLikes.init(container);
+    var grid = container.querySelector('#ear-point-grid');
+    var myToken = window.__routeToken;
 
-    // 좋아요 상태/개수는 그대로 두고, 이름·설명·대체 텍스트만 새 언어로 갱신한다.
-    // 라우트를 재방문할 때마다 이전 훅이 계속 쌓이지 않도록 매번 교체한다.
-    if (window.__earPointLanguageHook && window.i18nOnLanguageChange) {
-      var hookIdx = window.i18nOnLanguageChange.indexOf(window.__earPointLanguageHook);
-      if (hookIdx !== -1) window.i18nOnLanguageChange.splice(hookIdx, 1);
+    window.EarPointsRepo.load().then(function (points) {
+      if (myToken !== window.__routeToken) return;
+      renderCards(points);
+    });
+
+    function renderCards(points) {
+      if (!points || points.length === 0) {
+        grid.innerHTML = '<p class="point-grid-empty" data-i18n="earPointsEmpty">' + window.t('earPointsEmpty') + '</p>';
+        return;
+      }
+
+      var cards = points.map(function (p) {
+        var media = p.imageUrl
+          ? '<img src="' + p.imageUrl + '" alt="' + p.name + '">'
+          : '<div class="point-media-placeholder" aria-hidden="true"></div>';
+        return '<div class="point-card" data-point-id="' + p.id + '" data-point-name="' + p.name + '">' +
+          '<div class="point-media">' +
+          media +
+          '<button type="button" class="like-btn" aria-label="' + p.name + window.t('likeAriaLabelSuffix') + '" aria-pressed="false">♡</button>' +
+          '</div>' +
+          '<p class="point-name">' + p.name + '</p>' +
+          '<p class="like-count" aria-live="polite" data-i18n="likeCountLoading">' + window.t('likeCountLoading') + '</p>' +
+          '<p class="point-desc">' + p.desc + '</p>' +
+          '</div>';
+      }).join('');
+
+      grid.innerHTML = cards || '';
+
+      if (window.EarPointLikes) window.EarPointLikes.init(container);
+
+      // 이름/설명은 언어와 무관하게 고정이지만, 하트 버튼의 aria-label
+      // 접미사("관심 표시"/"interest")는 언어별로 다르므로 언어가 바뀌면
+      // 다시 붙여준다. 라우트를 재방문할 때마다 이전 훅이 계속 쌓이지
+      // 않도록 매번 교체한다.
+      if (window.__earPointLanguageHook && window.i18nOnLanguageChange) {
+        var hookIdx = window.i18nOnLanguageChange.indexOf(window.__earPointLanguageHook);
+        if (hookIdx !== -1) window.i18nOnLanguageChange.splice(hookIdx, 1);
+      }
+      window.__earPointLanguageHook = function () {
+        container.querySelectorAll('.point-card').forEach(function (card) {
+          var nameText = card.querySelector('.point-name').textContent;
+          card.querySelector('.like-btn').setAttribute('aria-label', nameText + window.t('likeAriaLabelSuffix'));
+        });
+      };
+      if (window.i18nOnLanguageChange) window.i18nOnLanguageChange.push(window.__earPointLanguageHook);
+
+      // 검색 결과에서 "point=knee" 같은 쿼리로 들어온 경우, 해당 카드로
+      // 스크롤하고 잠깐 강조 표시한다.
+      var params = new URLSearchParams(queryString || '');
+      var highlightId = params.get('point');
+      if (highlightId) {
+        var targetCard = container.querySelector('.point-card[data-point-id="' + CSS.escape(highlightId) + '"]');
+        if (targetCard) {
+          window.requestAnimationFrame(function () {
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetCard.classList.add('point-card--highlight');
+            window.setTimeout(function () {
+              targetCard.classList.remove('point-card--highlight');
+            }, 2000);
+          });
+        }
+      }
     }
-    window.__earPointLanguageHook = function () {
-      if (!container.isConnected) return;
-      var nextLang = window.currentLanguage;
-      container.querySelectorAll('.point-card').forEach(function (card) {
-        var p = points.filter(function (item) { return item.id === card.dataset.pointId; })[0];
-        if (!p) return;
-        var name = nextLang === 'en' ? p.name_en : p.name;
-        var desc = nextLang === 'en' ? p.desc_en : p.desc;
-        card.querySelector('.point-name').textContent = name;
-        card.querySelector('.point-desc').textContent = desc;
-        card.querySelector('.point-media img').setAttribute('alt', name);
-        card.querySelector('.like-btn').setAttribute('aria-label', name + window.t('likeAriaLabelSuffix'));
-      });
-    };
-    if (window.i18nOnLanguageChange) window.i18nOnLanguageChange.push(window.__earPointLanguageHook);
-  },
+  }
 
-  recommendSleep: function (container) {
+  // 신문/교감/내분비/뇌간 4개는 public.ear_points에 실제로 존재하는 행이
+  // 아니다(이번 작업 지침상 ear_points에 새 데이터를 추가하지 않으므로).
+  // 그래서 이 페이지는 Supabase를 거치지 않고, 원래대로 정적 텍스트를
+  // data-i18n으로 렌더링한다 — 이 페이지 자체는 여전히 승인된 교육생만
+  // 접근 가능하도록 checkEducationAccess()로 감싸져 있다(아래 return 참고).
+  function renderSleepDetail(container, queryString) {
     container.innerHTML = `
       <main class="sd-page">
         <article class="sd-detail-card">
@@ -370,9 +395,18 @@ window.Pages = {
         }
       });
     });
-  },
 
-  seminar: function (container) {
+    // 검색 결과에서 "point=shenmen" 같은 쿼리로 들어온 경우, 해당 탭을
+    // 자동으로 선택한다(기존 탭 클릭 로직을 그대로 재사용).
+    var sleepParams = new URLSearchParams(queryString || '');
+    var sleepHighlightId = sleepParams.get('point');
+    if (sleepHighlightId) {
+      var matchingTab = container.querySelector('.sd-point-tab[data-target="sd-point-' + CSS.escape(sleepHighlightId) + '"]');
+      if (matchingTab) matchingTab.click();
+    }
+  }
+
+  function renderSeminarEmbed(container) {
     container.innerHTML = `
       <section class="seminar-embed-page">
         <iframe
@@ -384,9 +418,9 @@ window.Pages = {
         ></iframe>
       </section>
     `;
-  },
+  }
 
-  products: function (container) {
+  function renderProductsList(container) {
     container.innerHTML =
       '<section class="page-section products-page">' +
       '<div class="section-title"><h2 data-i18n="navProducts">' + window.t('navProducts') + '</h2></div>' +
@@ -473,5 +507,378 @@ window.Pages = {
         }
         renderProducts(res.data);
       });
-  },
-};
+  }
+
+  // 통합 검색 결과 페이지. 검색어는 js/search-engine.js가 관리하는 색인을
+  // 그대로 쓰고, 여기서는 결과를 화면에 그리기만 한다. 검색어와 상품
+  // 데이터는 사용자가 제어할 수 있는 값이라 innerHTML 문자열 조합이 아니라
+  // DOM API(textContent)로만 채워서, 어떤 값이 와도 텍스트로만 표시되게 한다.
+  function renderSearchResults(container, queryString) {
+    var params = new URLSearchParams(queryString || '');
+    var query = (params.get('q') || '').trim();
+
+    container.innerHTML =
+      '<section class="page-section search-results-page">' +
+      '<div class="section-title"><h2 id="search-results-heading"></h2></div>' +
+      '<div id="search-results-body"></div>' +
+      '</section>';
+
+    var headingEl = container.querySelector('#search-results-heading');
+    var bodyEl = container.querySelector('#search-results-body');
+
+    if (!query) {
+      headingEl.textContent = window.t('searchNoResultsTitle');
+      renderEmptyState(bodyEl, '');
+      return;
+    }
+
+    var results = window.Search ? window.Search.search(query) : [];
+
+    var headingTemplate = window.t('searchResultHeading');
+    headingEl.textContent = headingTemplate
+      .replace('{query}', query)
+      .replace('{count}', String(results.length))
+      .replace('{resultWord}', results.length === 1 ? 'result' : 'results');
+
+    if (results.length === 0) {
+      renderEmptyState(bodyEl, query);
+      return;
+    }
+
+    renderResultList(bodyEl, results);
+
+    function renderResultList(root, list) {
+      root.innerHTML = '';
+      var grid = document.createElement('div');
+      grid.className = 'search-results-grid';
+
+      list.forEach(function (item) {
+        var card = document.createElement('article');
+        card.className = 'search-result-card';
+
+        var typeEl = document.createElement('p');
+        typeEl.className = 'search-result-type';
+        typeEl.textContent = item.typeLabel;
+        card.appendChild(typeEl);
+
+        var titleEl = document.createElement('h3');
+        titleEl.className = 'search-result-title';
+        titleEl.textContent = item.title;
+        card.appendChild(titleEl);
+
+        if (item.desc) {
+          var descEl = document.createElement('p');
+          descEl.className = 'search-result-desc';
+          descEl.textContent = item.desc;
+          card.appendChild(descEl);
+        }
+
+        if (item.keywords && item.keywords.length > 0) {
+          var symptomEl = document.createElement('p');
+          symptomEl.className = 'search-result-symptoms';
+          symptomEl.textContent = item.keywords.slice(0, 4).join(', ');
+          card.appendChild(symptomEl);
+        }
+
+        var btn = document.createElement('a');
+        btn.className = 'search-result-btn';
+        btn.href = item.route;
+        btn.textContent = window.t('searchDetailBtn');
+        card.appendChild(btn);
+
+        grid.appendChild(card);
+      });
+
+      root.appendChild(grid);
+    }
+
+    function renderEmptyState(root, q) {
+      root.innerHTML = '';
+      var wrap = document.createElement('div');
+      wrap.className = 'search-empty-state';
+
+      if (q) {
+        var title = document.createElement('p');
+        title.className = 'search-empty-title';
+        title.textContent = window.t('searchNoResultsTitle');
+        wrap.appendChild(title);
+      }
+
+      var desc = document.createElement('p');
+      desc.className = 'search-empty-desc';
+      desc.textContent = window.t('searchNoResultsDesc');
+      wrap.appendChild(desc);
+
+      var popularHeading = document.createElement('p');
+      popularHeading.className = 'search-panel-heading';
+      popularHeading.textContent = window.t('searchPopularHeading');
+      wrap.appendChild(popularHeading);
+
+      var list = document.createElement('div');
+      list.className = 'search-recent-list';
+      ['수면', '스트레스', '두통', '소화', '면역', '무릎'].forEach(function (term) {
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'search-recent-chip-label search-popular-term';
+        chip.textContent = term;
+        chip.addEventListener('click', function () {
+          window.Search.addRecent(term);
+          window.location.hash = '#/search?q=' + encodeURIComponent(term);
+        });
+        list.appendChild(chip);
+      });
+      wrap.appendChild(list);
+
+      root.appendChild(wrap);
+    }
+  }
+
+  // 로그인 + 승인된 교육생만 볼 수 있는 관심 이어포인트 목록. 접근 판정은
+  // checkEducationAccess()가 이미 끝낸 뒤 호출되므로, 여기서는 즐겨찾기
+  // 데이터 로딩/표시만 담당한다.
+  function renderFavoritesList(container, session) {
+    var client = window.supabaseClient;
+    var myToken = window.__routeToken;
+
+    container.innerHTML =
+      '<section class="page-section favorites-page">' +
+      '<div class="section-title"><h2 data-i18n="navFavorites">' + window.t('navFavorites') + '</h2></div>' +
+      '<div id="favorites-body"></div>' +
+      '</section>';
+
+    var bodyEl = container.querySelector('#favorites-body');
+
+    function renderState(className, titleKey, descKey, action) {
+      bodyEl.innerHTML = '';
+      var wrap = document.createElement('div');
+      wrap.className = 'favorites-state ' + className;
+
+      if (titleKey) {
+        var title = document.createElement('p');
+        title.className = 'favorites-state-title';
+        title.textContent = window.t(titleKey);
+        wrap.appendChild(title);
+      }
+
+      var desc = document.createElement('p');
+      desc.className = 'favorites-state-desc';
+      desc.textContent = window.t(descKey);
+      wrap.appendChild(desc);
+
+      if (action) wrap.appendChild(action);
+      bodyEl.appendChild(wrap);
+    }
+
+    function renderLoading() {
+      bodyEl.innerHTML = '';
+      var p = document.createElement('p');
+      p.className = 'favorites-loading';
+      p.textContent = window.t('favoritesLoadingText');
+      bodyEl.appendChild(p);
+    }
+
+    function renderError() {
+      renderState('favorites-state--error', null, 'favoritesErrorText', null);
+    }
+
+    function renderEmpty() {
+      var btn = document.createElement('a');
+      btn.href = '#/ear-point';
+      btn.className = 'favorites-state-btn';
+      btn.textContent = window.t('favoritesBrowseBtn');
+      renderState('favorites-state--empty', 'favoritesEmptyTitle', 'favoritesEmptyDesc', btn);
+    }
+
+    function renderList(items, userId) {
+      bodyEl.innerHTML = '<div class="point-grid" id="favorites-grid"></div>';
+      var grid = bodyEl.querySelector('#favorites-grid');
+
+      items.forEach(function (p) {
+        var name = p.name;
+        var desc = p.desc;
+
+        var card = document.createElement('div');
+        card.className = 'point-card';
+        card.dataset.pointId = p.id;
+
+        var media = document.createElement('div');
+        media.className = 'point-media';
+
+        if (p.imageUrl) {
+          var img = document.createElement('img');
+          img.src = p.imageUrl;
+          img.alt = name;
+          media.appendChild(img);
+        } else {
+          var placeholder = document.createElement('div');
+          placeholder.className = 'point-media-placeholder';
+          placeholder.setAttribute('aria-hidden', 'true');
+          media.appendChild(placeholder);
+        }
+
+        var removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'like-btn';
+        removeBtn.setAttribute('aria-pressed', 'true');
+        removeBtn.setAttribute('aria-label', name + ' ' + window.t('favoritesRemoveAriaLabel'));
+        removeBtn.textContent = '♥';
+        removeBtn.addEventListener('click', function () {
+          if (removeBtn.dataset.busy === 'true') return;
+          removeBtn.dataset.busy = 'true';
+          removeBtn.disabled = true;
+
+          client.from('user_favorites').delete().eq('user_id', userId).eq('ear_point_id', p.id).then(function (res) {
+            if (res.error) {
+              removeBtn.dataset.busy = 'false';
+              removeBtn.disabled = false;
+              return;
+            }
+            card.remove();
+            if (grid.children.length === 0) renderEmpty();
+          });
+        });
+        media.appendChild(removeBtn);
+
+        var nameEl = document.createElement('p');
+        nameEl.className = 'point-name';
+        nameEl.textContent = name;
+
+        var descEl = document.createElement('p');
+        descEl.className = 'point-desc';
+        descEl.textContent = desc;
+
+        card.appendChild(media);
+        card.appendChild(nameEl);
+        card.appendChild(descEl);
+        grid.appendChild(card);
+      });
+    }
+
+    if (!client) {
+      renderError();
+      return;
+    }
+
+    renderLoading();
+
+    Promise.all([
+      client.from('user_favorites').select('ear_point_id').eq('user_id', session.user.id),
+      window.EarPointsRepo.load()
+    ]).then(function (results) {
+      if (myToken !== window.__routeToken) return;
+      var favRes = results[0];
+      var allPoints = results[1];
+
+      if (favRes.error) {
+        renderError();
+        return;
+      }
+      var ids = favRes.data.map(function (row) { return row.ear_point_id; });
+      if (ids.length === 0) {
+        renderEmpty();
+        return;
+      }
+      var items = allPoints.filter(function (p) { return ids.indexOf(p.id) !== -1; });
+      renderList(items, session.user.id);
+    }).catch(function () {
+      if (myToken === window.__routeToken) renderError();
+    });
+  }
+
+  // 마이페이지: 승인된 교육생의 기본 정보 요약 + 관심 혈자리 바로가기.
+  // 세미나 신청 내역 확인은 실제 연동된 데이터가 없어 준비 중 안내만 표시한다.
+  function renderMyPage(container, session, profile) {
+    var lang = window.currentLanguage;
+
+    function escapeText(str) {
+      var div = document.createElement('div');
+      div.textContent = str == null || str === '' ? '-' : String(str);
+      return div.innerHTML;
+    }
+
+    var genderLabelKey = profile.gender === 'female' ? 'profileGenderFemale'
+      : profile.gender === 'male' ? 'profileGenderMale'
+      : 'profileGenderNone';
+
+    var approvedSinceHtml = '';
+    if (profile.approved_at) {
+      var approvedDate = new Date(profile.approved_at);
+      var formatted = isNaN(approvedDate.getTime())
+        ? ''
+        : approvedDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'ko-KR');
+      if (formatted) {
+        approvedSinceHtml = '<p class="mypage-approved-since">' + window.t('mypageApprovedSince').replace('{date}', formatted) + '</p>';
+      }
+    }
+
+    container.innerHTML =
+      '<section class="page-section mypage-page">' +
+      '<div class="section-title"><h2 data-i18n="mypageTitle">' + window.t('mypageTitle') + '</h2></div>' +
+      '<div class="mypage-card">' +
+      '<dl class="mypage-info-list">' +
+      '<div><dt data-i18n="profileNameLabel">' + window.t('profileNameLabel') + '</dt><dd>' + escapeText(profile.name) + '</dd></div>' +
+      '<div><dt data-i18n="profilePhoneLabel">' + window.t('profilePhoneLabel') + '</dt><dd>' + escapeText(profile.phone) + '</dd></div>' +
+      '<div><dt data-i18n="profileGenderLabel">' + window.t('profileGenderLabel') + '</dt><dd data-i18n="' + genderLabelKey + '">' + window.t(genderLabelKey) + '</dd></div>' +
+      '<div><dt data-i18n="profileAgeLabel">' + window.t('profileAgeLabel') + '</dt><dd>' + escapeText(profile.age) + '</dd></div>' +
+      '</dl>' +
+      approvedSinceHtml +
+      '<div class="mypage-actions">' +
+      '<button type="button" class="mypage-edit-btn" id="mypage-edit-btn" data-i18n="mypageEditProfileBtn">' + window.t('mypageEditProfileBtn') + '</button>' +
+      '<a class="mypage-favorites-link" href="#/favorites" data-i18n="mypageFavoritesLink">' + window.t('mypageFavoritesLink') + '</a>' +
+      '</div>' +
+      '<p class="mypage-seminar-note" data-i18n="mypageSeminarNote">' + window.t('mypageSeminarNote') + '</p>' +
+      '</div>' +
+      '</section>';
+
+    var editBtn = container.querySelector('#mypage-edit-btn');
+    if (editBtn) {
+      editBtn.addEventListener('click', function () {
+        // 기존 헤더의 "내 프로필" 버튼과 완전히 같은 흐름(모달 열기)을
+        // 그대로 재사용해서, 프로필 수정 로직을 두 곳에 따로 두지 않는다.
+        var headerProfileBtn = document.getElementById('auth-profile-btn');
+        if (headerProfileBtn) headerProfileBtn.click();
+      });
+    }
+  }
+
+  return {
+    home: renderHome,
+
+    // 이어밸런스 체크의 질문 응답과 일반적인 결과 안내는 비로그인 사용자도
+    // 이용할 수 있어야 하므로 checkEducationAccess()로 감싸지 않는다.
+    // (구체적인 이어포인트 이름/혈자리 위치 등 교육생 전용 상세 정보는
+    // 이 페이지가 불러오는 외부 사이트 자체의 콘텐츠라, 그 부분의 공개
+    // 범위 조정은 이 저장소 밖의 별도 작업이 필요하다 — 아래 보고 참고.)
+    earCheck: renderEarCheckEmbed,
+
+    earPoint: function (container, queryString) {
+      window.AccessControl.checkEducationAccess(container, function (c) {
+        renderEarPointList(c, queryString);
+      });
+    },
+
+    seminar: renderSeminarEmbed,
+
+    products: renderProductsList,
+
+    recommendSleep: function (container, queryString) {
+      window.AccessControl.checkEducationAccess(container, function (c) {
+        renderSleepDetail(c, queryString);
+      });
+    },
+
+    search: renderSearchResults,
+
+    favorites: function (container) {
+      window.AccessControl.checkEducationAccess(container, function (c, session) {
+        renderFavoritesList(c, session);
+      });
+    },
+
+    mypage: function (container) {
+      window.AccessControl.checkEducationAccess(container, function (c, session, profile) {
+        renderMyPage(c, session, profile);
+      });
+    }
+  };
+})();

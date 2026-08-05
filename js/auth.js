@@ -11,6 +11,7 @@
   var userEmailEl = document.getElementById('auth-user-email');
   var logoutBtn = document.getElementById('auth-logout-btn');
   var profileBtn = document.getElementById('auth-profile-btn');
+  var favoritesLink = document.getElementById('auth-favorites-link');
 
   var modal = document.getElementById('auth-modal');
   var modalBackdrop = document.getElementById('auth-modal-backdrop');
@@ -135,6 +136,20 @@
     noticeEl.innerHTML = window.t('authConfirmationComplete');
     noticeEl.hidden = false;
     gotoLoginBtn.hidden = false;
+  }
+
+  // 이메일 인증 없이 즉시 세션이 생기는 가입 흐름(개발/테스트 환경 등)에서,
+  // 가입 직후 곧바로 보호된 콘텐츠를 보여주지 않고 "교육생 확인 후 이용
+  // 가능"이라는 별도 안내를 모달에 남겨둔다. 닫기는 기존 X 버튼으로 한다.
+  function showSignupPendingNotice() {
+    errorEl.hidden = true;
+    clearResendCooldown();
+    resendBtn.hidden = true;
+    gotoLoginBtn.hidden = true;
+    noticeEl.innerHTML =
+      '<strong>' + window.t('authSignupPendingTitle') + '</strong><br>' +
+      String(window.t('authSignupPendingBody')).replace(/\n/g, '<br>');
+    noticeEl.hidden = false;
   }
 
   // 로컬에 저장된 가입 대기 이메일이 있으면, 현재 세션 기준으로 인증 완료
@@ -287,12 +302,15 @@
 
   // 세션은 있지만 이메일 인증이 끝나지 않은 사용자는 로그인 상태로 표시하지 않고,
   // 남아있는 세션을 즉시 정리해 로그인 버튼만 보이도록 한다.
-  // userEmailEl/profileBtn/logoutBtn은 모바일 화면에서 header.js가 각각을
-  // 개별적으로 헤더 밖(햄버거 메뉴)으로 옮겨 배치하므로, 로그인 상태 표시는
-  // 이 셋을 감싸는 userBox 하나가 아니라 각 요소에 직접 적용해야 한다.
+  // userEmailEl/logoutBtn은 모바일 화면에서 header.js가 각각을 개별적으로
+  // 헤더 밖(햄버거 메뉴)으로 옮겨 배치하므로, 로그인 상태 표시는 이들을
+  // 감싸는 userBox 하나가 아니라 각 요소에 직접 적용해야 한다.
+  // profileBtn/favoritesLink는 이제 메인 메뉴의 "마이페이지"/"관심 혈자리"
+  // 항목(승인된 교육생에게만 표시, js/header.js + js/access-control.js)이
+  // 대신하므로 헤더에는 항상 숨겨두고, 마이페이지의 "프로필 수정" 버튼이
+  // profileBtn의 클릭 이벤트만 그대로 재사용한다.
   function setLoggedInUiVisible(visible) {
     userEmailEl.hidden = !visible;
-    profileBtn.hidden = !visible;
     logoutBtn.hidden = !visible;
   }
 
@@ -449,6 +467,9 @@
       if (mode === 'login') {
         clearPendingSignupEmail();
         closeModal();
+        // 실제 승인 상태 확인은 이동한 라우트의 checkEducationAccess()가
+        // 다시 하므로, 여기서는 승인 상태에 맞는 목적지로 보내기만 한다.
+        if (window.AccessControl) window.AccessControl.redirectAfterLogin(res.data.session.user.id);
         return;
       }
 
@@ -457,7 +478,9 @@
       if (res.data.session) {
         saveProfileNow(res.data.session.user.id, profileData);
         clearPendingSignupEmail();
-        closeModal();
+        // 가입 직후에도 교육생 확인 전까지는 보호된 콘텐츠를 보여주지
+        // 않는다 — 모달을 닫지 않고 안내만 표시한다.
+        showSignupPendingNotice();
       } else {
         stashPendingProfile(profileData);
         lastSignupEmail = email;

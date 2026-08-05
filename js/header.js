@@ -1,19 +1,6 @@
 (function () {
-  var searchArea = document.querySelector('.search-area');
-  var searchInput = document.querySelector('.search-box');
-
-  function goToSearchPage() {
-    window.location.hash = '#/ear-check';
-  }
-
-  searchArea.addEventListener('click', goToSearchPage);
-  searchInput.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      goToSearchPage();
-    }
-  });
-
+  // 검색창 자체의 동작(입력·제출·자동완성)은 js/search-ui.js가 맡는다.
+  // 여기서는 헤더의 나머지 요소(햄버거 드로어, 모바일 레이아웃 재배치)만 다룬다.
   var hamburgerBtn = document.querySelector('.hamburger-btn');
   var mainNav = document.querySelector('.main-nav');
   var overlay = document.getElementById('mobile-nav-overlay');
@@ -25,6 +12,9 @@
     hamburgerBtn.setAttribute('aria-expanded', 'true');
     hamburgerBtn.setAttribute('aria-label', window.t ? window.t('hamburgerClose') : '메뉴 닫기');
     document.body.classList.add('no-scroll');
+    // 검색 전체화면이 열려 있는 상태에서 메뉴를 열면 두 오버레이가 겹치므로
+    // 먼저 닫아준다.
+    if (window.SearchUI) window.SearchUI.closeMobileSearch();
   }
 
   function closeMenu() {
@@ -65,13 +55,14 @@
   var authLoginBtn = document.getElementById('auth-login-btn');
   var authUserEmail = document.getElementById('auth-user-email');
   var authProfileBtn = document.getElementById('auth-profile-btn');
+  var authFavoritesLink = document.getElementById('auth-favorites-link');
   var authLogoutBtn = document.getElementById('auth-logout-btn');
   var instagramLink = document.querySelector('.header-instagram-link');
   var languageSwitcher = document.querySelector('.header-language-switcher');
 
-  // 모바일 드로어 안에서 요구되는 순서: 이메일/로그인 → 내 프로필 → 인스타그램
-  // → 언어 선택 → (간격) → 로그아웃.
-  var relocatable = [authLoginBtn, authUserEmail, authProfileBtn, instagramLink, languageSwitcher, authLogoutBtn];
+  // 모바일 드로어 안에서 요구되는 순서: 이메일/로그인 → 내 프로필 → 관심 이어포인트
+  // → 인스타그램 → 언어 선택 → (간격) → 로그아웃.
+  var relocatable = [authLoginBtn, authUserEmail, authProfileBtn, authFavoritesLink, instagramLink, languageSwitcher, authLogoutBtn];
 
   // 데스크톱 상의 원래 위치(부모 + 다음 형제)를 페이지 로드 시 딱 한 번만
   // 기록해둔다. 이후 데스크톱으로 되돌아갈 때 이 값을 그대로 써서 복원한다.
@@ -98,28 +89,52 @@
     isMobileLayout = false;
   }
 
-  // 이어밸런스체크/세미나신청은 모바일 드로어에서만 가독성을 위해 공백이
-  // 들어간 문구로 표시한다(데스크톱 헤더 문구·링크·라우팅은 그대로 유지).
-  // 영어 번역은 두 화면에서 동일하므로 한국어일 때만 손댄다.
+  // 이어밸런스체크는 모바일 드로어에서만 가독성을 위해 공백이 들어간
+  // 문구로 표시한다(데스크톱 헤더 문구·링크·라우팅은 그대로 유지). 영어
+  // 번역은 두 화면에서 동일하므로 한국어일 때만 손댄다.
+  // data-route가 아니라 data-i18n 키로 찾는다 — 승인 상태에 따라 같은
+  // 라우트(seminar 등)를 가리키는 메뉴 항목이 여러 개 있을 수 있어서,
+  // 라우트 하나로는 어떤 항목을 바꿔야 할지 구분할 수 없다.
   var mobileNavLabelKo = {
-    'ear-check': '이어밸런스 체크',
-    'seminar': '세미나 신청'
+    navEarCheck: '이어밸런스 체크'
   };
 
   function applyMobileNavLabels() {
     if (window.currentLanguage && window.currentLanguage !== 'ko') return;
 
-    document.querySelectorAll('.main-nav > ul a[data-route]').forEach(function (link) {
-      var mobileLabel = mobileNavLabelKo[link.dataset.route];
+    document.querySelectorAll('.main-nav > ul [data-i18n]').forEach(function (link) {
+      var mobileLabel = mobileNavLabelKo[link.dataset.i18n];
       if (!mobileLabel) return;
 
       if (isMobileLayout) {
         link.textContent = mobileLabel;
-      } else if (link.dataset.i18n) {
+      } else {
         link.textContent = window.t(link.dataset.i18n);
       }
     });
   }
+
+  // ===== 로그인/승인 상태별 메뉴 노출 =====
+  // 각 메뉴 항목의 data-access-state(공백으로 구분된 상태 목록)에 현재
+  // 상태가 포함될 때만 보여준다. 상태가 아직 확인되지 않은 최초 로드
+  // 구간에는 모든 항목이 HTML상 hidden으로 시작해, 잘못된 메뉴가 잠깐
+  // 보이는 현상(깜빡임)을 막는다.
+  function applyAccessStateToNav(state) {
+    document.querySelectorAll('[data-access-state]').forEach(function (el) {
+      var allowedStates = el.dataset.accessState.split(/\s+/);
+      el.hidden = allowedStates.indexOf(state) === -1;
+    });
+  }
+
+  // header.js는 access-control.js보다 먼저 로드되는 스크립트라(둘 다 동기
+  // 실행되는 일반 <script>), 이 시점에는 아직 window.AccessControl이 없다.
+  // DOMContentLoaded는 모든 <script>가 실행된 뒤에 발생하므로, 그 시점에
+  // 구독해야 실제로 등록된다.
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.AccessControl) {
+      window.AccessControl.onStateChange(applyAccessStateToNav);
+    }
+  });
 
   function applyLayoutForViewport(isMobile) {
     if (isMobile && !isMobileLayout) {
@@ -152,4 +167,8 @@
   if (window.i18nOnLanguageChange) {
     window.i18nOnLanguageChange.push(applyMobileNavLabels);
   }
+
+  // js/search-ui.js가 모바일 검색을 열 때 나비게이션 드로어를 닫을 수 있도록
+  // 공개 API로 노출한다.
+  window.HeaderNav = { openMenu: openMenu, closeMenu: closeMenu };
 })();

@@ -20,13 +20,27 @@
 
       <div class="header-top-right">
         <div class="search-area" role="search">
-          <button type="button" class="search-btn" aria-label="이어밸런스체크 페이지로 이동" data-i18n-aria-label="searchBtnAriaLabel">
+          <button type="button" class="search-btn" id="header-search-btn" aria-label="검색 실행" data-i18n-aria-label="searchBtnAriaLabel">
             <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"></circle>
               <line x1="16.65" y1="16.65" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
             </svg>
           </button>
-          <input type="text" class="search-box" placeholder="검색" aria-label="검색어 입력, Enter 키를 누르면 이어밸런스체크 페이지로 이동합니다" data-i18n-placeholder="searchPlaceholder" data-i18n-aria-label="searchInputAriaLabel">
+          <input
+            type="text"
+            class="search-box"
+            id="header-search-input"
+            placeholder="증상, 혈자리, 상품 검색"
+            aria-label="검색어 입력. 이어포인트, 증상, 상품, 세미나를 검색할 수 있습니다"
+            data-i18n-placeholder="searchPlaceholder"
+            data-i18n-aria-label="searchInputAriaLabel"
+            autocomplete="off"
+            role="combobox"
+            aria-expanded="false"
+            aria-controls="header-search-suggestions"
+            aria-autocomplete="list"
+          >
+          <div class="search-suggestions" id="header-search-suggestions" role="listbox" hidden></div>
         </div>
 
         <div class="auth-area" id="auth-area">
@@ -34,6 +48,7 @@
           <div class="auth-user" id="auth-user">
             <span class="auth-user-email" id="auth-user-email" hidden></span>
             <button type="button" class="auth-profile-btn" id="auth-profile-btn" data-i18n="profileBtn" hidden>내 프로필</button>
+            <a href="#/favorites" class="auth-profile-btn" id="auth-favorites-link" data-i18n="navFavorites" hidden>관심 이어포인트</a>
             <button type="button" class="auth-logout-btn" id="auth-logout-btn" data-i18n="logout" hidden>로그아웃</button>
           </div>
         </div>
@@ -69,11 +84,23 @@
     </div>
 
     <nav class="main-nav" id="main-nav" aria-label="주요 메뉴">
+      <!-- 메뉴 항목은 로그인/승인 상태에 따라 달라진다. 각 항목의
+           data-access-state에 나열된 상태일 때만 보이도록 js/header.js가
+           토글하며, 상태가 확인되기 전까지는 전부 hidden으로 시작해
+           잘못된 메뉴가 잠깐 보이는 현상을 막는다. -->
       <ul>
-        <li><a href="#/ear-check" data-route="ear-check" data-i18n="navEarCheck">이어밸런스체크</a></li>
-        <li><a href="#/ear-point" data-route="ear-point" data-i18n="navEarPoints">이어포인트</a></li>
-        <li><a href="#/products" data-route="products" data-i18n="navProducts">상품</a></li>
-        <li><a href="#/seminar" data-route="seminar" data-i18n="navSeminar">세미나신청</a></li>
+        <li><a href="#/" data-route="home" data-i18n="navHome" data-access-state="loggedOut pending suspended" hidden>홈</a></li>
+        <li><a href="#/" data-route="home" data-i18n="navEduInfo" data-access-state="loggedOut pending suspended" hidden>교육 안내</a></li>
+        <li><a href="#/seminar" data-route="seminar" data-i18n="navSeminarSignupState" data-access-state="loggedOut pending" hidden>세미나 신청</a></li>
+        <li><a href="#/products" data-route="products" data-i18n="navProducts" data-access-state="loggedOut pending" hidden>상품</a></li>
+        <li><span class="nav-pending-pill" data-i18n="navPendingPill" data-access-state="pending" hidden>승인 대기</span></li>
+        <li><a href="https://www.instagram.com/730_skin/" target="_blank" rel="noopener noreferrer" data-i18n="navContact" data-access-state="suspended" hidden>문의</a></li>
+
+        <li><a href="#/ear-check" data-route="ear-check" data-i18n="navEarCheck" data-access-state="approved" hidden>이어밸런스체크</a></li>
+        <li><a href="#/ear-point" data-route="ear-point" data-i18n="navEarPoints" data-access-state="approved" hidden>이어포인트</a></li>
+        <li><a href="#/favorites" data-route="favorites" data-i18n="navFavoritesNav" data-access-state="approved" hidden>관심 혈자리</a></li>
+        <li><a href="#/seminar" data-route="seminar" data-i18n="navSeminarShort" data-access-state="approved" hidden>세미나</a></li>
+        <li><a href="#/mypage" data-route="mypage" data-i18n="navMyPage" data-access-state="approved" hidden>마이페이지</a></li>
       </ul>
 
       <!-- 모바일 화면에서만 header.js가 로그인/프로필/인스타그램/언어선택/로그아웃
@@ -84,6 +111,38 @@
 </header>
 
 <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+
+<div class="mobile-search-overlay" id="mobile-search-overlay" hidden>
+  <div class="mobile-search-top">
+    <button type="button" class="mobile-search-close" id="mobile-search-close" aria-label="검색 닫기" data-i18n-aria-label="searchMobileClose">
+      <span aria-hidden="true">‹</span>
+    </button>
+    <div class="mobile-search-input-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"></circle>
+        <line x1="16.65" y1="16.65" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+      </svg>
+      <input
+        type="text"
+        class="mobile-search-input"
+        id="mobile-search-input"
+        placeholder="증상, 혈자리, 상품 검색"
+        aria-label="검색어 입력. 이어포인트, 증상, 상품, 세미나를 검색할 수 있습니다"
+        data-i18n-placeholder="searchPlaceholder"
+        data-i18n-aria-label="searchInputAriaLabel"
+        autocomplete="off"
+        role="combobox"
+        aria-expanded="false"
+        aria-controls="mobile-search-suggestions"
+        aria-autocomplete="list"
+      >
+    </div>
+  </div>
+  <div class="mobile-search-body">
+    <div class="search-suggestions mobile-search-suggestions" id="mobile-search-suggestions" role="listbox" hidden></div>
+    <div class="mobile-search-panels" id="mobile-search-panels"></div>
+  </div>
+</div>
 
 <main id="app"></main>
 
@@ -245,6 +304,7 @@
 <script src="js/jquery-4.0.0.min.js"></script>
 <script src="js/translations.js"></script>
 <script src="js/i18n.js"></script>
+<script src="js/search-data.js"></script>
 <script src="js/header.js"></script>
 <script src="js/header-scroll.js"></script>
 <script src="js/scroll-top.js"></script>
@@ -254,6 +314,10 @@
 <script src="js/firebase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/supabase-config.js"></script>
+<script src="js/access-control.js"></script>
+<script src="js/ear-points-data.js"></script>
+<script src="js/search-engine.js"></script>
+<script src="js/search-ui.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/ear-point-likes.js"></script>
 <script src="js/landing.js"></script>

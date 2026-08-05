@@ -19,14 +19,11 @@ window.EarPointLikes = (function () {
     heartBtn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
   }
 
-  function renderCount(countEl, count) {
-    if (count <= 0) {
-      countEl.textContent = window.t('likeCountNone');
-      return;
-    }
-    countEl.textContent = window.currentLanguage === 'en'
-      ? '♥ ' + count + (count === 1 ? ' person is interested' : ' people are interested')
-      : '♥ ' + count + '명이 관심 있어요';
+  // user_favorites의 RLS가 본인 데이터만 조회하도록 바뀌면서, 다른 교육생이
+  // 몇 명 관심 표시했는지는 더 이상 알 수 없다. 그래서 전체 집계 숫자
+  // 대신 "내가 저장했는지" 여부만 보여준다.
+  function renderCount(countEl, savedByMe) {
+    countEl.textContent = window.t(savedByMe ? 'likeCountMineSaved' : 'likeCountMineEmpty');
   }
 
   function getCards(container) {
@@ -42,18 +39,16 @@ window.EarPointLikes = (function () {
   }
 
   function renderAll(cards, favorites, myUserId) {
-    var counts = {};
     var likedByMe = {};
 
     favorites.forEach(function (row) {
-      counts[row.ear_point_id] = (counts[row.ear_point_id] || 0) + 1;
       if (myUserId && row.user_id === myUserId) {
         likedByMe[row.ear_point_id] = true;
       }
     });
 
     Object.keys(cards).forEach(function (id) {
-      renderCount(cards[id].countEl, counts[id] || 0);
+      renderCount(cards[id].countEl, !!likedByMe[id]);
       renderPressed(cards[id].heartBtn, !!likedByMe[id]);
     });
   }
@@ -92,8 +87,7 @@ window.EarPointLikes = (function () {
     void heartBtn.offsetWidth;
     heartBtn.classList.add('is-animating');
 
-    var currentCount = parseInt((card.countEl.textContent.match(/\d+/) || ['0'])[0], 10) || 0;
-    renderCount(card.countEl, currentCount + (nowLiked ? 1 : -1));
+    renderCount(card.countEl, nowLiked);
 
     var request = nowLiked
       ? client.from('user_favorites').insert({ user_id: user.id, ear_point_id: id })
@@ -104,7 +98,7 @@ window.EarPointLikes = (function () {
       if (res.error) {
         console.error('[EarPointLikes] "' + id + '" 좋아요 반영에 실패했습니다:', res.error);
         renderPressed(heartBtn, wasLiked);
-        renderCount(card.countEl, currentCount);
+        renderCount(card.countEl, wasLiked);
       }
     });
   }
