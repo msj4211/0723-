@@ -112,23 +112,16 @@
     }
   }
 
-  // auth.js가 로그인 성공 직후 호출한다. 실제 승인 상태는 대상 라우트의
-  // checkEducationAccess()가 다시 확인해서 알맞은 화면을 그려준다 — 여기서는
-  // "승인됨이면 원래 페이지(or 이어포인트)로, 그 외에는 이어포인트 라우트로"
-  // 이동만 시켜주면 된다(그 라우트가 pending/suspended 안내를 대신 그려줌).
+  // auth.js가 로그인 성공 직후 호출한다. 로그인 성공 시에는 항상 메인
+  // 화면(#/)으로 이동한다 — 로그인 전에 보호된 페이지에 접근하려다 로그인
+  // 화면을 보게 된 경우에도 그 페이지로 복귀시키지 않는다. 승인 상태 확인은
+  // 이후 실제로 방문하는 보호된 라우트의 checkEducationAccess()가 그때
+  // 다시 한다(메인 화면 자체는 접근 제한이 없다). popRedirect()는 다음
+  // 로그인 시도에 낡은 값이 남아있지 않도록 sessionStorage만 비우는
+  // 용도로만 호출하고, 반환값(원래 가려던 페이지)은 더 쓰지 않는다.
   function redirectAfterLogin(userId) {
-    return fetchOwnProfile(userId).then(function (res) {
-      var storedHash = popRedirect();
-      var approved = !res.error && res.data && res.data.education_status === 'approved';
-
-      if (approved && storedHash && /^#\//.test(storedHash)) {
-        window.location.hash = storedHash;
-        return;
-      }
-      window.location.hash = '#/ear-point';
-    }).catch(function () {
-      window.location.hash = '#/ear-point';
-    });
+    popRedirect();
+    window.location.hash = '#/';
   }
 
   // ── 화면 렌더링 ──

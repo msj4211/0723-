@@ -1,4 +1,42 @@
 window.Pages = (function () {
+  // ── 공용 XSS 방어 헬퍼 ──────────────────────────────────────────
+  // DB(ear_points/ear_point_details/ear_point_related_points)에서 온 값은
+  // 원장님이 Supabase 대시보드/SQL Editor에서 직접 입력한다 — 일반 회원은
+  // RLS상 이 테이블들에 쓰기 권한이 전혀 없지만, 그래도 텍스트/속성값에
+  // '<'/'"' 등이 실수로 섞여 들어가도 HTML로 해석되지 않도록 innerHTML에
+  // 넣기 전에 항상 이 함수를 거친다. 회원이 직접 입력하는 개인 메모는
+  // 이 함수를 쓰지 않고 계속 textContent로만 표시한다(초기화 상태 유지).
+  function escapeHtml(value) {
+    if (value === null || value === undefined) return '';
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // href/src에 쓰기 전 스킴을 검증한다. http/https만 허용하고
+  // javascript:/data:/vbscript:/file: 등은 전부 차단한다. images/귀.png
+  // 같은 상대 경로도 계속 지원해야 하므로, 브라우저의 실제 URL 파서(new
+  // URL)로 현재 페이지를 기준 삼아 해석한 뒤 최종 스킴만 확인한다 —
+  // "java\tscript:"처럼 문자를 끼워 넣는 흔한 우회도 URL 파서 자체가
+  // 공백류 문자를 제거하고 해석하므로 정규식 방식보다 안전하다. 유효하면
+  // 원래 문자열(상대 경로 형태 그대로)을 돌려주고, 아니면 null을 돌려준다.
+  function safeUrl(value) {
+    if (!value) return null;
+    var trimmed = String(value).trim();
+    if (!trimmed) return null;
+    var parsed;
+    try {
+      parsed = new URL(trimmed, window.location.href);
+    } catch (e) {
+      return null;
+    }
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+    return trimmed;
+  }
+
   function renderHome(container) {
     var purposeCards = [
       { key: 'purposeSleep', tone: 'lavender', href: '#/recommend/sleep' },
@@ -116,11 +154,21 @@ window.Pages = (function () {
   }
 
   function renderEarCheckEmbed(container) {
+    // 로컬 개발 환경(localhost/127.0.0.1)에서는 /Users/suji/730skin-check를
+    // 직접 띄운 8001번 서버를 iframe으로 쓰고, 그 외(실제 배포 도메인)에서는
+    // 원래의 GitHub Pages 주소를 그대로 쓴다. 수동 전환 없이
+    // window.location.hostname만으로 자동 판별한다 — 이 판별은 iframe을
+    // 처음 만들 때 한 번만 이뤄지고, 언어를 바꿀 때는 다시 실행되지 않는다
+    // (아래 sendLanguage()는 이미 만들어진 iframe에 postMessage만 보낸다).
+    var isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    var EAR_CHECK_ORIGIN = isLocalDev ? 'http://localhost:8001' : 'https://msj4211.github.io';
+    var EAR_CHECK_SRC = isLocalDev ? 'http://localhost:8001/' : 'https://msj4211.github.io/730skin-check/';
+
     container.innerHTML = `
       <div class="iframe-page">
         <iframe
           class="embed-frame"
-          src="https://msj4211.github.io/730skin-check/"
+          src="${EAR_CHECK_SRC}"
           title="이어밸런스체크 결과지"
           loading="lazy"></iframe>
       </div>
@@ -128,10 +176,31 @@ window.Pages = (function () {
 
     var frame = container.querySelector('.embed-frame');
     var hasLoadedOnce = false;
+    var myToken = window.__routeToken;
+    function isStale() { return myToken !== window.__routeToken; }
 
-    // 이전 라우트 진입 때 등록해둔 리스너가 남아있으면 정리한다(재진입 시 중복 방지).
+    // 이전 라우트 진입 때 등록해둔 리스너/훅이 남아있으면 정리한다(재진입 시 중복 방지).
     if (window.__earCheckMessageHandler) {
       window.removeEventListener('message', window.__earCheckMessageHandler);
+      window.__earCheckMessageHandler = null;
+    }
+    if (window.__earCheckLanguageHook && window.i18nOnLanguageChange) {
+      var prevHookIdx = window.i18nOnLanguageChange.indexOf(window.__earCheckLanguageHook);
+      if (prevHookIdx !== -1) window.i18nOnLanguageChange.splice(prevHookIdx, 1);
+      window.__earCheckLanguageHook = null;
+    }
+
+    // 메인 사이트 헤더의 한국어/EN 버튼으로 정해진 현재 언어를 iframe에
+    // 그대로 전달한다. targetOrigin을 730skin-check의 실제 배포 주소로
+    // 고정해(별표 사용 안 함) 다른 origin으로는 이 메시지가 새어나가지
+    // 않게 한다.
+    function sendLanguage() {
+      if (isStale() || !frame.contentWindow) return;
+      frame.contentWindow.postMessage({
+        source: '730-main-site',
+        type: 'language-change',
+        language: window.currentLanguage
+      }, EAR_CHECK_ORIGIN);
     }
 
     // 체크리스트 → 결과지로 iframe 내부에서 페이지가 바뀌면 콘텐츠 높이도 크게
@@ -139,17 +208,59 @@ window.Pages = (function () {
     // 로컬 개발 서버처럼 부모와 origin이 다른 환경에서 항상 실패하므로, iframe
     // 문서(730skin-check/index.html, result.html)가 보내는 postMessage로 실제
     // 높이를 전달받아 반영한다 — origin에 상관없이 항상 동작한다.
-    window.__earCheckMessageHandler = function (e) {
-      if (!e.data || e.data.source !== '730skin-check-embed') return;
-      if (!frame.isConnected) return;
-      if (typeof e.data.height === 'number' && e.data.height > 0) {
-        frame.style.minHeight = '0';
-        frame.style.height = e.data.height + 'px';
+    // 높이 메시지·ready 메시지 둘 다 730skin-check(EAR_CHECK_ORIGIN)에서
+    // 왔는지, 그리고 실제로 이 iframe(frame.contentWindow)에서 왔는지
+    // 확인한 뒤에만 처리한다. 라우트를 벗어난 뒤에도 이 리스너가 한동안
+    // 등록된 채 남아있을 수 있어(다음 진입 시 위에서 정리됨), 메시지가
+    // 들어오는 시점에 isStale()이면 스스로 리스너를 제거해 정리한다.
+    var messageHandler = function (e) {
+      if (isStale()) {
+        window.removeEventListener('message', messageHandler);
+        return;
+      }
+      if (e.origin !== EAR_CHECK_ORIGIN) return;
+      if (e.source !== frame.contentWindow) return;
+      if (!e.data) return;
+
+      if (e.data.source === '730skin-check-embed') {
+        if (!frame.isConnected) return;
+        if (typeof e.data.height === 'number' && e.data.height > 0) {
+          frame.style.minHeight = '0';
+          frame.style.height = e.data.height + 'px';
+        }
+        return;
+      }
+
+      // index.html이 처음 뜨거나, "결과 확인하기"로 result.html이 새로
+      // 로드될 때마다 730skin-check가 이 메시지를 보내온다 — 그때마다
+      // 현재 언어를 다시 알려줘서 result.html도 같은 언어로 보이게 한다.
+      if (e.data.source === '730-skin-check' && e.data.type === 'ready') {
+        sendLanguage();
       }
     };
-    window.addEventListener('message', window.__earCheckMessageHandler);
+    window.__earCheckMessageHandler = messageHandler;
+    window.addEventListener('message', messageHandler);
+
+    // 메인 사이트 언어가 바뀌면(헤더의 한국어/EN 버튼) iframe을 새로고침하지
+    // 않고 postMessage로만 알려서, 작성 중이던 이름·나이·날짜·성별·응답이
+    // 초기화되지 않게 한다. 기존 __earPointLanguageHook 등과 동일하게
+    // 라우트를 재방문할 때마다 이전 훅이 계속 쌓이지 않도록 매번 교체한다.
+    var languageHook = function () {
+      if (isStale()) {
+        if (window.i18nOnLanguageChange) {
+          var idx = window.i18nOnLanguageChange.indexOf(languageHook);
+          if (idx !== -1) window.i18nOnLanguageChange.splice(idx, 1);
+        }
+        return;
+      }
+      sendLanguage();
+    };
+    window.__earCheckLanguageHook = languageHook;
+    if (window.i18nOnLanguageChange) window.i18nOnLanguageChange.push(languageHook);
 
     frame.addEventListener('load', function () {
+      if (isStale()) return;
+
       // 같은 origin으로 배포된 경우, postMessage 스크립트가 실행되기 전
       // 첫 시점에 한 번 더 시도해 초기 여백을 최소화하는 보조 수단이다.
       try {
@@ -159,6 +270,11 @@ window.Pages = (function () {
       } catch (e) {
         // cross-origin: 접근 불가, 위 postMessage 응답을 기다린다.
       }
+
+      // iframe 문서가 새로 뜰 때마다(첫 로드, 또는 결과 확인하기로 인한
+      // result.html 이동) 현재 언어를 알려준다. iframe 쪽도 ready
+      // 메시지로 다시 요청하므로 이중으로 보장된다.
+      sendLanguage();
 
       // 730skin-check는 "결과 확인하기" 클릭 시 result.html로 실제 페이지
       // 이동을 하므로, 그 순간 iframe에도 load 이벤트가 다시 발생한다.
@@ -203,17 +319,29 @@ window.Pages = (function () {
       }
 
       var cards = points.map(function (p) {
-        var media = p.imageUrl
-          ? '<img src="' + p.imageUrl + '" alt="' + p.name + '">'
+        var safeImg = safeUrl(p.imageUrl);
+        var safeName = escapeHtml(p.name);
+        var safeDesc = escapeHtml(p.desc);
+        var safeId = escapeHtml(p.id);
+        var media = safeImg
+          ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '">'
           : '<div class="point-media-placeholder" aria-hidden="true"></div>';
-        return '<div class="point-card" data-point-id="' + p.id + '" data-point-name="' + p.name + '">' +
+        var detailHref = '#/ear-point/' + encodeURIComponent(p.id);
+        // 하트 버튼은 카드 클릭(상세페이지 이동)과 별개로 동작해야 해서,
+        // <a> 안에 <button>을 중첩하지 않고 형제 요소로 둔다 — 이렇게 하면
+        // 하트를 눌러도 이벤트가 링크로 버블링되지 않아 stopPropagation
+        // 없이도 자연스럽게 분리된다. 위치는 .point-card에 준
+        // position:relative로 기존과 동일하게 유지한다(style.css 참고).
+        return '<div class="point-card" data-point-id="' + safeId + '" data-point-name="' + safeName + '">' +
+          '<a class="point-card-link" href="' + detailHref + '" aria-label="' + safeName + window.t('pointCardDetailAriaSuffix') + '">' +
           '<div class="point-media">' +
           media +
-          '<button type="button" class="like-btn" aria-label="' + p.name + window.t('likeAriaLabelSuffix') + '" aria-pressed="false">♡</button>' +
           '</div>' +
-          '<p class="point-name">' + p.name + '</p>' +
+          '<p class="point-name">' + safeName + '</p>' +
           '<p class="like-count" aria-live="polite" data-i18n="likeCountLoading">' + window.t('likeCountLoading') + '</p>' +
-          '<p class="point-desc">' + p.desc + '</p>' +
+          '<p class="point-desc">' + safeDesc + '</p>' +
+          '</a>' +
+          '<button type="button" class="like-btn" aria-label="' + safeName + window.t('likeAriaLabelSuffix') + '" aria-pressed="false">♡</button>' +
           '</div>';
       }).join('');
 
@@ -253,6 +381,510 @@ window.Pages = (function () {
           });
         }
       }
+    }
+  }
+
+  // ── 이어포인트 상세페이지 ──────────────────────────────────────
+  // js/router.js → Pages.earPointDetail → AccessControl.checkEducationAccess를
+  // 거친 뒤에만 이 함수가 호출된다(맨 아래 return의 earPointDetail 참고).
+  // 즉 승인 확인 자체가 이 함수 실행 여부를 결정하므로, "승인 상태를
+  // 확인하기 전에는 상세정보·이미지·개인 메모를 렌더링하지 않는다"는
+  // 요구사항은 호출 순서로 보장된다 — 메뉴에서 숨기는 것과 무관하게,
+  // 주소를 직접 입력해 들어와도 항상 이 순서를 거친다.
+  //
+  // 콘텐츠(선택하는 이유/위치 설명/함께 활용하는 혈자리/적용 순서/관리
+  // 참고사항/피해야 하는 상황/영상)는 원장님이 Supabase 대시보드(SQL
+  // Editor 또는 Table Editor, service_role 권한)에서 직접 입력한다. 이
+  // 파일은 값이 없는 섹션을 숨길 뿐, 어떤 의학 정보도 대신 만들어 채우지
+  // 않는다.
+  function renderEarPointDetail(container, session, pointId) {
+    var userId = session.user.id;
+    var myToken = window.__routeToken;
+    function isStale() {
+      return myToken !== window.__routeToken;
+    }
+
+    container.innerHTML = '<div class="epd-page"><p class="epd-loading" data-i18n="epdLoading">' + window.t('epdLoading') + '</p></div>';
+
+    function renderState(modifier, titleKey, descKey) {
+      container.innerHTML =
+        '<div class="epd-page">' +
+        '<div class="epd-state ' + modifier + '">' +
+        '<p class="epd-state-title" data-i18n="' + titleKey + '">' + window.t(titleKey) + '</p>' +
+        '<p class="epd-state-desc" data-i18n="' + descKey + '">' + window.t(descKey) + '</p>' +
+        '<a href="#/ear-point" class="epd-state-btn" data-i18n="epdBackToList">' + window.t('epdBackToList') + '</a>' +
+        '</div>' +
+        '</div>';
+    }
+
+    Promise.all([
+      window.EarPointsRepo.load(),
+      window.EarPointDetailRepo.loadDetail(pointId),
+      window.EarPointDetailRepo.loadRelated(pointId, 3),
+      window.EarPointDetailRepo.loadNote(userId, pointId)
+    ]).then(function (results) {
+      if (isStale()) return;
+
+      var points = results[0] || [];
+      var detailRes = results[1];
+      var relatedRes = results[2];
+      var noteRes = results[3];
+
+      var point = points.filter(function (p) { return p.id === pointId; })[0];
+      if (!point) {
+        renderState('epd-state--notfound', 'epdNotFoundTitle', 'epdNotFoundDesc');
+        return;
+      }
+
+      renderDetail(point, points, detailRes, relatedRes, noteRes);
+    }).catch(function (err) {
+      console.error('[EarPointDetail] 상세페이지 데이터 조회 중 예외:', err);
+      if (!isStale()) renderState('epd-state--error', 'epdErrorTitle', 'epdErrorDesc');
+    });
+
+    function stepLabel(n) {
+      return window.currentLanguage === 'en' ? ('Step ' + n) : (n + '단계');
+    }
+
+    function buildHero(point) {
+      var safeImg = safeUrl(point.imageUrl);
+      var safeName = escapeHtml(point.name);
+      var media = safeImg
+        ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '" class="epd-hero-img">'
+        : '<div class="point-media-placeholder" aria-hidden="true"></div>';
+      return (
+        '<section class="epd-hero point-card" data-point-id="' + escapeHtml(point.id) + '" data-point-name="' + safeName + '">' +
+        '<div class="epd-hero-media point-media">' + media + '</div>' +
+        '<div class="epd-hero-info">' +
+        '<h1 class="epd-hero-name">' + safeName + '</h1>' +
+        '<p class="epd-hero-desc">' + escapeHtml(point.desc) + '</p>' +
+        '<div class="epd-save-row">' +
+        '<button type="button" class="like-btn epd-save-heart" aria-pressed="false" aria-label="' + safeName + window.t('likeAriaLabelSuffix') + '">♡</button>' +
+        '<span class="like-count epd-save-label" aria-live="polite">' + window.t('likeCountLoading') + '</span>' +
+        '</div>' +
+        '</div>' +
+        '</section>'
+      );
+    }
+
+    function buildLocationSection(point, detail) {
+      var safeImg = safeUrl(point.imageUrl);
+      var safeName = escapeHtml(point.name);
+      var img = safeImg
+        ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '" class="epd-location-image">'
+        : '<div class="point-media-placeholder" aria-hidden="true"></div>';
+      var zoomBtn = safeImg
+        ? '<button type="button" class="epd-zoom-btn" data-i18n-aria-label="epdImageZoomBtn" aria-label="' + window.t('epdImageZoomBtn') + '"><span aria-hidden="true">⤢</span></button>'
+        : '';
+      var text = detail.locationGuide ? '<p class="epd-location-text">' + escapeHtml(detail.locationGuide) + '</p>' : '';
+
+      return (
+        '<section class="epd-section" aria-labelledby="epd-location-title">' +
+        '<h2 id="epd-location-title" class="epd-section-title" data-i18n="epdLocationTitle">' + window.t('epdLocationTitle') + '</h2>' +
+        '<div class="epd-location-body">' +
+        '<div class="epd-location-image-wrap">' + img + zoomBtn + '</div>' +
+        text +
+        '</div>' +
+        '</section>'
+      );
+    }
+
+    function buildReasonSection(detail) {
+      if (!detail.selectionReason) return '';
+      return (
+        '<section class="epd-section" aria-labelledby="epd-reason-title">' +
+        '<h2 id="epd-reason-title" class="epd-section-title" data-i18n="epdReasonTitle">' + window.t('epdReasonTitle') + '</h2>' +
+        '<p class="epd-reason-text">' + escapeHtml(detail.selectionReason) + '</p>' +
+        '</section>'
+      );
+    }
+
+    function buildComboSection(detail) {
+      if (!detail.comboPoints.length) return '';
+      var items = detail.comboPoints.map(function (item, idx) {
+        var panelId = 'epd-combo-panel-' + idx;
+        return (
+          '<div class="epd-accordion-item">' +
+          '<button type="button" class="epd-accordion-trigger" aria-expanded="false" aria-controls="' + panelId + '">' +
+          '<span class="epd-accordion-name">' + escapeHtml(item.name) + '</span>' +
+          '<span class="epd-accordion-icon" aria-hidden="true">+</span>' +
+          '</button>' +
+          '<div class="epd-accordion-panel" id="' + panelId + '" hidden>' +
+          '<p>' + escapeHtml(item.reason || '') + '</p>' +
+          '</div>' +
+          '</div>'
+        );
+      }).join('');
+      return (
+        '<section class="epd-section" aria-labelledby="epd-combo-title">' +
+        '<h2 id="epd-combo-title" class="epd-section-title" data-i18n="epdComboTitle">' + window.t('epdComboTitle') + '</h2>' +
+        '<div class="epd-accordion">' + items + '</div>' +
+        '</section>'
+      );
+    }
+
+    function buildStepsSection(detail) {
+      if (!detail.usageSteps.length) return '';
+      var items = detail.usageSteps.map(function (step, idx) {
+        return (
+          '<li class="epd-step-item">' +
+          '<span class="epd-step-number">' + stepLabel(idx + 1) + '</span>' +
+          '<span class="epd-step-text">' + escapeHtml(step) + '</span>' +
+          '</li>'
+        );
+      }).join('');
+      return (
+        '<section class="epd-section" aria-labelledby="epd-steps-title">' +
+        '<h2 id="epd-steps-title" class="epd-section-title" data-i18n="epdStepsTitle">' + window.t('epdStepsTitle') + '</h2>' +
+        '<ol class="epd-steps-list">' + items + '</ol>' +
+        '</section>'
+      );
+    }
+
+    function buildTipsSection(detail) {
+      if (!detail.managementTips.length) return '';
+      var items = detail.managementTips.map(function (tip) { return '<li>' + escapeHtml(tip) + '</li>'; }).join('');
+      return (
+        '<section class="epd-section" aria-labelledby="epd-tips-title">' +
+        '<h2 id="epd-tips-title" class="epd-section-title" data-i18n="epdTipsTitle">' + window.t('epdTipsTitle') + '</h2>' +
+        '<ul class="epd-tips-list">' + items + '</ul>' +
+        '</section>'
+      );
+    }
+
+    function buildAvoidSection(detail) {
+      if (!detail.avoidWhen.length) return '';
+      var items = detail.avoidWhen.map(function (item) { return '<li>' + escapeHtml(item) + '</li>'; }).join('');
+      return (
+        '<section class="epd-section" aria-labelledby="epd-avoid-title">' +
+        '<div class="epd-avoid-box">' +
+        '<h2 id="epd-avoid-title" class="epd-avoid-title"><span class="epd-avoid-icon" aria-hidden="true">△</span><span data-i18n="epdAvoidTitle">' + window.t('epdAvoidTitle') + '</span></h2>' +
+        '<ul class="epd-avoid-list">' + items + '</ul>' +
+        '</div>' +
+        '</section>'
+      );
+    }
+
+    // video_url은 http/https로 확인된 안전한 값일 때만 섹션 전체를 그린다 —
+    // safeUrl()이 null을 돌려주면(javascript:/data: 등 위험한 스킴, 빈 값,
+    // 파싱 실패 등) 영상 섹션을 아예 표시하지 않는다.
+    function buildVideoSection(detail) {
+      var safeVideoUrl = safeUrl(detail.videoUrl);
+      if (!safeVideoUrl) return '';
+      var titleHtml = detail.videoTitle ? '<p class="epd-video-title">' + escapeHtml(detail.videoTitle) + '</p>' : '';
+      var descHtml = detail.videoDescription ? '<p class="epd-video-desc">' + escapeHtml(detail.videoDescription) + '</p>' : '';
+      return (
+        '<section class="epd-section" aria-labelledby="epd-video-title">' +
+        '<h2 id="epd-video-title" class="epd-section-title" data-i18n="epdVideoTitle">' + window.t('epdVideoTitle') + '</h2>' +
+        '<a class="epd-video-card" href="' + escapeHtml(safeVideoUrl) + '" target="_blank" rel="noopener noreferrer">' +
+        '<span class="epd-video-play" aria-hidden="true">▶</span>' +
+        '<span class="epd-video-info">' + titleHtml + descHtml + '<span class="epd-video-link-label" data-i18n="epdVideoPlayBtn">' + window.t('epdVideoPlayBtn') + '</span></span>' +
+        '</a>' +
+        '</section>'
+      );
+    }
+
+    function buildNotesSection() {
+      return (
+        '<section class="epd-section epd-notes-section" aria-labelledby="epd-notes-title">' +
+        '<h2 id="epd-notes-title" class="epd-section-title" data-i18n="epdNoteTitle">' + window.t('epdNoteTitle') + '</h2>' +
+        '<p class="epd-notes-desc" data-i18n="epdNoteDesc">' + window.t('epdNoteDesc') + '</p>' +
+        '<p class="epd-notes-privacy" data-i18n="epdNotePrivacyNotice">' + window.t('epdNotePrivacyNotice') + '</p>' +
+        '<div class="epd-note-view" hidden>' +
+        '<p class="epd-note-view-text"></p>' +
+        '<div class="epd-note-view-actions">' +
+        '<button type="button" class="epd-note-edit-btn" data-i18n="epdNoteEditBtn">' + window.t('epdNoteEditBtn') + '</button>' +
+        '<button type="button" class="epd-note-delete-btn" data-i18n="epdNoteDeleteBtn">' + window.t('epdNoteDeleteBtn') + '</button>' +
+        '</div>' +
+        '</div>' +
+        '<div class="epd-note-edit">' +
+        '<textarea class="epd-note-textarea" maxlength="1000" data-i18n-placeholder="epdNotePlaceholder" placeholder="' + window.t('epdNotePlaceholder') + '"></textarea>' +
+        '<div class="epd-note-edit-footer">' +
+        '<span class="epd-note-char-count">0 / 1000</span>' +
+        '<div class="epd-note-edit-actions">' +
+        '<button type="button" class="epd-note-cancel-btn" data-i18n="epdNoteCancelBtn" hidden>' + window.t('epdNoteCancelBtn') + '</button>' +
+        '<button type="button" class="epd-note-save-btn" data-i18n="epdNoteSaveBtn">' + window.t('epdNoteSaveBtn') + '</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '<p class="epd-note-status" aria-live="polite"></p>' +
+        '</section>'
+      );
+    }
+
+    function buildRelatedPointsSection(relatedRows, allPoints) {
+      var cards = relatedRows.map(function (rel) {
+        var basePoint = allPoints.filter(function (p) { return p.id === rel.id; })[0];
+        if (!basePoint) return '';
+        var safeImg = safeUrl(basePoint.imageUrl);
+        var safeName = escapeHtml(basePoint.name);
+        var media = safeImg
+          ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '">'
+          : '<div class="point-media-placeholder" aria-hidden="true"></div>';
+        return (
+          '<a class="epd-related-card" href="#/ear-point/' + encodeURIComponent(basePoint.id) + '">' +
+          '<div class="epd-related-media">' + media + '</div>' +
+          '<p class="epd-related-name">' + safeName + '</p>' +
+          '</a>'
+        );
+      }).join('');
+
+      if (!cards) return '';
+
+      return (
+        '<section class="epd-section" aria-labelledby="epd-related-title">' +
+        '<h2 id="epd-related-title" class="epd-section-title" data-i18n="epdRelatedPointsTitle">' + window.t('epdRelatedPointsTitle') + '</h2>' +
+        '<div class="epd-related-grid">' + cards + '</div>' +
+        '</section>'
+      );
+    }
+
+    function initAccordion(root) {
+      root.querySelectorAll('.epd-accordion-trigger').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var expanded = btn.getAttribute('aria-expanded') === 'true';
+          var panel = root.querySelector('#' + btn.getAttribute('aria-controls'));
+          btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          if (panel) panel.hidden = expanded;
+        });
+      });
+    }
+
+    function initImageZoom(root) {
+      var zoomBtn = root.querySelector('.epd-zoom-btn');
+      var img = root.querySelector('.epd-location-image');
+      if (!zoomBtn || !img) return;
+
+      zoomBtn.addEventListener('click', function () {
+        // img.src/img.alt는 렌더링된 DOM에서 다시 읽어온 "순수 텍스트"라
+        // innerHTML 문자열 조합에 그대로 넣으면 또 이스케이프가 필요해진다
+        // — 이 함수는 애초에 innerHTML 대신 DOM 프로퍼티 대입만 써서
+        // HTML 파싱 자체가 일어나지 않게 한다(이스케이프가 필요 없는 방식).
+        var overlay = document.createElement('div');
+        overlay.className = 'epd-lightbox';
+
+        var backdrop = document.createElement('div');
+        backdrop.className = 'epd-lightbox-backdrop';
+
+        var closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'epd-lightbox-close';
+        closeBtn.setAttribute('data-i18n-aria-label', 'epdImageZoomClose');
+        closeBtn.setAttribute('aria-label', window.t('epdImageZoomClose'));
+        closeBtn.textContent = '×';
+
+        var lightboxImg = document.createElement('img');
+        lightboxImg.className = 'epd-lightbox-img';
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+
+        overlay.appendChild(backdrop);
+        overlay.appendChild(closeBtn);
+        overlay.appendChild(lightboxImg);
+        document.body.appendChild(overlay);
+        document.body.classList.add('no-scroll');
+
+        function close() {
+          overlay.remove();
+          document.body.classList.remove('no-scroll');
+          document.removeEventListener('keydown', onKeydown);
+          zoomBtn.focus();
+        }
+        function onKeydown(e) {
+          if (e.key === 'Escape') close();
+        }
+
+        backdrop.addEventListener('click', close);
+        closeBtn.addEventListener('click', close);
+        document.addEventListener('keydown', onKeydown);
+      });
+    }
+
+    // 메모는 회원 1명 x 이어포인트 1개당 1개(user_ear_point_notes의
+    // (user_id, ear_point_id) 기본키)뿐이라, 다른 회원의 메모는 RLS로도
+    // 애초에 조회되지 않는다 — 이 함수는 그 위에 화면 상태(보기/편집)만
+    // 관리한다. 표시는 항상 textContent로 채워, 회원이 직접 입력한 메모
+    // 내용이 실수로 HTML로 해석되는 일이 없게 한다.
+    function initNotes(root, noteRes) {
+      var viewBox = root.querySelector('.epd-note-view');
+      var viewText = root.querySelector('.epd-note-view-text');
+      var editBox = root.querySelector('.epd-note-edit');
+      var textarea = root.querySelector('.epd-note-textarea');
+      var charCount = root.querySelector('.epd-note-char-count');
+      var statusEl = root.querySelector('.epd-note-status');
+      var saveBtn = root.querySelector('.epd-note-save-btn');
+      var cancelBtn = root.querySelector('.epd-note-cancel-btn');
+      var editBtn = root.querySelector('.epd-note-edit-btn');
+      var deleteBtn = root.querySelector('.epd-note-delete-btn');
+      var MAX_LEN = 1000;
+
+      var currentNoteText = noteRes.data ? noteRes.data.note : '';
+
+      function setStatus(text, isError) {
+        statusEl.textContent = text || '';
+        statusEl.className = 'epd-note-status' + (isError ? ' epd-note-status--error' : text ? ' epd-note-status--success' : '');
+      }
+
+      function updateCharCount() {
+        charCount.textContent = textarea.value.length + ' / ' + MAX_LEN;
+      }
+
+      function showViewMode(text) {
+        currentNoteText = text;
+        viewText.textContent = text;
+        viewBox.hidden = false;
+        editBox.hidden = true;
+      }
+
+      function showEditMode(prefill, showCancel) {
+        textarea.value = prefill || '';
+        updateCharCount();
+        viewBox.hidden = true;
+        editBox.hidden = false;
+        cancelBtn.hidden = !showCancel;
+      }
+
+      if (noteRes.error) {
+        setStatus(window.t('epdNoteLoadError'), true);
+      }
+
+      if (currentNoteText) {
+        showViewMode(currentNoteText);
+      } else {
+        showEditMode('', false);
+      }
+
+      textarea.addEventListener('input', updateCharCount);
+
+      editBtn.addEventListener('click', function () {
+        showEditMode(currentNoteText, true);
+        setStatus('');
+      });
+
+      cancelBtn.addEventListener('click', function () {
+        showViewMode(currentNoteText);
+        setStatus('');
+      });
+
+      saveBtn.addEventListener('click', function () {
+        if (saveBtn.dataset.busy === 'true') return;
+        var value = textarea.value.trim();
+        if (!value) {
+          setStatus(window.t('epdNoteEmptyError'), true);
+          return;
+        }
+
+        saveBtn.dataset.busy = 'true';
+        saveBtn.disabled = true;
+        setStatus(window.t('epdNoteSaving'), false);
+
+        window.EarPointDetailRepo.saveNote(userId, pointId, value).then(function (res) {
+          saveBtn.dataset.busy = 'false';
+          saveBtn.disabled = false;
+          if (res.error) {
+            console.error('[EarPointDetail] 메모 저장 실패:', res.error);
+            // 저장 실패 시 입력값은 textarea에 그대로 남겨 다시 시도할 수 있게 한다.
+            setStatus(window.t('epdNoteError'), true);
+            return;
+          }
+          showViewMode(value);
+          setStatus(window.t('epdNoteSaved'), false);
+        });
+      });
+
+      deleteBtn.addEventListener('click', function () {
+        if (deleteBtn.dataset.busy === 'true') return;
+        if (!window.confirm(window.t('epdNoteConfirmDelete'))) return;
+
+        deleteBtn.dataset.busy = 'true';
+        deleteBtn.disabled = true;
+
+        window.EarPointDetailRepo.deleteNote(userId, pointId).then(function (res) {
+          deleteBtn.dataset.busy = 'false';
+          deleteBtn.disabled = false;
+          if (res.error) {
+            console.error('[EarPointDetail] 메모 삭제 실패:', res.error);
+            setStatus(window.t('epdNoteDeleteError'), true);
+            return;
+          }
+          showEditMode('', false);
+          setStatus(window.t('epdNoteDeleted'), false);
+        });
+      });
+    }
+
+    function renderDetail(point, allPoints, detailRes, relatedRes, noteRes) {
+      var detail = detailRes.data || {
+        selectionReason: '',
+        locationGuide: '',
+        comboPoints: [],
+        usageSteps: [],
+        managementTips: [],
+        avoidWhen: [],
+        videoTitle: '',
+        videoUrl: '',
+        videoDescription: ''
+      };
+      var relatedRows = relatedRes.data || [];
+
+      // ear_point_details에 아직 행 자체가 없는 경우(row가 null)는 "콘텐츠
+      // 준비 전"이라 정상 상태이므로 오류로 취급하지 않는다. detailRes.error가
+      // 실제로 채워진 경우만 조회 실패로 보고 작게 안내한다 — 기존 카드
+      // 정보(이름/설명/이미지)는 이 경우에도 그대로 정상 표시한다.
+      var detailErrorHtml = detailRes.error
+        ? '<p class="epd-inline-error" data-i18n="epdDetailLoadError">' + window.t('epdDetailLoadError') + '</p>'
+        : '';
+
+      container.innerHTML =
+        '<div class="epd-page">' +
+        '<a href="#/ear-point" class="epd-back-link">' +
+        '<span aria-hidden="true">‹</span> ' +
+        '<span data-i18n="epdBackToList">' + window.t('epdBackToList') + '</span>' +
+        '</a>' +
+        buildHero(point) +
+        detailErrorHtml +
+        buildLocationSection(point, detail) +
+        buildReasonSection(detail) +
+        buildComboSection(detail) +
+        buildStepsSection(detail) +
+        buildTipsSection(detail) +
+        buildAvoidSection(detail) +
+        buildVideoSection(detail) +
+        buildNotesSection() +
+        buildRelatedPointsSection(relatedRows, allPoints) +
+        '</div>';
+
+      if (window.EarPointLikes) window.EarPointLikes.init(container);
+      initAccordion(container);
+      initImageZoom(container);
+      initNotes(container, noteRes);
+
+      // 언어를 바꿔도 대부분의 정적 문구는 위 마크업의 data-i18n 속성 덕분에
+      // (router.js가 호출하는 applyTranslations 경로를 통해) 자동으로
+      // 갱신된다. 다만 "1단계"/"Step 1" 같은 순서 라벨과 하트 버튼의
+      // aria-label 접미사는 window.t() 결과를 렌더링 시점에 문자열로
+      // 합쳐서 만든 값이라 data-i18n만으로는 안 바뀐다 — 이 두 가지만
+      // 별도로 갱신한다. renderEarPointList의 __earPointLanguageHook과
+      // 동일한 패턴: 라우트를 재방문할 때마다 이전 훅이 계속 쌓이지 않도록
+      // 먼저 제거한 뒤 다시 등록하고, isStale()로 다른 라우트/다른
+      // pointId로 이동한 뒤에는 실행되지 않게 막는다. Supabase 조회를
+      // 전혀 하지 않으므로 메모를 중복 저장·삭제할 일도 없다.
+      if (window.__earPointDetailLanguageHook && window.i18nOnLanguageChange) {
+        var epdHookIdx = window.i18nOnLanguageChange.indexOf(window.__earPointDetailLanguageHook);
+        if (epdHookIdx !== -1) window.i18nOnLanguageChange.splice(epdHookIdx, 1);
+      }
+      window.__earPointDetailLanguageHook = function () {
+        if (isStale()) return;
+        // setAttribute는 HTML을 파싱하지 않는 DOM API라 escapeHtml을 쓰면
+        // 안 된다(썼다간 "A &amp; B"처럼 엔티티가 그대로 노출된다) — 원본
+        // 텍스트를 그대로 넣는다.
+        var heartBtn = container.querySelector('.epd-save-heart');
+        if (heartBtn) heartBtn.setAttribute('aria-label', point.name + window.t('likeAriaLabelSuffix'));
+        container.querySelectorAll('.epd-step-number').forEach(function (el, idx) {
+          el.textContent = stepLabel(idx + 1);
+        });
+      };
+      if (window.i18nOnLanguageChange) window.i18nOnLanguageChange.push(window.__earPointDetailLanguageHook);
     }
   }
 
@@ -854,6 +1486,17 @@ window.Pages = (function () {
     earPoint: function (container, queryString) {
       window.AccessControl.checkEducationAccess(container, function (c) {
         renderEarPointList(c, queryString);
+      });
+    },
+
+    // "#/ear-point/sleep" 같은 상세페이지. checkEducationAccess()가 로그인
+    // 세션 + profiles.education_status === 'approved'를 모두 확인한 뒤에만
+    // renderEarPointDetail을 호출하므로, 메뉴를 숨기는 것과 무관하게 주소를
+    // 직접 입력해 들어와도 비로그인/pending/suspended는 각각 안내 화면만
+    // 보게 된다.
+    earPointDetail: function (container, queryString, pointId) {
+      window.AccessControl.checkEducationAccess(container, function (c, session) {
+        renderEarPointDetail(c, session, pointId);
       });
     },
 

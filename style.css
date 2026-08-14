@@ -1413,11 +1413,26 @@ body.no-scroll {
 }
 
 .point-card {
+  /* .like-btn(absolute)의 위치 기준점. 카드 본문은 .point-card-link 안에서
+     이미지 바로 위에서 시작하므로, 여기서 기준을 잡아도 예전에
+     .point-media를 기준으로 잡았을 때와 같은 위치에 하트가 놓인다. */
+  position: relative;
+}
+
+.point-card-link {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 0.5rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.point-card-link:focus-visible {
+  outline: 2px solid #7A5C3E;
+  outline-offset: 4px;
+  border-radius: 12px;
 }
 
 .point-media {
@@ -1493,6 +1508,699 @@ body.no-scroll {
 @media (max-width: 640px) {
   .point-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── 이어포인트 상세페이지 ────────────────────────────────────── */
+.epd-page {
+  width: min(100%, 1220px);
+  margin: 0 auto;
+  padding: 2.5rem clamp(1.5rem, 8vw, 6rem) 4rem;
+}
+
+.epd-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+  color: #7A5C3E;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.epd-back-link:hover {
+  text-decoration: underline;
+}
+
+.epd-back-link span {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.epd-loading {
+  padding: 4rem 0;
+  text-align: center;
+  color: #66615D;
+}
+
+.epd-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.epd-state-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111111;
+}
+
+.epd-state-desc {
+  font-size: 0.9rem;
+  color: #66615D;
+}
+
+.epd-state-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: 0.5rem;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  background-color: #171717;
+  color: #FFFFFF;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.epd-state-btn:hover {
+  background-color: #FFCC00;
+  color: #000000;
+}
+
+.epd-inline-error {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background-color: #FBEFE3;
+  color: #7A5C3E;
+  font-size: 0.85rem;
+}
+
+/* ── 상단 히어로(이미지 + 이름/설명/저장 버튼) ── */
+.epd-hero {
+  position: relative; /* .like-btn.epd-save-heart 위치 기준 */
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  background-color: #FFFFFF;
+  border: 1px solid #E9E1D8;
+  border-radius: 20px;
+}
+
+.epd-hero-media img,
+.epd-hero-media .point-media-placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 16px;
+  background-color: #EFE8DB;
+}
+
+.epd-hero-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.epd-hero-name {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #111111;
+}
+
+.epd-hero-desc {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #66615D;
+  line-height: 1.5;
+}
+
+.epd-save-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+/* 리스트용 .like-btn/.like-count 기본 스타일(절대 위치, 작은 텍스트)을
+   히어로 맥락에서는 재정의한다 — 클래스 2개 조합이라 명시성이 더 높아
+   원래 규칙을 덮어쓴다. */
+.like-btn.epd-save-heart {
+  position: static;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background-color: #FFF6DD;
+  color: #7A5C3E;
+  font-size: 1.2rem;
+}
+
+.like-count.epd-save-label {
+  font-size: 0.9rem;
+  color: #111111;
+}
+
+/* ── 공통 섹션 ── */
+.epd-section {
+  margin-top: 2.5rem;
+}
+
+.epd-section-title {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #111111;
+}
+
+/* ── 혈자리 위치 ── */
+.epd-location-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.epd-location-image-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+}
+
+.epd-location-image,
+.epd-location-image-wrap .point-media-placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  /* cover 대신 contain — 확대 없이 이미지 전체가 잘리지 않고 보이게 한다. */
+  object-fit: contain;
+  background-color: #EFE8DB;
+  border-radius: 16px;
+}
+
+.epd-zoom-btn {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: #7A5C3E;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.epd-zoom-btn:focus-visible {
+  outline: 2px solid #7A5C3E;
+  outline-offset: 2px;
+}
+
+.epd-location-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333333;
+  line-height: 1.6;
+}
+
+/* ── 선택하는 이유 ── */
+.epd-reason-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333333;
+  line-height: 1.7;
+}
+
+/* ── 함께 활용하는 혈자리(아코디언) ── */
+.epd-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.epd-accordion-item {
+  overflow: hidden;
+  background-color: #FFFFFF;
+  border: 1px solid #E9E1D8;
+  border-radius: 12px;
+}
+
+.epd-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1.1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111111;
+  cursor: pointer;
+}
+
+.epd-accordion-trigger:focus-visible {
+  outline: 2px solid #7A5C3E;
+  outline-offset: -2px;
+}
+
+.epd-accordion-name {
+  /* 긴 영문 단어가 들어와도 아코디언 버튼 너비를 밀어내지 않도록 최소
+     너비를 0으로 풀고, 필요할 때만 단어 중간에서도 줄바꿈되게 한다. */
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.epd-accordion-icon {
+  flex-shrink: 0;
+  color: #7A5C3E;
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.epd-accordion-trigger[aria-expanded="true"] .epd-accordion-icon {
+  transform: rotate(45deg);
+}
+
+.epd-accordion-panel {
+  padding: 0 1.1rem 1rem;
+  font-size: 0.88rem;
+  color: #66615D;
+  line-height: 1.6;
+}
+
+.epd-accordion-panel p {
+  margin: 0;
+}
+
+/* ── 적용 순서 ── */
+.epd-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.epd-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.epd-step-number {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  height: 28px;
+  padding: 0 0.75rem;
+  border-radius: 999px;
+  background-color: #FFCC00;
+  color: #000000;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.epd-step-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  padding-top: 0.2rem;
+  font-size: 0.9rem;
+  color: #333333;
+  line-height: 1.6;
+}
+
+/* ── 관리할 때 참고할 점 ── */
+.epd-tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+  color: #333333;
+  line-height: 1.6;
+}
+
+/* ── 피해야 하는 상황(경고 박스, 테라코타 톤 — 과도한 빨간색 지양) ── */
+.epd-avoid-box {
+  padding: 1.25rem 1.4rem;
+  background-color: #FBF1E6;
+  border: 1px solid #E3C6A8;
+  border-radius: 14px;
+}
+
+.epd-avoid-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #7A5C3E;
+}
+
+.epd-avoid-icon {
+  font-size: 1.05rem;
+}
+
+.epd-avoid-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.88rem;
+  color: #5C4A38;
+  line-height: 1.6;
+}
+
+/* ── 관련 교육 영상 ── */
+.epd-video-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background-color: #FFFFFF;
+  border: 1px solid #E9E1D8;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+}
+
+.epd-video-card:hover {
+  border-color: #FFCC00;
+}
+
+.epd-video-play {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #171717;
+  color: #FFFFFF;
+  font-size: 1.1rem;
+}
+
+.epd-video-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.epd-video-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111111;
+  word-break: break-word;
+}
+
+.epd-video-desc {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #66615D;
+  word-break: break-word;
+}
+
+.epd-video-link-label {
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #7A5C3E;
+}
+
+/* ── 내 메모 ── */
+.epd-notes-section {
+  padding-top: 2rem;
+  border-top: 1px solid #E9E1D8;
+}
+
+.epd-notes-desc {
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  color: #66615D;
+}
+
+.epd-notes-privacy {
+  margin: 0 0 1rem;
+  font-size: 0.78rem;
+  color: #A5563F;
+}
+
+.epd-note-view-text {
+  margin: 0 0 0.75rem;
+  padding: 0.9rem 1rem;
+  background-color: #FFFDFA;
+  border: 1px solid #E9E1D8;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: #333333;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.epd-note-view-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.epd-note-edit-btn,
+.epd-note-delete-btn,
+.epd-note-cancel-btn,
+.epd-note-save-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+  background-color: #FFFFFF;
+  border: 1px solid #E9E1D8;
+  color: #292929;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.epd-note-save-btn {
+  background-color: #FFCC00;
+  border-color: #FFCC00;
+  color: #000000;
+}
+
+.epd-note-save-btn:hover {
+  background-color: #A5563F;
+  color: #FFFFFF;
+}
+
+.epd-note-save-btn:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.epd-note-delete-btn:hover {
+  border-color: #A5563F;
+  color: #A5563F;
+}
+
+.epd-note-textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 120px;
+  padding: 0.9rem 1rem;
+  border: 1px solid #E9E1D8;
+  border-radius: 12px;
+  color: #111111;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+
+.epd-note-textarea:focus-visible {
+  outline: 2px solid #7A5C3E;
+  outline-offset: 1px;
+}
+
+.epd-note-edit-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.6rem;
+}
+
+.epd-note-char-count {
+  font-size: 0.78rem;
+  color: #918A80;
+}
+
+.epd-note-edit-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.epd-note-status {
+  min-height: 1.2em;
+  margin: 0.6rem 0 0;
+  font-size: 0.82rem;
+  color: #66615D;
+}
+
+.epd-note-status--error {
+  color: #B3261E;
+}
+
+.epd-note-status--success {
+  color: #3E7A4E;
+}
+
+/* ── 관련 이어포인트(최대 3개, 클릭 시 다른 상세페이지로 이동) ── */
+.epd-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.epd-related-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.epd-related-card:focus-visible {
+  outline: 2px solid #7A5C3E;
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+.epd-related-media img,
+.epd-related-media .point-media-placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  background-color: #EFE8DB;
+}
+
+.epd-related-name {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #111111;
+}
+
+/* ── 이미지 확대(라이트박스) ── */
+.epd-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.epd-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.82);
+}
+
+.epd-lightbox-img {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.epd-lightbox-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: #111111;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.epd-lightbox-close:focus-visible {
+  outline: 2px solid #FFCC00;
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .epd-related-grid {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  /* 모바일 순서 요구사항: 목록으로 → 이름/저장버튼 → 대표 이미지 → 상세
+     섹션 → 메모. 접근성상 DOM 순서(이미지 먼저)는 그대로 두고, 시각적
+     순서만 flex/grid order로 뒤집는다. */
+  .epd-hero {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+  }
+
+  .epd-hero-info {
+    order: -1;
+  }
+
+  .epd-hero-media {
+    width: 100%;
+  }
+
+  .epd-related-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .epd-hero-name {
+    font-size: 1.35rem;
+  }
+
+  .epd-note-view-actions,
+  .epd-note-edit-actions {
+    width: 100%;
+  }
+
+  .epd-note-view-actions button,
+  .epd-note-edit-actions button {
+    flex: 1;
   }
 }
 
