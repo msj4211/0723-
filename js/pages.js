@@ -1038,18 +1038,459 @@ window.Pages = (function () {
     }
   }
 
-  function renderSeminarEmbed(container) {
-    container.innerHTML = `
-      <section class="seminar-embed-page">
-        <iframe
-          class="seminar-signup-frame"
-          src="https://msj4211.github.io/730skin-check/signup/"
-          title="730스킨 이어테라피 세미나 신청"
-          loading="eager"
-          allow="clipboard-write"
-        ></iframe>
-      </section>
-    `;
+  // 개인정보 수집·이용 동의 버전. 동의 문구(seminarPrivacyConsentText 번역
+  // 키)를 실제로 바꿀 때만 이 값도 함께 갱신한다 — DB의
+  // seminar_applications.privacy_policy_version에 그대로 저장되어, 나중에
+  // "어떤 버전의 문구에 동의했는지" 신청 시점 기준으로 추적할 수 있게 한다.
+  var SEMINAR_PRIVACY_POLICY_VERSION = '2026-08-14-v1';
+
+  function renderSeminarPage(container) {
+    var myToken = window.__routeToken;
+    function isStale() {
+      return myToken !== window.__routeToken;
+    }
+
+    // 언어 훅은 라우트를 재방문할 때마다 새로 등록되므로, 이전 방문에서
+    // 남은 훅이 계속 쌓이지 않도록 먼저 제거한다(이어포인트 상세페이지와
+    // 동일한 패턴).
+    if (window.__seminarLanguageHook && window.i18nOnLanguageChange) {
+      var prevSeminarHookIdx = window.i18nOnLanguageChange.indexOf(window.__seminarLanguageHook);
+      if (prevSeminarHookIdx !== -1) window.i18nOnLanguageChange.splice(prevSeminarHookIdx, 1);
+    }
+    window.__seminarLanguageHook = null;
+
+    container.innerHTML =
+      '<div class="seminar-page">' +
+      '<p class="seminar-loading" data-i18n="seminarLoading">' + window.t('seminarLoading') + '</p>' +
+      '</div>';
+
+    function renderMessageState(modifier, textKey) {
+      if (isStale()) return;
+      container.innerHTML =
+        '<div class="seminar-page">' +
+        '<div class="seminar-state ' + modifier + '">' +
+        '<p class="seminar-state-text" data-i18n="' + textKey + '">' + window.t(textKey) + '</p>' +
+        '</div>' +
+        '</div>';
+    }
+
+    window.SeminarRepo.loadPublishedSeminars().then(function (res) {
+      if (isStale()) return;
+
+      if (res.error) {
+        // Supabase 오류 객체를 그대로 출력하지 않는다 — 고정 문구만 남긴다.
+        console.error('[Seminar] 세미나 목록 조회에 실패했습니다.');
+        renderMessageState('seminar-state--error', 'seminarLoadError');
+        return;
+      }
+
+      var seminars = res.data || [];
+      if (seminars.length === 0) {
+        renderMessageState('seminar-state--empty', 'seminarEmpty');
+        return;
+      }
+
+      renderSeminarList(seminars);
+    }).catch(function () {
+      console.error('[Seminar] 세미나 목록 조회 중 예외가 발생했습니다.');
+      renderMessageState('seminar-state--error', 'seminarLoadError');
+    });
+
+    // ── 언어별 표시값 선택 헬퍼 ──
+    // 영문 컬럼이 null이거나 빈 문자열이면 한국어 값으로 대체한다. DB
+    // 원본(starts_at/ends_at 등)은 이 함수들이 전혀 수정하지 않는다.
+    function pickLang(koValue, enValue) {
+      if (window.currentLanguage === 'en' && enValue && String(enValue).trim()) return enValue;
+      return koValue || '';
+    }
+
+    function formatDateTime(iso) {
+      if (!iso) return '';
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return '';
+      var locale = window.currentLanguage === 'en' ? 'en-US' : 'ko-KR';
+      try {
+        return d.toLocaleString(locale, {
+          timeZone: 'Asia/Seoul',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          weekday: 'short',
+          hour: 'numeric',
+          minute: '2-digit'
+        });
+      } catch (e) {
+        return d.toISOString();
+      }
+    }
+
+    function scheduleText(seminar) {
+      var start = formatDateTime(seminar.starts_at);
+      if (!seminar.ends_at) return start;
+      return start + ' ~ ' + formatDateTime(seminar.ends_at);
+    }
+
+    // price가 양수일 때만 언어별로 다시 포맷해야 하므로(문의/무료는 고정
+    // 번역 키), 이 함수는 그 경우에만 호출한다.
+    function positivePriceText(seminar) {
+      var num = Number(seminar.price);
+      return window.currentLanguage === 'en'
+        ? num.toLocaleString('en-US') + ' KRW'
+        : num.toLocaleString('ko-KR') + '원';
+    }
+
+    function statusLabelKey(status) {
+      if (status === 'open') return 'seminarStatusOpen';
+      if (status === 'closed') return 'seminarStatusClosed';
+      if (status === 'cancelled') return 'seminarStatusCancelled';
+      return 'seminarStatusUpcoming';
+    }
+
+    function applyButtonKey(status) {
+      if (status === 'open') return 'seminarApplyBtn';
+      if (status === 'closed') return 'seminarApplyClosedBtn';
+      if (status === 'cancelled') return 'seminarApplyCancelledBtn';
+      return 'seminarApplyUpcomingBtn';
+    }
+
+    function buildForm(seminar, idx) {
+      return (
+        '<form class="seminar-apply-form" data-seminar-form="' + idx + '" novalidate>' +
+        '<h3 class="seminar-form-title" data-i18n="seminarFormTitle">' + window.t('seminarFormTitle') + '</h3>' +
+
+        '<div class="seminar-field">' +
+        '<label class="seminar-field-label" for="seminar-name-' + idx + '" data-i18n="seminarNameLabel">' + window.t('seminarNameLabel') + '</label>' +
+        '<input type="text" class="seminar-input" id="seminar-name-' + idx + '" name="name" maxlength="50" autocomplete="name" required ' +
+        'data-i18n-placeholder="seminarNamePlaceholder" placeholder="' + escapeHtml(window.t('seminarNamePlaceholder')) + '">' +
+        '<p class="seminar-field-error" data-field-error="name"></p>' +
+        '</div>' +
+
+        '<div class="seminar-field">' +
+        '<label class="seminar-field-label" for="seminar-phone-' + idx + '" data-i18n="seminarPhoneLabel">' + window.t('seminarPhoneLabel') + '</label>' +
+        '<input type="tel" class="seminar-input" id="seminar-phone-' + idx + '" name="phone" maxlength="30" autocomplete="tel" required ' +
+        'data-i18n-placeholder="seminarPhonePlaceholder" placeholder="' + escapeHtml(window.t('seminarPhonePlaceholder')) + '">' +
+        '<p class="seminar-field-error" data-field-error="phone"></p>' +
+        '</div>' +
+
+        '<div class="seminar-field">' +
+        '<span class="seminar-field-label" data-i18n="seminarApplicantTypeLabel">' + window.t('seminarApplicantTypeLabel') + '</span>' +
+        '<div class="seminar-radio-group">' +
+        '<label class="seminar-radio-option"><input type="radio" name="seminar-applicant-type-' + idx + '" value="business"> ' +
+        '<span data-i18n="seminarApplicantTypeBusiness">' + window.t('seminarApplicantTypeBusiness') + '</span></label>' +
+        '<label class="seminar-radio-option"><input type="radio" name="seminar-applicant-type-' + idx + '" value="general"> ' +
+        '<span data-i18n="seminarApplicantTypeGeneral">' + window.t('seminarApplicantTypeGeneral') + '</span></label>' +
+        '</div>' +
+        '<p class="seminar-field-error" data-field-error="applicantType"></p>' +
+        '</div>' +
+
+        '<div class="seminar-field">' +
+        '<span class="seminar-field-label" data-i18n="seminarPurposeLabel">' + window.t('seminarPurposeLabel') + '</span>' +
+        '<div class="seminar-checkbox-group">' +
+        '<label class="seminar-checkbox-option"><input type="checkbox" name="purpose" value="personal_learning"> ' +
+        '<span data-i18n="seminarPurposePersonalLearning">' + window.t('seminarPurposePersonalLearning') + '</span></label>' +
+        '<label class="seminar-checkbox-option"><input type="checkbox" name="purpose" value="clinic_review"> ' +
+        '<span data-i18n="seminarPurposeClinicReview">' + window.t('seminarPurposeClinicReview') + '</span></label>' +
+        '<label class="seminar-checkbox-option"><input type="checkbox" name="purpose" value="product_inquiry"> ' +
+        '<span data-i18n="seminarPurposeProductInquiry">' + window.t('seminarPurposeProductInquiry') + '</span></label>' +
+        '<label class="seminar-checkbox-option"><input type="checkbox" name="purpose" value="other"> ' +
+        '<span data-i18n="seminarPurposeOther">' + window.t('seminarPurposeOther') + '</span></label>' +
+        '</div>' +
+        '<p class="seminar-field-error" data-field-error="purpose"></p>' +
+        '</div>' +
+
+        '<div class="seminar-field seminar-field--consent">' +
+        '<label class="seminar-consent-option">' +
+        '<input type="checkbox" name="consent">' +
+        '<span data-i18n="seminarPrivacyConsentLabel">' + window.t('seminarPrivacyConsentLabel') + '</span>' +
+        '</label>' +
+        '<p class="seminar-consent-text" data-i18n="seminarPrivacyConsentText">' + window.t('seminarPrivacyConsentText') + '</p>' +
+        '<p class="seminar-field-error" data-field-error="consent"></p>' +
+        '</div>' +
+
+        '<button type="submit" class="seminar-submit-btn" data-i18n="seminarSubmitBtn">' + window.t('seminarSubmitBtn') + '</button>' +
+        '<p class="seminar-form-status" data-form-status="' + idx + '" aria-live="polite"></p>' +
+        '</form>'
+      );
+    }
+
+    function buildCard(seminar, idx) {
+      var titleText = pickLang(seminar.title, seminar.title_en);
+      var descText = pickLang(seminar.description, seminar.description_en);
+      var locationText = pickLang(seminar.location, seminar.location_en);
+      var notesText = pickLang(seminar.notes, seminar.notes_en);
+      var safeStatus = escapeHtml(seminar.status || 'upcoming');
+      var statusKey = statusLabelKey(seminar.status);
+
+      var priceHtml;
+      if (seminar.price === null || seminar.price === undefined) {
+        priceHtml = '<span class="seminar-card-value" data-i18n="seminarPriceTBD">' + window.t('seminarPriceTBD') + '</span>';
+      } else if (Number(seminar.price) === 0) {
+        priceHtml = '<span class="seminar-card-value" data-i18n="seminarPriceFree">' + window.t('seminarPriceFree') + '</span>';
+      } else {
+        priceHtml = '<span class="seminar-card-value" data-seminar-price="' + idx + '">' + escapeHtml(positivePriceText(seminar)) + '</span>';
+      }
+
+      var capacityHtml = (seminar.capacity === null || seminar.capacity === undefined)
+        ? '<span class="seminar-card-value" data-i18n="seminarCapacityUnlimited">' + window.t('seminarCapacityUnlimited') + '</span>'
+        : '<span class="seminar-card-value">' + escapeHtml(String(seminar.capacity)) + '</span>';
+
+      var descHtml = descText
+        ? '<p class="seminar-card-desc" data-seminar-desc="' + idx + '">' + escapeHtml(descText) + '</p>'
+        : '';
+
+      var locationHtml = locationText
+        ? '<div class="seminar-card-row"><span class="seminar-card-label" data-i18n="seminarLocationLabel">' + window.t('seminarLocationLabel') + '</span>' +
+          '<span class="seminar-card-value" data-seminar-location="' + idx + '">' + escapeHtml(locationText) + '</span></div>'
+        : '';
+
+      var notesHtml = notesText
+        ? '<div class="seminar-card-row"><span class="seminar-card-label" data-i18n="seminarNotesLabel">' + window.t('seminarNotesLabel') + '</span>' +
+          '<p class="seminar-card-value" data-seminar-notes="' + idx + '">' + escapeHtml(notesText) + '</p></div>'
+        : '';
+
+      var safeKakao = safeUrl(seminar.kakao_url);
+      var kakaoHtml = safeKakao
+        ? '<a class="seminar-kakao-btn" href="' + escapeHtml(safeKakao) + '" target="_blank" rel="noopener noreferrer" data-i18n="seminarKakaoBtn">' + window.t('seminarKakaoBtn') + '</a>'
+        : '';
+
+      var actionHtml = seminar.status === 'open'
+        ? buildForm(seminar, idx)
+        : '<button type="button" class="seminar-apply-btn seminar-apply-btn--disabled" disabled data-i18n="' + applyButtonKey(seminar.status) + '">' + window.t(applyButtonKey(seminar.status)) + '</button>';
+
+      return (
+        '<section class="seminar-card" data-seminar-card="' + idx + '">' +
+        '<span class="seminar-card-status seminar-card-status--' + safeStatus + '" data-i18n="' + statusKey + '">' + window.t(statusKey) + '</span>' +
+        '<h2 class="seminar-card-title" data-seminar-title="' + idx + '">' + escapeHtml(titleText) + '</h2>' +
+        descHtml +
+        '<div class="seminar-card-row"><span class="seminar-card-label" data-i18n="seminarScheduleLabel">' + window.t('seminarScheduleLabel') + '</span>' +
+        '<span class="seminar-card-value" data-seminar-schedule="' + idx + '">' + escapeHtml(scheduleText(seminar)) + '</span></div>' +
+        locationHtml +
+        '<div class="seminar-card-row"><span class="seminar-card-label" data-i18n="seminarPriceLabel">' + window.t('seminarPriceLabel') + '</span>' + priceHtml + '</div>' +
+        '<div class="seminar-card-row"><span class="seminar-card-label" data-i18n="seminarCapacityLabel">' + window.t('seminarCapacityLabel') + '</span>' + capacityHtml + '</div>' +
+        notesHtml +
+        kakaoHtml +
+        actionHtml +
+        '</section>'
+      );
+    }
+
+    function renderSeminarList(seminars) {
+      container.innerHTML =
+        '<div class="seminar-page">' +
+        '<div class="section-title">' +
+        '<h1 data-i18n="seminarPageTitle">' + window.t('seminarPageTitle') + '</h1>' +
+        '<p class="seminar-page-desc" data-i18n="seminarPageDesc">' + window.t('seminarPageDesc') + '</p>' +
+        '</div>' +
+        '<div class="seminar-card-list">' +
+        seminars.map(function (seminar, idx) { return buildCard(seminar, idx); }).join('') +
+        '</div>' +
+        '</div>';
+
+      seminars.forEach(function (seminar, idx) {
+        if (seminar.status !== 'open') return;
+        var form = container.querySelector('[data-seminar-form="' + idx + '"]');
+        if (form) initSeminarForm(form, seminar);
+      });
+
+      // 언어를 바꿔도 대부분의 문구는 data-i18n 덕분에 자동으로 갱신된다.
+      // 다만 title/description/location/notes(한영 컬럼 중 선택)와
+      // 일정·가격(로케일에 맞춰 새로 포맷한 문자열)은 렌더링 시점에 만든
+      // 값이라 별도로 갱신해야 한다. innerHTML로 폼 전체를 다시 그리면
+      // 입력 중이던 값이 사라지므로, textContent만 바꾸는 이 훅으로
+      // 처리한다(이어포인트 상세페이지의 언어 훅과 동일한 접근).
+      window.__seminarLanguageHook = function () {
+        if (isStale()) return;
+        seminars.forEach(function (seminar, idx) {
+          var titleEl = container.querySelector('[data-seminar-title="' + idx + '"]');
+          if (titleEl) titleEl.textContent = pickLang(seminar.title, seminar.title_en);
+
+          var descEl = container.querySelector('[data-seminar-desc="' + idx + '"]');
+          if (descEl) descEl.textContent = pickLang(seminar.description, seminar.description_en);
+
+          var locationEl = container.querySelector('[data-seminar-location="' + idx + '"]');
+          if (locationEl) locationEl.textContent = pickLang(seminar.location, seminar.location_en);
+
+          var notesEl = container.querySelector('[data-seminar-notes="' + idx + '"]');
+          if (notesEl) notesEl.textContent = pickLang(seminar.notes, seminar.notes_en);
+
+          var scheduleEl = container.querySelector('[data-seminar-schedule="' + idx + '"]');
+          if (scheduleEl) scheduleEl.textContent = scheduleText(seminar);
+
+          var priceEl = container.querySelector('[data-seminar-price="' + idx + '"]');
+          if (priceEl) priceEl.textContent = positivePriceText(seminar);
+        });
+
+        // 검증 오류/신청 상태 문구는 el.dataset.i18nKey에 저장해 둔 번역
+        // 키로만 다시 그린다 — 키가 없는(=현재 아무 메시지도 없는) 요소는
+        // 건드리지 않으므로, 숨겨져 있던 오류가 언어 전환만으로 새로
+        // 나타나지는 않는다. 이름/연락처/선택값/동의 체크박스는 이 훅이
+        // 전혀 건드리지 않는다.
+        container.querySelectorAll('.seminar-field-error, .seminar-form-status').forEach(function (el) {
+          var key = el.dataset.i18nKey;
+          if (key) el.textContent = window.t(key);
+        });
+      };
+      if (window.i18nOnLanguageChange) window.i18nOnLanguageChange.push(window.__seminarLanguageHook);
+    }
+
+    function initSeminarForm(form, seminar) {
+      var nameInput = form.querySelector('input[name="name"]');
+      var phoneInput = form.querySelector('input[name="phone"]');
+      var typeInputs = form.querySelectorAll('input[type="radio"]');
+      var purposeInputs = form.querySelectorAll('input[name="purpose"]');
+      var consentInput = form.querySelector('input[name="consent"]');
+      var submitBtn = form.querySelector('.seminar-submit-btn');
+      var statusEl = form.querySelector('[data-form-status]');
+      var PHONE_CHARSET = /^[0-9+\-() ]+$/;
+      var ALLOWED_PURPOSES = ['personal_learning', 'clinic_review', 'product_inquiry', 'other'];
+
+      function fieldError(field) {
+        return form.querySelector('[data-field-error="' + field + '"]');
+      }
+
+      // 오류 문구는 번역된 텍스트가 아니라 번역 키를 el.dataset.i18nKey에
+      // 저장해 두고, 그 키로 window.t()를 호출해 화면에 그린다. 언어 전환
+      // 훅(__seminarLanguageHook)이 이 키를 읽어 다시 그릴 수 있게 하기
+      // 위함이다. key가 없으면(빈 값) 문구와 키를 모두 지운다 — 언어
+      // 전환 과정에서 숨겨진 오류가 새로 나타나지 않는 이유이기도 하다.
+      function setFieldError(field, key) {
+        var el = fieldError(field);
+        if (!el) return;
+        if (key) {
+          el.dataset.i18nKey = key;
+          el.textContent = window.t(key);
+        } else {
+          delete el.dataset.i18nKey;
+          el.textContent = '';
+        }
+      }
+
+      function clearErrors() {
+        form.querySelectorAll('.seminar-field-error').forEach(function (el) {
+          delete el.dataset.i18nKey;
+          el.textContent = '';
+        });
+      }
+
+      // 제출 상태 문구(제출 중/성공/실패)도 필드 오류와 동일하게 번역
+      // 키를 저장해 두고 그 키로만 다시 그린다.
+      function setStatus(key, isError) {
+        if (key) {
+          statusEl.dataset.i18nKey = key;
+          statusEl.textContent = window.t(key);
+        } else {
+          delete statusEl.dataset.i18nKey;
+          statusEl.textContent = '';
+        }
+        statusEl.className = 'seminar-form-status' + (isError ? ' seminar-form-status--error' : key ? ' seminar-form-status--success' : '');
+      }
+
+      // DB의 CHECK 제약과 동일한 조건으로 프론트에서 먼저 검증한다 —
+      // 여기서 막지 못한 값도 최종적으로는 DB CHECK가 다시 막아준다.
+      function validate() {
+        clearErrors();
+        var valid = true;
+
+        var name = nameInput.value.trim();
+        if (!name) {
+          setFieldError('name', 'seminarValidationNameRequired');
+          valid = false;
+        } else if (name.length > 50) {
+          setFieldError('name', 'seminarValidationNameLength');
+          valid = false;
+        }
+
+        var phone = phoneInput.value.trim();
+        var digitCount = phone.replace(/[^0-9]/g, '').length;
+        if (!phone) {
+          setFieldError('phone', 'seminarValidationPhoneRequired');
+          valid = false;
+        } else if (phone.length > 30 || !PHONE_CHARSET.test(phone)) {
+          setFieldError('phone', 'seminarValidationPhoneCharset');
+          valid = false;
+        } else if (digitCount < 7 || digitCount > 15) {
+          setFieldError('phone', 'seminarValidationPhoneDigitCount');
+          valid = false;
+        }
+
+        var applicantType = null;
+        typeInputs.forEach(function (el) { if (el.checked) applicantType = el.value; });
+        if (!applicantType) {
+          setFieldError('applicantType', 'seminarValidationApplicantTypeRequired');
+          valid = false;
+        }
+
+        // 허용된 4개 코드만 통과시키고(화이트리스트), Set으로 중복을
+        // 제거한 뒤 1~4개 범위인지 명시적으로 검사한다 — DB CHECK
+        // (purposes <@ 허용 배열, cardinality 1~4)와 동일한 조건을 코드에도
+        // 명시해 둔다. 현재 체크박스가 4개뿐이라 4개 초과는 실제로는
+        // 발생하지 않지만, 방어 목적으로 명시적으로 막는다.
+        var purposesSeen = new Set();
+        var purposes = [];
+        purposeInputs.forEach(function (el) {
+          if (el.checked && ALLOWED_PURPOSES.indexOf(el.value) !== -1 && !purposesSeen.has(el.value)) {
+            purposesSeen.add(el.value);
+            purposes.push(el.value);
+          }
+        });
+        if (purposes.length === 0 || purposes.length > 4) {
+          setFieldError('purpose', 'seminarValidationPurposeRequired');
+          valid = false;
+        }
+
+        if (!consentInput.checked) {
+          setFieldError('consent', 'seminarValidationConsentRequired');
+          valid = false;
+        }
+
+        if (!valid) return null;
+
+        return {
+          seminar_id: seminar.id,
+          name: name,
+          phone: phone,
+          applicant_type: applicantType,
+          purposes: purposes,
+          privacy_agreed: true,
+          privacy_policy_version: SEMINAR_PRIVACY_POLICY_VERSION
+        };
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (submitBtn.dataset.busy === 'true') return;
+
+        var payload = validate();
+        if (!payload) return;
+
+        submitBtn.dataset.busy = 'true';
+        submitBtn.disabled = true;
+        setStatus('seminarSubmitting', false);
+
+        try {
+          var res = await window.SeminarRepo.submitApplication(payload);
+
+          if (res.error) {
+            // Supabase 오류 객체를 그대로 출력하지 않는다 — 고정 문구만 남긴다.
+            console.error('[Seminar] 신청 저장에 실패했습니다.');
+            setStatus('seminarSubmitError', true);
+            return;
+          }
+
+          setStatus('seminarSubmitSuccess', false);
+          // 신청 성공 후 개인정보가 담긴 입력값을 화면에서 지운다.
+          form.reset();
+          clearErrors();
+        } catch (err) {
+          console.error('[Seminar] 신청 저장 중 예외가 발생했습니다.');
+          setStatus('seminarSubmitError', true);
+        } finally {
+          // 성공/실패/예외 여부와 관계없이 항상 이 폼의 잠금만 해제한다.
+          submitBtn.dataset.busy = 'false';
+          submitBtn.disabled = false;
+        }
+      });
+    }
   }
 
   function renderProductsList(container) {
@@ -1500,7 +1941,9 @@ window.Pages = (function () {
       });
     },
 
-    seminar: renderSeminarEmbed,
+    // 비로그인 사용자도 조회·신청이 가능해야 하므로 checkEducationAccess로
+    // 감싸지 않는다(요구사항 4).
+    seminar: renderSeminarPage,
 
     products: renderProductsList,
 
