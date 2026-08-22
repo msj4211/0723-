@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>730스킨 이어밸런스 체크 결과지</title>
+<style>
+  :root {
+    --brand-mint: #B8D8C0;
+    --brand-mint-dark: #6F9F7D;
+    --brand-mint-light: #F0F8F2;
+    --brand-mint-border: #D1E7D5;
+    --brand-brown: #6E4933;
+    --brand-charcoal: #242723;
+    --brand-ivory: #FAF9F5;
+    --brand-white: #FFFFFF;
+    --text-primary: #242723;
+    --text-secondary: #626961;
+    --border-neutral: #DDE2DC;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    background: #FFFFFF;
+    color: #2E2A26;
+    margin: 0;
+    padding: 24px 16px 80px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; position: relative; }
+  .home-link {
+    position: absolute; top: 0; left: 0;
+    font-size: 15px; font-weight: 700; color: #2E2A26;
+    text-decoration: none; letter-spacing: 0.5px;
+  }
+  .home-link:hover { color: #B08D57; }
+  header { text-align: center; margin-bottom: 24px; }
+  header .sub { color: #B08D57; font-size: 13px; letter-spacing: 1px; margin-bottom: 4px; }
+  header h1 { font-size: 22px; margin: 0 0 8px; color: #2E2A26; }
+  header p { font-size: 13px; color: #8A8378; margin: 0; }
+
+  .info-summary {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    background: #fff; border: 1px solid #E6DFD2; border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 20px; font-size: 13.5px; color: #6B6559;
+  }
+  .info-summary span b { color: #2E2A26; }
+
+  .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+  .result-card { background: #fff; border-radius: 12px; padding: 14px 16px; border: 1px solid #E6DFD2; }
+  .result-card .rc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .result-card .rc-name { font-size: 13px; font-weight: 700; color: #2E2A26; }
+  .result-card .rc-tier { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
+  .result-card .rc-score { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .result-card .rc-score span { font-size: 12px; font-weight: 400; color: #8A8378; }
+  .result-card .rc-note { font-size: 12.5px; color: #6B6559; line-height: 1.55; }
+
+  .tier-stable { background: #E5EEE1; color: #4B6E3F; }
+  .tier-watch { background: #FBEED9; color: #A0722C; }
+  .tier-focus { background: #F6DFD5; color: #B04B2A; }
+
+  .action-row { display: flex; gap: 8px; margin-top: 16px; }
+  .print-btn, .back-btn {
+    display: block; width: 100%; text-align: center; padding: 10px;
+    background: #fff; border: 1px solid #DDD5C7; border-radius: 8px; color: #6B6559;
+    font-size: 13px; cursor: pointer; font-family: inherit; text-decoration: none;
+  }
+  .print-btn {
+    background: #FFFFFF; color: #1F1F1F; border-color: #D9D1C7; font-weight: 700;
+    border-radius: 16px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+  }
+  .print-btn:hover { background: #FAF8F5; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09); transform: translateY(-1px); }
+
+  .empty-state { text-align: center; color: #8A8378; font-size: 14px; margin-top: 60px; }
+  .empty-state a { color: #B08D57; }
+
+  footer { text-align: center; font-size: 11px; color: #B0A896; margin-top: 30px; }
+
+  @media print {
+    .action-row, .home-link { display: none; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../" class="home-link">730</a>
+  <header>
+    <div class="sub" id="brand-sub">730스킨 이어테라피</div>
+    <h1 id="page-title">이어밸런스 체크 결과지</h1>
+    <p id="page-desc">지난 한 주 동안의 경험을 바탕으로 한 결과입니다</p>
+  </header>
+
+  <div id="content"></div>
+
+  <footer id="page-footer">730스킨 이어테라피</footer>
+</div>
+
+<script>
+// ============================================================
+// 다국어(ko/en) 지원 + 결과 렌더링.
+// index.html이 저장하는 earCheckResult(domainKey/protective/tierIdx/avg/max,
+// 언어와 무관한 값)를 읽어, 이 페이지가 현재 언어에 맞는 라벨·문구를
+// 찾아서 그린다. 아래 KO 사전은 index.html의 NOTES/TIER_LABELS/
+// TIER_CLASSES/PROTECTIVE_LABELS/PROTECTIVE_CLASSES/PROTECTIVE_NOTES와
+// 값이 완전히 동일해야 한다(원본 그대로 옮겨 적음, 새로 만들지 않음).
+// 사용자 입력(이름/나이/상담 날짜)과 결과 문구는 전부 textContent로만
+// 넣어 innerHTML에 사용자 입력이 들어가지 않게 한다.
+// ============================================================
+var LANG_KEY = 'earCheckLanguage';
+var PARENT_ALLOWED_ORIGINS = ['http://localhost:8732', 'https://730skineartherapy.com'];
+var currentLang = 'ko';
+
+var KO = {
+  domainLabels: {
+    sleep: '수면 밸런스',
+    vitality: '활력·정서 자원',
+    tension: '신체 긴장·통증',
+    autonomic: '자율신경 반응',
+    digestion: '소화·식욕 신호',
+    emotion: '정서적 부담',
+    selfcare: '자기관리 자원',
+    menstrual: '생리·월경 관련 증상'
+  },
+  notes: {
+    sleep: ['수면 밸런스가 안정적이에요.', '가벼운 수면 신호가 보여요. 저녁 루틴 케어를 권장해요.', '밤에도 마음이 쉬지 못하는 유형이에요. 신문혈·심혈 중심 케어를 권장해요.'],
+    vitality: ['활력과 정서 자원이 좋은 편이에요.', '활력이 조금 저하된 신호가 있어요.', '에너지와 의욕이 많이 떨어진 상태예요. 활력 회복 케어를 우선해보세요.'],
+    tension: ['신체 긴장이 안정적이에요.', '가벼운 근골격 긴장 신호가 있어요.', '몸이 늘 긴장 모드인 유형이에요. 어깨·목 반사구 집중 케어를 권장해요.'],
+    autonomic: ['자율신경 균형이 안정적이에요.', '자율신경 신호가 간간이 나타나요.', '자율신경이 예민해진 유형이에요. 이주·미주신경 반사구를 우선해보세요.'],
+    digestion: ['소화·식욕이 안정적이에요.', '소화 컨디션에 가벼운 신호가 있어요.', '소화 기능에 부담이 큰 유형이에요. 위·비 반사구 케어를 병행해보세요.'],
+    emotion: ['정서적으로 안정된 상태예요.', '정서적으로 조금 지쳐있는 신호가 있어요.', '마음의 무게를 혼자 견뎌온 유형이에요. 정서 이완 케어와 함께, 필요하다면 전문 상담도 함께 권해보세요.'],
+    menstrual: ['생리 전후 컨디션이 안정적이에요.', '생리 전후로 가벼운 신호가 나타나는 편이에요.', '생리 전후 증상이 크게 나타나는 유형이에요. 자궁·내분비 반사구 중심 케어를 권장해요.']
+  },
+  tierLabels: ['안정', '관찰 필요', '집중 케어'],
+  tierClasses: ['tier-stable', 'tier-watch', 'tier-focus'],
+  protectiveLabels: ['부족', '보통', '좋음'],
+  protectiveClasses: ['tier-focus', 'tier-watch', 'tier-stable'],
+  protectiveNotes: [
+    '쉬고 이완하는 시간이 부족해요. 자기관리 루틴을 함께 만들어봐요.',
+    '자기관리 습관이 있어요. 조금 더 늘려보면 좋아요.',
+    '스스로 회복하는 힘이 좋아요. 이 습관을 계속 이어가시면 좋아요.'
+  ],
+  nameLabel: '이름',
+  ageLabel: '나이',
+  dateLabel: '상담 날짜',
+  printBtn: '결과지 인쇄 / PDF 저장',
+  backBtn: '체크리스트로 돌아가기',
+  emptyMessage: '결과 데이터를 찾을 수 없어요.',
+  emptyLinkText: '체크리스트로 돌아가서 먼저 진행해주세요.',
+  pageTitle: '730스킨 이어밸런스 체크 결과지',
+  brandSub: '730스킨 이어테라피',
+  heroTitle: '이어밸런스 체크 결과지',
+  heroDesc: '지난 한 주 동안의 경험을 바탕으로 한 결과입니다'
+};
+
+var EN = {
+  domainLabels: {
+    sleep: 'Sleep Balance',
+    vitality: 'Vitality & Emotional Resources',
+    tension: 'Physical Tension & Pain',
+    autonomic: 'Autonomic Nervous System Responses',
+    digestion: 'Digestion & Appetite Signals',
+    emotion: 'Emotional Load',
+    selfcare: 'Self-Care Resources',
+    menstrual: 'Menstrual-Related Symptoms'
+  },
+  notes: {
+    sleep: ['Your sleep balance looks stable.', 'There are mild signs related to sleep. An evening self-care routine is recommended.', 'Your mind may not be resting even at night. Care focused on the Shenmen and Heart reflex points is recommended.'],
+    vitality: ['Your vitality and emotional resources look good.', 'There are mild signs of reduced vitality.', 'Your energy and motivation appear significantly low. Consider prioritizing care to help restore vitality.'],
+    tension: ['Your physical tension level looks stable.', 'There are mild signs of musculoskeletal tension.', 'Your body may be in a constant state of tension. Focused care on the shoulder and neck reflex points is recommended.'],
+    autonomic: ['Your autonomic nervous system balance looks stable.', 'Autonomic nervous system signals appear occasionally.', 'Your autonomic nervous system may be heightened. Consider prioritizing the tragus and vagus nerve reflex points.'],
+    digestion: ['Your digestion and appetite look stable.', 'There are mild signs related to digestive condition.', 'Your digestive function may be under significant strain. Consider combining care with the stomach and spleen reflex points.'],
+    emotion: ['You appear emotionally stable.', 'There are mild signs of emotional fatigue.', 'You may have been carrying an emotional burden largely on your own. Along with emotional relaxation care, professional counseling is also worth considering if needed.'],
+    menstrual: ['Your condition around your period looks stable.', 'Mild signs tend to appear around your period.', 'Symptoms around your period may appear more strongly. Care centered on the uterus and endocrine reflex points is recommended.']
+  },
+  tierLabels: ['Stable', 'Needs Attention', 'Focus Care'],
+  tierClasses: ['tier-stable', 'tier-watch', 'tier-focus'],
+  protectiveLabels: ['Low', 'Moderate', 'Good'],
+  protectiveClasses: ['tier-focus', 'tier-watch', 'tier-stable'],
+  protectiveNotes: [
+    "You may not be getting enough time to rest and relax. Let's work on building a self-care routine together.",
+    'You already have some self-care habits. Consider building on them a bit more.',
+    'You have a good capacity for self-recovery. Keep up this habit.'
+  ],
+  nameLabel: 'Name',
+  ageLabel: 'Age',
+  dateLabel: 'Consultation Date',
+  printBtn: 'Print / Save as PDF',
+  backBtn: 'Back to Checklist',
+  emptyMessage: "We couldn't find your result data.",
+  emptyLinkText: 'Please go back to the checklist and complete it first.',
+  pageTitle: '730 Skin Ear Balance Check Result',
+  brandSub: '730 Skin Ear Therapy',
+  heroTitle: 'Ear Balance Check Result',
+  heroDesc: 'These results are based on your experience over the past week'
+};
+
+function readStoredLang() {
+  try {
+    var v = sessionStorage.getItem(LANG_KEY);
+    return (v === 'ko' || v === 'en') ? v : 'ko';
+  } catch (e) {
+    return 'ko';
+  }
+}
+
+function dict() {
+  return currentLang === 'en' ? EN : KO;
+}
+
+function setText(id, text) {
+  var el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+
+// 결과 화면 전체를 다시 그린다. 이 페이지에는 사용자가 입력 중인 값이
+// 없고(전부 index.html에서 이미 제출된 값을 표시만 함) 버튼도 매번
+// 새로 이벤트를 붙이므로, 언어가 바뀔 때 통째로 다시 그려도 상태가
+// 유실될 게 없다. 이름/나이/날짜/결과 문구는 전부 textContent로만
+// 채워 innerHTML에 사용자 입력이 들어가지 않게 한다.
+function renderResult() {
+  var d = dict();
+  var contentEl = document.getElementById('content');
+  contentEl.innerHTML = '';
+
+  var raw = sessionStorage.getItem('earCheckResult');
+  if (!raw) {
+    var empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.appendChild(document.createTextNode(d.emptyMessage));
+    empty.appendChild(document.createElement('br'));
+    var link = document.createElement('a');
+    link.href = 'index.html';
+    link.textContent = d.emptyLinkText;
+    empty.appendChild(link);
+    contentEl.appendChild(empty);
+    return;
+  }
+
+  var data = JSON.parse(raw);
+
+  var summary = document.createElement('div');
+  summary.className = 'info-summary';
+  var summaryFields = [
+    { label: d.nameLabel, value: data.name },
+    { label: d.ageLabel, value: data.age },
+    { label: d.dateLabel, value: data.date }
+  ];
+  var hasSummary = false;
+  summaryFields.forEach(function (field) {
+    if (!field.value) return;
+    hasSummary = true;
+    var span = document.createElement('span');
+    span.appendChild(document.createTextNode(field.label + ': '));
+    var b = document.createElement('b');
+    b.textContent = field.value;
+    span.appendChild(b);
+    summary.appendChild(span);
+  });
+  if (hasSummary) contentEl.appendChild(summary);
+
+  var grid = document.createElement('div');
+  grid.className = 'result-grid';
+  data.results.forEach(function (r) {
+    var labels = r.protective ? d.protectiveLabels : d.tierLabels;
+    var classes = r.protective ? d.protectiveClasses : d.tierClasses;
+    var notes = r.protective ? d.protectiveNotes : d.notes[r.domainKey];
+
+    var card = document.createElement('div');
+    card.className = 'result-card';
+
+    var top = document.createElement('div');
+    top.className = 'rc-top';
+    var nameSpan = document.createElement('span');
+    nameSpan.className = 'rc-name';
+    nameSpan.textContent = d.domainLabels[r.domainKey];
+    var tierSpan = document.createElement('span');
+    tierSpan.className = 'rc-tier ' + classes[r.tierIdx];
+    tierSpan.textContent = labels[r.tierIdx];
+    top.appendChild(nameSpan);
+    top.appendChild(tierSpan);
+
+    var scoreDiv = document.createElement('div');
+    scoreDiv.className = 'rc-score';
+    scoreDiv.appendChild(document.createTextNode(r.avg + ' '));
+    var maxSpan = document.createElement('span');
+    maxSpan.textContent = '/ ' + r.max;
+    scoreDiv.appendChild(maxSpan);
+
+    var noteDiv = document.createElement('div');
+    noteDiv.className = 'rc-note';
+    noteDiv.textContent = notes[r.tierIdx];
+
+    card.appendChild(top);
+    card.appendChild(scoreDiv);
+    card.appendChild(noteDiv);
+    grid.appendChild(card);
+  });
+  contentEl.appendChild(grid);
+
+  var actionRow = document.createElement('div');
+  actionRow.className = 'action-row';
+
+  var printBtn = document.createElement('button');
+  printBtn.className = 'print-btn';
+  printBtn.type = 'button';
+  printBtn.textContent = d.printBtn;
+  printBtn.addEventListener('click', function () { window.print(); });
+  actionRow.appendChild(printBtn);
+
+  var backLink = document.createElement('a');
+  backLink.className = 'back-btn';
+  backLink.href = 'index.html';
+  backLink.textContent = d.backBtn;
+  actionRow.appendChild(backLink);
+
+  contentEl.appendChild(actionRow);
+}
+
+function applyTranslations() {
+  var d = dict();
+  document.title = d.pageTitle;
+  document.documentElement.lang = currentLang;
+  setText('brand-sub', d.brandSub);
+  setText('page-title', d.heroTitle);
+  setText('page-desc', d.heroDesc);
+  renderResult();
+}
+
+function setLanguage(lang) {
+  if (lang !== 'ko' && lang !== 'en') lang = 'ko';
+  currentLang = lang;
+  try { sessionStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  applyTranslations();
+}
+
+// ── 부모(메인 사이트)와의 언어 동기화 ── index.html과 동일한 검증 규칙.
+window.addEventListener('message', function (event) {
+  if (PARENT_ALLOWED_ORIGINS.indexOf(event.origin) === -1) return;
+  if (event.source !== window.parent) return;
+  var data = event.data;
+  if (!data || data.source !== '730-main-site' || data.type !== 'language-change') return;
+  if (data.language !== 'ko' && data.language !== 'en') return;
+  setLanguage(data.language);
+});
+
+// document.referrer는 이 문서를 iframe으로 띄운 부모 페이지의 주소다(같은
+// 값이 페이지 로드 내내 바뀌지 않으므로 한 번만 계산해도 된다). 그 origin이
+// PARENT_ALLOWED_ORIGINS 화이트리스트에 있을 때만 "안전하게 확인됨"으로
+// 본다 — referrer가 없거나(리퍼러 정책 등으로 비어있는 경우) 화이트리스트
+// 밖이면 null을 돌려주고, 호출하는 쪽에서 그 경우 메시지 전송 자체를 하지
+// 않거나(ready) '*'로 대체한다(height, 기존 동작 유지 목적).
+function getParentOrigin() {
+  try {
+    if (!document.referrer) return null;
+    var refOrigin = new URL(document.referrer).origin;
+    return PARENT_ALLOWED_ORIGINS.indexOf(refOrigin) !== -1 ? refOrigin : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+// ready 메시지는 부모 origin을 안전하게 확인했을 때만 보낸다 — 확인이
+// 안 되면(referrer 없음 등) 아예 보내지 않는다('*'로 대신 보내지 않음).
+function notifyParentReady() {
+  var origin = getParentOrigin();
+  if (!origin) return;
+  try {
+    window.parent.postMessage({ source: '730-skin-check', type: 'ready' }, origin);
+  } catch (e) {}
+}
+
+// index.html에서 넘어오는 시점에는 postMessage보다 sessionStorage 값이
+// 먼저 확실히 존재하므로, 그 값으로 즉시 그린 뒤 부모에게 ready를 보내
+// 최신 언어를 다시 받는다 — 한국어로 잠깐 보였다가 바뀌는 현상을 줄인다.
+currentLang = readStoredLang();
+applyTranslations();
+notifyParentReady();
+</script>
+<script>
+// iframe으로 이 페이지를 감싸는 부모 문서에 실제 콘텐츠 높이를 알려준다.
+// postMessage는 origin이 달라도(cross-origin) 항상 동작해서, 로컬 개발
+// 서버처럼 부모와 origin이 다른 환경에서도 iframe 높이가 정확히 맞춰진다.
+(function () {
+  function reportHeight() {
+    // documentElement.scrollHeight는 "콘텐츠 높이와 뷰포트 높이 중 큰 값"을
+    // 반환한다. 이전 페이지(체크리스트)에서 이미 iframe이 크게 늘어난 상태로
+    // 이 페이지로 넘어오면, 뷰포트 자체가 커서 실제 콘텐츠보다 큰 값을 그대로
+    // 돌려주는 문제가 있다. body.scrollHeight는 뷰포트 크기와 무관하게 실제
+    // 콘텐츠 높이만 반영하므로 이 문제가 없다.
+    // targetOrigin은 가능하면 getParentOrigin()(위 스크립트에서 정의, 같은
+    // 문서라 전역에서 접근 가능)으로 확인한 안전한 부모 origin을 쓰고,
+    // 확인이 안 되는 경우에만 기존처럼 '*'로 대체해 높이 조절 기능 자체는
+    // 계속 동작하게 한다.
+    var targetOrigin = (typeof getParentOrigin === 'function' && getParentOrigin()) || '*';
+    window.parent.postMessage({
+      source: '730skin-check-embed',
+      height: document.body.scrollHeight
+    }, targetOrigin);
+  }
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(reportHeight).observe(document.body);
+  } else {
+    window.addEventListener('load', reportHeight);
+  }
+  reportHeight();
+})();
+</script>
+</body>
+</html>

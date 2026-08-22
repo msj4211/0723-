@@ -154,15 +154,13 @@ window.Pages = (function () {
   }
 
   function renderEarCheckEmbed(container) {
-    // 로컬 개발 환경(localhost/127.0.0.1)에서는 /Users/suji/730skin-check를
-    // 직접 띄운 8001번 서버를 iframe으로 쓰고, 그 외(실제 배포 도메인)에서는
-    // 원래의 GitHub Pages 주소를 그대로 쓴다. 수동 전환 없이
-    // window.location.hostname만으로 자동 판별한다 — 이 판별은 iframe을
-    // 처음 만들 때 한 번만 이뤄지고, 언어를 바꿀 때는 다시 실행되지 않는다
-    // (아래 sendLanguage()는 이미 만들어진 iframe에 postMessage만 보낸다).
-    var isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    var EAR_CHECK_ORIGIN = isLocalDev ? 'http://localhost:8001' : 'https://msj4211.github.io';
-    var EAR_CHECK_SRC = isLocalDev ? 'http://localhost:8001/' : 'https://msj4211.github.io/730skin-check/';
+    // 이어밸런스 체크(옛 별도 저장소 730skin-check)를 이 저장소의 /ear-check/
+    // 폴더로 통합했다 — 이제 항상 같은 origin(현재 페이지 자신)에서 로드되므로
+    // 로컬/배포를 구분해 다른 origin을 계산해줄 필요가 없다. 예전 외부 주소
+    // (http://localhost:8001/, https://msj4211.github.io/730skin-check/)는
+    // 더 이상 쓰지 않는다.
+    var EAR_CHECK_ORIGIN = window.location.origin;
+    var EAR_CHECK_SRC = '/ear-check/';
 
     container.innerHTML = `
       <div class="iframe-page">

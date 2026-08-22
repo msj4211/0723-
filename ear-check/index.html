@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><script async src="https://www.googletagmanager.com/gtag/js?id=G-GG2SP7JBVY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GG2SP7JBVY');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>730스킨 이어밸런스 체크 결과지</title>
+<style>
+  :root {
+    --brand-mint: #B8D8C0;
+    --brand-mint-dark: #6F9F7D;
+    --brand-mint-light: #F0F8F2;
+    --brand-mint-border: #D1E7D5;
+    --brand-brown: #6E4933;
+    --brand-charcoal: #242723;
+    --brand-ivory: #FAF9F5;
+    --brand-white: #FFFFFF;
+    --text-primary: #242723;
+    --text-secondary: #626961;
+    --border-neutral: #DDE2DC;
+  }
+  * { box-sizing: border-box; }
+  html, body { max-width: 100%; overflow-x: hidden; }
+  body {
+    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    background: #FFFFFF;
+    color: #2E2A26;
+    margin: 0;
+    padding: 24px 16px 80px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; position: relative; }
+  .home-link {
+    position: absolute; top: 0; left: 0;
+    font-size: 15px; font-weight: 700; color: #2E2A26;
+    text-decoration: none; letter-spacing: 0.5px;
+  }
+  .home-link:hover { color: #B08D57; }
+  header { text-align: center; margin-bottom: 24px; }
+  header .sub { color: #B08D57; font-size: 13px; letter-spacing: 1px; margin-bottom: 4px; }
+  header h1 { font-size: 22px; margin: 0 0 8px; color: #2E2A26; }
+  header p { font-size: 13px; color: #8A8378; margin: 0; }
+
+  .balance-sheet {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #E6DFD2;
+    border-radius: 16px;
+    overflow: hidden;
+    padding: 20px 18px 22px;
+  }
+
+  @media (max-width: 600px) {
+    .balance-sheet {
+      width: calc(100% - 32px);
+      margin: 0 auto;
+    }
+  }
+
+  .user-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .user-info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .field { min-width: 0; }
+  .field label { display: block; font-size: 12px; color: #8A8378; margin-bottom: 4px; }
+  .field input {
+    width: 100%; max-width: 100%; padding: 8px 10px; border: 1px solid #DDD5C7; border-radius: 6px;
+    font-size: 14px; background: #fff; font-family: inherit;
+  }
+  .gender-group { display: flex; gap: 6px; width: 100%; max-width: 100%; }
+  .gender-group .opt-btn { flex: 1; padding: 8px 10px; font-size: 13px; max-width: 100%; }
+
+  .toggle-row {
+    display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: #6B6559;
+    background: #FBF8F2; border: 1px solid #E6DFD2; border-radius: 8px;
+    cursor: pointer; width: fit-content; max-width: 100%; overflow: hidden;
+    opacity: 0; max-height: 0; padding: 0 14px; margin-bottom: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.25s ease, max-height 0.25s ease, transform 0.25s ease,
+      padding 0.25s ease, margin-bottom 0.25s ease;
+  }
+  .toggle-row.is-visible {
+    opacity: 1; max-height: 60px; padding: 10px 14px; margin-bottom: 14px;
+    transform: translateY(0);
+  }
+  .toggle-row input { width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
+
+  .domain { max-width: 100%; border-top: 1px solid #EFE8DB; padding: 16px 0; }
+  .domain:first-child { border-top: none; padding-top: 0; }
+  .domain h2 { font-size: 14px; font-weight: 700; color: #7A5C3E; margin: 0 0 12px; }
+
+  .item-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; flex-wrap: wrap; }
+  .item-label { font-size: 13.5px; color: #3A3530; flex: 1 1 200px; }
+  .btn-group { display: flex; gap: 4px; flex-shrink: 0; max-width: 100%; }
+  .opt-btn {
+    border: 1px solid var(--brand-mint-border); background: var(--brand-white); color: var(--text-secondary);
+    font-size: 11px; padding: 6px 8px; border-radius: 6px; cursor: pointer;
+    font-family: inherit; white-space: nowrap; max-width: 100%; transition: all .15s;
+  }
+  .opt-btn:hover { background: var(--brand-mint-light); border-color: var(--brand-mint); color: var(--text-primary); }
+  .opt-btn:focus-visible { outline: 3px solid rgba(111, 159, 125, 0.3); outline-offset: 2px; }
+  .opt-btn.active {
+    background: var(--brand-mint); border-color: var(--brand-mint-dark); color: var(--text-primary); font-weight: 700;
+  }
+
+  .calc-btn {
+    width: 100%; max-width: 100%; padding: 14px; margin-top: 10px; font-size: 15px; font-weight: 700;
+    background: #FFFFFF; color: #1F1F1F; border: 1px solid #D9D1C7; border-radius: 16px; cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+  }
+  .calc-btn:hover { background: #FAF8F5; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09); transform: translateY(-1px); }
+  .calc-btn:active { transform: scale(0.99); }
+
+  footer { text-align: center; font-size: 11px; color: #B0A896; margin-top: 30px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../" class="home-link">730</a>
+  <header>
+    <div class="sub" id="brand-sub">730스킨 이어테라피</div>
+    <h1 id="page-title">이어밸런스 체크 결과지</h1>
+    <p id="page-desc">지난 한 주 동안의 경험에 해당하는 정도를 선택해주세요</p>
+  </header>
+
+  <section class="balance-sheet">
+    <div class="user-info-grid">
+      <div class="field">
+        <label id="gender-label">성별</label>
+        <div class="btn-group gender-group" id="gender-group">
+          <button type="button" class="opt-btn" data-gender="male">남성</button>
+          <button type="button" class="opt-btn" data-gender="female">여성</button>
+        </div>
+      </div>
+      <div class="field"><label id="name-label">이름</label><input type="text" id="name" placeholder="이름"></div>
+      <div class="field"><label id="age-label">나이</label><input type="text" id="age" placeholder="나이"></div>
+      <div class="field"><label id="date-label">상담 날짜</label><input type="date" id="date"></div>
+    </div>
+
+    <label class="toggle-row" id="menstrual-row">
+      <input type="checkbox" id="menstrual-toggle">
+      <span id="menstrual-toggle-text">생리 전 또는 생리 중이신가요?</span>
+    </label>
+
+    <div id="form-area"></div>
+
+    <button class="calc-btn" id="calc-btn" type="button">결과 확인하기</button>
+  </section>
+
+  <footer id="page-footer">730스킨 이어테라피</footer>
+</div>
+
+<script>
+var OPTS = ['없음','보통','높음'];
+var MAX_SCORE = OPTS.length - 1; // 최고 점수 (현재 2)
+var TIER_LOW = MAX_SCORE / 3;      // 안정 ↔ 관찰 필요 경계
+var TIER_HIGH = MAX_SCORE * 2 / 3; // 관찰 필요 ↔ 집중 케어 경계
+
+var DOMAINS = [
+  { key:'sleep', label:'수면 밸런스', items:[
+    [1,'밤에 잠들기 어려움'],[2,'밤에 잠을 유지하기 어려움(자다가 깸)'],[3,'낮 동안 피곤하거나 무기력함']
+  ]},
+  { key:'vitality', label:'활력·정서 자원', reverse:true, items:[
+    [4,'활력과 에너지가 넘침'],[6,'기분이 좋고 행복하며 신남'],[7,'즐거운 활동에 시간을 할애함'],
+    [8,'함께 있고 싶은 사람들과 어울림'],[9,'자신감이 있거나 낙관적임'],[10,'생산적으로 일할 수 있음']
+  ]},
+  { key:'tension', label:'신체 긴장·통증', items:[
+    [12,'두통'],[13,'어깨 긴장 또는 목 뻣뻣함'],[14,'손·발·팔·다리의 통증이나 뻣뻣함'],[15,'요통']
+  ]},
+  { key:'autonomic', label:'자율신경 반응', items:[
+    [16,'가슴 통증·압박감'],[20,'기침 또는 호흡 곤란'],[21,'심장이 빠르게 뛰거나 두근거림'],
+    [22,'손발이 참'],[23,'운동·외부 열과 무관한 땀'],[24,'떨림 또는 몸이 흔들림'],
+    [25,'어지럽거나 힘 없거나 실신할 것 같음'],[26,'몸이 아프거나 컨디션이 나쁨'],[27,'인후통 또는 림프절 부음']
+  ]},
+  { key:'digestion', label:'소화·식욕 신호', items:[
+    [17,'복통 또는 복부 불편감'],[18,'메스꺼움 또는 구토'],[19,'변비, 설사 또는 가스'],
+    [28,'식욕부진 또는 소식'],[29,'과식 또는 폭식']
+  ]},
+  { key:'emotion', label:'정서적 부담', items:[
+    [5,'초조하거나 긴장되거나 안절부절 못함'],[11,'해야 할 일 때문에 시간에 쫓김'],[30,'신경이 예민하거나 불안함'],
+    [31,'걱정되거나 염려됨'],[32,'집중이나 결정을 내리기 어려움'],[33,'부적절하거나 무가치하게 느껴짐'],
+    [34,'우울하거나 낙담됨'],[35,'외롭거나 고립되거나 위축됨'],[36,'짜증나거나 화나거나 분함'],
+    [37,'멈출 수 없는 자기비판적 생각'],[38,'특정 물질(술·약물·니코틴)이 갈망됨']
+  ]},
+  { key:'selfcare', label:'자기관리 자원', protective:true, items:[
+    [39,'신체 운동이나 스포츠 활동을 함'],[40,'눈을 감고 하는 이완이나 명상을 함']
+  ]},
+  { key:'menstrual', label:'생리·월경 관련 증상', conditional:true, items:[
+    [41,'생리 전 유방 압통·팽만감'],[42,'생리 전 감정 기복(예민함·눈물 많아짐)'],[43,'생리 전·중 두통 또는 편두통'],
+    [44,'하복부 통증(생리통)'],[45,'요통 또는 골반 불편감'],[46,'생리 전·중 부종(붓기)'],
+    [47,'생리 전 식욕 변화(과식·단 것 당김)'],[48,'생리 전·중 피부 트러블'],[49,'생리 주기 전반의 피로감 증가'],
+    [50,'생리 불순(주기가 불규칙함)']
+  ]}
+];
+
+var NOTES = {
+  sleep: ['수면 밸런스가 안정적이에요.', '가벼운 수면 신호가 보여요. 저녁 루틴 케어를 권장해요.', '밤에도 마음이 쉬지 못하는 유형이에요. 신문혈·심혈 중심 케어를 권장해요.'],
+  vitality: ['활력과 정서 자원이 좋은 편이에요.', '활력이 조금 저하된 신호가 있어요.', '에너지와 의욕이 많이 떨어진 상태예요. 활력 회복 케어를 우선해보세요.'],
+  tension: ['신체 긴장이 안정적이에요.', '가벼운 근골격 긴장 신호가 있어요.', '몸이 늘 긴장 모드인 유형이에요. 어깨·목 반사구 집중 케어를 권장해요.'],
+  autonomic: ['자율신경 균형이 안정적이에요.', '자율신경 신호가 간간이 나타나요.', '자율신경이 예민해진 유형이에요. 이주·미주신경 반사구를 우선해보세요.'],
+  digestion: ['소화·식욕이 안정적이에요.', '소화 컨디션에 가벼운 신호가 있어요.', '소화 기능에 부담이 큰 유형이에요. 위·비 반사구 케어를 병행해보세요.'],
+  emotion: ['정서적으로 안정된 상태예요.', '정서적으로 조금 지쳐있는 신호가 있어요.', '마음의 무게를 혼자 견뎌온 유형이에요. 정서 이완 케어와 함께, 필요하다면 전문 상담도 함께 권해보세요.'],
+  menstrual: ['생리 전후 컨디션이 안정적이에요.', '생리 전후로 가벼운 신호가 나타나는 편이에요.', '생리 전후 증상이 크게 나타나는 유형이에요. 자궁·내분비 반사구 중심 케어를 권장해요.']
+};
+
+var TIER_LABELS = ['안정', '관찰 필요', '집중 케어'];
+var TIER_CLASSES = ['tier-stable', 'tier-watch', 'tier-focus'];
+var PROTECTIVE_LABELS = ['부족', '보통', '좋음'];
+var PROTECTIVE_CLASSES = ['tier-focus', 'tier-watch', 'tier-stable'];
+var PROTECTIVE_NOTES = [
+  '쉬고 이완하는 시간이 부족해요. 자기관리 루틴을 함께 만들어봐요.',
+  '자기관리 습관이 있어요. 조금 더 늘려보면 좋아요.',
+  '스스로 회복하는 힘이 좋아요. 이 습관을 계속 이어가시면 좋아요.'
+];
+
+// ============================================================
+// 다국어(ko/en) 지원.
+// 위 DOMAINS/NOTES/OPTS/TIER_*/PROTECTIVE_*는 채점에도 쓰이는 원본
+// 한국어 데이터라 이 블록에서 전혀 수정하지 않는다. 화면에 그릴 때만
+// 아래 EN 사전을 참조해 텍스트를 바꿔치기하고, 채점(sum/avg/tierIdx
+// 계산)은 언제나 이 DOMAINS의 id·순서·점수값 그대로 동작한다 — 언어와
+// 무관하다.
+// ============================================================
+var LANG_KEY = 'earCheckLanguage';
+var PARENT_ALLOWED_ORIGINS = ['http://localhost:8732', 'https://730skineartherapy.com'];
+var currentLang = 'ko';
+
+// DOMAINS에서 그대로 뽑아낸 한국어 조회 테이블 — 원본을 다시 타이핑하지
+// 않고 그대로 참조하므로 오타·누락 위험이 없다.
+var KO_DOMAIN_LABEL = {};
+var KO_ITEM_TEXT = {};
+DOMAINS.forEach(function (d) {
+  KO_DOMAIN_LABEL[d.key] = d.label;
+  d.items.forEach(function (pair) { KO_ITEM_TEXT[pair[0]] = pair[1]; });
+});
+
+var EN = {
+  pageTitle: '730 Skin Ear Balance Check Result',
+  brandSub: '730 Skin Ear Therapy',
+  heroTitle: 'Ear Balance Check Result',
+  heroDesc: 'Please select how much each item applied to you over the past week',
+  genderLabel: 'Gender',
+  genderMale: 'Male',
+  genderFemale: 'Female',
+  nameLabel: 'Name',
+  ageLabel: 'Age',
+  dateLabel: 'Consultation Date',
+  menstrualToggle: 'Are you before or during your period?',
+  calcBtn: 'Check Results',
+  footer: '730 Skin Ear Therapy',
+  opts: ['None', 'Moderate', 'High'],
+  domainLabels: {
+    sleep: 'Sleep Balance',
+    vitality: 'Vitality & Emotional Resources',
+    tension: 'Physical Tension & Pain',
+    autonomic: 'Autonomic Nervous System Responses',
+    digestion: 'Digestion & Appetite Signals',
+    emotion: 'Emotional Load',
+    selfcare: 'Self-Care Resources',
+    menstrual: 'Menstrual-Related Symptoms'
+  },
+  items: {
+    1: 'Difficulty falling asleep at night',
+    2: 'Difficulty staying asleep (waking up during the night)',
+    3: 'Feeling tired or lethargic during the day',
+    4: 'Feeling full of vitality and energy',
+    6: 'Feeling good, happy, and excited',
+    7: 'Spending time on enjoyable activities',
+    8: 'Spending time with people you enjoy being around',
+    9: 'Feeling confident or optimistic',
+    10: 'Being able to work productively',
+    12: 'Headache',
+    13: 'Shoulder tension or neck stiffness',
+    14: 'Pain or stiffness in hands, feet, arms, or legs',
+    15: 'Lower back pain',
+    16: 'Chest pain or tightness',
+    20: 'Coughing or difficulty breathing',
+    21: 'Rapid or pounding heartbeat',
+    22: 'Cold hands or feet',
+    23: 'Sweating unrelated to exercise or heat',
+    24: 'Trembling or shakiness',
+    25: 'Feeling dizzy, weak, or faint',
+    26: 'Feeling physically unwell or off',
+    27: 'Sore throat or swollen lymph nodes',
+    17: 'Abdominal pain or discomfort',
+    18: 'Nausea or vomiting',
+    19: 'Constipation, diarrhea, or gas',
+    28: 'Poor appetite or eating less than usual',
+    29: 'Overeating or binge eating',
+    5: 'Feeling on edge, tense, or restless',
+    11: 'Feeling rushed or pressed for time by things you need to do',
+    30: 'Feeling irritable or anxious',
+    31: 'Feeling worried or concerned',
+    32: 'Difficulty concentrating or making decisions',
+    33: 'Feeling inadequate or worthless',
+    34: 'Feeling depressed or discouraged',
+    35: 'Feeling lonely, isolated, or withdrawn',
+    36: 'Feeling irritated, angry, or resentful',
+    37: 'Uncontrollable self-critical thoughts',
+    38: 'Craving a specific substance (alcohol, drugs, or nicotine)',
+    39: 'Engaging in physical exercise or sports',
+    40: 'Practicing relaxation or meditation with eyes closed',
+    41: 'Breast tenderness or swelling before your period',
+    42: 'Mood swings before your period (irritability, tearfulness)',
+    43: 'Headache or migraine before or during your period',
+    44: 'Lower abdominal pain (menstrual cramps)',
+    45: 'Lower back pain or pelvic discomfort',
+    46: 'Bloating before or during your period',
+    47: 'Appetite changes before your period (overeating, craving sweets)',
+    48: 'Skin breakouts before or during your period',
+    49: 'Increased fatigue throughout your menstrual cycle',
+    50: 'Irregular periods (irregular cycle)'
+  }
+};
+
+function readStoredLang() {
+  try {
+    var v = sessionStorage.getItem(LANG_KEY);
+    return (v === 'ko' || v === 'en') ? v : 'ko';
+  } catch (e) {
+    return 'ko';
+  }
+}
+
+function storeLang(lang) {
+  try { sessionStorage.setItem(LANG_KEY, lang); } catch (e) {}
+}
+
+function domainLabel(key) {
+  return currentLang === 'en' ? EN.domainLabels[key] : KO_DOMAIN_LABEL[key];
+}
+
+function itemText(id) {
+  return currentLang === 'en' ? EN.items[id] : KO_ITEM_TEXT[id];
+}
+
+function optsText() {
+  return currentLang === 'en' ? EN.opts : OPTS;
+}
+
+function setText(id, text) {
+  var el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+
+// 화면에 보이는 고정 문구(라벨/버튼/안내)를 현재 언어로 갱신한다. 문항/도메인
+// 제목은 buildForm()이 만들어둔 data-item-id/data-domain-key로 찾아
+// textContent만 바꾸므로, 체크된 답변(active 클래스)이나 입력 중인
+// 이름·나이·날짜·성별 값은 전혀 건드리지 않는다(요소를 다시 만들지 않음).
+function applyTranslations() {
+  document.title = currentLang === 'en' ? EN.pageTitle : '730스킨 이어밸런스 체크 결과지';
+  document.documentElement.lang = currentLang;
+
+  setText('brand-sub', currentLang === 'en' ? EN.brandSub : '730스킨 이어테라피');
+  setText('page-title', currentLang === 'en' ? EN.heroTitle : '이어밸런스 체크 결과지');
+  setText('page-desc', currentLang === 'en' ? EN.heroDesc : '지난 한 주 동안의 경험에 해당하는 정도를 선택해주세요');
+  setText('gender-label', currentLang === 'en' ? EN.genderLabel : '성별');
+  setText('name-label', currentLang === 'en' ? EN.nameLabel : '이름');
+  setText('age-label', currentLang === 'en' ? EN.ageLabel : '나이');
+  setText('date-label', currentLang === 'en' ? EN.dateLabel : '상담 날짜');
+  setText('menstrual-toggle-text', currentLang === 'en' ? EN.menstrualToggle : '생리 전 또는 생리 중이신가요?');
+  setText('calc-btn', currentLang === 'en' ? EN.calcBtn : '결과 확인하기');
+  setText('page-footer', currentLang === 'en' ? EN.footer : '730스킨 이어테라피');
+
+  var nameInput = document.getElementById('name');
+  var ageInput = document.getElementById('age');
+  if (nameInput) nameInput.placeholder = currentLang === 'en' ? EN.nameLabel : '이름';
+  if (ageInput) ageInput.placeholder = currentLang === 'en' ? EN.ageLabel : '나이';
+
+  var genderMaleBtn = document.querySelector('#gender-group [data-gender="male"]');
+  var genderFemaleBtn = document.querySelector('#gender-group [data-gender="female"]');
+  if (genderMaleBtn) genderMaleBtn.textContent = currentLang === 'en' ? EN.genderMale : '남성';
+  if (genderFemaleBtn) genderFemaleBtn.textContent = currentLang === 'en' ? EN.genderFemale : '여성';
+
+  document.querySelectorAll('.domain[data-domain-key]').forEach(function (section) {
+    var key = section.getAttribute('data-domain-key');
+    var h = section.querySelector('h2');
+    if (h) h.textContent = domainLabel(key);
+  });
+
+  document.querySelectorAll('.item-row[data-item-id]').forEach(function (row) {
+    var id = row.getAttribute('data-item-id');
+    var label = row.querySelector('.item-label');
+    if (label) label.textContent = itemText(id);
+
+    var opts = optsText();
+    var btnGroup = row.querySelector('.btn-group');
+    if (btnGroup) {
+      var btns = btnGroup.querySelectorAll('.opt-btn');
+      btns.forEach(function (btn, idx) { btn.textContent = opts[idx]; });
+    }
+  });
+}
+
+function setLanguage(lang) {
+  if (lang !== 'ko' && lang !== 'en') lang = 'ko';
+  currentLang = lang;
+  storeLang(lang);
+  applyTranslations();
+}
+
+var answers = {};
+
+function buildForm() {
+  var formArea = document.getElementById('form-area');
+  DOMAINS.forEach(function(d) {
+    var section = document.createElement('div');
+    section.className = 'domain';
+    section.setAttribute('data-domain-key', d.key);
+    var h = document.createElement('h2');
+    h.textContent = domainLabel(d.key);
+    section.appendChild(h);
+
+    d.items.forEach(function(pair) {
+      var itemId = pair[0];
+      answers[itemId] = 0;
+
+      var row = document.createElement('div');
+      row.className = 'item-row';
+      row.setAttribute('data-item-id', itemId);
+
+      var label = document.createElement('div');
+      label.className = 'item-label';
+      label.textContent = itemText(itemId);
+      row.appendChild(label);
+
+      var btnGroup = document.createElement('div');
+      btnGroup.className = 'btn-group';
+      btnGroup.setAttribute('data-item', itemId);
+
+      optsText().forEach(function(optText, idx) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-btn';
+        btn.textContent = optText;
+        if (idx === 0) btn.classList.add('active');
+        btn.addEventListener('click', function() {
+          answers[itemId] = idx;
+          var siblings = btnGroup.querySelectorAll('.opt-btn');
+          for (var i = 0; i < siblings.length; i++) siblings[i].classList.remove('active');
+          btn.classList.add('active');
+        });
+        btnGroup.appendChild(btn);
+      });
+
+      row.appendChild(btnGroup);
+      section.appendChild(row);
+    });
+
+    if (d.conditional) {
+      section.id = 'domain-' + d.key;
+      section.style.display = 'none';
+    }
+
+    formArea.appendChild(section);
+  });
+
+  var menstrualToggle = document.getElementById('menstrual-toggle');
+  if (menstrualToggle) {
+    menstrualToggle.addEventListener('change', function() {
+      var section = document.getElementById('domain-menstrual');
+      if (section) section.style.display = menstrualToggle.checked ? 'block' : 'none';
+    });
+  }
+}
+
+function setupGenderToggle() {
+  var genderGroup = document.getElementById('gender-group');
+  var menstrualRow = document.getElementById('menstrual-row');
+  var menstrualToggle = document.getElementById('menstrual-toggle');
+  if (!genderGroup || !menstrualRow || !menstrualToggle) return;
+
+  var genderBtns = genderGroup.querySelectorAll('.opt-btn');
+
+  genderBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      for (var i = 0; i < genderBtns.length; i++) genderBtns[i].classList.remove('active');
+      btn.classList.add('active');
+
+      var isFemale = btn.getAttribute('data-gender') === 'female';
+      menstrualRow.classList.toggle('is-visible', isFemale);
+
+      if (!isFemale && menstrualToggle.checked) {
+        menstrualToggle.checked = false;
+        menstrualToggle.dispatchEvent(new Event('change'));
+      }
+    });
+  });
+}
+
+function getTierIndex(avg) {
+  if (avg <= TIER_LOW) return 0;
+  if (avg <= TIER_HIGH) return 1;
+  return 2;
+}
+
+// 채점 로직(합계·평균·반전·등급 판정) 자체는 이전과 완전히 동일하다.
+// 마지막에 저장하는 값만 바뀌었다 — 예전에는 그 순간의 한국어 라벨·문구를
+// 미리 계산해 저장했는데, 그러면 나중에 언어를 바꿔도 result.html은 이미
+// 굳어버린 한국어 텍스트만 보여줄 수밖에 없었다. 대신 domainKey/tierIdx처럼
+// 언어와 무관한 값만 저장하고, result.html이 그 시점에 활성화된 언어로
+// 직접 문구를 찾아 그리도록 바꿨다 — sum/avg/tierIdx를 계산하는 코드는
+// 한 글자도 바뀌지 않았고, 점수·평균·등급 판정 결과 자체는 그대로다.
+function calculate() {
+  var menstrualChecked = document.getElementById('menstrual-toggle').checked;
+  var resultsData = [];
+
+  DOMAINS.forEach(function(d) {
+    if (d.conditional && !menstrualChecked) return;
+
+    var sum = 0;
+    d.items.forEach(function(pair) { sum += answers[pair[0]]; });
+    var avg = sum / d.items.length;
+    if (d.reverse) avg = MAX_SCORE - avg;
+    avg = Math.round(avg * 10) / 10;
+
+    var tierIdx;
+    if (d.protective) {
+      tierIdx = avg >= TIER_HIGH ? 2 : (avg >= TIER_LOW ? 1 : 0);
+    } else {
+      tierIdx = getTierIndex(avg);
+    }
+
+    resultsData.push({ domainKey: d.key, protective: !!d.protective, tierIdx: tierIdx, avg: avg, max: MAX_SCORE });
+  });
+
+  var payload = {
+    name: document.getElementById('name').value,
+    age: document.getElementById('age').value,
+    date: document.getElementById('date').value,
+    results: resultsData
+  };
+  sessionStorage.setItem('earCheckResult', JSON.stringify(payload));
+  storeLang(currentLang);
+  location.href = 'result.html';
+}
+
+// ── 부모(메인 사이트)와의 언어 동기화 ──
+// event.origin과 event.source를 둘 다 확인해, 메인 사이트가 아닌 다른
+// 곳에서 온 message는 전부 무시한다. language 값도 'ko'/'en' 화이트리스트
+// 밖이면 버린다.
+window.addEventListener('message', function (event) {
+  if (PARENT_ALLOWED_ORIGINS.indexOf(event.origin) === -1) return;
+  if (event.source !== window.parent) return;
+  var data = event.data;
+  if (!data || data.source !== '730-main-site' || data.type !== 'language-change') return;
+  if (data.language !== 'ko' && data.language !== 'en') return;
+  setLanguage(data.language);
+});
+
+// document.referrer는 이 문서를 iframe으로 띄운 부모 페이지의 주소다(같은
+// 값이 페이지 로드 내내 바뀌지 않으므로 한 번만 계산해도 된다). 그 origin이
+// PARENT_ALLOWED_ORIGINS 화이트리스트에 있을 때만 "안전하게 확인됨"으로
+// 본다 — referrer가 없거나(리퍼러 정책 등으로 비어있는 경우) 화이트리스트
+// 밖이면 null을 돌려주고, 호출하는 쪽에서 그 경우 메시지 전송 자체를 하지
+// 않거나(ready) '*'로 대체한다(height, 기존 동작 유지 목적).
+function getParentOrigin() {
+  try {
+    if (!document.referrer) return null;
+    var refOrigin = new URL(document.referrer).origin;
+    return PARENT_ALLOWED_ORIGINS.indexOf(refOrigin) !== -1 ? refOrigin : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+// ready 메시지는 부모 origin을 안전하게 확인했을 때만 보낸다 — 확인이
+// 안 되면(referrer 없음 등) 아예 보내지 않는다('*'로 대신 보내지 않음).
+function notifyParentReady() {
+  var origin = getParentOrigin();
+  if (!origin) return;
+  try {
+    window.parent.postMessage({ source: '730-skin-check', type: 'ready' }, origin);
+  } catch (e) {}
+}
+
+// sessionStorage에 저장된 언어를 먼저 적용해 첫 렌더부터 맞는 언어로
+// 그린다(부모의 language-change 메시지를 기다리는 동안 한국어가 잠깐
+// 보였다가 바뀌는 현상을 피한다). 그 다음 부모에게 ready를 보내 실제
+// 최신 언어를 다시 받는다.
+currentLang = readStoredLang();
+buildForm();
+setupGenderToggle();
+applyTranslations();
+document.getElementById('calc-btn').addEventListener('click', calculate);
+notifyParentReady();
+</script><script>
+document.getElementById('calc-btn').addEventListener('click', function() {
+  gtag('event', 'check_complete', {
+    event_category: 'engagement',
+    event_label: '결과확인버튼클릭'
+  });
+});
+</script>
+<script>
+// iframe으로 이 페이지를 감싸는 부모 문서(730skin-check 이어밸런스체크 라우트)에
+// 실제 콘텐츠 높이를 알려준다. postMessage는 origin이 달라도(cross-origin) 항상
+// 동작해서, 로컬 개발 서버처럼 부모와 origin이 다른 환경에서도 iframe 높이가
+// 정확히 맞춰진다.
+(function () {
+  function reportHeight() {
+    // documentElement.scrollHeight는 "콘텐츠 높이와 뷰포트 높이 중 큰 값"을
+    // 반환한다. 이전 페이지(체크리스트)에서 이미 iframe이 크게 늘어난 상태로
+    // 이 페이지로 넘어오면, 뷰포트 자체가 커서 실제 콘텐츠보다 큰 값을 그대로
+    // 돌려주는 문제가 있다. body.scrollHeight는 뷰포트 크기와 무관하게 실제
+    // 콘텐츠 높이만 반영하므로 이 문제가 없다.
+    // targetOrigin은 가능하면 getParentOrigin()(위 스크립트에서 정의, 같은
+    // 문서라 전역에서 접근 가능)으로 확인한 안전한 부모 origin을 쓰고,
+    // 확인이 안 되는 경우에만 기존처럼 '*'로 대체해 높이 조절 기능 자체는
+    // 계속 동작하게 한다.
+    var targetOrigin = (typeof getParentOrigin === 'function' && getParentOrigin()) || '*';
+    window.parent.postMessage({
+      source: '730skin-check-embed',
+      height: document.body.scrollHeight
+    }, targetOrigin);
+  }
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(reportHeight).observe(document.body);
+  } else {
+    window.addEventListener('load', reportHeight);
+  }
+  reportHeight();
+})();
+</script>
+</body>
+</html>
