@@ -1,26 +1,3 @@
-/* ── 브랜드 색상 변수 ──────────────────────────────────────────
-   새 제품 패키지(세이지 민트 + 브라운)에 맞춘 임시 브랜드 색상.
-   나중에 실제 브랜드 색상이 정해지면 이 블록의 값만 바꾸면 사이트
-   전체에 반영된다. 사용 비율 가이드: 아이보리/화이트 배경 약 70%,
-   차콜 텍스트·선 약 20%, 민트·브라운 포인트 약 10%(버튼/강조/선택
-   상태/안내 띠 등 핵심 요소에만 제한적으로 사용). ── */
-:root {
-  --brand-mint: #B8D8C0;
-  --brand-mint-dark: #6F9F7D;
-  --brand-mint-light: #F0F8F2;
-  --brand-mint-border: #D1E7D5;
-
-  --brand-brown: #6E4933;
-  --brand-charcoal: #242723;
-
-  --brand-ivory: #FAF9F5;
-  --brand-white: #FFFFFF;
-
-  --text-primary: #242723;
-  --text-secondary: #626961;
-  --border-neutral: #DDE2DC;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -30,8 +7,8 @@
 body {
   margin: 2px;
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
-  color: var(--text-primary);
-  background-color: var(--brand-ivory);
+  color: #000000;
+  background-color: #FFCC00;
 }
 
 .site-header {
@@ -97,14 +74,14 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.35rem 0.9rem;
-  border: 1px solid var(--border-neutral);
+  border: 1px solid #000000;
   border-radius: 999px;
   background-color: #FFFFFF;
   transition: border-color 0.2s ease;
 }
 
 .search-area:focus-within {
-  border-color: var(--brand-mint);
+  border-color: #FFCC00;
 }
 
 .search-btn {
@@ -114,7 +91,7 @@ body {
   padding: 0;
   border: none;
   background: none;
-  color: var(--text-primary);
+  color: #111;
   cursor: pointer;
 }
 
@@ -129,7 +106,7 @@ body {
   background: none;
   font-family: inherit;
   font-size: 0.8rem;
-  color: var(--text-primary);
+  color: #111;
 }
 
 .search-box::placeholder {
@@ -142,7 +119,7 @@ body {
 
 .search-btn:focus-visible,
 .search-box:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 2px;
 }
 
@@ -199,7 +176,7 @@ body {
 
 /* ── 이어포인트 카드 하이라이트(검색 결과에서 진입했을 때) ── */
 .point-card--highlight {
-  outline: 2px solid var(--brand-mint);
+  outline: 2px solid #FFCC00;
   outline-offset: 2px;
   transition: outline-color 0.3s ease;
 }
@@ -240,7 +217,7 @@ body {
   margin: 0 0 0.5rem;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .search-result-symptoms {
@@ -257,7 +234,7 @@ body {
   margin-top: auto;
   padding: 0 1.25rem;
   border-radius: 999px;
-  background-color: var(--brand-charcoal);
+  background-color: #171717;
   color: #FFFFFF;
   font-size: 0.9rem;
   font-weight: 600;
@@ -266,8 +243,8 @@ body {
 }
 
 .search-result-btn:hover {
-  background-color: var(--brand-mint);
-  color: var(--text-primary);
+  background-color: #FFCC00;
+  color: #000000;
 }
 
 /* ── 검색 결과 없음 / 추천 검색어 ─────────────────────────────── */
@@ -286,7 +263,7 @@ body {
 .search-empty-desc {
   margin: 0 0 2rem;
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .search-panel-heading {
@@ -322,8 +299,8 @@ body {
 }
 
 .search-popular-term:hover {
-  border-color: var(--brand-mint);
-  background-color: var(--brand-mint-light);
+  border-color: #FFCC00;
+  background-color: #FDF6E9;
 }
 
 /* ── 모바일 전체화면 검색 ─────────────────────────────────────── */
@@ -357,7 +334,7 @@ body {
   flex-shrink: 0;
   border: none;
   background: none;
-  color: var(--text-primary);
+  color: #111;
   font-size: 1.6rem;
   cursor: pointer;
 }
@@ -370,18 +347,18 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.9rem;
-  border: 1px solid var(--border-neutral);
+  border: 1px solid #000000;
   border-radius: 999px;
   background-color: #FFFFFF;
 }
 
 .mobile-search-input-wrap:focus-within {
-  border-color: var(--brand-mint);
+  border-color: #FFCC00;
 }
 
 .mobile-search-input-wrap .search-icon {
   flex-shrink: 0;
-  color: var(--text-primary);
+  color: #111;
 }
 
 .mobile-search-input {
@@ -391,7 +368,7 @@ body {
   background: none;
   font-family: inherit;
   font-size: 1rem;
-  color: var(--text-primary);
+  color: #111;
 }
 
 .mobile-search-input:focus {
@@ -512,7 +489,7 @@ body {
   display: block;
   width: 22px;
   height: 2px;
-  background-color: var(--brand-charcoal);
+  background-color: #111;
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
@@ -529,7 +506,7 @@ body {
 }
 
 .hamburger-btn:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 3px;
 }
 
@@ -544,7 +521,7 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   line-height: 1.15;
   letter-spacing: 0.02em;
-  color: var(--text-primary);
+  color: #000000;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
@@ -557,11 +534,11 @@ body {
 }
 
 .brand-logo:hover {
-  color: var(--brand-brown);
+  color: #7A5C3E;
 }
 
 .brand-logo:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 4px;
 }
 
@@ -580,7 +557,7 @@ body {
   justify-content: center;
   min-height: 44px;
   padding: 0 24px;
-  color: var(--text-primary);
+  color: #000000;
   text-decoration: none;
   background: rgba(255, 255, 255, 0.10);
   border: 1px solid rgba(255, 255, 255, 0.42);
@@ -613,19 +590,17 @@ body {
 }
 
 .main-nav a[aria-current="page"] {
-  background: var(--brand-mint-light);
-  border-color: var(--brand-mint-border);
-  color: var(--text-primary);
+  background: #FFF8F2;
+  border-color: #FFF8F2;
+  color: #A95742;
   box-shadow:
     0 6px 18px rgba(70, 35, 25, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
 .main-nav a[aria-current="page"]:hover {
-  background: var(--brand-white);
-  /* mint-dark 텍스트는 흰 배경에서 대비가 3.11:1로 일반 텍스트 기준(4.5:1)에
-     못 미쳐, 대비가 확실한 text-primary를 대신 쓴다. */
-  color: var(--text-primary);
+  background: #FFFFFF;
+  color: #9C4E3C;
 }
 
 .main-nav a:active {
@@ -670,7 +645,7 @@ body {
 @media (max-width: 768px) {
   .site-header {
     padding: 12px 16px;
-    border-bottom: 2px solid var(--brand-mint);
+    border-bottom: 2px solid #FFCC00;
   }
 
   .header-inner {
@@ -765,7 +740,7 @@ body {
     border-bottom: 2px solid transparent;
     border-radius: 0;
     background: transparent;
-    color: var(--text-primary);
+    color: #000000;
     font-size: 18px;
     font-weight: 600;
     text-align: left;
@@ -778,16 +753,16 @@ body {
 
   @media (hover: hover) {
     .main-nav a:hover {
-      border-bottom-color: rgba(135, 151, 127, 0.6);
+      border-bottom-color: rgba(255, 204, 0, 0.6);
     }
   }
 
   .main-nav a:active {
-    border-bottom-color: var(--brand-mint);
+    border-bottom-color: #FFCC00;
   }
 
   .main-nav a[aria-current="page"] {
-    border-bottom-color: var(--brand-mint);
+    border-bottom-color: #FFCC00;
   }
 
   /* 4개 주요 메뉴가 끝난 다음의 얇은 구분선 (연한 회색, 위아래 20px) */
@@ -844,7 +819,7 @@ body {
     .mobile-account-section .auth-profile-btn:hover,
     .mobile-account-section .auth-logout-btn:hover,
     .mobile-account-section .header-instagram-link:hover {
-      border-bottom-color: rgba(135, 151, 127, 0.6);
+      border-bottom-color: rgba(255, 204, 0, 0.6);
     }
   }
 
@@ -852,7 +827,7 @@ body {
   .mobile-account-section .auth-profile-btn:active,
   .mobile-account-section .auth-logout-btn:active,
   .mobile-account-section .header-instagram-link:active {
-    border-bottom-color: var(--brand-mint);
+    border-bottom-color: #FFCC00;
   }
 
   /* display:flex를 위에서 강제했으므로, [hidden]인 경우엔 명시적으로
@@ -939,7 +914,7 @@ body.no-scroll {
 .section-heading p {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .section-heading--compact {
@@ -990,7 +965,7 @@ body.no-scroll {
 .hero-desc {
   font-size: clamp(0.95rem, 1.6vw, 1.1rem);
   line-height: 1.7;
-  color: var(--text-secondary);
+  color: #66615D;
   margin-bottom: 2rem;
 }
 
@@ -1015,31 +990,29 @@ body.no-scroll {
 }
 
 .hero-btn-primary {
-  background-color: var(--brand-mint);
-  color: var(--text-primary);
+  background-color: #FFCC00;
+  color: #000000;
   box-shadow: 0 8px 20px rgba(185, 99, 76, 0.28);
 }
 
 .hero-btn-primary:hover {
-  background-color: var(--brand-mint-dark);
-  color: var(--text-primary);
+  background-color: #A5563F;
   transform: translateY(-1px);
 }
 
 .hero-btn-primary:focus-visible {
-  outline: 3px solid rgba(135, 151, 127, 0.3);
+  outline: 3px solid rgba(122, 92, 62, 0.3);
   outline-offset: 3px;
 }
 
 .hero-btn-secondary {
-  background-color: var(--brand-white);
-  color: var(--text-primary);
-  border: 1px solid var(--brand-mint-border);
+  background-color: #FFFFFF;
+  color: #292929;
+  border: 1px solid #E9E1D8;
 }
 
 .hero-btn-secondary:hover {
-  background-color: var(--brand-mint-light);
-  border-color: var(--brand-mint);
+  background-color: #FFFDFA;
   transform: translateY(-1px);
 }
 
@@ -1096,7 +1069,7 @@ body.no-scroll {
   width: 100%;
   height: 64px;
   overflow: hidden;
-  background-color: var(--brand-mint);
+  background-color: #FFCC00;
 }
 
 .rolling-banner-track {
@@ -1114,14 +1087,14 @@ body.no-scroll {
 }
 
 .rolling-banner-item {
-  color: var(--text-primary);
+  color: #000000;
   font-size: 20px;
   font-weight: 600;
   white-space: nowrap;
 }
 
 .rolling-banner-dot {
-  color: var(--text-primary);
+  color: #000000;
   font-size: 20px;
   margin: 0 28px;
   flex-shrink: 0;
@@ -1184,10 +1157,10 @@ body.no-scroll {
   min-height: 96px;
   padding: 1.25rem;
   border-radius: 22px;
-  background-color: var(--brand-white);
-  color: var(--text-primary);
-  border: 1px solid var(--brand-mint-border);
-  box-shadow: 0 6px 18px rgba(36, 39, 35, 0.06);
+  background-color: #171717;
+  color: #FFFFFF;
+  border: 1px solid transparent;
+  box-shadow: none;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
@@ -1195,19 +1168,18 @@ body.no-scroll {
 .purpose-card p {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #ffcc00;
   line-height: 1.4;
 }
 
 .purpose-card:hover {
-  background-color: var(--brand-mint-light);
-  border-color: var(--brand-mint);
+  background-color: #ffcc00;
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(36, 39, 35, 0.1);
+  box-shadow: 0 10px 22px rgba(41, 41, 41, 0.08);
 }
 
 .purpose-card:hover p {
-  color: var(--text-primary);
+  color: #000000;
 }
 
 @media (max-width: 900px) {
@@ -1253,7 +1225,7 @@ body.no-scroll {
 .iframe-page {
   width: 100%;
   /* Header의 테라코타와 끊김 없이 이어지도록 동일한 배경색을 쓴다. */
-  background-color: var(--brand-mint);
+  background-color: #FFCC00;
   padding-top: 52px;
   padding-left: clamp(1.5rem, 8vw, 2.75rem);
   padding-right: clamp(1.5rem, 8vw, 2.75rem);
@@ -1339,7 +1311,7 @@ body.no-scroll {
   border: 1px solid #DDD6C8;
   border-radius: 8px;
   background-color: #FFFDFA;
-  color: var(--text-primary);
+  color: #111;
 }
 
 .form-field textarea {
@@ -1350,7 +1322,7 @@ body.no-scroll {
 .form-field select:focus,
 .form-field textarea:focus {
   outline: none;
-  border-color: var(--brand-brown);
+  border-color: #7A5C3E;
 }
 
 .app-btn {
@@ -1358,7 +1330,7 @@ body.no-scroll {
   padding: 0.8rem 2rem;
   border: none;
   border-radius: 999px;
-  background-color: var(--brand-brown);
+  background-color: #7A5C3E;
   color: #FFFDFA;
   font-size: 0.95rem;
   font-weight: 700;
@@ -1371,7 +1343,7 @@ body.no-scroll {
 }
 
 .app-btn:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 3px;
 }
 
@@ -1402,7 +1374,7 @@ body.no-scroll {
   margin: 0 0 1.5rem;
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .favorites-state-btn {
@@ -1412,7 +1384,7 @@ body.no-scroll {
   min-height: 48px;
   padding: 0 1.5rem;
   border-radius: 999px;
-  background-color: var(--brand-charcoal);
+  background-color: #171717;
   color: #FFFFFF;
   font-size: 0.9rem;
   font-weight: 600;
@@ -1422,14 +1394,14 @@ body.no-scroll {
 }
 
 .favorites-state-btn:hover {
-  background-color: var(--brand-mint);
-  color: var(--text-primary);
+  background-color: #FFCC00;
+  color: #000000;
 }
 
 .favorites-loading {
   padding: 3rem 0;
   text-align: center;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .point-grid {
@@ -1442,7 +1414,7 @@ body.no-scroll {
   grid-column: 1 / -1;
   padding: 3rem 0;
   text-align: center;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .point-card {
@@ -1463,7 +1435,7 @@ body.no-scroll {
 }
 
 .point-card-link:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 4px;
   border-radius: 12px;
 }
@@ -1491,7 +1463,7 @@ body.no-scroll {
   border: none;
   border-radius: 50%;
   background-color: rgba(255, 253, 250, 0.8);
-  color: var(--brand-brown);
+  color: #7A5C3E;
   font-size: 1.05rem;
   line-height: 1;
   display: flex;
@@ -1501,7 +1473,7 @@ body.no-scroll {
 }
 
 .like-btn:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 2px;
 }
 
@@ -1524,17 +1496,17 @@ body.no-scroll {
 .point-name {
   font-weight: 700;
   font-size: 0.95rem;
-  color: var(--text-primary);
+  color: #111111;
 }
 
 .like-count {
   font-size: 0.8rem;
-  color: var(--text-primary);
+  color: #111111;
 }
 
 .point-desc {
   font-size: 0.8rem;
-  color: var(--text-primary);
+  color: #111111;
   line-height: 1.4;
 }
 
@@ -1556,7 +1528,7 @@ body.no-scroll {
   align-items: center;
   gap: 0.35rem;
   margin-bottom: 1.25rem;
-  color: var(--brand-brown);
+  color: #7A5C3E;
   font-weight: 600;
   font-size: 0.9rem;
   text-decoration: none;
@@ -1574,7 +1546,7 @@ body.no-scroll {
 .epd-loading {
   padding: 4rem 0;
   text-align: center;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .epd-state {
@@ -1589,12 +1561,12 @@ body.no-scroll {
 .epd-state-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #111111;
 }
 
 .epd-state-desc {
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .epd-state-btn {
@@ -1605,7 +1577,7 @@ body.no-scroll {
   margin-top: 0.5rem;
   padding: 0 1.5rem;
   border-radius: 999px;
-  background-color: var(--brand-charcoal);
+  background-color: #171717;
   color: #FFFFFF;
   font-size: 0.9rem;
   font-weight: 600;
@@ -1613,8 +1585,8 @@ body.no-scroll {
 }
 
 .epd-state-btn:hover {
-  background-color: var(--brand-mint);
-  color: var(--text-primary);
+  background-color: #FFCC00;
+  color: #000000;
 }
 
 .epd-inline-error {
@@ -1622,7 +1594,7 @@ body.no-scroll {
   padding: 0.75rem 1rem;
   border-radius: 10px;
   background-color: #FBEFE3;
-  color: var(--brand-brown);
+  color: #7A5C3E;
   font-size: 0.85rem;
 }
 
@@ -1660,13 +1632,13 @@ body.no-scroll {
   margin: 0;
   font-size: 1.6rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: #111111;
 }
 
 .epd-hero-desc {
   margin: 0;
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: #66615D;
   line-height: 1.5;
 }
 
@@ -1685,14 +1657,14 @@ body.no-scroll {
   width: 40px;
   height: 40px;
   flex-shrink: 0;
-  background-color: var(--brand-mint-light);
-  color: var(--brand-brown);
+  background-color: #FFF6DD;
+  color: #7A5C3E;
   font-size: 1.2rem;
 }
 
 .like-count.epd-save-label {
   font-size: 0.9rem;
-  color: var(--text-primary);
+  color: #111111;
 }
 
 /* ── 공통 섹션 ── */
@@ -1704,7 +1676,7 @@ body.no-scroll {
   margin: 0 0 1rem;
   font-size: 1.15rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: #111111;
 }
 
 /* ── 혈자리 위치 ── */
@@ -1743,14 +1715,14 @@ body.no-scroll {
   border: none;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.92);
-  color: var(--brand-brown);
+  color: #7A5C3E;
   font-size: 1.1rem;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .epd-zoom-btn:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 2px;
 }
 
@@ -1795,12 +1767,12 @@ body.no-scroll {
   text-align: left;
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #111111;
   cursor: pointer;
 }
 
 .epd-accordion-trigger:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: -2px;
 }
 
@@ -1813,7 +1785,7 @@ body.no-scroll {
 
 .epd-accordion-icon {
   flex-shrink: 0;
-  color: var(--brand-brown);
+  color: #7A5C3E;
   font-size: 1.1rem;
   transition: transform 0.2s ease;
 }
@@ -1825,7 +1797,7 @@ body.no-scroll {
 .epd-accordion-panel {
   padding: 0 1.1rem 1rem;
   font-size: 0.88rem;
-  color: var(--text-secondary);
+  color: #66615D;
   line-height: 1.6;
 }
 
@@ -1858,8 +1830,8 @@ body.no-scroll {
   height: 28px;
   padding: 0 0.75rem;
   border-radius: 999px;
-  background-color: var(--brand-mint);
-  color: var(--text-primary);
+  background-color: #FFCC00;
+  color: #000000;
   font-size: 0.78rem;
   font-weight: 700;
 }
@@ -1900,7 +1872,7 @@ body.no-scroll {
   margin: 0 0 0.75rem;
   font-size: 1rem;
   font-weight: 800;
-  color: var(--brand-brown);
+  color: #7A5C3E;
 }
 
 .epd-avoid-icon {
@@ -1932,7 +1904,7 @@ body.no-scroll {
 }
 
 .epd-video-card:hover {
-  border-color: var(--brand-mint);
+  border-color: #FFCC00;
 }
 
 .epd-video-play {
@@ -1943,7 +1915,7 @@ body.no-scroll {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: var(--brand-charcoal);
+  background-color: #171717;
   color: #FFFFFF;
   font-size: 1.1rem;
 }
@@ -1959,14 +1931,14 @@ body.no-scroll {
   margin: 0;
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #111111;
   word-break: break-word;
 }
 
 .epd-video-desc {
   margin: 0;
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: #66615D;
   word-break: break-word;
 }
 
@@ -1974,7 +1946,7 @@ body.no-scroll {
   margin-top: 0.2rem;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--brand-brown);
+  color: #7A5C3E;
 }
 
 /* ── 내 메모 ── */
@@ -1986,7 +1958,7 @@ body.no-scroll {
 .epd-notes-desc {
   margin: 0 0 0.35rem;
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .epd-notes-privacy {
@@ -2031,9 +2003,9 @@ body.no-scroll {
 }
 
 .epd-note-save-btn {
-  background-color: var(--brand-mint);
-  border-color: var(--brand-mint);
-  color: var(--text-primary);
+  background-color: #FFCC00;
+  border-color: #FFCC00;
+  color: #000000;
 }
 
 .epd-note-save-btn:hover {
@@ -2058,14 +2030,14 @@ body.no-scroll {
   padding: 0.9rem 1rem;
   border: 1px solid #E9E1D8;
   border-radius: 12px;
-  color: var(--text-primary);
+  color: #111111;
   font-family: inherit;
   font-size: 0.9rem;
   resize: vertical;
 }
 
 .epd-note-textarea:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 1px;
 }
 
@@ -2092,7 +2064,7 @@ body.no-scroll {
   min-height: 1.2em;
   margin: 0.6rem 0 0;
   font-size: 0.82rem;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .epd-note-status--error {
@@ -2121,7 +2093,7 @@ body.no-scroll {
 }
 
 .epd-related-card:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 4px;
   border-radius: 12px;
 }
@@ -2140,7 +2112,7 @@ body.no-scroll {
   margin: 0;
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #111111;
 }
 
 /* ── 이미지 확대(라이트박스) ── */
@@ -2181,14 +2153,14 @@ body.no-scroll {
   border: none;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.92);
-  color: var(--text-primary);
+  color: #111111;
   font-size: 1.4rem;
   line-height: 1;
   cursor: pointer;
 }
 
 .epd-lightbox-close:focus-visible {
-  outline: 2px solid var(--brand-mint);
+  outline: 2px solid #FFCC00;
   outline-offset: 2px;
 }
 
@@ -2250,18 +2222,16 @@ body.no-scroll {
 .offer-card {
   padding: clamp(2rem, 4vw, 2.75rem);
   border-radius: 28px;
-  background-color: var(--brand-charcoal);
+  background-color: #171717;
   border: 1px solid transparent;
   box-shadow: none;
-  color: var(--brand-mint);
+  color: #ffcc00;
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .offer-card:hover {
-  background-color: var(--brand-mint-dark);
-  /* 흰 글자는 mint-dark 배경에서 대비가 3.11:1로 본문 텍스트 기준(4.5:1)에
-     못 미쳐, 대비가 확실한 text-primary를 대신 쓴다. */
-  color: var(--text-primary);
+  background-color: #E6B800;
+  color: #000000;
 }
 
 .offer-card h3 {
@@ -2284,7 +2254,7 @@ body.no-scroll {
   min-height: 48px;
   padding: 0 1.5rem;
   border-radius: 999px;
-  background-color: var(--brand-mint);
+  background-color: #FFCC00;
   color: #292929;
   font-size: 0.9rem;
   font-weight: 600;
@@ -2318,7 +2288,6 @@ body.no-scroll {
 .landing-block {
   padding: clamp(2.5rem, 8vw, 4.5rem) 0;
   text-align: center;
-  background: var(--brand-mint-light);
   border-radius: 28px;
 }
 
@@ -2338,7 +2307,7 @@ body.no-scroll {
 .landing-body {
   font-size: clamp(0.95rem, 1.6vw, 1.1rem);
   line-height: 1.8;
-  color: var(--text-secondary);
+  color: #66615D;
   max-width: 560px;
   margin: 0 auto;
 }
@@ -2396,7 +2365,7 @@ body.no-scroll {
 }
 
 .scroll-top-btn:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 3px;
 }
 
@@ -2435,13 +2404,13 @@ body.no-scroll {
 .seminar-page-desc {
   margin: 0.4rem 0 0;
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .seminar-loading {
   padding: 4rem 0;
   text-align: center;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .seminar-state {
@@ -2455,7 +2424,7 @@ body.no-scroll {
 
 .seminar-state-text {
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .seminar-state--error .seminar-state-text {
@@ -2482,14 +2451,14 @@ body.no-scroll {
   margin-bottom: 0.75rem;
   border-radius: 999px;
   background-color: #EFE8DB;
-  color: var(--text-secondary);
+  color: #66615D;
   font-size: 0.78rem;
   font-weight: 700;
 }
 
 .seminar-card-status--open {
-  background-color: var(--brand-mint-light);
-  color: var(--brand-brown);
+  background-color: #FFF6DD;
+  color: #7A5C3E;
 }
 
 .seminar-card-status--upcoming {
@@ -2511,7 +2480,7 @@ body.no-scroll {
   margin: 0 0 0.5rem;
   font-size: 1.3rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: #111111;
   word-break: break-word;
   overflow-wrap: break-word;
 }
@@ -2519,7 +2488,7 @@ body.no-scroll {
 .seminar-card-desc {
   margin: 0 0 1rem;
   font-size: 0.92rem;
-  color: var(--text-secondary);
+  color: #66615D;
   line-height: 1.55;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -2541,7 +2510,7 @@ body.no-scroll {
   flex: 0 0 auto;
   min-width: 64px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #111111;
 }
 
 .seminar-card-value {
@@ -2558,8 +2527,8 @@ body.no-scroll {
   padding: 0 1.2rem;
   min-height: 40px;
   border-radius: 999px;
-  background-color: var(--brand-mint);
-  color: var(--text-primary);
+  background-color: #FFCC00;
+  color: #000000;
   font-weight: 700;
   font-size: 0.85rem;
   text-decoration: none;
@@ -2571,7 +2540,7 @@ body.no-scroll {
 }
 
 .seminar-kakao-btn:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 2px;
 }
 
@@ -2607,7 +2576,7 @@ body.no-scroll {
   margin: 0;
   font-size: 1.05rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: #111111;
 }
 
 .seminar-field {
@@ -2619,7 +2588,7 @@ body.no-scroll {
 .seminar-field-label {
   font-size: 0.88rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #111111;
 }
 
 .seminar-input {
@@ -2629,13 +2598,13 @@ body.no-scroll {
   padding: 0 1rem;
   border: 1px solid #E9E1D8;
   border-radius: 12px;
-  color: var(--text-primary);
+  color: #111111;
   font-family: inherit;
   font-size: 0.92rem;
 }
 
 .seminar-input:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 1px;
 }
 
@@ -2660,14 +2629,14 @@ body.no-scroll {
 .seminar-checkbox-option input {
   width: 18px;
   height: 18px;
-  accent-color: var(--brand-brown);
+  accent-color: #7A5C3E;
   cursor: pointer;
 }
 
 .seminar-radio-option input:focus-visible,
 .seminar-checkbox-option input:focus-visible,
 .seminar-consent-option input:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 2px;
 }
 
@@ -2691,7 +2660,7 @@ body.no-scroll {
   gap: 0.5rem;
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #111111;
   cursor: pointer;
 }
 
@@ -2700,14 +2669,14 @@ body.no-scroll {
   width: 18px;
   height: 18px;
   margin-top: 0.15rem;
-  accent-color: var(--brand-brown);
+  accent-color: #7A5C3E;
   cursor: pointer;
 }
 
 .seminar-consent-text {
   margin: 0.5rem 0 0;
   font-size: 0.8rem;
-  color: var(--text-secondary);
+  color: #66615D;
   line-height: 1.5;
 }
 
@@ -2721,8 +2690,8 @@ body.no-scroll {
   padding: 14px 24px;
   border: 0;
   border-radius: 12px;
-  background: var(--brand-mint);
-  color: var(--text-primary);
+  background: #FFCC00;
+  color: #000000;
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.3;
@@ -2732,13 +2701,8 @@ body.no-scroll {
 }
 
 .seminar-submit-btn:hover:not(:disabled) {
-  background: var(--brand-mint-dark);
-  color: var(--text-primary);
-}
-
-.seminar-submit-btn:focus-visible {
-  outline: 3px solid rgba(111, 159, 125, 0.3);
-  outline-offset: 3px;
+  background: #A5563F;
+  color: #FFFFFF;
 }
 
 .seminar-submit-btn:disabled {
@@ -2746,12 +2710,17 @@ body.no-scroll {
   opacity: 0.6;
 }
 
+.seminar-submit-btn:focus-visible {
+  outline: 2px solid #7A5C3E;
+  outline-offset: 2px;
+}
+
 .seminar-form-status {
   margin: 0;
   min-height: 1.2em;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: #66615D;
   text-align: center;
 }
 
@@ -2822,8 +2791,8 @@ body.no-scroll {
   padding: 0.25rem 0.75rem;
   margin-bottom: 0.75rem;
   border-radius: 999px;
-  background-color: var(--brand-mint-light);
-  color: var(--brand-brown);
+  background-color: #FFF6DD;
+  color: #7A5C3E;
   font-size: 0.78rem;
   font-weight: 700;
 }
@@ -2832,7 +2801,7 @@ body.no-scroll {
   margin: 0 0 0.5rem;
   font-size: 1.3rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: #000000;
   word-break: break-word;
   overflow-wrap: break-word;
 }
@@ -2840,7 +2809,7 @@ body.no-scroll {
 .oto-desc {
   margin: 0 0 1.5rem;
   font-size: 0.92rem;
-  color: var(--text-secondary);
+  color: #66615D;
   line-height: 1.55;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -2947,7 +2916,7 @@ body.no-scroll {
 
 .auth-user-email {
   font-size: 0.8rem;
-  color: var(--text-primary);
+  color: #000000;
   max-width: 140px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2965,7 +2934,7 @@ body.no-scroll {
   border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 999px;
   background: transparent;
-  color: var(--text-primary);
+  color: #000000;
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
@@ -2975,12 +2944,12 @@ body.no-scroll {
 .auth-logout-btn:hover,
 .auth-logout-btn:active,
 .auth-logout-btn:visited {
-  color: var(--text-primary);
+  color: #000000;
   background: rgba(255, 255, 255, 0.14);
 }
 
 .auth-logout-btn:focus-visible {
-  color: var(--text-primary);
+  color: #000000;
   outline: 2px solid rgba(255, 255, 255, 0.9);
   outline-offset: 2px;
 }
@@ -2996,7 +2965,7 @@ body.no-scroll {
   border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 999px;
   background: transparent;
-  color: var(--text-primary);
+  color: #000000;
   font-size: 0.78rem;
   font-weight: 600;
   text-decoration: none;
@@ -3008,12 +2977,12 @@ body.no-scroll {
 .auth-profile-btn:hover,
 .auth-profile-btn:active,
 .auth-profile-btn:visited {
-  color: var(--text-primary);
+  color: #000000;
   background: rgba(255, 255, 255, 0.14);
 }
 
 .auth-profile-btn:focus-visible {
-  color: var(--text-primary);
+  color: #000000;
   outline: 2px solid rgba(255, 255, 255, 0.9);
   outline-offset: 2px;
 }
@@ -3192,7 +3161,7 @@ body.no-scroll {
 .auth-field input:focus,
 .auth-field select:focus {
   outline: none;
-  border-color: var(--brand-brown);
+  border-color: #7A5C3E;
   box-shadow: 0 0 0 3px rgba(122, 92, 62, 0.16);
 }
 
@@ -3286,7 +3255,7 @@ body.no-scroll {
 }
 
 .auth-toggle-password[aria-pressed="true"] {
-  color: var(--brand-brown);
+  color: #7A5C3E;
 }
 
 .auth-error {
@@ -3469,7 +3438,7 @@ body.no-scroll {
   left: 0.5rem;
   padding: 0.25rem 0.6rem;
   border-radius: 999px;
-  background-color: var(--brand-brown);
+  background-color: #7A5C3E;
   color: #FFFDFA;
   font-size: 0.7rem;
   font-weight: 700;
@@ -3521,7 +3490,7 @@ body.no-scroll {
 }
 
 .product-buy-btn:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 3px;
 }
 
@@ -3953,8 +3922,8 @@ body.no-scroll {
 .home-footer {
   margin-top: clamp(3rem, 8vw, 5rem);
   padding: clamp(2.5rem, 6vw, 3.5rem) clamp(1.5rem, 8vw, 6rem) clamp(2rem, 5vw, 2.5rem);
-  background-color: var(--brand-charcoal);
-  color: var(--brand-white);
+  background-color: #242321;
+  color: #F7F3EC;
 }
 
 .home-footer-top {
@@ -3998,13 +3967,12 @@ body.no-scroll {
 
 .home-footer-nav-list a:hover,
 .home-footer-social-list a:hover {
-  color: var(--brand-mint);
   text-decoration: underline;
 }
 
 .home-footer-nav-list a:focus-visible,
 .home-footer-social-list a:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 3px;
 }
 
@@ -4063,7 +4031,7 @@ body.no-scroll {
   width: 36px;
   height: 36px;
   margin-left: 8px;
-  color: var(--text-primary);
+  color: #111;
   text-decoration: none;
   border-radius: 50%;
   transition:
@@ -4087,7 +4055,7 @@ body.no-scroll {
 }
 
 .header-instagram-link:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 3px;
 }
 
@@ -4119,7 +4087,7 @@ body.no-scroll {
 }
 
 .header-language-button:focus-visible {
-  outline: 2px solid var(--brand-brown);
+  outline: 2px solid #7A5C3E;
   outline-offset: 3px;
 }
 
@@ -4145,7 +4113,7 @@ body.no-scroll {
   justify-content: center;
   min-height: 44px;
   padding: 0 24px;
-  color: var(--text-secondary);
+  color: #66615D;
   background: rgba(255, 255, 255, 0.10);
   border: 1px dashed rgba(255, 255, 255, 0.55);
   border-radius: 999px;
@@ -4183,7 +4151,7 @@ body.no-scroll {
   height: 32px;
   margin: 0 auto 1.25rem;
   border: 3px solid rgba(0, 0, 0, 0.12);
-  border-top-color: var(--brand-charcoal);
+  border-top-color: #171717;
   border-radius: 50%;
   animation: access-spinner-spin 0.8s linear infinite;
 }
@@ -4203,7 +4171,7 @@ body.no-scroll {
   margin: 0 0 0.4rem;
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .access-state--error .access-state-title {
@@ -4225,7 +4193,7 @@ body.no-scroll {
   min-height: 48px;
   padding: 0 1.5rem;
   border-radius: 999px;
-  background-color: var(--brand-charcoal);
+  background-color: #171717;
   color: #FFFFFF;
   font-size: 0.9rem;
   font-weight: 600;
@@ -4235,19 +4203,19 @@ body.no-scroll {
 }
 
 .access-state-btn:hover {
-  background-color: var(--brand-mint);
-  color: var(--text-primary);
+  background-color: #FFCC00;
+  color: #000000;
 }
 
 .access-state-btn--secondary {
   background-color: transparent;
-  color: var(--text-primary);
+  color: #171717;
   border: 1px solid #DDD6C8;
 }
 
 .access-state-btn--secondary:hover {
   background-color: #FFF8F2;
-  color: var(--text-primary);
+  color: #171717;
 }
 
 /* ===== 마이페이지 ===== */
@@ -4276,7 +4244,7 @@ body.no-scroll {
 
 .mypage-info-list dt {
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .mypage-info-list dd {
@@ -4290,7 +4258,7 @@ body.no-scroll {
 .mypage-approved-since {
   margin: 1rem 0 0;
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: #66615D;
 }
 
 .mypage-actions {
@@ -4315,19 +4283,19 @@ body.no-scroll {
 }
 
 .mypage-edit-btn {
-  background-color: var(--brand-charcoal);
+  background-color: #171717;
   color: #FFFFFF;
   border: none;
 }
 
 .mypage-edit-btn:hover {
-  background-color: var(--brand-mint);
-  color: var(--text-primary);
+  background-color: #FFCC00;
+  color: #000000;
 }
 
 .mypage-favorites-link {
   background-color: transparent;
-  color: var(--text-primary);
+  color: #171717;
   border: 1px solid #DDD6C8;
 }
 
