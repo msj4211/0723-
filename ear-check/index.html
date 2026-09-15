@@ -70,24 +70,28 @@
   .gender-group { display: flex; gap: 6px; width: 100%; max-width: 100%; }
   .gender-group .opt-btn { flex: 1; padding: 8px 10px; font-size: 13px; max-width: 100%; }
 
-  .toggle-row {
-    display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: #6B6559;
+  .cycle-question {
+    font-size: 13.5px; color: #6B6559;
     background: #FBF8F2; border: 1px solid #E6DFD2; border-radius: 8px;
-    cursor: pointer; width: fit-content; max-width: 100%; overflow: hidden;
+    width: 100%; max-width: 100%; overflow: hidden;
     opacity: 0; max-height: 0; padding: 0 14px; margin-bottom: 0;
     transform: translateY(-6px);
     transition: opacity 0.25s ease, max-height 0.25s ease, transform 0.25s ease,
       padding 0.25s ease, margin-bottom 0.25s ease;
   }
-  .toggle-row.is-visible {
-    opacity: 1; max-height: 60px; padding: 10px 14px; margin-bottom: 14px;
+  .cycle-question.is-visible {
+    opacity: 1; max-height: 230px; padding: 12px 14px; margin-bottom: 14px;
     transform: translateY(0);
   }
-  .toggle-row input { width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
+  .cycle-question-text { font-size: 13.5px; color: #3A3530; margin: 0 0 10px; }
+  .cycle-toggle-group { display: flex; gap: 8px; width: 100%; }
+  .cycle-toggle-group .opt-btn { flex: 1; padding: 9px 10px; font-size: 12.5px; text-align: center; }
+  .cycle-question-note { font-size: 12px; color: #8A8378; margin: 8px 0 0; }
 
   .domain { max-width: 100%; border-top: 1px solid #EFE8DB; padding: 16px 0; }
   .domain:first-child { border-top: none; padding-top: 0; }
   .domain h2 { font-size: 14px; font-weight: 700; color: #7A5C3E; margin: 0 0 12px; }
+  .domain-note { font-size: 12.5px; color: #8A8378; margin: -6px 0 12px; }
 
   .item-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; flex-wrap: wrap; }
   .item-label { font-size: 13.5px; color: #3A3530; flex: 1 1 200px; }
@@ -111,6 +115,47 @@
   }
   .calc-btn:hover { background: #FAF8F5; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09); transform: translateY(-1px); }
   .calc-btn:active { transform: scale(0.99); }
+  .calc-btn.is-disabled { opacity: 0.55; box-shadow: none; }
+  .calc-btn.is-disabled:hover { background: #FFFFFF; transform: none; box-shadow: none; }
+
+  .progress-row {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;
+    margin-top: 14px; font-size: 12.5px; color: #6B6559;
+  }
+  .unanswered-count { color: #B0522F; font-weight: 700; }
+
+  .item-row.unanswered {
+    box-shadow: inset 3px 0 0 #C97B5A;
+    background: #FBF3EC;
+    border-radius: 6px;
+    padding-left: 8px;
+  }
+  .item-row.flash-highlight {
+    animation: item-flash 1.1s ease;
+  }
+  @keyframes item-flash {
+    0%, 100% { box-shadow: inset 3px 0 0 #C97B5A; }
+    30%, 70% { box-shadow: inset 3px 0 0 #C97B5A, 0 0 0 3px rgba(201, 123, 90, 0.35); }
+  }
+
+  .lifestyle-section { max-width: 100%; border-top: 1px solid #EFE8DB; padding: 16px 0; }
+  .lifestyle-section h2 { font-size: 14px; font-weight: 700; color: #7A5C3E; margin: 0 0 4px; }
+  .lifestyle-desc { font-size: 12.5px; color: #8A8378; margin: 0 0 12px; }
+  .lifestyle-options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .lifestyle-opt {
+    display: inline-flex; align-items: center; gap: 7px;
+    border: 1px solid #E6DFD2; background: #FFFFFF; color: #3A3530;
+    font-size: 13px; padding: 9px 12px; border-radius: 10px; cursor: pointer;
+    font-family: inherit; transition: all .15s;
+  }
+  .lifestyle-opt input { width: 17px; height: 17px; cursor: pointer; flex-shrink: 0; }
+  .lifestyle-opt:hover { border-color: #7A5C3E; background: #FBF8F2; }
+  .lifestyle-opt.checked { background: #E8D8C9; border-color: #CDB6A3; color: #6E4933; font-weight: 700; }
+  .lifestyle-other-input {
+    width: 100%; margin-top: 10px; padding: 9px 10px; border: 1px solid #DDD5C7; border-radius: 8px;
+    font-size: 13.5px; font-family: inherit; display: none;
+  }
+  .lifestyle-other-input.is-visible { display: block; }
 
   footer { text-align: center; font-size: 11px; color: #B0A896; margin-top: 30px; }
 </style>
@@ -121,7 +166,7 @@
   <header>
     <div class="sub" id="brand-sub">730스킨 이어테라피</div>
     <h1 id="page-title">이어밸런스 체크 결과지</h1>
-    <p id="page-desc">지난 한 주 동안의 경험에 해당하는 정도를 선택해주세요</p>
+    <p id="page-desc">최근 7일 동안 경험한 정도에 가장 가까운 답을 선택해주세요</p>
   </header>
 
   <section class="balance-sheet">
@@ -138,13 +183,21 @@
       <div class="field"><label id="date-label">상담 날짜</label><input type="date" id="date"></div>
     </div>
 
-    <label class="toggle-row" id="menstrual-row">
-      <input type="checkbox" id="menstrual-toggle">
-      <span id="menstrual-toggle-text">생리 전 또는 생리 중이신가요?</span>
-    </label>
+    <div class="cycle-question" id="cycle-question">
+      <p class="cycle-question-text" id="cycle-question-text">최근 생리 전후에 나타나는 컨디션 변화도 확인하시겠어요</p>
+      <div class="btn-group cycle-toggle-group" id="cycle-toggle-group">
+        <button type="button" class="opt-btn" data-cycle="yes">확인할게요</button>
+        <button type="button" class="opt-btn" data-cycle="no">확인하지 않을게요</button>
+      </div>
+      <p class="cycle-question-note" id="cycle-question-note">생리가 오래 없었거나 지금 답하기 어려우시다면 '확인하지 않을게요'를 선택하셔도 괜찮아요</p>
+    </div>
 
     <div id="form-area"></div>
 
+    <div class="progress-row" id="progress-row">
+      <span id="progress-text">응답 완료 0 / 0</span>
+      <span id="unanswered-text" class="unanswered-count"></span>
+    </div>
     <button class="calc-btn" id="calc-btn" type="button">결과 확인하기</button>
   </section>
 
@@ -152,75 +205,120 @@
 </div>
 
 <script>
-var OPTS = ['없음','보통','높음'];
-var MAX_SCORE = OPTS.length - 1; // 최고 점수 (현재 2)
-var TIER_LOW = MAX_SCORE / 3;      // 안정 ↔ 관찰 필요 경계
-var TIER_HIGH = MAX_SCORE * 2 / 3; // 관찰 필요 ↔ 집중 케어 경계
+// ============================================================
+// 공통 4단계 척도. 모든 영역(회복 리듬 포함)이 같은 선택지를 쓰고,
+// 회복 리듬만 채점 시 방향을 반전한다(아래 calculate() 참고).
+// ============================================================
+var OPTS = ['전혀 없었다', '가끔 있었다', '자주 있었다', '거의 매일 있었다'];
+var MAX_SCORE = OPTS.length - 1; // 문항당 최고 점수 (3)
 
+// 생리 전후 컨디션 변화(36~43) 전용 4단계 척도. 다른 영역과 같은
+// '빈도'가 아니라 '불편감·일상 영향 정도'를 묻는 별도 문구라 OPTS와
+// 분리했다. 점수 범위(0~3)는 동일해 채점 방식(합계·전체 제외)은
+// 그대로다 — scale:'cycle' 플래그가 붙은 영역에서만 이 척도를 쓴다.
+var CYCLE_OPTS = ['전혀 없었다', '있었지만 크게 불편하지 않았다', '신경 쓰일 정도였다', '일상에 영향을 줄 정도였다'];
+var CYCLE_MAX = CYCLE_OPTS.length - 1; // 문항당 최고 점수 (3, MAX_SCORE와 값은 같음)
+
+// 7개 핵심 영역(총 35문항, 전체 점수 0~105점에 포함) + 주기 전후 컨디션
+// 변화(8문항, conditional:true, 전체 점수와 영역 비교에서 제외).
+// reverse:true인 영역(회복 리듬)은 응답이 긍정적일수록(=거의 매일
+// 있었다) 채점 점수는 낮아지도록 calculate()에서 반전한다.
 var DOMAINS = [
-  { key:'sleep', label:'수면 밸런스', items:[
-    [1,'밤에 잠들기 어려움'],[2,'밤에 잠을 유지하기 어려움(자다가 깸)'],[3,'낮 동안 피곤하거나 무기력함']
+  { key:'sleep', label:'수면과 아침 컨디션', items:[
+    [1,'잠자리에 누운 뒤에도 생각이 이어지는 날이 있었다'],
+    [2,'자다가 깬 후 다시 잠들기까지 시간이 걸렸다'],
+    [3,'아침에 일어났을 때 몸이 무겁게 느껴졌다'],
+    [4,'낮 동안 집중력이 떨어지거나 쉬고 싶을 때가 있었다']
   ]},
-  { key:'vitality', label:'활력·정서 자원', reverse:true, items:[
-    [4,'활력과 에너지가 넘침'],[6,'기분이 좋고 행복하며 신남'],[7,'즐거운 활동에 시간을 할애함'],
-    [8,'함께 있고 싶은 사람들과 어울림'],[9,'자신감이 있거나 낙관적임'],[10,'생산적으로 일할 수 있음']
+  { key:'burden', label:'일상 스트레스 부담', items:[
+    [5,'예상하지 못한 일이 생기면 마음을 정리하는 데 시간이 걸렸다'],
+    [6,'해야 할 일이 겹치면 무엇부터 해야 할지 막막했다'],
+    [7,'평소에는 넘길 수 있는 일에도 예민하게 반응했다'],
+    [8,'일이 끝난 후에도 관련된 생각이 계속 이어졌다'],
+    [9,'하루 중 시간에 쫓기는 느낌을 자주 받았다'],
+    [10,'주변 상황보다 내 마음이 앞서가는 듯한 느낌이 들었다']
   ]},
-  { key:'tension', label:'신체 긴장·통증', items:[
-    [12,'두통'],[13,'어깨 긴장 또는 목 뻣뻣함'],[14,'손·발·팔·다리의 통증이나 뻣뻣함'],[15,'요통']
+  { key:'recovery', label:'회복 리듬', reverse:true, items:[
+    [11,'잠깐 쉬고 나면 에너지가 어느 정도 돌아오는 편이었다'],
+    [12,'피곤한 날이 있어도 다음 날에는 평소 리듬을 되찾는 편이었다'],
+    [13,'좋아하는 활동을 하면 마음이 한결 가벼워졌다'],
+    [14,'불편한 일이 있어도 필요한 순간에는 생각을 잠시 내려놓을 수 있었다'],
+    [15,'내 일정과 생활 속도를 어느 정도 조절할 수 있었다']
   ]},
-  { key:'autonomic', label:'자율신경 반응', items:[
-    [16,'가슴 통증·압박감'],[20,'기침 또는 호흡 곤란'],[21,'심장이 빠르게 뛰거나 두근거림'],
-    [22,'손발이 참'],[23,'운동·외부 열과 무관한 땀'],[24,'떨림 또는 몸이 흔들림'],
-    [25,'어지럽거나 힘 없거나 실신할 것 같음'],[26,'몸이 아프거나 컨디션이 나쁨'],[27,'인후통 또는 림프절 부음']
+  { key:'tension', label:'몸의 긴장과 이완', items:[
+    [16,'하루를 보내고 나면 목이나 어깨를 움직여 풀어주고 싶었다'],
+    [17,'같은 자세로 있는 동안 몸이 쉽게 불편해졌다'],
+    [18,'집중하거나 긴장할 때 어깨나 턱에 힘이 들어갔다'],
+    [19,'쉬고 있을 때도 몸에 힘이 남아 있는 듯했다'],
+    [20,'피곤한 날에는 머리나 눈 주변이 무겁게 느껴졌다']
   ]},
-  { key:'digestion', label:'소화·식욕 신호', items:[
-    [17,'복통 또는 복부 불편감'],[18,'메스꺼움 또는 구토'],[19,'변비, 설사 또는 가스'],
-    [28,'식욕부진 또는 소식'],[29,'과식 또는 폭식']
+  { key:'breathing', label:'호흡과 신체 반응', items:[
+    [21,'바쁘거나 긴장될 때 나도 모르게 한숨을 쉬었다'],
+    [22,'마음이 급할 때 호흡이 평소보다 짧아지는 느낌이 있었다'],
+    [23,'놀라거나 긴장한 뒤 몸이 편안해지기까지 시간이 걸렸다'],
+    [24,'긴장되는 상황에서 손발의 온도가 달라지는 느낌이 있었다'],
+    [25,'특별히 덥지 않아도 긴장하면 땀이 나는 편이었다']
   ]},
-  { key:'emotion', label:'정서적 부담', items:[
-    [5,'초조하거나 긴장되거나 안절부절 못함'],[11,'해야 할 일 때문에 시간에 쫓김'],[30,'신경이 예민하거나 불안함'],
-    [31,'걱정되거나 염려됨'],[32,'집중이나 결정을 내리기 어려움'],[33,'부적절하거나 무가치하게 느껴짐'],
-    [34,'우울하거나 낙담됨'],[35,'외롭거나 고립되거나 위축됨'],[36,'짜증나거나 화나거나 분함'],
-    [37,'멈출 수 없는 자기비판적 생각'],[38,'특정 물질(술·약물·니코틴)이 갈망됨']
+  { key:'digestion', label:'식사와 속의 편안함', items:[
+    [26,'신경을 많이 쓴 날에는 식사량이나 입맛이 달라졌다'],
+    [27,'식사 후 속이 편안해지기까지 시간이 걸렸다'],
+    [28,'생활 리듬이 흐트러지면 배변 리듬도 달라졌다'],
+    [29,'배가 고프거나 배부른 느낌을 알아차리기 어려운 날이 있었다'],
+    [30,'피곤하거나 스트레스를 받으면 평소보다 많이 또는 적게 먹었다']
   ]},
-  { key:'selfcare', label:'자기관리 자원', protective:true, items:[
-    [39,'신체 운동이나 스포츠 활동을 함'],[40,'눈을 감고 하는 이완이나 명상을 함']
+  { key:'mind', label:'마음의 여유', items:[
+    [31,'해야 할 일을 시작하기까지 평소보다 시간이 필요했다'],
+    [32,'평소보다 사람을 만나거나 대화한 후 쉽게 지치는 느낌이 있었다'],
+    [33,'작은 실수나 아쉬운 일이 마음에 오래 남았다'],
+    [34,'평소 좋아하던 일도 시작하기 귀찮게 느껴졌다'],
+    [35,'마음을 쉬게 하려고 해도 생각이 계속 이어지는 날이 있었다']
   ]},
-  { key:'menstrual', label:'생리·월경 관련 증상', conditional:true, items:[
-    [41,'생리 전 유방 압통·팽만감'],[42,'생리 전 감정 기복(예민함·눈물 많아짐)'],[43,'생리 전·중 두통 또는 편두통'],
-    [44,'하복부 통증(생리통)'],[45,'요통 또는 골반 불편감'],[46,'생리 전·중 부종(붓기)'],
-    [47,'생리 전 식욕 변화(과식·단 것 당김)'],[48,'생리 전·중 피부 트러블'],[49,'생리 주기 전반의 피로감 증가'],
-    [50,'생리 불순(주기가 불규칙함)']
+  { key:'cycle', label:'생리 전후 컨디션 변화', conditional:true, scale:'cycle',
+    note:'최근 생리 전후에 경험한 변화와 가장 가까운 답변을 선택해주세요', items:[
+    [36,'생리 전후에 몸이 평소보다 무겁거나 붓는 느낌이 있었다'],
+    [37,'생리 전후에 감정이 평소보다 쉽게 흔들렸다'],
+    [38,'생리 전후에 머리나 눈 주변이 무겁게 느껴졌다'],
+    [39,'생리 전후에 아랫배나 허리 주변이 편안하지 않았다'],
+    [40,'생리 전후에 식욕이나 당기는 음식이 달라졌다'],
+    [41,'생리 전후에 피부가 평소보다 예민해졌다'],
+    [42,'생리 전후에 피로가 쉽게 쌓이고 회복이 더뎠다'],
+    [43,'생리 주기가 평소와 달라 신경 쓰인 적이 있었다']
   ]}
 ];
 
-var NOTES = {
-  sleep: ['수면 밸런스가 안정적이에요.', '가벼운 수면 신호가 보여요. 저녁 루틴 케어를 권장해요.', '밤에도 마음이 쉬지 못하는 유형이에요. 신문혈·심혈 중심 케어를 권장해요.'],
-  vitality: ['활력과 정서 자원이 좋은 편이에요.', '활력이 조금 저하된 신호가 있어요.', '에너지와 의욕이 많이 떨어진 상태예요. 활력 회복 케어를 우선해보세요.'],
-  tension: ['신체 긴장이 안정적이에요.', '가벼운 근골격 긴장 신호가 있어요.', '몸이 늘 긴장 모드인 유형이에요. 어깨·목 반사구 집중 케어를 권장해요.'],
-  autonomic: ['자율신경 균형이 안정적이에요.', '자율신경 신호가 간간이 나타나요.', '자율신경이 예민해진 유형이에요. 이주·미주신경 반사구를 우선해보세요.'],
-  digestion: ['소화·식욕이 안정적이에요.', '소화 컨디션에 가벼운 신호가 있어요.', '소화 기능에 부담이 큰 유형이에요. 위·비 반사구 케어를 병행해보세요.'],
-  emotion: ['정서적으로 안정된 상태예요.', '정서적으로 조금 지쳐있는 신호가 있어요.', '마음의 무게를 혼자 견뎌온 유형이에요. 정서 이완 케어와 함께, 필요하다면 전문 상담도 함께 권해보세요.'],
-  menstrual: ['생리 전후 컨디션이 안정적이에요.', '생리 전후로 가벼운 신호가 나타나는 편이에요.', '생리 전후 증상이 크게 나타나는 유형이에요. 자궁·내분비 반사구 중심 케어를 권장해요.']
-};
+// 생리 전후 결과를 문항 원문 그대로 나열하지 않고 6개 변화 유형으로
+// 묶어서 해석하기 위한 매핑. result.html은 이 그룹핑을 다시 정의하지
+// 않고, 아래 calculate()가 계산해 저장한 영역별 최고 점수만 사용한다.
+var CYCLE_THEMES = [
+  { key:'body', items:[36] },
+  { key:'emotion', items:[37] },
+  { key:'discomfort', items:[38, 39] },
+  { key:'appetiteSkin', items:[40, 41] },
+  { key:'fatigue', items:[42] },
+  { key:'timing', items:[43] }
+];
 
-var TIER_LABELS = ['안정', '관찰 필요', '집중 케어'];
-var TIER_CLASSES = ['tier-stable', 'tier-watch', 'tier-focus'];
-var PROTECTIVE_LABELS = ['부족', '보통', '좋음'];
-var PROTECTIVE_CLASSES = ['tier-focus', 'tier-watch', 'tier-stable'];
-var PROTECTIVE_NOTES = [
-  '쉬고 이완하는 시간이 부족해요. 자기관리 루틴을 함께 만들어봐요.',
-  '자기관리 습관이 있어요. 조금 더 늘려보면 좋아요.',
-  '스스로 회복하는 힘이 좋아요. 이 습관을 계속 이어가시면 좋아요.'
+// 생활관리 확인 영역(점수 미반영, 복수 선택). exclusive:true인 항목은
+// 선택 시 다른 모든 항목의 선택을 해제하고(반대도 마찬가지), hasInput:true인
+// 항목은 선택 시 자유 입력창을 드러낸다.
+var LIFESTYLE_ITEMS = [
+  { key:'rest', label:'충분히 자거나 쉬기' },
+  { key:'walk', label:'산책이나 가벼운 움직임' },
+  { key:'meals', label:'규칙적인 식사와 수분 섭취' },
+  { key:'hobby', label:'음악·독서·취미 활동' },
+  { key:'talk', label:'가족이나 지인과 대화' },
+  { key:'alone', label:'혼자 조용히 쉬는 시간' },
+  { key:'stretch', label:'스트레칭·호흡·명상' },
+  { key:'none', label:'아직 나에게 맞는 방법을 찾지 못함', exclusive:true },
+  { key:'other', label:'기타', hasInput:true }
 ];
 
 // ============================================================
 // 다국어(ko/en) 지원.
-// 위 DOMAINS/NOTES/OPTS/TIER_*/PROTECTIVE_*는 채점에도 쓰이는 원본
-// 한국어 데이터라 이 블록에서 전혀 수정하지 않는다. 화면에 그릴 때만
-// 아래 EN 사전을 참조해 텍스트를 바꿔치기하고, 채점(sum/avg/tierIdx
-// 계산)은 언제나 이 DOMAINS의 id·순서·점수값 그대로 동작한다 — 언어와
-// 무관하다.
+// 위 DOMAINS/LIFESTYLE_ITEMS는 채점에도 쓰이는 원본 한국어 데이터라 이
+// 블록에서 전혀 수정하지 않는다. 화면에 그릴 때만 아래 EN 사전을 참조해
+// 텍스트를 바꿔치기하고, 채점(sum/pct 계산)은 언제나 DOMAINS의 id·순서·
+// 점수값 그대로 동작한다 — 언어와 무관하다.
 // ============================================================
 var LANG_KEY = 'earCheckLanguage';
 var PARENT_ALLOWED_ORIGINS = ['http://localhost:8732', 'https://730skineartherapy.com'];
@@ -239,78 +337,96 @@ var EN = {
   pageTitle: '730 Skin Ear Balance Check Result',
   brandSub: '730 Skin Ear Therapy',
   heroTitle: 'Ear Balance Check Result',
-  heroDesc: 'Please select how much each item applied to you over the past week',
+  heroDesc: 'Please choose the answer closest to your experience over the past 7 days',
   genderLabel: 'Gender',
   genderMale: 'Male',
   genderFemale: 'Female',
   nameLabel: 'Name',
   ageLabel: 'Age',
   dateLabel: 'Consultation Date',
-  menstrualToggle: 'Are you before or during your period?',
+  cycleQuestion: 'Would you also like to check changes around your menstrual cycle?',
+  cycleYes: "Yes, let's check",
+  cycleNo: 'No, skip this',
+  cycleQuestionNote: "If it's been a while since your last period, or you'd rather not answer right now, feel free to choose \"No, skip this.\"",
   calcBtn: 'Check Results',
   footer: '730 Skin Ear Therapy',
-  opts: ['None', 'Moderate', 'High'],
-  domainLabels: {
-    sleep: 'Sleep Balance',
-    vitality: 'Vitality & Emotional Resources',
-    tension: 'Physical Tension & Pain',
-    autonomic: 'Autonomic Nervous System Responses',
-    digestion: 'Digestion & Appetite Signals',
-    emotion: 'Emotional Load',
-    selfcare: 'Self-Care Resources',
-    menstrual: 'Menstrual-Related Symptoms'
+  opts: ['Not at all', 'Sometimes', 'Often', 'Almost every day'],
+  // 생리 문항(36~43) 전용 척도 — '빈도'가 아니라 '불편감·일상 영향
+  // 정도'를 자연스럽게 담은 문구로 직역하지 않았다.
+  cycleOpts: ['Not at all', 'Present, but not really bothersome', 'Noticeable enough to be on my mind', 'Enough to affect my daily life'],
+  domainNotes: {
+    cycle: "Please select the answer that best matches what you've noticed around your period"
   },
+  domainLabels: {
+    sleep: 'Sleep & Morning Condition',
+    burden: 'Daily Stress Load',
+    recovery: 'Recovery Rhythm',
+    tension: 'Body Tension & Release',
+    breathing: 'Breathing & Physical Response',
+    digestion: 'Digestion & Gut Comfort',
+    mind: 'Peace of Mind',
+    cycle: 'Changes Around Your Period'
+  },
+  lifestyleTitle: 'Lifestyle Check-in',
+  lifestyleDesc: "Select any of the things you've done this past week (not included in your score)",
+  lifestyleOtherPlaceholder: 'Please describe briefly',
+  lifestyleItems: {
+    rest: 'Getting enough sleep or rest',
+    walk: 'Taking a walk or light movement',
+    meals: 'Eating regularly and staying hydrated',
+    hobby: 'Listening to music, reading, or a hobby',
+    talk: 'Talking with family or friends',
+    alone: 'Quiet time alone',
+    stretch: 'Stretching, breathing exercises, or meditation',
+    none: "Haven't found what works for me yet",
+    other: 'Other'
+  },
+  progressText: function (answered, total) { return 'Answered ' + answered + ' / ' + total; },
+  unansweredText: function (remaining) { return remaining + ' unanswered'; },
   items: {
-    1: 'Difficulty falling asleep at night',
-    2: 'Difficulty staying asleep (waking up during the night)',
-    3: 'Feeling tired or lethargic during the day',
-    4: 'Feeling full of vitality and energy',
-    6: 'Feeling good, happy, and excited',
-    7: 'Spending time on enjoyable activities',
-    8: 'Spending time with people you enjoy being around',
-    9: 'Feeling confident or optimistic',
-    10: 'Being able to work productively',
-    12: 'Headache',
-    13: 'Shoulder tension or neck stiffness',
-    14: 'Pain or stiffness in hands, feet, arms, or legs',
-    15: 'Lower back pain',
-    16: 'Chest pain or tightness',
-    20: 'Coughing or difficulty breathing',
-    21: 'Rapid or pounding heartbeat',
-    22: 'Cold hands or feet',
-    23: 'Sweating unrelated to exercise or heat',
-    24: 'Trembling or shakiness',
-    25: 'Feeling dizzy, weak, or faint',
-    26: 'Feeling physically unwell or off',
-    27: 'Sore throat or swollen lymph nodes',
-    17: 'Abdominal pain or discomfort',
-    18: 'Nausea or vomiting',
-    19: 'Constipation, diarrhea, or gas',
-    28: 'Poor appetite or eating less than usual',
-    29: 'Overeating or binge eating',
-    5: 'Feeling on edge, tense, or restless',
-    11: 'Feeling rushed or pressed for time by things you need to do',
-    30: 'Feeling irritable or anxious',
-    31: 'Feeling worried or concerned',
-    32: 'Difficulty concentrating or making decisions',
-    33: 'Feeling inadequate or worthless',
-    34: 'Feeling depressed or discouraged',
-    35: 'Feeling lonely, isolated, or withdrawn',
-    36: 'Feeling irritated, angry, or resentful',
-    37: 'Uncontrollable self-critical thoughts',
-    38: 'Craving a specific substance (alcohol, drugs, or nicotine)',
-    39: 'Engaging in physical exercise or sports',
-    40: 'Practicing relaxation or meditation with eyes closed',
-    41: 'Breast tenderness or swelling before your period',
-    42: 'Mood swings before your period (irritability, tearfulness)',
-    43: 'Headache or migraine before or during your period',
-    44: 'Lower abdominal pain (menstrual cramps)',
-    45: 'Lower back pain or pelvic discomfort',
-    46: 'Bloating before or during your period',
-    47: 'Appetite changes before your period (overeating, craving sweets)',
-    48: 'Skin breakouts before or during your period',
-    49: 'Increased fatigue throughout your menstrual cycle',
-    50: 'Irregular periods (irregular cycle)'
+    1: 'Had nights when your mind kept racing after lying down to sleep',
+    2: 'Took a while to fall back asleep after waking up during the night',
+    3: 'Felt physically heavy when waking up in the morning',
+    4: 'Had moments during the day when focus dropped or you needed a break',
+    5: 'Took time to settle your mind after something unexpected came up',
+    6: 'Felt unsure where to start when tasks piled up',
+    7: "Reacted more sensitively than usual to small things you'd normally let go",
+    8: 'Kept thinking about something even after it was done',
+    9: 'Often felt rushed or pressed for time during the day',
+    10: 'Felt like your mind was racing ahead of what was actually happening',
+    11: 'Felt some energy return after a short rest',
+    12: 'Bounced back to your usual rhythm the day after a tiring one',
+    13: 'Felt lighter after doing something you enjoy',
+    14: 'Were able to set worries aside for a moment when you needed to',
+    15: 'Felt some sense of control over your own pace and schedule',
+    16: 'Wanted to stretch out your neck or shoulders after the day',
+    17: 'Got uncomfortable easily when staying in the same position',
+    18: 'Noticed tension building in your shoulders or jaw when focused or stressed',
+    19: 'Felt like your body was still tense even while resting',
+    20: 'Felt heaviness around your head or eyes on tiring days',
+    21: 'Caught yourself sighing without meaning to when busy or tense',
+    22: 'Noticed your breathing feel shorter than usual when rushed',
+    23: 'Took a while for your body to settle after being startled or tense',
+    24: 'Noticed your hands or feet feel warmer or cooler in tense moments',
+    25: "Tended to sweat when tense, even when it wasn't warm",
+    26: 'Noticed your appetite or portion size change on stressful days',
+    27: 'Took a while for your stomach to settle after eating',
+    28: 'Noticed your bathroom rhythm shift when your routine was off',
+    29: 'Had days when it was hard to notice hunger or fullness cues',
+    30: 'Ate more or less than usual when tired or stressed',
+    31: 'Needed more time than usual to get started on things',
+    32: 'Felt more drained than usual after meeting or talking with people',
+    33: 'Had small mistakes or regrets stay on your mind longer than expected',
+    34: 'Found it hard to feel motivated to start things you usually enjoy',
+    35: 'Had days when your thoughts kept going even when trying to relax',
+    36: 'Felt heavier or more swollen than usual around your period',
+    37: 'Felt more emotionally sensitive than usual around your period',
+    38: 'Felt heaviness around your head or eyes around your period',
+    39: 'Felt discomfort in your lower abdomen or lower back around your period',
+    40: 'Noticed your appetite or cravings change around your period',
+    41: 'Noticed your skin feel more sensitive than usual around your period',
+    42: 'Felt fatigue build up more easily and recovery feel slower around your period',
+    43: 'Felt concerned when your menstrual cycle was different from usual'
   }
 };
 
@@ -339,6 +455,20 @@ function optsText() {
   return currentLang === 'en' ? EN.opts : OPTS;
 }
 
+function cycleOptsText() {
+  return currentLang === 'en' ? EN.cycleOpts : CYCLE_OPTS;
+}
+
+function domainNote(key) {
+  if (currentLang === 'en') return EN.domainNotes ? EN.domainNotes[key] : undefined;
+  var domain = DOMAINS.filter(function (d) { return d.key === key; })[0];
+  return domain ? domain.note : undefined;
+}
+
+function lifestyleLabel(key) {
+  return currentLang === 'en' ? EN.lifestyleItems[key] : (LIFESTYLE_ITEMS.filter(function (it) { return it.key === key; })[0] || {}).label;
+}
+
 function setText(id, text) {
   var el = document.getElementById(id);
   if (el) el.textContent = text;
@@ -354,12 +484,12 @@ function applyTranslations() {
 
   setText('brand-sub', currentLang === 'en' ? EN.brandSub : '730스킨 이어테라피');
   setText('page-title', currentLang === 'en' ? EN.heroTitle : '이어밸런스 체크 결과지');
-  setText('page-desc', currentLang === 'en' ? EN.heroDesc : '지난 한 주 동안의 경험에 해당하는 정도를 선택해주세요');
+  setText('page-desc', currentLang === 'en' ? EN.heroDesc : '최근 7일 동안 경험한 정도에 가장 가까운 답을 선택해주세요');
   setText('gender-label', currentLang === 'en' ? EN.genderLabel : '성별');
   setText('name-label', currentLang === 'en' ? EN.nameLabel : '이름');
   setText('age-label', currentLang === 'en' ? EN.ageLabel : '나이');
   setText('date-label', currentLang === 'en' ? EN.dateLabel : '상담 날짜');
-  setText('menstrual-toggle-text', currentLang === 'en' ? EN.menstrualToggle : '생리 전 또는 생리 중이신가요?');
+  setText('cycle-question-text', currentLang === 'en' ? EN.cycleQuestion : '최근 생리 전후에 나타나는 컨디션 변화도 확인하시겠어요');
   setText('calc-btn', currentLang === 'en' ? EN.calcBtn : '결과 확인하기');
   setText('page-footer', currentLang === 'en' ? EN.footer : '730스킨 이어테라피');
 
@@ -373,10 +503,18 @@ function applyTranslations() {
   if (genderMaleBtn) genderMaleBtn.textContent = currentLang === 'en' ? EN.genderMale : '남성';
   if (genderFemaleBtn) genderFemaleBtn.textContent = currentLang === 'en' ? EN.genderFemale : '여성';
 
+  var cycleYesBtn = document.querySelector('#cycle-toggle-group [data-cycle="yes"]');
+  var cycleNoBtn = document.querySelector('#cycle-toggle-group [data-cycle="no"]');
+  if (cycleYesBtn) cycleYesBtn.textContent = currentLang === 'en' ? EN.cycleYes : '확인할게요';
+  if (cycleNoBtn) cycleNoBtn.textContent = currentLang === 'en' ? EN.cycleNo : '확인하지 않을게요';
+  setText('cycle-question-note', currentLang === 'en' ? EN.cycleQuestionNote : "생리가 오래 없었거나 지금 답하기 어려우시다면 '확인하지 않을게요'를 선택하셔도 괜찮아요");
+
   document.querySelectorAll('.domain[data-domain-key]').forEach(function (section) {
     var key = section.getAttribute('data-domain-key');
     var h = section.querySelector('h2');
     if (h) h.textContent = domainLabel(key);
+    var note = section.querySelector('.domain-note');
+    if (note) note.textContent = domainNote(key);
   });
 
   document.querySelectorAll('.item-row[data-item-id]').forEach(function (row) {
@@ -384,13 +522,25 @@ function applyTranslations() {
     var label = row.querySelector('.item-label');
     if (label) label.textContent = itemText(id);
 
-    var opts = optsText();
+    var opts = row.getAttribute('data-scale') === 'cycle' ? cycleOptsText() : optsText();
     var btnGroup = row.querySelector('.btn-group');
     if (btnGroup) {
       var btns = btnGroup.querySelectorAll('.opt-btn');
       btns.forEach(function (btn, idx) { btn.textContent = opts[idx]; });
     }
   });
+
+  setText('lifestyle-title', currentLang === 'en' ? EN.lifestyleTitle : '생활관리 확인');
+  setText('lifestyle-desc', currentLang === 'en' ? EN.lifestyleDesc : '최근 일주일 동안 실천한 방법을 모두 선택해주세요 (점수에는 포함되지 않아요)');
+  document.querySelectorAll('.lifestyle-opt[data-lifestyle-key]').forEach(function (label) {
+    var key = label.getAttribute('data-lifestyle-key');
+    var span = label.querySelector('.lifestyle-opt-text');
+    if (span) span.textContent = lifestyleLabel(key);
+  });
+  var otherInput = document.getElementById('lifestyle-other-input');
+  if (otherInput) otherInput.placeholder = currentLang === 'en' ? EN.lifestyleOtherPlaceholder : '내용을 입력해주세요';
+
+  updateProgress();
 }
 
 function setLanguage(lang) {
@@ -401,6 +551,12 @@ function setLanguage(lang) {
 }
 
 var answers = {};
+// data-item-id 문항 행을 매번 querySelector로 다시 찾지 않도록 캐싱해둔다.
+// updateProgress()/focusFirstUnanswered()에서 반복 조회된다.
+var itemRows = {};
+// 성별을 여성으로 선택했을 때만 주기 확인 질문이 노출되고, 그 질문에서
+// '확인할게요'를 선택했을 때만 주기 문항이 노출·필수화된다.
+var cycleChoice = null; // null | 'yes' | 'no'
 
 function buildForm() {
   var formArea = document.getElementById('form-area');
@@ -412,13 +568,24 @@ function buildForm() {
     h.textContent = domainLabel(d.key);
     section.appendChild(h);
 
+    if (d.note) {
+      var noteEl = document.createElement('p');
+      noteEl.className = 'domain-note';
+      noteEl.textContent = domainNote(d.key);
+      section.appendChild(noteEl);
+    }
+
     d.items.forEach(function(pair) {
       var itemId = pair[0];
-      answers[itemId] = 0;
+      // 모든 문항은 처음에 아무 선택지도 활성화하지 않은 미응답(null)
+      // 상태로 시작한다.
+      answers[itemId] = null;
 
       var row = document.createElement('div');
-      row.className = 'item-row';
+      row.className = 'item-row unanswered';
       row.setAttribute('data-item-id', itemId);
+      row.setAttribute('data-scale', d.scale === 'cycle' ? 'cycle' : 'default');
+      itemRows[itemId] = row;
 
       var label = document.createElement('div');
       label.className = 'item-label';
@@ -429,17 +596,18 @@ function buildForm() {
       btnGroup.className = 'btn-group';
       btnGroup.setAttribute('data-item', itemId);
 
-      optsText().forEach(function(optText, idx) {
+      (d.scale === 'cycle' ? cycleOptsText() : optsText()).forEach(function(optText, idx) {
         var btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'opt-btn';
         btn.textContent = optText;
-        if (idx === 0) btn.classList.add('active');
         btn.addEventListener('click', function() {
           answers[itemId] = idx;
           var siblings = btnGroup.querySelectorAll('.opt-btn');
           for (var i = 0; i < siblings.length; i++) siblings[i].classList.remove('active');
           btn.classList.add('active');
+          row.classList.remove('unanswered');
+          updateProgress();
         });
         btnGroup.appendChild(btn);
       });
@@ -456,21 +624,136 @@ function buildForm() {
     formArea.appendChild(section);
   });
 
-  var menstrualToggle = document.getElementById('menstrual-toggle');
-  if (menstrualToggle) {
-    menstrualToggle.addEventListener('change', function() {
-      var section = document.getElementById('domain-menstrual');
-      if (section) section.style.display = menstrualToggle.checked ? 'block' : 'none';
+  buildLifestyleSection(formArea);
+  updateProgress();
+}
+
+// 생활관리 확인 영역 — 점수에 포함되지 않는 별도 복수 선택 목록.
+// '아직 나에게 맞는 방법을 찾지 못함'은 다른 모든 항목과 상호 배타적이고,
+// '기타'는 선택 시에만 자유 입력창을 보여준다.
+function buildLifestyleSection(formArea) {
+  var section = document.createElement('div');
+  section.className = 'lifestyle-section';
+
+  var h = document.createElement('h2');
+  h.id = 'lifestyle-title';
+  h.textContent = currentLang === 'en' ? EN.lifestyleTitle : '생활관리 확인';
+  section.appendChild(h);
+
+  var desc = document.createElement('p');
+  desc.className = 'lifestyle-desc';
+  desc.id = 'lifestyle-desc';
+  desc.textContent = currentLang === 'en' ? EN.lifestyleDesc : '최근 일주일 동안 실천한 방법을 모두 선택해주세요 (점수에는 포함되지 않아요)';
+  section.appendChild(desc);
+
+  var optionsWrap = document.createElement('div');
+  optionsWrap.className = 'lifestyle-options';
+
+  var otherInput = document.createElement('input');
+  otherInput.type = 'text';
+  otherInput.className = 'lifestyle-other-input';
+  otherInput.id = 'lifestyle-other-input';
+  otherInput.maxLength = 80;
+  otherInput.placeholder = currentLang === 'en' ? EN.lifestyleOtherPlaceholder : '내용을 입력해주세요';
+
+  LIFESTYLE_ITEMS.forEach(function (item) {
+    var label = document.createElement('label');
+    label.className = 'lifestyle-opt';
+    label.setAttribute('data-lifestyle-key', item.key);
+
+    var checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = 'lifestyle-' + item.key;
+
+    var span = document.createElement('span');
+    span.className = 'lifestyle-opt-text';
+    span.textContent = lifestyleLabel(item.key);
+
+    checkbox.addEventListener('change', function () {
+      label.classList.toggle('checked', checkbox.checked);
+
+      if (item.exclusive && checkbox.checked) {
+        LIFESTYLE_ITEMS.forEach(function (other) {
+          if (other.key === item.key) return;
+          var otherBox = document.getElementById('lifestyle-' + other.key);
+          if (otherBox && otherBox.checked) {
+            otherBox.checked = false;
+            otherBox.dispatchEvent(new Event('change'));
+          }
+        });
+      } else if (!item.exclusive && checkbox.checked) {
+        var noneBox = document.getElementById('lifestyle-none');
+        if (noneBox && noneBox.checked) {
+          noneBox.checked = false;
+          noneBox.dispatchEvent(new Event('change'));
+        }
+      }
+
+      if (item.hasInput) {
+        otherInput.classList.toggle('is-visible', checkbox.checked);
+        if (!checkbox.checked) otherInput.value = '';
+      }
     });
+
+    label.appendChild(checkbox);
+    label.appendChild(span);
+    optionsWrap.appendChild(label);
+  });
+
+  section.appendChild(optionsWrap);
+  section.appendChild(otherInput);
+  formArea.appendChild(section);
+}
+
+// 주기 전후 컨디션 문항(36~43)의 응답과 화면 표시를 모두 초기화한다.
+// 성별을 남성으로 바꾸거나, 주기 확인 질문에서 '확인하지 않을게요'를
+// 선택하면 호출된다.
+function resetCycleAnswers() {
+  var cycleDomain = DOMAINS.filter(function (d) { return d.key === 'cycle'; })[0];
+  cycleDomain.items.forEach(function (pair) {
+    answers[pair[0]] = null;
+    var row = itemRows[pair[0]];
+    if (row) {
+      row.classList.add('unanswered');
+      row.querySelectorAll('.opt-btn').forEach(function (b) { b.classList.remove('active'); });
+    }
+  });
+}
+
+function setCycleItemsVisible(visible) {
+  var section = document.getElementById('domain-cycle');
+  if (section) section.style.display = visible ? 'block' : 'none';
+  if (!visible) resetCycleAnswers();
+}
+
+function setCycleQuestionVisible(visible) {
+  var q = document.getElementById('cycle-question');
+  if (q) q.classList.toggle('is-visible', visible);
+  if (!visible) {
+    document.querySelectorAll('#cycle-toggle-group .opt-btn').forEach(function (b) { b.classList.remove('active'); });
+    cycleChoice = null;
+    setCycleItemsVisible(false);
   }
+}
+
+function setupCycleToggle() {
+  var group = document.getElementById('cycle-toggle-group');
+  if (!group) return;
+  var btns = group.querySelectorAll('.opt-btn');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      btns.forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      cycleChoice = btn.getAttribute('data-cycle');
+      setCycleItemsVisible(cycleChoice === 'yes');
+      updateProgress();
+    });
+  });
 }
 
 function setupGenderToggle() {
   var genderGroup = document.getElementById('gender-group');
-  var menstrualRow = document.getElementById('menstrual-row');
-  var menstrualToggle = document.getElementById('menstrual-toggle');
-  if (!genderGroup || !menstrualRow || !menstrualToggle) return;
-
+  if (!genderGroup) return;
   var genderBtns = genderGroup.querySelectorAll('.opt-btn');
 
   genderBtns.forEach(function(btn) {
@@ -479,57 +762,202 @@ function setupGenderToggle() {
       btn.classList.add('active');
 
       var isFemale = btn.getAttribute('data-gender') === 'female';
-      menstrualRow.classList.toggle('is-visible', isFemale);
-
-      if (!isFemale && menstrualToggle.checked) {
-        menstrualToggle.checked = false;
-        menstrualToggle.dispatchEvent(new Event('change'));
-      }
+      // 남성으로 바뀌면(혹은 처음부터 남성이면) 주기 확인 질문과 주기
+      // 문항을 모두 숨기고, 이미 답한 주기 문항 응답도 제거한다.
+      setCycleQuestionVisible(isFemale);
+      updateProgress();
     });
   });
 }
 
-function getTierIndex(avg) {
-  if (avg <= TIER_LOW) return 0;
-  if (avg <= TIER_HIGH) return 1;
-  return 2;
+// 현재 화면에 표시된 모든 점수 문항 id를 순서대로 모은다. 주기 전후
+// 컨디션 문항(cycle)은 '확인할게요'를 선택했을 때만 포함된다. 진행률
+// 계산과 미응답 이동 모두 이 목록을 기준으로 동작한다.
+function getRequiredItemIds() {
+  var ids = [];
+  DOMAINS.forEach(function(d) {
+    if (d.key === 'cycle' && cycleChoice !== 'yes') return;
+    d.items.forEach(function(pair) { ids.push(pair[0]); });
+  });
+  return ids;
 }
 
-// 채점 로직(합계·평균·반전·등급 판정) 자체는 이전과 완전히 동일하다.
-// 마지막에 저장하는 값만 바뀌었다 — 예전에는 그 순간의 한국어 라벨·문구를
-// 미리 계산해 저장했는데, 그러면 나중에 언어를 바꿔도 result.html은 이미
-// 굳어버린 한국어 텍스트만 보여줄 수밖에 없었다. 대신 domainKey/tierIdx처럼
-// 언어와 무관한 값만 저장하고, result.html이 그 시점에 활성화된 언어로
-// 직접 문구를 찾아 그리도록 바꿨다 — sum/avg/tierIdx를 계산하는 코드는
-// 한 글자도 바뀌지 않았고, 점수·평균·등급 판정 결과 자체는 그대로다.
+function isAnswered(id) {
+  return answers[id] !== null && answers[id] !== undefined;
+}
+
+// '응답 완료 X / 전체 Y' 및 미응답 개수 표시, 결과 버튼의 비활성 스타일,
+// 각 문항 행의 미응답 테두리 표시를 모두 이 함수 하나로 갱신한다.
+function updateProgress() {
+  var required = getRequiredItemIds();
+  var answeredCount = 0;
+  required.forEach(function(id) {
+    var answered = isAnswered(id);
+    if (answered) answeredCount++;
+    var row = itemRows[id];
+    if (row) row.classList.toggle('unanswered', !answered);
+  });
+
+  var remaining = required.length - answeredCount;
+
+  setText('progress-text', currentLang === 'en'
+    ? EN.progressText(answeredCount, required.length)
+    : ('응답 완료 ' + answeredCount + ' / ' + required.length));
+
+  setText('unanswered-text', remaining > 0
+    ? (currentLang === 'en' ? EN.unansweredText(remaining) : ('미응답 ' + remaining + '문항'))
+    : '');
+
+  var calcBtn = document.getElementById('calc-btn');
+  if (calcBtn) calcBtn.classList.toggle('is-disabled', remaining > 0);
+}
+
+// 미응답 문항이 있으면 첫 번째 문항으로 스크롤·포커스 이동하고 true를
+// 반환한다(이 경우 호출한 쪽에서 결과 계산을 진행하지 않는다).
+function focusFirstUnanswered() {
+  var required = getRequiredItemIds();
+  for (var i = 0; i < required.length; i++) {
+    if (isAnswered(required[i])) continue;
+    var row = itemRows[required[i]];
+    if (row) {
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      row.classList.remove('flash-highlight');
+      void row.offsetWidth; // 애니메이션 재시작을 위한 강제 리플로우
+      row.classList.add('flash-highlight');
+      var firstBtn = row.querySelector('.opt-btn');
+      if (firstBtn) firstBtn.focus();
+    }
+    return true;
+  }
+  return false;
+}
+
+function onCalcClick() {
+  if (focusFirstUnanswered()) return;
+  calculate();
+}
+
+// 전체 점수(0~105점) 구간 — 의학적 진단 기준이 아니라 730스킨 상담을
+// 위한 임시 운영 기준이다. 화면 안내에도 동일한 문구를 표시한다.
+function overallTier(total) {
+  if (total <= 26) return 0;
+  if (total <= 52) return 1;
+  if (total <= 78) return 2;
+  return 3;
+}
+
+// 채점 로직 — 7개 핵심 영역(0~105점)과 주기 전후 컨디션(0~24점, 전체
+// 점수 제외)을 완전히 분리해서 계산한다.
 function calculate() {
-  var menstrualChecked = document.getElementById('menstrual-toggle').checked;
   var resultsData = [];
 
   DOMAINS.forEach(function(d) {
-    if (d.conditional && !menstrualChecked) return;
+    if (d.key === 'cycle') return; // 주기 영역은 전체 점수·영역 비교에서 제외
 
     var sum = 0;
     d.items.forEach(function(pair) { sum += answers[pair[0]]; });
-    var avg = sum / d.items.length;
-    if (d.reverse) avg = MAX_SCORE - avg;
-    avg = Math.round(avg * 10) / 10;
+    var maxScore = d.items.length * MAX_SCORE;
+    // 회복 리듬(reverse)은 응답이 긍정적일수록(=거의 매일 있었다) 점수가
+    // 낮아지도록 반전한다 — 모든 영역이 "점수가 높을수록 휴식·회복이
+    // 더 필요하다"는 같은 방향을 갖게 하기 위함이다.
+    var scoredSum = d.reverse ? (maxScore - sum) : sum;
+    // 영역마다 문항 수·최고점이 달라 단순 합계로는 비교할 수 없으므로,
+    // 0~100 환산 점수(pct)를 별도로 계산해 영역 간 비교에 사용한다.
+    var pct = Math.round((scoredSum / maxScore) * 1000) / 10;
 
-    var tierIdx;
-    if (d.protective) {
-      tierIdx = avg >= TIER_HIGH ? 2 : (avg >= TIER_LOW ? 1 : 0);
-    } else {
-      tierIdx = getTierIndex(avg);
-    }
-
-    resultsData.push({ domainKey: d.key, protective: !!d.protective, tierIdx: tierIdx, avg: avg, max: MAX_SCORE });
+    resultsData.push({ domainKey: d.key, sum: scoredSum, max: maxScore, pct: pct });
   });
+
+  var totalScore = resultsData.reduce(function(acc, r) { return acc + r.sum; }, 0);
+
+  // '조금 더 살펴볼 영역' — 환산 점수 최댓값을 가진 영역(들). 전부 0점이면
+  // 특정 영역을 강조하지 않는다(빈 배열 → result.html에서 안내 문구로 대체).
+  var maxPct = Math.max.apply(null, resultsData.map(function(r) { return r.pct; }));
+  var highlightDomains = maxPct === 0
+    ? []
+    : resultsData.filter(function(r) { return r.pct === maxPct; }).map(function(r) { return r.domainKey; });
+
+  // 전체 상위 응답 문항 최대 3개 — 점수(우려 방향으로 정렬된 값) 내림차순,
+  // 0점 문항은 제외, 동점이면 원래 문항 순서(id 오름차순) 유지.
+  var itemScores = [];
+  DOMAINS.forEach(function(d) {
+    if (d.key === 'cycle') return;
+    d.items.forEach(function(pair) {
+      var raw = answers[pair[0]];
+      var score = d.reverse ? (MAX_SCORE - raw) : raw;
+      itemScores.push({ id: pair[0], domainKey: d.key, score: score });
+    });
+  });
+  var topItems = itemScores.filter(function(it) { return it.score > 0; })
+    .sort(function(a, b) { return b.score - a.score; })
+    .slice(0, 3);
+  var topItemIds = topItems.map(function(it) { return it.id; });
+
+  // 영역별 상위 문항(최대 2개) — result.html에서 "조금 더 살펴볼 영역"의
+  // 결과 문구에 구체적으로 어떤 문항이 높았는지 언급하기 위해 사용한다.
+  var domainTopItems = {};
+  DOMAINS.forEach(function(d) {
+    if (d.key === 'cycle') return;
+    var scores = d.items.map(function(pair) {
+      var raw = answers[pair[0]];
+      return { id: pair[0], score: d.reverse ? (MAX_SCORE - raw) : raw };
+    }).filter(function(it) { return it.score > 0; })
+      .sort(function(a, b) { return b.score - a.score; })
+      .slice(0, 2);
+    domainTopItems[d.key] = scores.map(function(it) { return it.id; });
+  });
+
+  // 생리 전후 컨디션 — cycleChoice가 'yes'일 때만 계산·저장한다. cycleSum은
+  // 내부 계산·테스트 확인용으로만 저장하고, 고객 결과 화면에는 점수나
+  // 등급을 표시하지 않는다. 문항 원문을 그대로 나열하지 않고, 6개 변화
+  // 유형(CYCLE_THEMES)별 최고 응답 점수(0~3)만 저장해 result.html이
+  // 유형 단위로 해석하도록 한다 — 점수 0이면 result.html에서 표시하지
+  // 않는다. overallMaxScore(전체 8문항 중 최고 응답 점수)는 전체 요약
+  // 문구를 고를 때 쓰인다.
+  var cycleDomain = DOMAINS.filter(function(d) { return d.key === 'cycle'; })[0];
+  var cycleIncluded = cycleChoice === 'yes';
+  var cycleSum = 0;
+  var cycleThemeScores = {};
+  var cycleOverallMaxScore = 0;
+  if (cycleIncluded) {
+    cycleDomain.items.forEach(function(pair) {
+      cycleSum += answers[pair[0]];
+    });
+    CYCLE_THEMES.forEach(function(theme) {
+      var themeMax = 0;
+      theme.items.forEach(function(itemId) {
+        var raw = answers[itemId];
+        if (raw > themeMax) themeMax = raw;
+        if (raw > cycleOverallMaxScore) cycleOverallMaxScore = raw;
+      });
+      cycleThemeScores[theme.key] = themeMax;
+    });
+  }
+
+  var lifestyleSelected = [];
+  LIFESTYLE_ITEMS.forEach(function(item) {
+    var cb = document.getElementById('lifestyle-' + item.key);
+    if (cb && cb.checked) lifestyleSelected.push(item.key);
+  });
+  var lifestyleOtherText = '';
+  if (lifestyleSelected.indexOf('other') !== -1) {
+    var otherInput = document.getElementById('lifestyle-other-input');
+    lifestyleOtherText = otherInput ? otherInput.value.trim() : '';
+  }
 
   var payload = {
     name: document.getElementById('name').value,
     age: document.getElementById('age').value,
     date: document.getElementById('date').value,
-    results: resultsData
+    results: resultsData,
+    totalScore: totalScore,
+    overallTierIdx: overallTier(totalScore),
+    highlightDomains: highlightDomains,
+    topItemIds: topItemIds,
+    domainTopItems: domainTopItems,
+    cycleCheck: { included: cycleIncluded, sum: cycleSum, themeScores: cycleThemeScores, overallMaxScore: cycleOverallMaxScore },
+    lifestyleSelected: lifestyleSelected,
+    lifestyleOtherText: lifestyleOtherText
   };
   sessionStorage.setItem('earCheckResult', JSON.stringify(payload));
   storeLang(currentLang);
@@ -582,8 +1010,9 @@ function notifyParentReady() {
 currentLang = readStoredLang();
 buildForm();
 setupGenderToggle();
+setupCycleToggle();
 applyTranslations();
-document.getElementById('calc-btn').addEventListener('click', calculate);
+document.getElementById('calc-btn').addEventListener('click', onCalcClick);
 notifyParentReady();
 </script><script>
 document.getElementById('calc-btn').addEventListener('click', function() {
