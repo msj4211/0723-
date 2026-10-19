@@ -467,15 +467,22 @@
       if (mode === 'login') {
         clearPendingSignupEmail();
         closeModal();
-        // 실제 승인 상태 확인은 이동한 라우트의 checkEducationAccess()가
-        // 다시 하므로, 여기서는 승인 상태에 맞는 목적지로 보내기만 한다.
-        if (window.AccessControl) window.AccessControl.redirectAfterLogin(res.data.session.user.id);
+        var loginSession = res.data.session;
+        // 이 기기를 "지금 쓰는 기기"로 등록하고 같은 계정의 다른 기기는 로그아웃시킨다.
+        // 등록이 끝난 뒤 이동해야 보호된 페이지가 새 세션 기준으로 열린다.
+        var claimed = window.SingleSession ? window.SingleSession.claim(loginSession) : Promise.resolve();
+        claimed.then(function () {
+          // 실제 승인 상태 확인은 이동한 라우트의 checkEducationAccess()가
+          // 다시 하므로, 여기서는 승인 상태에 맞는 목적지로 보내기만 한다.
+          if (window.AccessControl) window.AccessControl.redirectAfterLogin(loginSession.user.id);
+        });
         return;
       }
 
       var profileData = { name: name, phone: phone, marketing_agreed: marketingCheckbox.checked };
 
       if (res.data.session) {
+        if (window.SingleSession) window.SingleSession.claim(res.data.session);
         saveProfileNow(res.data.session.user.id, profileData);
         clearPendingSignupEmail();
         // 가입 직후에도 교육생 확인 전까지는 보호된 콘텐츠를 보여주지
