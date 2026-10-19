@@ -4310,3 +4310,47 @@ body.no-scroll {
   color: #A99C8C;
 }
 
+
+
+/* ── 동시 로그인 차단 안내 ── */
+.single-session-notice {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(23, 23, 23, 0.45);
+}
+
+.single-session-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem 1.5rem 1.5rem;
+  border-radius: 20px;
+  background: #FFFFFF;
+  text-align: center;
+  box-shadow: 0 18px 50px rgba(56, 44, 33, 0.18);
+}
+
+.single-session-title {
+  margin: 0 0 0.6rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #292929;
+}
+
+.single-session-body {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #66615D;
+}
+
+.single-session-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}

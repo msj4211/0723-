@@ -230,7 +230,17 @@
         return;
       }
 
-      fetchOwnProfile(session.user.id).then(function (profRes) {
+      // 다른 기기에서 같은 계정으로 새로 로그인했다면 이 기기는 여기서 로그아웃된다.
+      var ensureDevice = window.SingleSession ? window.SingleSession.ensure(session) : Promise.resolve(true);
+      ensureDevice.then(function (stillActive) {
+        if (isStale()) return null;
+        if (!stillActive) {
+          renderLoginRequired(container);
+          return null;
+        }
+        return fetchOwnProfile(session.user.id);
+      }).then(function (profRes) {
+        if (!profRes) return;
         if (isStale()) return;
 
         if (profRes.error) {
