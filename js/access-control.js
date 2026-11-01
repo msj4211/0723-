@@ -216,10 +216,8 @@
 
     renderChecking(container);
 
-    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
-      renderErrorState(container, 'accessOffline');
-      return;
-    }
+    // navigator.onLine은 브라우저가 잘못 알려주는 경우가 있어(인터넷이 정상인데 false)
+    // 미리 막지 않는다. 실제 요청이 실패했을 때만 아래 catch에서 오류 화면을 보여준다.
 
     client().auth.getSession().then(function (res) {
       if (isStale()) return;
@@ -281,7 +279,9 @@
         if (!isStale()) renderErrorState(container, 'accessStatusCheckFailed');
       });
     }).catch(function () {
-      if (!isStale()) renderErrorState(container, 'accessSessionExpired');
+      if (isStale()) return;
+      var offline = typeof navigator !== 'undefined' && navigator.onLine === false;
+      renderErrorState(container, offline ? 'accessOffline' : 'accessSessionExpired');
     });
   }
 
