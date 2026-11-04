@@ -2,6 +2,7 @@
   var routes = {
     '': window.Pages.home,
     'ear-check': window.Pages.earCheck,
+    'ear-reading': window.Pages.earReading,
     'ear-point': window.Pages.earPoint,
     'ear-point-detail': window.Pages.earPointDetail,
     'seminar': window.Pages.seminar,

@@ -68,6 +68,7 @@ window.translations = {
 
     navEarCheck: '이어밸런스체크',
     navEarPoints: '이어포인트',
+    navEarReading: '이어 리딩 가이드',
     navProducts: '상품',
     navSeminar: '세미나신청',
     login: '로그인',
@@ -378,6 +379,7 @@ window.translations = {
 
     navEarCheck: 'Ear Balance Check',
     navEarPoints: 'Ear Points',
+    navEarReading: 'Ear Reading Guide',
     navProducts: 'Products',
     navSeminar: 'Seminar Registration',
     login: 'Log in',

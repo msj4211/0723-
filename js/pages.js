@@ -290,6 +290,23 @@ window.Pages = (function () {
     });
   }
 
+  // 이어 리딩 가이드: 고객 이야기 + 이어리플렉서 반응 혈자리로 상태 흐름을 읽고
+  // 이어테라피볼 부착 혈자리를 추천하는 도구. /ear-reading/ 페이지를 iframe으로
+  // 띄우며, checkEducationAccess()로 감싸 승인된 교육생에게만 보인다.
+  // 도구 안에서 결과 칸이 고정(sticky)되도록 iframe은 화면 높이만큼만 잡고
+  // 안쪽에서 스크롤한다.
+  function renderEarReadingEmbed(container) {
+    container.innerHTML = `
+      <div class="iframe-page">
+        <iframe
+          class="embed-frame ear-reading-frame"
+          src="/ear-reading/"
+          title="730 이어 리딩 가이드"
+          loading="lazy"></iframe>
+      </div>
+    `;
+  }
+
   // 이어포인트 이름/설명/이미지는 js/ear-points-data.js가 Supabase(RLS로
   // 승인된 교육생만 조회 가능)에서 불러온다. 실제 ear_points 테이블에는
   // id/name/description/image_url만 있어서(영문 이름·정렬순서·키워드 컬럼
@@ -1921,6 +1938,12 @@ window.Pages = (function () {
     // 이 페이지가 불러오는 외부 사이트 자체의 콘텐츠라, 그 부분의 공개
     // 범위 조정은 이 저장소 밖의 별도 작업이 필요하다 — 아래 보고 참고.)
     earCheck: renderEarCheckEmbed,
+
+    earReading: function (container) {
+      window.AccessControl.checkEducationAccess(container, function (c) {
+        renderEarReadingEmbed(c);
+      });
+    },
 
     earPoint: function (container, queryString) {
       window.AccessControl.checkEducationAccess(container, function (c) {
