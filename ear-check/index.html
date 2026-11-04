@@ -9,7 +9,7 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>730스킨 이어밸런스 체크 결과지</title>
+<title>730스킨 자가 컨디션 체크 결과지</title>
 <style>
   * { box-sizing: border-box; }
   html, body { max-width: 100%; overflow-x: hidden; }
@@ -165,7 +165,7 @@
   <a href="../" class="home-link">730</a>
   <header>
     <div class="sub" id="brand-sub">730스킨 이어테라피</div>
-    <h1 id="page-title">이어밸런스 체크 결과지</h1>
+    <h1 id="page-title">자가 컨디션 체크 결과지</h1>
     <p id="page-desc">최근 7일 동안 경험한 정도에 가장 가까운 답을 선택해주세요</p>
   </header>
 
@@ -334,9 +334,9 @@ DOMAINS.forEach(function (d) {
 });
 
 var EN = {
-  pageTitle: '730 Skin Ear Balance Check Result',
+  pageTitle: '730 Skin Self Condition Check Result',
   brandSub: '730 Skin Ear Therapy',
-  heroTitle: 'Ear Balance Check Result',
+  heroTitle: 'Self Condition Check Result',
   heroDesc: 'Please choose the answer closest to your experience over the past 7 days',
   genderLabel: 'Gender',
   genderMale: 'Male',
@@ -479,11 +479,11 @@ function setText(id, text) {
 // textContent만 바꾸므로, 체크된 답변(active 클래스)이나 입력 중인
 // 이름·나이·날짜·성별 값은 전혀 건드리지 않는다(요소를 다시 만들지 않음).
 function applyTranslations() {
-  document.title = currentLang === 'en' ? EN.pageTitle : '730스킨 이어밸런스 체크 결과지';
+  document.title = currentLang === 'en' ? EN.pageTitle : '730스킨 자가 컨디션 체크 결과지';
   document.documentElement.lang = currentLang;
 
   setText('brand-sub', currentLang === 'en' ? EN.brandSub : '730스킨 이어테라피');
-  setText('page-title', currentLang === 'en' ? EN.heroTitle : '이어밸런스 체크 결과지');
+  setText('page-title', currentLang === 'en' ? EN.heroTitle : '자가 컨디션 체크 결과지');
   setText('page-desc', currentLang === 'en' ? EN.heroDesc : '최근 7일 동안 경험한 정도에 가장 가까운 답을 선택해주세요');
   setText('gender-label', currentLang === 'en' ? EN.genderLabel : '성별');
   setText('name-label', currentLang === 'en' ? EN.nameLabel : '이름');
