@@ -96,7 +96,7 @@
   // 라우트(seminar 등)를 가리키는 메뉴 항목이 여러 개 있을 수 있어서,
   // 라우트 하나로는 어떤 항목을 바꿔야 할지 구분할 수 없다.
   var mobileNavLabelKo = {
-    navEarCheck: '이어밸런스 체크'
+    navEarCheck: '자가 컨디션 체크'
   };
 
   function applyMobileNavLabels() {

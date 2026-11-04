@@ -85,7 +85,7 @@ window.Pages = (function () {
               <h2 class="hero-title" data-i18n="heroTitle">귀에서 시작하는<br>가벼운 웰니스 루틴</h2>
               <p class="hero-desc" data-i18n="heroDesc">오늘의 몸 상태를 확인하고<br>나에게 필요한 귀 혈자리를 찾아보세요</p>
               <div class="hero-actions">
-                <a href="#/ear-check" class="hero-btn-primary" data-i18n="heroBtnPrimary">이어밸런스 시작하기</a>
+                <a href="#/ear-check" class="hero-btn-primary" data-i18n="heroBtnPrimary">자가 컨디션 체크 시작하기</a>
                 <a href="#/ear-point" class="hero-btn-secondary" data-i18n="heroBtnSecondary">이어포인트 둘러보기</a>
               </div>
             </div>
@@ -124,7 +124,7 @@ window.Pages = (function () {
           <div class="home-footer-nav">
             <p class="home-footer-heading" data-i18n="footerNavHeading">메뉴 바로가기</p>
             <ul class="home-footer-nav-list">
-              <li><a href="#/ear-check" data-i18n="footerNavEarCheck">이어밸런스 체크</a></li>
+              <li><a href="#/ear-check" data-i18n="footerNavEarCheck">자가 컨디션 체크</a></li>
               <li><a href="#/ear-point" data-i18n="navEarPoints">이어포인트</a></li>
               <li><a href="#/products" data-i18n="navProducts">상품</a></li>
               <li><a href="#/seminar" data-i18n="footerNavSeminar">세미나 신청</a></li>
@@ -167,7 +167,7 @@ window.Pages = (function () {
         <iframe
           class="embed-frame"
           src="${EAR_CHECK_SRC}"
-          title="이어밸런스체크 결과지"
+          title="자가 컨디션 체크 결과지"
           loading="lazy"></iframe>
       </div>
     `;
