@@ -66,9 +66,9 @@ window.translations = {
     mypageSeminarNote: '세미나 신청 내역 확인 기능은 준비 중입니다.',
     mypageApprovedSince: '교육생 승인일: {date}',
 
-    navEarCheck: '이어밸런스체크',
+    navEarCheck: '이어밸런스체크 (고객용)',
     navEarPoints: '이어포인트',
-    navEarReading: '이어 리딩 가이드',
+    navEarReading: '이어 리딩 가이드 (전문가용)',
     navProducts: '상품',
     navSeminar: '세미나신청',
     login: '로그인',
@@ -377,9 +377,9 @@ window.translations = {
     mypageSeminarNote: 'Seminar registration history is coming soon.',
     mypageApprovedSince: 'Approved on {date}',
 
-    navEarCheck: 'Ear Balance Check',
+    navEarCheck: 'Ear Balance Check (Client)',
     navEarPoints: 'Ear Points',
-    navEarReading: 'Ear Reading Guide',
+    navEarReading: 'Ear Reading Guide (Pro)',
     navProducts: 'Products',
     navSeminar: 'Seminar Registration',
     login: 'Log in',
