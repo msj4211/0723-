@@ -4354,3 +4354,10 @@ body.no-scroll {
   gap: 0.6rem;
   margin-top: 1.5rem;
 }
+
+/* 이어 리딩 가이드: 결과 칸이 도구 안에서 고정되도록 iframe을 화면 높이로 잡는다 */
+.embed-frame.ear-reading-frame {
+  height: calc(100vh - var(--header-height, 10rem) - 24px);
+  height: calc(100dvh - var(--header-height, 10rem) - 24px);
+  min-height: 560px;
+}
