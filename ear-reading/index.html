@@ -622,6 +622,10 @@ function reactedFor(r){
   return [...new Set(list)].slice(0,3);
 }
 function earSignal(st,r){
+  if(!Object.keys(pts).length){
+    const chk=r.p.rec.filter(n=>P[n]&&!P[n].ref).slice(0,4);
+    return `<p>아직 귀를 확인하지 않았다. 이 흐름이라면 이어리플렉서로 <em>${esc(chk.join(", "))}</em> 자리를 먼저 확인해본다. 반응이 나온 자리를 2번에 체크하면 리딩이 더 정확해진다.</p>`;
+  }
   const list=reactedFor(r);
   if(!list.length) return `<p>${esc(st.ear)}</p>`;
   const opens=["오늘 반응한 자리를 하나씩 읽어보면 이렇다.","이번 귀에서 눈여겨볼 자리는 이것들이다.","반응이 나온 자리가 각각 하는 이야기를 들어본다."];
@@ -637,7 +641,7 @@ function pointSay(r){
 function storyBlocks(st,r){
   return `<p class="meta">${esc(st.meta)}</p>
     <div class="blk"><h3>몸에서 일어나는 일</h3><p>${esc(st.story)}</p></div>
-    <div class="blk"><h3>귀가 보내는 신호</h3>${r?earSignal(st,r):`<p>${esc(st.ear)}</p>`}</div>
+    <div class="blk"><h3>${r&&!Object.keys(pts).length?"귀에서 확인해볼 자리":"귀가 보내는 신호"}</h3>${r?earSignal(st,r):`<p>${esc(st.ear)}</p>`}</div>
     <div class="blk say"><h3>고객에게 이렇게 풀어보세요</h3><p>${esc(st.say)}</p>${r?pointSay(r):""}</div>
     <div class="blk tipbox"><h3>생활 속 관리 팁</h3><p>${esc(st.tip)}</p></div>`;
 }
@@ -658,6 +662,14 @@ function introText(pat){
   let s=parts.join(". ")+(parts.length?". ":"");
   if(sym.size){const ls=[...sym].slice(0,5), tail=sym.size>5?"등":ls[ls.length-1], c=tail.charCodeAt(tail.length-1), jo=(c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28===0)?"를":"을";
     s+=`고객은 <em>${esc(ls.join(", "))}</em>${sym.size>5?" 등":""}${jo} 이야기했다. `;}
+  if(!Object.keys(pts).length){
+    s+=pick([`고객의 이야기만으로 보면 <em>${esc(pat[0].p.name)}</em> 흐름이 가장 가깝다.`,
+      `이야기를 모아 보면 <em>${esc(pat[0].p.name)}</em> 쪽으로 무게가 실린다.`,
+      `들은 이야기로는 <em>${esc(pat[0].p.name)}</em> 흐름이 먼저 떠오른다.`],1)
+      +` 귀 반응은 아직 넣지 않아서 이야기 기준 리딩이다.`;
+    if(pat[1]&&pat[1].pct>=5) s+=` 함께 <em>${esc(pat[1].p.name)}</em> 흐름도 보인다.`;
+    return s;
+  }
   s+=pick([`이 둘을 겹쳐 보면 <em>${esc(pat[0].p.name)}</em> 흐름이 가장 뚜렷하다.`,
     `귀의 반응과 고객의 이야기가 가장 많이 만나는 곳은 <em>${esc(pat[0].p.name)}</em> 흐름이다.`,
     `두 가지를 나란히 놓으면 <em>${esc(pat[0].p.name)}</em> 쪽으로 무게가 실린다.`],1);
@@ -667,12 +679,12 @@ function introText(pat){
 function readingHTML(pat){
   const lead=pat[0], st=storyOf(lead.p.name);
   let h=`<div class="reading"><div class="intro">${introText(pat)}</div>
-    <div class="pat lead"><div class="pat-top"><span class="pat-name">1순위 · ${esc(lead.p.name)}</span><span class="pct">${lead.pct}%</span></div>
+    <div class="pat lead"><div class="pat-top"><span class="pat-name">1순위 · ${esc(lead.p.name)}</span><span class="pct">${Object.keys(pts).length?lead.pct+"%":"이야기 기준"}</span></div>
     <div class="bar"><i style="width:${Math.min(lead.pct,100)}%"></i></div>
     <div class="why">${whyText(lead)}</div></div>
     ${st?storyBlocks(st,lead)+overlapText(pat)+(st.vn>1?`<button type="button" class="btn ghost" id="moreStory" style="margin-top:10px">다른 비유로 보기 (${st.vi+1}/${st.vn})</button>`:""):`<p class="desc">${esc(lead.p.desc)}</p>`}`;
   pat.slice(1).forEach((r,i)=>{const s2=storyOf(r.p.name,i+1);
-    h+=`<div class="pat"><div class="pat-top"><span class="pat-name">${esc(r.p.name)}</span><span class="pct">${r.pct}%</span></div>
+    h+=`<div class="pat"><div class="pat-top"><span class="pat-name">${esc(r.p.name)}</span><span class="pct">${Object.keys(pts).length?r.pct+"%":"이야기 기준"}</span></div>
       <div class="bar"><i style="width:${Math.min(r.pct,100)}%"></i></div>
       <p class="desc">${esc(s2?s2.short:r.p.desc)}</p><div class="why">${whyText(r)}</div>
       ${s2?`<details class="more"><summary>이 흐름 이야기 펼쳐보기</summary>${storyBlocks(s2,r)}</details>`:""}</div>`;});
