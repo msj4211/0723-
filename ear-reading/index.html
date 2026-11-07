@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<script>
+/* 주소로 직접 들어오면 막는다: 사이트 안(승인된 교육생 화면)에서 열릴 때만 보여준다 */
+(function(){
+  var ok=false;
+  try{ ok = window.top!==window.self && window.top.location.origin===window.location.origin; }catch(e){ ok=false; }
+  if(!ok){
+    document.documentElement.style.display="none";
+    try{ window.top.location.replace("/#/ear-reading"); }catch(e){ window.location.replace("/#/ear-reading"); }
+  }
+})();
+</script>
 </head>
 <body>
 <title>730 이어 리딩 가이드</title>
