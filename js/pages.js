@@ -310,7 +310,7 @@ window.Pages = (function () {
 
   // 이어 리딩 가이드는 iframe 안에서 스크롤되므로 바깥 창의 스크롤로는
   // 상단바가 숨지 않는다. iframe이 보내는 스크롤 위치를 받아서
-  // 아래로 내리면 상단바를 숨기고(도구가 화면 전체를 쓰게), 위로 올리면 다시 보여준다.
+  // 도구 맨 위 근처에서만 상단바를 보여주고, 아래를 보는 동안에는 숨긴다.
   function setupEarReadingHeaderAutoHide(frame) {
     if (!frame) return;
     var lastY = 0, focused = false, busy = false;
@@ -322,7 +322,11 @@ window.Pages = (function () {
       if (hdr) hdr.classList.toggle('is-hidden', on);
       var top = on ? Math.max(frame.getBoundingClientRect().top + window.scrollY - 8, 0) : 0;
       window.scrollTo({ top: top, behavior: 'smooth' });
-      setTimeout(function () { busy = false; }, 450);
+      setTimeout(function () {
+        busy = false;
+        if (lastY > 80) setFocus(true);
+        else if (lastY <= 40) setFocus(false);
+      }, 450);
     }
     function onMessage(e) {
       if (!frame.isConnected) {
@@ -333,10 +337,12 @@ window.Pages = (function () {
       if (e.source !== frame.contentWindow || e.origin !== window.location.origin) return;
       var d = e.data;
       if (!d || d.type !== 'er-scroll') return;
-      var y = d.y, dy = y - lastY;
+      // 스크롤 방향과 상관없이 위치로만 정한다:
+      // 도구 맨 위 근처면 상단바를 보여주고, 그 아래를 보고 있으면 숨긴다.
+      var y = d.y;
       lastY = y;
-      if (y > 60 && dy > 4) setFocus(true);
-      else if (y <= 30 || dy < -12) setFocus(false);
+      if (y > 80) setFocus(true);
+      else if (y <= 40) setFocus(false);
     }
     window.addEventListener('message', onMessage);
   }
