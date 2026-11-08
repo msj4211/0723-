@@ -4360,4 +4360,11 @@ body.no-scroll {
   height: calc(100vh - var(--header-height, 10rem) - 24px);
   height: calc(100dvh - var(--header-height, 10rem) - 24px);
   min-height: 560px;
+  transition: height 0.3s ease;
+}
+
+/* 도구 안에서 아래로 스크롤하면 상단바가 숨고 iframe이 화면 전체를 쓴다 */
+body.er-focus .embed-frame.ear-reading-frame {
+  height: calc(100vh - 16px);
+  height: calc(100dvh - 16px);
 }

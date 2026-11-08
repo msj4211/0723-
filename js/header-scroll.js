@@ -21,7 +21,10 @@ function hideHeader() {
 function updateHeaderScroll() {
   const currentScrollY = Math.max(window.scrollY, 0);
 
-  if (currentScrollY <= NEAR_TOP_THRESHOLD) {
+  // 이어 리딩 가이드에서 도구를 쓰는 중(er-focus)이면 상단바를 숨긴 채로 둔다.
+  if (document.body.classList.contains('er-focus')) {
+    hideHeader();
+  } else if (currentScrollY <= NEAR_TOP_THRESHOLD) {
     showHeader();
   } else {
     hideHeader();
@@ -44,6 +47,7 @@ window.addEventListener('scroll', handleScroll, { passive: true });
 // 기존 라우터가 이 reset()만 호출하도록 연결한다.
 window.HeaderScroll = {
   reset: function () {
+    document.body.classList.remove('er-focus');
     showHeader();
   }
 };

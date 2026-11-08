@@ -305,6 +305,40 @@ window.Pages = (function () {
           loading="lazy"></iframe>
       </div>
     `;
+    setupEarReadingHeaderAutoHide(container.querySelector('.ear-reading-frame'));
+  }
+
+  // 이어 리딩 가이드는 iframe 안에서 스크롤되므로 바깥 창의 스크롤로는
+  // 상단바가 숨지 않는다. iframe이 보내는 스크롤 위치를 받아서
+  // 아래로 내리면 상단바를 숨기고(도구가 화면 전체를 쓰게), 위로 올리면 다시 보여준다.
+  function setupEarReadingHeaderAutoHide(frame) {
+    if (!frame) return;
+    var lastY = 0, focused = false, busy = false;
+    function setFocus(on) {
+      if (on === focused || busy) return;
+      focused = on; busy = true;
+      document.body.classList.toggle('er-focus', on);
+      var hdr = document.querySelector('.site-header');
+      if (hdr) hdr.classList.toggle('is-hidden', on);
+      var top = on ? Math.max(frame.getBoundingClientRect().top + window.scrollY - 8, 0) : 0;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+      setTimeout(function () { busy = false; }, 450);
+    }
+    function onMessage(e) {
+      if (!frame.isConnected) {
+        window.removeEventListener('message', onMessage);
+        document.body.classList.remove('er-focus');
+        return;
+      }
+      if (e.source !== frame.contentWindow || e.origin !== window.location.origin) return;
+      var d = e.data;
+      if (!d || d.type !== 'er-scroll') return;
+      var y = d.y, dy = y - lastY;
+      lastY = y;
+      if (y > 60 && dy > 4) setFocus(true);
+      else if (y <= 30 || dy < -12) setFocus(false);
+    }
+    window.addEventListener('message', onMessage);
   }
 
   // 이어포인트 이름/설명/이미지는 js/ear-points-data.js가 Supabase(RLS로
