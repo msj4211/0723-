@@ -757,5 +757,18 @@ build();
 render();
 </script>
 
+<script>
+/* 사이트 안에서 열렸을 때 스크롤 위치를 바깥(사이트)에 알려 상단바를 숨기거나 보여준다 */
+(function(){
+  if(window.parent===window) return;
+  var t=false;
+  window.addEventListener('scroll',function(){
+    if(t) return; t=true;
+    requestAnimationFrame(function(){ t=false;
+      try{ window.parent.postMessage({type:'er-scroll',y:window.scrollY},window.location.origin); }catch(e){}
+    });
+  },{passive:true});
+})();
+</script>
 </body>
 </html>
