@@ -11,11 +11,12 @@
     --brand: #FFCC00; --brown: #7A5C3E; --terra: #A5563F; --soft: #F7F3EC;
     --sel-bg: #E8D8C9; --sel-bd: #CDB6A3; --sel-ink: #6E4933;
     --sage: #7A5C3E; --sage-d: #7A5C3E; --mint: #F7F3EC;
-    --p-mens: #D98C7A; --p-mens-bg: #FBEDE8;
-    --p-rec: #BFB5A6; --p-rec-bg: #F3F0EB;
-    --p-stb: #F2C200; --p-stb-bg: #FFF4C2;
-    --p-lut: #D9B98A; --p-lut-bg: #F8EFE2;
-    --p-pms: #C97B5A; --p-pms-bg: #F6E3DA;
+    /* 캘린더 시기 색: 분홍(월경) · 흰색(난포) · 노랑(배란) · 연한 모래(황체 초반) · 캐러멜(PMS) */
+    --p-mens: #D9776A; --p-mens-bg: #F7CFC8;
+    --p-rec: #CFC6B8; --p-rec-bg: #FFFFFF;
+    --p-stb: #E0B000; --p-stb-bg: #FFE27A;
+    --p-lut: #BFA27A; --p-lut-bg: #F1E8D9;
+    --p-pms: #A8693F; --p-pms-bg: #E2BE98;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; font-size: 15px; line-height: 1.55; }
@@ -56,13 +57,13 @@
   .day { position: relative; aspect-ratio: 1; border-radius: 12px; border: 1px solid var(--line); background: #fff; font-size: 14px; color: var(--ink); cursor: pointer; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .day.out { visibility: hidden; }
   .day.today { outline: 2px solid var(--ink); outline-offset: -2px; font-weight: 700; }
-  .day.pred { opacity: .55; }
+  .day.pred { border-style: dashed; border-color: #A89F92; color: var(--sub); }
   .day .marks { position: absolute; bottom: 4px; display: flex; gap: 2px; }
   .day .m { width: 5px; height: 5px; border-radius: 50%; }
   .day .start { position: absolute; top: 3px; right: 5px; font-size: 9px; color: #C97B5A; }
   .legend { display: flex; flex-wrap: wrap; gap: 8px 12px; margin-top: 10px; font-size: 12px; color: var(--sub); }
   .legend span { display: inline-flex; align-items: center; gap: 4px; }
-  .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .legend i { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
 
   /* sheet */
   .sheet-bg { position: fixed; inset: 0; background: rgba(47,58,53,.35); display: none; z-index: 10; }
@@ -141,18 +142,18 @@
       <div class="grid" id="dows"></div>
       <div class="grid" id="grid"></div>
       <div class="legend">
-        <span><i style="background:var(--p-mens)"></i>월경기</span>
-        <span><i style="background:var(--p-rec)"></i>난포기</span>
-        <span><i style="background:var(--p-stb)"></i>배란기</span>
-        <span><i style="background:var(--p-lut)"></i>황체기 초반</span>
-        <span><i style="background:var(--p-pms)"></i>황체기 후반 (PMS)</span>
+        <span><i style="background:var(--p-mens-bg);box-shadow:inset 0 0 0 2px var(--p-mens)"></i>월경기</span>
+        <span><i style="background:var(--p-rec-bg);box-shadow:inset 0 0 0 2px var(--p-rec)"></i>난포기</span>
+        <span><i style="background:var(--p-stb-bg);box-shadow:inset 0 0 0 2px var(--p-stb)"></i>배란기</span>
+        <span><i style="background:var(--p-lut-bg);box-shadow:inset 0 0 0 2px var(--p-lut)"></i>황체기 초반</span>
+        <span><i style="background:var(--p-pms-bg);box-shadow:inset 0 0 0 2px var(--p-pms)"></i>황체기 후반 (PMS)</span>
       </div>
       <div class="legend">
         <span><i style="background:#C97B5A;border-radius:50%"></i>트러블</span>
         <span><i style="background:#7A5C3E;border-radius:50%"></i>음식 기록</span>
         <span><b style="color:#C97B5A;font-size:10px">●</b> 생리 시작</span>
         <span><b style="color:#7A5C3E;font-size:10px">◆</b> 배란 예상</span>
-        <span>흐린 칸 = 예상일</span>
+        <span>점선 칸 = 예상일</span>
       </div>
       <p class="note">날짜를 누르면 그날을 기록할 수 있어요. 예상 날짜와 배란일은 평균 주기로 계산한 참고용이에요.</p>
     </div>
