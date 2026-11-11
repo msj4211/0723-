@@ -195,7 +195,7 @@ var KO = {
   highlightLabel: '먼저 살펴볼 영역',
   // 아래 4단계 구간은 의학적 진단 기준이 아니라 730스킨 상담을 위한
   // 임시 운영 기준이다(index.html의 overallTier()와 경계값을 반드시
-  // 동일하게 유지해야 한다: 0~26 / 27~52 / 53~78 / 79~105).
+  // 동일하게 유지해야 한다: 0~17 / 18~35 / 36~52 / 53~70).
   overallTiers: [
     { title: '전반적으로 편안한 흐름', class: 'tier-stable' },
     { title: '가벼운 컨디션 점검', class: 'tier-watch' },
@@ -1174,7 +1174,7 @@ function getPairText(d, a, b) {
   return d.pairText[key] || [d.interactionFallback];
 }
 
-// 전체 점수(0~105) + 4단계 임시 운영 기준 배지.
+// 전체 점수(0~70) + 4단계 임시 운영 기준 배지.
 function buildOverallBlock(data, d) {
   var overall = d.overallTiers[data.overallTierIdx];
   var block = document.createElement('div');
@@ -1187,7 +1187,7 @@ function buildOverallBlock(data, d) {
   scoreSpan.appendChild(document.createTextNode(data.totalScore + ' '));
   var maxSpan = document.createElement('span');
   maxSpan.className = 'overall-max';
-  maxSpan.textContent = '/ 105 (' + d.totalLabel + ')';
+  maxSpan.textContent = '/ 70 (' + d.totalLabel + ')';
   scoreSpan.appendChild(maxSpan);
   scoreRow.appendChild(scoreSpan);
 
