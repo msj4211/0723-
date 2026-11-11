@@ -98,6 +98,10 @@
   .empty { text-align: center; color: var(--sub); padding: 18px 0; font-size: 14px; }
   .list-item { border-top: 1px solid var(--line); padding: 10px 0; font-size: 14px; }
   .list-item:first-child { border-top: 0; }
+  .start-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; }
+  .start-row:first-child { border-top: 0; }
+  .start-row button { border: 1px solid var(--line); background: #fff; color: var(--terra); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 13px; cursor: pointer; }
+  .fix-link { display: block; width: 100%; margin-top: 8px; background: none; border: 0; color: var(--sub); font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -180,6 +184,16 @@
 
   <!-- 설정 -->
   <section class="view" id="v-set">
+    <div class="card" id="starts-card">
+      <h2>생리 시작일 고치기</h2>
+      <p class="muted" style="margin:0 0 10px">날짜를 잘못 넣었다면 지우고 맞는 날짜를 다시 넣어 주세요.</p>
+      <div id="starts-list"></div>
+      <label class="f">생리 시작일 추가</label>
+      <div class="row">
+        <input type="date" id="add-start" style="flex:1">
+        <button class="btn btn-main" id="add-start-btn" style="width:auto;padding:10px 18px">추가</button>
+      </div>
+    </div>
     <div class="card">
       <h2>생리 주기 설정</h2>
       <label class="f">평균 주기 (일)</label>
@@ -385,6 +399,7 @@ function renderToday() {
       ${ph.key === "late" && ph.day - 1 > 35 ? `<div class="book">생리 간격이 35일을 넘었어요. 이런 일이 반복되면 산부인과 상담을 받아 보세요.</div>` : ""}`;
   }
   html += `<button class="btn btn-main" style="margin-top:12px" onclick="openSheet('${t}')">${log ? "오늘 기록 고치기" : "오늘 기록하기"}</button>`;
+  if (load().starts.length) html += `<button class="fix-link" onclick="goFixStarts()">생리 시작일을 잘못 넣었나요? 다시 고르기</button>`;
   el.innerHTML = html;
 }
 
@@ -533,7 +548,30 @@ function renderReport() {
 }
 
 /* ===== setup & settings ===== */
-function renderAll() { renderToday(); renderCal(); renderReport(); const m = load(); document.getElementById("c-cycle").value = m.cycle; document.getElementById("c-len").value = m.len; }
+function renderStarts() {
+  const el = document.getElementById("starts-list");
+  const st = [...load().starts].sort().reverse();
+  el.innerHTML = st.length ? st.map(s => `<div class="start-row"><span>${fmt(s)}</span><button onclick="removeStart('${s}')">지우기</button></div>`).join("")
+    : `<div class="empty">아직 체크한 생리 시작일이 없어요</div>`;
+}
+function removeStart(s) {
+  if (!confirmSafe(fmt(s) + " 생리 시작일을 지울까요?")) return;
+  const m = load(); m.starts = m.starts.filter(x => x !== s); save(); renderAll();
+}
+function goFixStarts() {
+  document.querySelector('nav.tabs button[data-v="v-set"]').click();
+  setTimeout(() => document.getElementById("starts-card").scrollIntoView({ behavior: "smooth" }), 50);
+}
+document.getElementById("add-start-btn").onclick = () => {
+  const v = document.getElementById("add-start").value;
+  if (!v) return;
+  const m = load();
+  if (!m.starts.includes(v)) m.starts.push(v);
+  m.starts.sort(); m.setup = true; save();
+  document.getElementById("add-start").value = "";
+  renderAll();
+};
+function renderAll() { renderStarts(); renderToday(); renderCal(); renderReport(); const m = load(); document.getElementById("c-cycle").value = m.cycle; document.getElementById("c-len").value = m.len; }
 function initSetup() {
   const m = load();
   if (!m.setup) {
