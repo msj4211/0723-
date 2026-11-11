@@ -4368,3 +4368,17 @@ body.er-focus .embed-frame.ear-reading-frame {
   height: calc(100vh - 16px);
   height: calc(100dvh - 16px);
 }
+
+/* 화면 높이에 맞춰 띄우는 도구(트러블 다이어리·이어 리딩 가이드)는 아래쪽
+   노란 여백을 없애 흰 화면이 화면 끝까지 차도록 한다. */
+.iframe-page.is-fullheight {
+  padding-bottom: 0;
+}
+
+/* 트러블 다이어리: 상단바 아래부터 화면 맨 아래까지 꽉 채운다. 다이어리
+   하단 탭(캘린더·돌아보기·설정)이 늘 화면 맨 아래에 붙어 보이게 하기 위함. */
+.embed-frame.diary-frame {
+  height: calc(100vh - var(--header-height, 10rem) - 12px);
+  height: calc(100dvh - var(--header-height, 10rem) - 12px);
+  min-height: 520px;
+}

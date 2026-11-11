@@ -156,7 +156,7 @@ window.Pages = (function () {
   // iframe으로 띄우는 도구 페이지(자가 컨디션 체크·이어 리딩 가이드·트러블 다이어리)는
   // 브라우저가 옛 버전을 저장해 두고 계속 보여주는 경우가 있다. 도구 페이지를
   // 고칠 때마다 이 값을 바꾸면(예: 날짜) 모든 방문자가 새 버전을 바로 받는다.
-  var TOOL_PAGE_VERSION = '20261111f';
+  var TOOL_PAGE_VERSION = '20261111g';
 
   function renderEarCheckEmbed(container) {
     // 이어밸런스 체크(옛 별도 저장소 730skin-check)를 이 저장소의 /ear-check/
@@ -305,9 +305,9 @@ window.Pages = (function () {
   // /diary/ 주소로 직접 열어도(로그인 없이) 쓸 수 있다.
   function renderDiaryEmbed(container) {
     container.innerHTML = `
-      <div class="iframe-page">
+      <div class="iframe-page is-fullheight">
         <iframe
-          class="embed-frame ear-reading-frame"
+          class="embed-frame diary-frame"
           src="/diary/?v=${TOOL_PAGE_VERSION}"
           title="730 트러블 다이어리"
           loading="lazy"></iframe>
@@ -317,7 +317,7 @@ window.Pages = (function () {
 
   function renderEarReadingEmbed(container) {
     container.innerHTML = `
-      <div class="iframe-page">
+      <div class="iframe-page is-fullheight">
         <iframe
           class="embed-frame ear-reading-frame"
           src="/ear-reading/?v=${TOOL_PAGE_VERSION}"
