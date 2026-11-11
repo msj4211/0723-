@@ -961,7 +961,7 @@ function calculate() {
   };
   sessionStorage.setItem('earCheckResult', JSON.stringify(payload));
   storeLang(currentLang);
-  location.href = 'result.html';
+  location.href = 'result.html' + (location.search || '');
 }
 
 // ── 부모(메인 사이트)와의 언어 동기화 ──
