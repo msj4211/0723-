@@ -19,22 +19,14 @@
 <body>
 <title>730 이어 리딩 가이드</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
 <style>
 /* Layout: 왼쪽 입력(고객 이야기 · 귀 반응), 오른쪽 고정 리딩 결과. 폰에서는 한 줄로 쌓인다 */
 :root{
-  --bg:#F3F6F5; --surface:#FFFFFF; --ink:#1D2A2A; --muted:#5E6E6C; --line:#D8E1DF;
-  --accent:#1F6F6A; --accent-soft:#E2EFED; --strong:#9B3D63; --strong-soft:#F6E6EC; --base:#7A6A2E; --base-soft:#F3EEDB;
-  --display:"Gowun Batang", "Nanum Myeongjo", serif;
-  --body:"IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --bg:#FFFFFF; --surface:#FFFFFF; --ink:#2E2A26; --muted:#8A8378; --line:#DDD6C8;
+  --accent:#7A5C3E; --accent-soft:#F7F3EC; --strong:#A5563F; --strong-soft:#F6E3DA; --base:#7A6A2E; --base-soft:#FFF4C2;
+  --display:'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --body:'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#121A1A; --surface:#1A2524; --ink:#E6EEEC; --muted:#9AAAA7; --line:#2C3A39;
-  --accent:#5FB8AF; --accent-soft:#1E3533; --strong:#E07FA6; --strong-soft:#3A2230; --base:#D6C27A; --base-soft:#33301F; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#121A1A; --surface:#1A2524; --ink:#E6EEEC; --muted:#9AAAA7; --line:#2C3A39;
-  --accent:#5FB8AF; --accent-soft:#1E3533; --strong:#E07FA6; --strong-soft:#3A2230; --base:#D6C27A; --base-soft:#33301F; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
 .wrap{max-width:1200px;margin:0 auto;padding-block:28px 48px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
@@ -63,7 +55,7 @@ details.grp[open] > summary::before{transform:rotate(90deg)}
 .chips{display:flex;flex-wrap:wrap;gap:7px;padding:6px 0 4px}
 .chip{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:6px 11px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;min-height:34px}
 .chip:focus-visible,.btn:focus-visible,.rec-row button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+.chip.on{background:#E8D8C9;border-color:#CDB6A3;color:#6E4933;font-weight:700}
 .chip.lv2{background:var(--strong-soft);border-color:var(--strong);color:var(--strong);font-weight:600}
 .chip[hidden]{display:none!important}
 .sample[hidden]{display:none!important}
@@ -102,11 +94,11 @@ textarea{font:inherit;width:100%;min-height:64px;border:1px solid var(--line);bo
 .tags{display:inline-flex;gap:5px;flex-wrap:wrap;margin-left:6px;vertical-align:middle}
 .tag{font-size:11.5px;padding:1px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
 .tag.s{background:var(--strong-soft);color:var(--strong)}
-.tag.b{background:var(--base-soft);color:var(--base)}
+.tag.b{background:#FFF4C2;color:#2E2A26}
 .rd{font-size:13px;color:var(--muted);margin-top:3px}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn{font:inherit;font-size:14px;font-weight:600;padding:9px 14px;border-radius:9px;border:1px solid var(--accent);background:var(--accent);color:var(--surface);cursor:pointer}
-.btn.ghost{background:transparent;color:var(--accent)}
+.btn{font:inherit;font-size:14px;font-weight:700;padding:9px 16px;border-radius:999px;border:1px solid #FFCC00;background:#FFCC00;color:#000;cursor:pointer}
+.btn.ghost{background:#FFFFFF;border-color:var(--line);color:#292929}
 .toast{font-size:13px;color:var(--accent);min-height:1em}
 .sample{font-size:13px;background:var(--strong-soft);color:var(--strong);padding:8px 12px;border-radius:8px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
 .sample button{font:inherit;font-size:13px;background:none;border:0;color:var(--strong);text-decoration:underline;cursor:pointer;padding:0}
@@ -126,7 +118,7 @@ textarea{font:inherit;width:100%;min-height:64px;border:1px solid var(--line);bo
 .blk p em{font-style:normal;font-weight:600;color:var(--accent)}
 .blk p em.s{color:var(--strong)}
 .alt-say{margin-top:8px!important;padding-top:8px;border-top:1px dashed var(--line)}
-.say{border-left:3px solid var(--accent);background:var(--accent-soft);padding:10px 12px;border-radius:0 10px 10px 0}
+.say{border:1px solid var(--line);background:transparent;padding:10px 12px;border-radius:10px}
 .say p{color:var(--ink)}
 .tipbox p{color:var(--muted)}
 details.more > summary{cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;list-style:none}
@@ -136,11 +128,11 @@ footer{margin-top:28px;font-size:12.5px;color:var(--muted);max-width:72ch}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 .ihead{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .isum{margin:6px 0 8px}
-.isay{background:var(--accent-soft);border-radius:8px;padding:8px 10px;margin:0 0 8px;font-size:14px}
+.isay{background:transparent;border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:0 0 8px;font-size:14px}
 .isay span{display:block;font-size:12px;font-weight:600;color:var(--accent);margin-bottom:2px}
 .imore summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:14px;padding:4px 0}
 .imore dl{margin:6px 0 0}.imore dt{font-weight:600;font-size:13px;color:var(--muted);margin-top:8px}.imore dd{margin:2px 0 0;font-size:14px}
-.brand .pro{display:inline-block;margin-left:8px;padding:2px 9px;border-radius:999px;background:var(--strong-soft);color:var(--strong);letter-spacing:.02em;font-size:11.5px;vertical-align:middle}
+.brand .pro{display:inline-block;margin-left:8px;padding:2px 9px;border-radius:999px;background:transparent;border:1px solid var(--strong);color:var(--strong);letter-spacing:.02em;font-size:11.5px;vertical-align:middle}
 </style>
 
 <div class="wrap">

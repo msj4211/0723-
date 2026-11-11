@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>트러블 다이어리 | 730스킨</title>
+<meta name="description" content="먹은 것, 트러블, 생리 주기를 같이 기록하는 730스킨 트러블 다이어리">
+<style>
+  :root {
+    --bg: #FFFFFF; --card: #FFFFFF; --ink: #2E2A26; --sub: #8A8378; --line: #DDD6C8;
+    --brand: #FFCC00; --brown: #7A5C3E; --terra: #A5563F; --soft: #F7F3EC;
+    --sel-bg: #E8D8C9; --sel-bd: #CDB6A3; --sel-ink: #6E4933;
+    --sage: #7A5C3E; --sage-d: #7A5C3E; --mint: #F7F3EC;
+    --p-mens: #D98C7A; --p-mens-bg: #FBEDE8;
+    --p-rec: #BFB5A6; --p-rec-bg: #F3F0EB;
+    --p-stb: #F2C200; --p-stb-bg: #FFF4C2;
+    --p-lut: #D9B98A; --p-lut-bg: #F8EFE2;
+    --p-pms: #C97B5A; --p-pms-bg: #F6E3DA;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; font-size: 15px; line-height: 1.55; }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 18px 16px 90px; }
+  header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+  header h1 { font-size: 21px; margin: 0; letter-spacing: -0.3px; }
+  header .brand { font-size: 12px; color: var(--brown); font-weight: 700; letter-spacing: 1.5px; }
+  .card { background: transparent; border-radius: 20px; padding: 16px; margin-bottom: 14px; border: 1px solid var(--line); }
+  .muted { color: var(--sub); font-size: 13px; }
+  h2 { font-size: 16px; margin: 0 0 10px; }
+  button { font-family: inherit; }
+  .btn { border: 0; border-radius: 999px; padding: 12px 14px; font-size: 15px; font-weight: 700; cursor: pointer; }
+  .btn-main { background: var(--brand); color: #000; width: 100%; } .btn-main:active { background: var(--terra); color: #fff; }
+  .btn-sub { background: #fff; color: #292929; border: 1px solid var(--line); }
+  .btn-ghost { background: transparent; color: var(--sub); font-weight: 500; }
+  .row { display: flex; gap: 8px; align-items: center; }
+  label.f { display: block; font-size: 13px; color: var(--sub); margin: 10px 0 4px; }
+  input[type=date], input[type=number], textarea, input[type=text] { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 10px; font: inherit; background: #fff; color: var(--ink); }
+  textarea { min-height: 60px; resize: vertical; }
+
+  /* today */
+  .today-phase { display: flex; gap: 12px; align-items: center; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; flex: none; }
+  .phase-name { font-size: 18px; font-weight: 700; }
+  .phase-day { font-size: 13px; color: var(--sub); }
+  .tips { margin: 12px 0 0; padding: 0; list-style: none; }
+  .tips li { padding: 8px 10px; border-radius: 10px; background: transparent; border: 1px solid var(--line); margin-bottom: 6px; font-size: 14px; }
+  .tips li b { color: var(--brown); }
+  .badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 99px; }
+  .book { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background: transparent; border: 1.5px solid var(--brand); font-size: 14px; }
+
+  /* calendar */
+  .cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .cal-head b { font-size: 16px; }
+  .cal-head button { background: #fff; border: 1px solid var(--line); border-radius: 10px; width: 36px; height: 36px; font-size: 18px; color: var(--sage-d); cursor: pointer; }
+  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .dow { text-align: center; font-size: 12px; color: var(--sub); padding: 4px 0; }
+  .day { position: relative; aspect-ratio: 1; border-radius: 12px; border: 1px solid var(--line); background: #fff; font-size: 14px; color: var(--ink); cursor: pointer; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .day.out { visibility: hidden; }
+  .day.today { outline: 2px solid var(--ink); outline-offset: -2px; font-weight: 700; }
+  .day.pred { opacity: .55; }
+  .day .marks { position: absolute; bottom: 4px; display: flex; gap: 2px; }
+  .day .m { width: 5px; height: 5px; border-radius: 50%; }
+  .day .start { position: absolute; top: 3px; right: 5px; font-size: 9px; color: #C97B5A; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 12px; margin-top: 10px; font-size: 12px; color: var(--sub); }
+  .legend span { display: inline-flex; align-items: center; gap: 4px; }
+  .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  /* sheet */
+  .sheet-bg { position: fixed; inset: 0; background: rgba(47,58,53,.35); display: none; z-index: 10; }
+  .sheet { position: fixed; left: 0; right: 0; bottom: 0; max-width: 520px; margin: 0 auto; background: #fff; border-radius: 20px 20px 0 0; padding: 18px 16px 24px; max-height: 88vh; overflow-y: auto; transform: translateY(100%); transition: transform .25s, visibility .25s; visibility: hidden; z-index: 11; }
+  .sheet.open { transform: translateY(0); visibility: visible; }
+  .sheet h3 { margin: 0 0 4px; font-size: 18px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { border: 1px solid var(--line); background: #fff; border-radius: 99px; padding: 7px 12px; font-size: 14px; cursor: pointer; color: var(--ink); }
+  .chip.on { background: var(--sel-bg); border-color: var(--sel-bd); color: var(--sel-ink); font-weight: 700; }
+  .chip.mens.on { background: var(--p-pms); border-color: var(--p-pms); color: #fff; }
+  .lvl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .lvl .chip { text-align: center; padding: 9px 4px; border-radius: 12px; }
+  .sec { margin-top: 14px; }
+  .sec-t { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: var(--brown); }
+
+  /* report */
+  .bar { height: 10px; border-radius: 6px; background: var(--line); overflow: hidden; }
+  .bar > div { height: 100%; border-radius: 6px; }
+  .rep-row { display: grid; grid-template-columns: 84px 1fr 44px; gap: 8px; align-items: center; margin-bottom: 8px; font-size: 13px; }
+  .rep-row .v { text-align: right; color: var(--sub); }
+  .stat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .stat div { background: transparent; border: 1px solid var(--line); border-radius: 12px; padding: 10px; text-align: center; }
+  .stat b { display: block; font-size: 20px; color: var(--brown); }
+  .stat span { font-size: 12px; color: var(--sub); }
+
+  nav.tabs { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line); display: flex; justify-content: center; z-index: 5; padding-bottom: env(safe-area-inset-bottom); }
+  nav.tabs .in { display: flex; max-width: 520px; width: 100%; }
+  nav.tabs button { flex: 1; border: 0; background: none; padding: 12px 0; font-size: 14px; color: var(--sub); font-weight: 500; cursor: pointer; }
+  nav.tabs button.on { color: #000; font-weight: 700; box-shadow: inset 0 3px 0 var(--brand); }
+  .view { display: none; }
+  .view.on { display: block; }
+  .note { font-size: 12px; color: var(--sub); margin-top: 8px; }
+  .empty { text-align: center; color: var(--sub); padding: 18px 0; font-size: 14px; }
+  .list-item { border-top: 1px solid var(--line); padding: 10px 0; font-size: 14px; }
+  .list-item:first-child { border-top: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>트러블 다이어리</h1>
+    <span class="brand">730 SKIN</span>
+  </header>
+
+  <!-- 처음 설정 -->
+  <section id="setup" class="card" style="display:none">
+    <h2>처음 한 번만 알려 주세요</h2>
+    <p class="muted" style="margin:0 0 6px">생리 주기를 알면 피부가 예민해지는 시기를 미리 알려 드려요. 생리를 하지 않거나 잘 모르면 건너뛰어도 기록은 할 수 있어요.</p>
+    <label class="f">가장 최근 생리 시작일</label>
+    <input type="date" id="s-start">
+    <div class="row">
+      <div style="flex:1"><label class="f">평균 주기 (일)</label><input type="number" id="s-cycle" value="28" min="20" max="45"></div>
+      <div style="flex:1"><label class="f">생리 기간 (일)</label><input type="number" id="s-len" value="5" min="2" max="10"></div>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <button class="btn btn-ghost" id="s-skip" style="flex:1">건너뛰기</button>
+      <button class="btn btn-main" id="s-save" style="flex:2">시작하기</button>
+    </div>
+  </section>
+
+  <!-- 오늘 -->
+  <section class="view on" id="v-home">
+    <div class="card" id="today-card"></div>
+    <div class="card">
+      <div class="cal-head">
+        <button id="prev" aria-label="이전 달">‹</button>
+        <b id="month-label"></b>
+        <button id="next" aria-label="다음 달">›</button>
+      </div>
+      <div class="grid" id="dows"></div>
+      <div class="grid" id="grid"></div>
+      <div class="legend">
+        <span><i style="background:var(--p-mens)"></i>월경기</span>
+        <span><i style="background:var(--p-rec)"></i>난포기</span>
+        <span><i style="background:var(--p-stb)"></i>배란기</span>
+        <span><i style="background:var(--p-lut)"></i>황체기 초반</span>
+        <span><i style="background:var(--p-pms)"></i>황체기 후반 (PMS)</span>
+      </div>
+      <div class="legend">
+        <span><i style="background:#C97B5A;border-radius:50%"></i>트러블</span>
+        <span><i style="background:#7A5C3E;border-radius:50%"></i>음식 기록</span>
+        <span><b style="color:#C97B5A;font-size:10px">●</b> 생리 시작</span>
+        <span><b style="color:#7A5C3E;font-size:10px">◆</b> 배란 예상</span>
+        <span>흐린 칸 = 예상일</span>
+      </div>
+      <p class="note">날짜를 누르면 그날을 기록할 수 있어요. 예상 날짜와 배란일은 평균 주기로 계산한 참고용이에요.</p>
+    </div>
+  </section>
+
+  <!-- 돌아보기 -->
+  <section class="view" id="v-report">
+    <div class="card">
+      <h2>최근 4주 돌아보기</h2>
+      <div class="stat" id="r-stat"></div>
+    </div>
+    <div class="card">
+      <h2>시기별 트러블</h2>
+      <div id="r-phase"></div>
+      <p class="note">시기마다 트러블 점수 평균이에요. 어느 시기에 올라오는지 보여요.</p>
+    </div>
+    <div class="card">
+      <h2>트러블 전날·당일에 먹은 것</h2>
+      <div id="r-food"></div>
+      <p class="note">트러블이 '보통' 이상인 날과 그 전날에 먹은 것을 세었어요. 많이 나온다고 꼭 원인은 아니니, 관리실에서 같이 봐요.</p>
+    </div>
+    <div class="card">
+      <h2>자주 올라오는 자리</h2>
+      <div id="r-area"></div>
+    </div>
+    <div class="card">
+      <h2>기록 목록</h2>
+      <div id="r-list"></div>
+    </div>
+  </section>
+
+  <!-- 설정 -->
+  <section class="view" id="v-set">
+    <div class="card">
+      <h2>생리 주기 설정</h2>
+      <label class="f">평균 주기 (일)</label>
+      <input type="number" id="c-cycle" min="20" max="45">
+      <label class="f">생리 기간 (일)</label>
+      <input type="number" id="c-len" min="2" max="10">
+      <p class="note">생리 시작일을 2번 이상 체크하면 실제 기록으로 평균 주기를 자동 계산해요.</p>
+      <button class="btn btn-main" id="c-save" style="margin-top:10px">저장</button>
+    </div>
+    <div class="card">
+      <h2>내 기록 보관</h2>
+      <p class="muted" style="margin:0 0 10px">기록은 이 휴대폰에만 저장돼요. 관리실로 자동 전송되지 않아요. 휴대폰을 바꾸거나 브라우저 기록을 지우기 전에 파일로 백업해 두세요.</p>
+      <div class="row">
+        <button class="btn btn-sub" id="b-export" style="flex:1">백업 파일 받기</button>
+        <label class="btn btn-sub" style="flex:1;text-align:center">불러오기<input type="file" id="b-import" accept="application/json" hidden></label>
+      </div>
+      <button class="btn btn-ghost" id="b-reset" style="margin-top:8px;width:100%">모든 기록 지우기</button>
+    </div>
+  </section>
+</div>
+
+<nav class="tabs"><div class="in">
+  <button class="on" data-v="v-home">캘린더</button>
+  <button data-v="v-report">돌아보기</button>
+  <button data-v="v-set">설정</button>
+</div></nav>
+
+<div class="sheet-bg" id="sheet-bg"></div>
+<div class="sheet" id="sheet">
+  <h3 id="sh-date"></h3>
+  <div class="muted" id="sh-phase"></div>
+
+  <div class="sec">
+    <div class="chips"><button class="chip mens" id="sh-mens">이날 생리 시작</button></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">오늘 트러블</div>
+    <div class="lvl" id="sh-lvl"></div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">올라온 자리</div>
+    <div class="chips" id="sh-area"></div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">먹은 것</div>
+    <div class="chips" id="sh-food"></div>
+    <input type="text" id="sh-food-etc" placeholder="그 밖에 먹은 것 (예: 떡볶이, 라떼)" style="margin-top:8px">
+  </div>
+  <div class="sec">
+    <div class="sec-t">잠과 스트레스</div>
+    <div class="chips" id="sh-sleep"></div>
+    <div class="chips" id="sh-stress" style="margin-top:6px"></div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">메모</div>
+    <textarea id="sh-memo" placeholder="새로 쓴 제품, 마스크 오래 씀, 컨디션 등"></textarea>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <button class="btn btn-ghost" id="sh-del" style="flex:1">기록 지우기</button>
+    <button class="btn btn-main" id="sh-save" style="flex:2">저장</button>
+  </div>
+</div>
+
+<script>
+/* ===== 730 PMS 마법의그날 케어 — 시기별 내용 (원장님이 이 부분만 고치면 됩니다) ===== */
+const PHASES = {
+  mens: {
+    name: "월경 중", sci: "월경기", color: "var(--p-mens)", bg: "var(--p-mens-bg)",
+    skin: ["피부가 민감하고 푸석해질 수 있어요", "좁쌀이나 염증성 트러블이 올라올 수 있어요", "얼굴이 붓고 피부가 둔탁해 보일 수 있어요"],
+    care: ["<b>자극 줄이기</b> 각질 제거·새 제품은 쉬어 가요", "<b>진정·보습</b> 순한 세안과 보습에 집중해요", "<b>손대지 않기</b> 올라온 트러블은 짜지 않아요"]
+  },
+  fol: {
+    name: "월경 끝나고 7일", sci: "난포기", color: "var(--p-rec)", bg: "var(--p-rec-bg)",
+    skin: ["에스트로겐이 늘면서 피부가 안정을 찾아가요", "피지 분비가 적절해지고 탄력이 좋아져요"],
+    care: ["<b>관리하기 좋은 시기</b> 각질 정리·집중 관리를 시작해요", "<b>자국 관리</b> 지난번 트러블 자국을 같이 관리해요"]
+  },
+  ovu: {
+    name: "배란기", sci: "에스트로겐 최고", color: "var(--p-stb)", bg: "var(--p-stb-bg)",
+    skin: ["피부가 가장 안정적인 시기예요", "유수분 밸런스가 맞아 화장도 잘 먹어요"],
+    care: ["<b>집중 관리</b> 탄력·톤 관리를 받기 좋은 때예요", "<b>바탕 다지기</b> 보습·장벽 관리를 꾸준히 이어 가요"]
+  },
+  lut: {
+    name: "황체기 초반", sci: "프로게스테론 증가", color: "var(--p-lut)", bg: "var(--p-lut-bg)",
+    skin: ["프로게스테론이 오르면서 피지가 늘기 시작해요", "모공이 답답하고 번들거림이 늘 수 있어요"],
+    care: ["<b>가볍게 정리</b> 순한 각질 정리로 모공이 막히지 않게 해요", "<b>미리 준비</b> 곧 예민해지는 시기라 관리 예약을 잡아 두면 좋아요"]
+  },
+  pms: {
+    name: "월경 시작 전 7일", sci: "황체기 후반", color: "var(--p-pms)", bg: "var(--p-pms-bg)",
+    skin: ["피부가 민감하고 푸석해져요", "건조해지고 각질이 생기기 쉬워요", "톤이 칙칙하고, 좁쌀·염증성 트러블이 생길 수 있어요", "얼굴이 붓고 둔탁해 보일 수 있어요"],
+    care: ["<b>보습 강화</b> 건조와 각질이 생기기 전에 보습을 늘려요", "<b>새 제품 쉬기</b> 이 시기엔 바꾸지 않아요", "<b>잠과 스트레스</b> 일찍 자고 짠 음식·술을 줄이면 붓기에 도움돼요"],
+    book: "지금이 <b>PMS 마법의그날 케어</b> 받기 좋은 시기예요. 관리실에 문의해 주세요."
+  }
+};
+const FOODS = ["단 음식", "유제품·우유", "밀가루", "기름진 음식", "매운 음식", "술", "커피", "야식"];
+const AREAS = ["이마", "볼", "코", "입가", "턱", "목·턱선", "등·가슴"];
+const LEVELS = ["없음", "조금", "보통", "많이"];
+const SLEEPS = ["잠 충분", "잠 부족"];
+const STRESS = ["스트레스 적음", "스트레스 많음"];
+
+/* ===== storage ===== */
+const KEY = "730-trouble-diary-v1";
+let mem = null;
+function load() {
+  if (mem) return mem;
+  try { mem = JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { mem = null; }
+  if (!mem) mem = { setup: false, cycle: 28, len: 5, starts: [], logs: {} };
+  return mem;
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(mem)); } catch (e) {} }
+
+/* ===== date helpers ===== */
+const pad = n => String(n).padStart(2, "0");
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parse = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+const diff = (a, b) => Math.round((parse(a) - parse(b)) / 86400000);
+const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); };
+const todayS = () => ymd(new Date());
+const DOW = ["일", "월", "화", "수", "목", "금", "토"];
+const fmt = s => { const d = parse(s); return `${d.getMonth() + 1}월 ${d.getDate()}일 (${DOW[d.getDay()]})`; };
+
+/* ===== cycle ===== */
+function avgCycle() {
+  const s = [...load().starts].sort();
+  if (s.length >= 2) {
+    const gaps = [];
+    for (let i = 1; i < s.length; i++) { const g = diff(s[i], s[i - 1]); if (g >= 18 && g <= 50) gaps.push(g); }
+    const recent = gaps.slice(-6);
+    if (recent.length) return Math.round(recent.reduce((a, b) => a + b, 0) / recent.length);
+  }
+  return Number(load().cycle) || 28;
+}
+function phaseOf(dateS) {
+  const st = [...load().starts].sort();
+  if (!st.length) return null;
+  const P = Number(load().len) || 5;
+  let base = null;
+  for (const s of st) if (s <= dateS) base = s;
+  if (!base) return null; // 첫 기록 이전 날짜는 표시하지 않음
+  const nextReal = st.find(s => s > base);
+  let i, len, predicted = false;
+  if (nextReal) { // 실제 기록 두 개 사이
+    len = diff(nextReal, base);
+    i = diff(dateS, base);
+  } else { // 마지막 기록 이후는 평균 주기로 예상
+    len = avgCycle();
+    const total = diff(dateS, base);
+    i = total % len;
+    predicted = total >= len;
+  }
+  const ov = len - 14; // 배란 예상: 다음 생리 14일 전 (황체기는 사람마다 거의 일정)
+  let key;
+  if (i < P) key = "mens";
+  else if (i >= len - 7) key = "pms";
+  else if (i >= ov - 2 && i <= ov + 1) key = "ovu";
+  else if (i > ov + 1) key = "lut";
+  else key = "fol";
+  return { key, day: i + 1, predicted, ovDay: i === ov };
+}
+function nextStart() {
+  const st = [...load().starts].sort();
+  if (!st.length) return null;
+  let n = st[st.length - 1];
+  const L = avgCycle();
+  while (n <= todayS()) n = addDays(n, L);
+  return n;
+}
+
+/* ===== today card ===== */
+function renderToday() {
+  const el = document.getElementById("today-card");
+  const t = todayS();
+  const ph = phaseOf(t);
+  const log = load().logs[t];
+  let html = `<div class="muted">${fmt(t)}</div>`;
+  if (!ph) {
+    html += `<div class="phase-name" style="margin:4px 0 8px">오늘 피부는 어땠나요?</div>
+      <p class="muted" style="margin:0">생리 시작일을 캘린더에서 체크하면 시기별 피부 변화와 관리법을 알려 드려요.</p>`;
+  } else {
+    const p = PHASES[ph.key];
+    const ns = nextStart();
+    const dd = ns ? diff(ns, t) : null;
+    html += `<div class="today-phase" style="margin-top:6px"><span class="dot" style="background:${p.color}"></span>
+      <div><div class="phase-name">${p.name} <span style="font-size:13px;font-weight:500;color:var(--sub)">· ${p.sci}</span></div>
+      <div class="phase-day">주기 ${ph.day}일째${dd !== null ? ` · 다음 생리 예상 ${dd}일 뒤` : ""}</div></div></div>
+      <div class="sec-t" style="margin-top:12px">이 시기 피부</div>
+      <ul class="tips">${p.skin.map(s => `<li>${s}</li>`).join("")}</ul>
+      <div class="sec-t" style="margin-top:10px">이렇게 관리해요</div>
+      <ul class="tips">${p.care.map(s => `<li>${s}</li>`).join("")}</ul>
+      ${p.book ? `<div class="book">${p.book}</div>` : ""}`;
+  }
+  html += `<button class="btn btn-main" style="margin-top:12px" onclick="openSheet('${t}')">${log ? "오늘 기록 고치기" : "오늘 기록하기"}</button>`;
+  el.innerHTML = html;
+}
+
+/* ===== calendar ===== */
+let view = new Date(); view.setDate(1);
+function renderCal() {
+  document.getElementById("month-label").textContent = `${view.getFullYear()}년 ${view.getMonth() + 1}월`;
+  document.getElementById("dows").innerHTML = DOW.map(d => `<div class="dow">${d}</div>`).join("");
+  const g = document.getElementById("grid");
+  const first = new Date(view.getFullYear(), view.getMonth(), 1);
+  const days = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+  let html = "";
+  for (let i = 0; i < first.getDay(); i++) html += `<div class="day out"></div>`;
+  const t = todayS();
+  const starts = load().starts;
+  for (let d = 1; d <= days; d++) {
+    const s = ymd(new Date(view.getFullYear(), view.getMonth(), d));
+    const ph = phaseOf(s);
+    const log = load().logs[s];
+    let style = "", cls = "day";
+    if (ph) { style = `background:${PHASES[ph.key].bg};box-shadow:inset 0 -4px 0 ${PHASES[ph.key].color}`; if (ph.predicted || s > t) cls += " pred"; }
+    if (s === t) cls += " today";
+    let marks = "";
+    if (log) {
+      if (log.level >= 1) marks += `<span class="m" style="background:#C97B5A;opacity:${0.35 + log.level * 0.22}"></span>`;
+      if ((log.foods && log.foods.length) || log.foodEtc) marks += `<span class="m" style="background:#7A5C3E"></span>`;
+    }
+    html += `<button class="${cls}" style="${style}" onclick="openSheet('${s}')">${d}${starts.includes(s) ? '<span class="start">●</span>' : (ph && ph.ovDay ? '<span class="start" style="color:#7A5C3E">◆</span>' : "")}<span class="marks">${marks}</span></button>`;
+  }
+  g.innerHTML = html;
+}
+document.getElementById("prev").onclick = () => { view.setMonth(view.getMonth() - 1); renderCal(); };
+document.getElementById("next").onclick = () => { view.setMonth(view.getMonth() + 1); renderCal(); };
+
+/* ===== sheet ===== */
+let cur = null, draft = null;
+function chipRow(id, items, field, single) {
+  const el = document.getElementById(id);
+  el.innerHTML = items.map(x => `<button class="chip" data-v="${x}">${x}</button>`).join("");
+  el.querySelectorAll(".chip").forEach(b => {
+    const v = b.dataset.v;
+    const on = single ? draft[field] === v : (draft[field] || []).includes(v);
+    b.classList.toggle("on", on);
+    b.onclick = () => {
+      if (single) draft[field] = draft[field] === v ? "" : v;
+      else { const a = draft[field] || []; draft[field] = a.includes(v) ? a.filter(x => x !== v) : [...a, v]; }
+      chipRow(id, items, field, single);
+    };
+  });
+}
+function renderLvl() {
+  const el = document.getElementById("sh-lvl");
+  el.innerHTML = LEVELS.map((x, i) => `<button class="chip${draft.level === i ? " on" : ""}" data-i="${i}">${x}</button>`).join("");
+  el.querySelectorAll(".chip").forEach(b => b.onclick = () => { draft.level = Number(b.dataset.i); renderLvl(); });
+}
+function openSheet(s) {
+  cur = s;
+  const L = load().logs[s] || {};
+  draft = { level: L.level ?? 0, areas: [...(L.areas || [])], foods: [...(L.foods || [])], sleep: L.sleep || "", stress: L.stress || "", mens: load().starts.includes(s) };
+  document.getElementById("sh-date").textContent = fmt(s);
+  const ph = phaseOf(s);
+  document.getElementById("sh-phase").textContent = ph ? `${PHASES[ph.key].name} · ${PHASES[ph.key].sci} · 주기 ${ph.day}일째` : "";
+  document.getElementById("sh-food-etc").value = L.foodEtc || "";
+  document.getElementById("sh-memo").value = L.memo || "";
+  const mb = document.getElementById("sh-mens");
+  mb.classList.toggle("on", draft.mens);
+  mb.onclick = () => { draft.mens = !draft.mens; mb.classList.toggle("on", draft.mens); };
+  renderLvl();
+  chipRow("sh-area", AREAS, "areas");
+  chipRow("sh-food", FOODS, "foods");
+  chipRow("sh-sleep", SLEEPS, "sleep", true);
+  chipRow("sh-stress", STRESS, "stress", true);
+  document.getElementById("sheet-bg").style.display = "block";
+  requestAnimationFrame(() => document.getElementById("sheet").classList.add("open"));
+}
+function closeSheet() {
+  document.getElementById("sheet").classList.remove("open");
+  setTimeout(() => document.getElementById("sheet-bg").style.display = "none", 200);
+}
+document.getElementById("sheet-bg").onclick = closeSheet;
+document.getElementById("sh-save").onclick = () => {
+  const m = load();
+  const rec = { level: draft.level, areas: draft.areas, foods: draft.foods, foodEtc: document.getElementById("sh-food-etc").value.trim(), sleep: draft.sleep, stress: draft.stress, memo: document.getElementById("sh-memo").value.trim() };
+  const empty = !rec.level && !rec.areas.length && !rec.foods.length && !rec.foodEtc && !rec.sleep && !rec.stress && !rec.memo;
+  if (empty) delete m.logs[cur]; else m.logs[cur] = rec;
+  m.starts = m.starts.filter(x => x !== cur);
+  if (draft.mens) m.starts.push(cur);
+  m.starts.sort();
+  m.setup = true;
+  save(); closeSheet(); renderAll();
+};
+document.getElementById("sh-del").onclick = () => {
+  if (!confirmSafe("이날 기록을 지울까요?")) return;
+  const m = load(); delete m.logs[cur]; m.starts = m.starts.filter(x => x !== cur);
+  save(); closeSheet(); renderAll();
+};
+function confirmSafe(msg) { try { return window.confirm(msg); } catch (e) { return true; } }
+
+/* ===== report ===== */
+function renderReport() {
+  const m = load(), t = todayS(), from = addDays(t, -27);
+  const days = Object.keys(m.logs).filter(s => s >= from && s <= t).sort();
+  const tr = days.filter(s => m.logs[s].level >= 2);
+  document.getElementById("r-stat").innerHTML =
+    `<div><b>${days.length}</b><span>기록한 날</span></div><div><b>${tr.length}</b><span>트러블 보통 이상</span></div><div><b>${avgCycle()}일</b><span>평균 주기</span></div>`;
+
+  // 시기별
+  const acc = { mens: [], fol: [], ovu: [], lut: [], pms: [] };
+  Object.keys(m.logs).forEach(s => { const ph = phaseOf(s); if (ph) acc[ph.key].push(m.logs[s].level || 0); });
+  const ph = Object.keys(acc).map(k => {
+    const a = acc[k]; const v = a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
+    return `<div class="rep-row"><span>${({mens:"월경기",fol:"난포기",ovu:"배란기",lut:"황체기 초반",pms:"황체기 후반"})[k]}</span><div class="bar"><div style="width:${(v / 3) * 100}%;background:${PHASES[k].color}"></div></div><span class="v">${a.length ? v.toFixed(1) : "-"}</span></div>`;
+  }).join("");
+  document.getElementById("r-phase").innerHTML = m.starts.length ? ph : `<div class="empty">생리 시작일을 체크하면 시기별로 볼 수 있어요</div>`;
+
+  // 음식
+  const cnt = {};
+  tr.forEach(s => {
+    const seen = new Set();
+    [s, addDays(s, -1)].forEach(d => { const L = m.logs[d]; if (L) (L.foods || []).forEach(f => seen.add(f)); });
+    seen.forEach(f => cnt[f] = (cnt[f] || 0) + 1);
+  });
+  const fs = Object.entries(cnt).sort((a, b) => b[1] - a[1]);
+  const max = fs.length ? fs[0][1] : 1;
+  document.getElementById("r-food").innerHTML = fs.length ? fs.map(([f, c]) =>
+    `<div class="rep-row"><span>${f}</span><div class="bar"><div style="width:${(c / max) * 100}%;background:var(--sage)"></div></div><span class="v">${c}번</span></div>`).join("")
+    : `<div class="empty">트러블이 '보통' 이상인 날이 쌓이면 보여요</div>`;
+
+  // 자리
+  const ac = {};
+  days.forEach(s => (m.logs[s].areas || []).forEach(a => ac[a] = (ac[a] || 0) + 1));
+  const as = Object.entries(ac).sort((a, b) => b[1] - a[1]);
+  const amax = as.length ? as[0][1] : 1;
+  document.getElementById("r-area").innerHTML = as.length ? as.map(([a, c]) =>
+    `<div class="rep-row"><span>${a}</span><div class="bar"><div style="width:${(c / amax) * 100}%;background:#C97B5A"></div></div><span class="v">${c}일</span></div>`).join("")
+    : `<div class="empty">아직 기록이 없어요</div>`;
+
+  // 목록
+  const all = Object.keys(m.logs).sort().reverse().slice(0, 30);
+  document.getElementById("r-list").innerHTML = all.length ? all.map(s => {
+    const L = m.logs[s], p = phaseOf(s);
+    const food = [...(L.foods || []), L.foodEtc].filter(Boolean).join(", ");
+    return `<div class="list-item"><b>${fmt(s)}</b> ${p ? `<span class="badge" style="background:${PHASES[p.key].bg}">${PHASES[p.key].name}</span>` : ""}<br>
+      트러블 ${LEVELS[L.level || 0]}${(L.areas || []).length ? " · " + L.areas.join(", ") : ""}${food ? `<br><span class="muted">먹은 것: ${food}</span>` : ""}${L.memo ? `<br><span class="muted">${L.memo}</span>` : ""}</div>`;
+  }).join("") : `<div class="empty">아직 기록이 없어요</div>`;
+}
+
+/* ===== setup & settings ===== */
+function renderAll() { renderToday(); renderCal(); renderReport(); const m = load(); document.getElementById("c-cycle").value = m.cycle; document.getElementById("c-len").value = m.len; }
+function initSetup() {
+  const m = load();
+  if (!m.setup) {
+    document.getElementById("setup").style.display = "block";
+    document.getElementById("v-home").classList.remove("on");
+  }
+}
+document.getElementById("s-save").onclick = () => {
+  const m = load(), st = document.getElementById("s-start").value;
+  m.cycle = Number(document.getElementById("s-cycle").value) || 28;
+  m.len = Number(document.getElementById("s-len").value) || 5;
+  if (st && !m.starts.includes(st)) m.starts.push(st);
+  m.starts.sort(); m.setup = true; save();
+  document.getElementById("setup").style.display = "none";
+  document.getElementById("v-home").classList.add("on");
+  renderAll();
+};
+document.getElementById("s-skip").onclick = () => { const m = load(); m.setup = true; save(); document.getElementById("setup").style.display = "none"; document.getElementById("v-home").classList.add("on"); renderAll(); };
+document.getElementById("c-save").onclick = () => { const m = load(); m.cycle = Number(document.getElementById("c-cycle").value) || 28; m.len = Number(document.getElementById("c-len").value) || 5; save(); renderAll(); };
+document.getElementById("b-export").onclick = () => {
+  const blob = new Blob([JSON.stringify(load(), null, 2)], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `730-트러블다이어리-${todayS()}.json`; a.click();
+};
+document.getElementById("b-import").onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  f.text().then(txt => { try { const d = JSON.parse(txt); if (d && d.logs) { mem = d; save(); renderAll(); } } catch (err) {} });
+};
+document.getElementById("b-reset").onclick = () => { if (!confirmSafe("모든 기록을 지울까요? 되돌릴 수 없어요.")) return; mem = { setup: true, cycle: 28, len: 5, starts: [], logs: {} }; save(); renderAll(); };
+
+document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("nav.tabs button").forEach(x => x.classList.toggle("on", x === b));
+  document.getElementById("setup").style.display = "none";
+  document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id === b.dataset.v));
+  if (b.dataset.v === "v-report") renderReport();
+  window.scrollTo(0, 0);
+});
+
+initSetup();
+renderAll();
+</script>
+</body>
+</html>

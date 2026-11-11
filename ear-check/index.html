@@ -14,7 +14,7 @@
   * { box-sizing: border-box; }
   html, body { max-width: 100%; overflow-x: hidden; }
   body {
-    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
     background: #FFFFFF;
     color: #2E2A26;
     margin: 0;
@@ -26,16 +26,16 @@
     font-size: 15px; font-weight: 700; color: #2E2A26;
     text-decoration: none; letter-spacing: 0.5px;
   }
-  .home-link:hover { color: #B08D57; }
+  .home-link:hover { color: #7A5C3E; }
   header { text-align: center; margin-bottom: 24px; }
-  header .sub { color: #B08D57; font-size: 13px; letter-spacing: 1px; margin-bottom: 4px; }
+  header .sub { color: #7A5C3E; font-size: 13px; letter-spacing: 1px; margin-bottom: 4px; }
   header h1 { font-size: 22px; margin: 0 0 8px; color: #2E2A26; }
   header p { font-size: 13px; color: #8A8378; margin: 0; }
 
   .balance-sheet {
     width: 100%;
     background: #fff;
-    border: 1px solid #E6DFD2;
+    border: 1px solid #DDD6C8;
     border-radius: 16px;
     overflow: hidden;
     padding: 20px 18px 22px;
@@ -64,7 +64,7 @@
   .field { min-width: 0; }
   .field label { display: block; font-size: 12px; color: #8A8378; margin-bottom: 4px; }
   .field input {
-    width: 100%; max-width: 100%; padding: 8px 10px; border: 1px solid #DDD5C7; border-radius: 6px;
+    width: 100%; max-width: 100%; padding: 8px 10px; border: 1px solid #DDD6C8; border-radius: 6px;
     font-size: 14px; background: #fff; font-family: inherit;
   }
   .gender-group { display: flex; gap: 6px; width: 100%; max-width: 100%; }
@@ -72,7 +72,7 @@
 
   .cycle-question {
     font-size: 13.5px; color: #6B6559;
-    background: #FBF8F2; border: 1px solid #E6DFD2; border-radius: 8px;
+    background: transparent; border: 1px solid #DDD6C8; border-radius: 8px;
     width: 100%; max-width: 100%; overflow: hidden;
     opacity: 0; max-height: 0; padding: 0 14px; margin-bottom: 0;
     transform: translateY(-6px);
@@ -88,7 +88,7 @@
   .cycle-toggle-group .opt-btn { flex: 1; padding: 9px 10px; font-size: 12.5px; text-align: center; }
   .cycle-question-note { font-size: 12px; color: #8A8378; margin: 8px 0 0; }
 
-  .domain { max-width: 100%; border-top: 1px solid #EFE8DB; padding: 16px 0; }
+  .domain { max-width: 100%; border-top: 1px solid #DDD6C8; padding: 16px 0; }
   .domain:first-child { border-top: none; padding-top: 0; }
   .domain h2 { font-size: 14px; font-weight: 700; color: #7A5C3E; margin: 0 0 12px; }
   .domain-note { font-size: 12.5px; color: #8A8378; margin: -6px 0 12px; }
@@ -97,7 +97,7 @@
   .item-label { font-size: 13.5px; color: #3A3530; flex: 1 1 200px; }
   .btn-group { display: flex; gap: 4px; flex-shrink: 0; max-width: 100%; }
   .opt-btn {
-    border: 1px solid #E6DFD2; background: #FFFFFF; color: #8A8378;
+    border: 1px solid #DDD6C8; background: #FFFFFF; color: #8A8378;
     font-size: 11px; padding: 6px 8px; border-radius: 6px; cursor: pointer;
     font-family: inherit; white-space: nowrap; max-width: 100%; transition: all .15s;
   }
@@ -109,14 +109,14 @@
 
   .calc-btn {
     width: 100%; max-width: 100%; padding: 14px; margin-top: 10px; font-size: 15px; font-weight: 700;
-    background: #FFFFFF; color: #1F1F1F; border: 1px solid #D9D1C7; border-radius: 16px; cursor: pointer;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    background: #FFCC00; color: #000000; border: 1px solid #FFCC00; border-radius: 999px; cursor: pointer;
+    box-shadow: none;
     transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
   }
-  .calc-btn:hover { background: #FAF8F5; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09); transform: translateY(-1px); }
+  .calc-btn:hover { background: #A5563F; border-color: #A5563F; color: #FFFFFF; transform: translateY(-1px); }
   .calc-btn:active { transform: scale(0.99); }
   .calc-btn.is-disabled { opacity: 0.55; box-shadow: none; }
-  .calc-btn.is-disabled:hover { background: #FFFFFF; transform: none; box-shadow: none; }
+  .calc-btn.is-disabled:hover { background: #FFCC00; border-color: #FFCC00; color: #000000; transform: none; box-shadow: none; }
 
   .progress-row {
     display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;
@@ -125,26 +125,26 @@
   .unanswered-count { color: #B0522F; font-weight: 700; }
 
   .item-row.unanswered {
-    box-shadow: inset 3px 0 0 #C97B5A;
-    background: #FBF3EC;
-    border-radius: 6px;
+    box-shadow: inset 0 0 0 1px #DDD6C8;
+    background: transparent;
+    border-radius: 10px;
     padding-left: 8px;
   }
   .item-row.flash-highlight {
     animation: item-flash 1.1s ease;
   }
   @keyframes item-flash {
-    0%, 100% { box-shadow: inset 3px 0 0 #C97B5A; }
-    30%, 70% { box-shadow: inset 3px 0 0 #C97B5A, 0 0 0 3px rgba(201, 123, 90, 0.35); }
+    0%, 100% { box-shadow: inset 0 0 0 1px #DDD6C8; }
+    30%, 70% { box-shadow: inset 0 0 0 1.5px #A5563F; }
   }
 
-  .lifestyle-section { max-width: 100%; border-top: 1px solid #EFE8DB; padding: 16px 0; }
+  .lifestyle-section { max-width: 100%; border-top: 1px solid #DDD6C8; padding: 16px 0; }
   .lifestyle-section h2 { font-size: 14px; font-weight: 700; color: #7A5C3E; margin: 0 0 4px; }
   .lifestyle-desc { font-size: 12.5px; color: #8A8378; margin: 0 0 12px; }
   .lifestyle-options { display: flex; flex-wrap: wrap; gap: 8px; }
   .lifestyle-opt {
     display: inline-flex; align-items: center; gap: 7px;
-    border: 1px solid #E6DFD2; background: #FFFFFF; color: #3A3530;
+    border: 1px solid #DDD6C8; background: #FFFFFF; color: #3A3530;
     font-size: 13px; padding: 9px 12px; border-radius: 10px; cursor: pointer;
     font-family: inherit; transition: all .15s;
   }
@@ -152,7 +152,7 @@
   .lifestyle-opt:hover { border-color: #7A5C3E; background: #FBF8F2; }
   .lifestyle-opt.checked { background: #E8D8C9; border-color: #CDB6A3; color: #6E4933; font-weight: 700; }
   .lifestyle-other-input {
-    width: 100%; margin-top: 10px; padding: 9px 10px; border: 1px solid #DDD5C7; border-radius: 8px;
+    width: 100%; margin-top: 10px; padding: 9px 10px; border: 1px solid #DDD6C8; border-radius: 8px;
     font-size: 13.5px; font-family: inherit; display: none;
   }
   .lifestyle-other-input.is-visible { display: block; }
