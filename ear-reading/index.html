@@ -19,22 +19,14 @@
 <body>
 <title>730 이어 리딩 가이드</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
 <style>
 /* Layout: 왼쪽 입력(고객 이야기 · 귀 반응), 오른쪽 고정 리딩 결과. 폰에서는 한 줄로 쌓인다 */
 :root{
   --bg:#FFFFFF; --surface:#FFFFFF; --ink:#2E2A26; --muted:#8A8378; --line:#DDD6C8;
   --accent:#7A5C3E; --accent-soft:#F7F3EC; --strong:#A5563F; --strong-soft:#F6E3DA; --base:#7A6A2E; --base-soft:#FFF4C2;
-  --display:"Gowun Batang", "Nanum Myeongjo", serif;
-  --body:"IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --display:'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --body:'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#121A1A; --surface:#1A2524; --ink:#E6EEEC; --muted:#9AAAA7; --line:#2C3A39;
-  --accent:#5FB8AF; --accent-soft:#1E3533; --strong:#E07FA6; --strong-soft:#3A2230; --base:#D6C27A; --base-soft:#33301F; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#121A1A; --surface:#1A2524; --ink:#E6EEEC; --muted:#9AAAA7; --line:#2C3A39;
-  --accent:#5FB8AF; --accent-soft:#1E3533; --strong:#E07FA6; --strong-soft:#3A2230; --base:#D6C27A; --base-soft:#33301F; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
 .wrap{max-width:1200px;margin:0 auto;padding-block:28px 48px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
@@ -102,7 +94,7 @@ textarea{font:inherit;width:100%;min-height:64px;border:1px solid var(--line);bo
 .tags{display:inline-flex;gap:5px;flex-wrap:wrap;margin-left:6px;vertical-align:middle}
 .tag{font-size:11.5px;padding:1px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
 .tag.s{background:var(--strong-soft);color:var(--strong)}
-.tag.b{background:var(--base-soft);color:var(--base)}
+.tag.b{background:#FFF4C2;color:#2E2A26}
 .rd{font-size:13px;color:var(--muted);margin-top:3px}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
 .btn{font:inherit;font-size:14px;font-weight:700;padding:9px 16px;border-radius:999px;border:1px solid #FFCC00;background:#FFCC00;color:#000;cursor:pointer}
