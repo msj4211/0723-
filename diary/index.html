@@ -98,6 +98,8 @@
   .empty { text-align: center; color: var(--sub); padding: 18px 0; font-size: 14px; }
   .list-item { border-top: 1px solid var(--line); padding: 10px 0; font-size: 14px; }
   .list-item:first-child { border-top: 0; }
+  #toast { position: fixed; left: 50%; bottom: 76px; transform: translate(-50%, 20px); background: #2E2A26; color: #fff; padding: 11px 16px; border-radius: 999px; font-size: 14px; max-width: 90vw; text-align: center; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; z-index: 20; }
+  #toast.on { opacity: 1; transform: translate(-50%, 0); }
   .start-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; }
   .start-row:first-child { border-top: 0; }
   .start-row button { border: 1px solid var(--line); background: #fff; color: var(--terra); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 13px; cursor: pointer; }
@@ -489,7 +491,7 @@ document.getElementById("sh-save").onclick = () => {
   if (draft.mens) m.starts.push(cur);
   m.starts.sort();
   m.setup = true;
-  save(); closeSheet(); renderAll();
+  save(); closeSheet(); renderAll(); toast("기록했어요");
 };
 document.getElementById("sh-del").onclick = () => {
   if (!confirmSafe("이날 기록을 지울까요?")) return;
@@ -557,6 +559,7 @@ function renderStarts() {
 function removeStart(s) {
   if (!confirmSafe(fmt(s) + " 생리 시작일을 지울까요?")) return;
   const m = load(); m.starts = m.starts.filter(x => x !== s); save(); renderAll();
+  toast(fmt(s) + " 시작일을 지웠어요. 맞는 날짜를 아래에서 추가해 주세요");
 }
 function goFixStarts() {
   document.querySelector('nav.tabs button[data-v="v-set"]').click();
@@ -564,12 +567,13 @@ function goFixStarts() {
 }
 document.getElementById("add-start-btn").onclick = () => {
   const v = document.getElementById("add-start").value;
-  if (!v) return;
+  if (!v) { toast("날짜를 먼저 골라 주세요"); return; }
   const m = load();
   if (!m.starts.includes(v)) m.starts.push(v);
   m.starts.sort(); m.setup = true; save();
   document.getElementById("add-start").value = "";
   renderAll();
+  goHome(fmt(v) + "을 생리 시작일로 넣었어요");
 };
 function renderAll() { renderStarts(); renderToday(); renderCal(); renderReport(); const m = load(); document.getElementById("c-cycle").value = m.cycle; document.getElementById("c-len").value = m.len; }
 function initSetup() {
@@ -590,16 +594,26 @@ document.getElementById("s-save").onclick = () => {
   renderAll();
 };
 document.getElementById("s-skip").onclick = () => { const m = load(); m.setup = true; save(); document.getElementById("setup").style.display = "none"; document.getElementById("v-home").classList.add("on"); renderAll(); };
-document.getElementById("c-save").onclick = () => { const m = load(); m.cycle = Number(document.getElementById("c-cycle").value) || 28; m.len = Number(document.getElementById("c-len").value) || 5; save(); renderAll(); };
+document.getElementById("c-save").onclick = () => { const m = load(); m.cycle = Number(document.getElementById("c-cycle").value) || 28; m.len = Number(document.getElementById("c-len").value) || 5; save(); renderAll(); goHome("저장했어요 · 캘린더에 반영했어요"); };
+function toast(msg) {
+  let t = document.getElementById("toast");
+  if (!t) { t = document.createElement("div"); t.id = "toast"; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add("on");
+  clearTimeout(window.__toastT); window.__toastT = setTimeout(() => t.classList.remove("on"), 2600);
+}
+function goHome(msg) {
+  document.querySelector('nav.tabs button[data-v="v-home"]').click();
+  if (msg) toast(msg);
+}
 document.getElementById("b-export").onclick = () => {
   const blob = new Blob([JSON.stringify(load(), null, 2)], { type: "application/json" });
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `730-트러블다이어리-${todayS()}.json`; a.click();
 };
 document.getElementById("b-import").onchange = e => {
   const f = e.target.files[0]; if (!f) return;
-  f.text().then(txt => { try { const d = JSON.parse(txt); if (d && d.logs) { mem = d; save(); renderAll(); } } catch (err) {} });
+  f.text().then(txt => { try { const d = JSON.parse(txt); if (d && d.logs) { mem = d; save(); renderAll(); goHome("기록을 불러왔어요"); } else toast("백업 파일이 아니에요"); } catch (err) {} });
 };
-document.getElementById("b-reset").onclick = () => { if (!confirmSafe("모든 기록을 지울까요? 되돌릴 수 없어요.")) return; mem = { setup: true, cycle: 28, len: 5, starts: [], logs: {} }; save(); renderAll(); };
+document.getElementById("b-reset").onclick = () => { if (!confirmSafe("모든 기록을 지울까요? 되돌릴 수 없어요.")) return; mem = { setup: true, cycle: 28, len: 5, starts: [], logs: {} }; save(); renderAll(); goHome("모든 기록을 지웠어요"); };
 
 document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => {
   document.querySelectorAll("nav.tabs button").forEach(x => x.classList.toggle("on", x === b));
