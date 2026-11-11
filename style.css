@@ -4382,3 +4382,9 @@ body.er-focus .embed-frame.ear-reading-frame {
   height: calc(100dvh - var(--header-height, 10rem) - 12px);
   min-height: 520px;
 }
+
+/* 화면 높이에 맞춘 도구 페이지에서는 아래 노란 푸터 띠를 숨겨
+   스크롤 없이 한 화면에 딱 맞게 보이도록 한다. */
+body:has(.iframe-page.is-fullheight) .site-footer {
+  display: none;
+}
