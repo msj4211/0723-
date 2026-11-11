@@ -267,6 +267,11 @@ const PHASES = {
     skin: ["프로게스테론이 오르면서 피지가 늘기 시작해요", "모공이 답답하고 번들거림이 늘 수 있어요"],
     care: ["<b>가볍게 정리</b> 순한 각질 정리로 모공이 막히지 않게 해요", "<b>미리 준비</b> 곧 예민해지는 시기라 관리 예약을 잡아 두면 좋아요"]
   },
+  late: {
+    name: "생리 예정일 지남", sci: "시작일 기록 필요", color: "#BFB5A6", bg: "#FFFFFF",
+    skin: ["주기는 사람마다, 달마다 며칠씩 달라질 수 있어요", "생리 직전처럼 피부가 예민할 수 있어요"],
+    care: ["<b>시작일 체크</b> 생리를 시작했다면 캘린더에서 그날을 눌러 '이날 생리 시작'을 체크해 주세요", "<b>순하게 관리</b> 보습과 진정 위주로, 새 제품은 잠시 쉬어요"]
+  },
   pms: {
     name: "월경 시작 전 7일", sci: "황체기 후반", color: "var(--p-pms)", bg: "var(--p-pms-bg)",
     skin: ["피부가 민감하고 푸석해져요", "건조해지고 각질이 생기기 쉬워요", "톤이 칙칙하고, 좁쌀·염증성 트러블이 생길 수 있어요", "얼굴이 붓고 둔탁해 보일 수 있어요"],
@@ -327,6 +332,12 @@ function phaseOf(dateS) {
   } else { // 마지막 기록 이후는 평균 주기로 예상
     len = avgCycle();
     const total = diff(dateS, base);
+    const overdue = diff(todayS(), base) > len; // 예정일이 지났는데 새 시작일 기록이 없음
+    if (overdue && total > len) {
+      // 생리가 예정보다 늦어지는 중: 이미 지나간 날을 '다음 주기'로 가정해 칠하지 않는다.
+      if (dateS <= todayS()) return { key: "late", day: total + 1, lateBy: total - len, predicted: false };
+      return null; // 시작일이 기록되기 전까지 앞날은 예측하지 않는다
+    }
     i = total % len;
     predicted = total >= len;
   }
@@ -344,6 +355,7 @@ function nextStart() {
   if (!st.length) return null;
   let n = st[st.length - 1];
   const L = avgCycle();
+  if (diff(todayS(), n) > L) return null; // 예정일이 지남: 다음 예정일을 지어내지 않는다
   while (n <= todayS()) n = addDays(n, L);
   return n;
 }
@@ -364,12 +376,13 @@ function renderToday() {
     const dd = ns ? diff(ns, t) : null;
     html += `<div class="today-phase" style="margin-top:6px"><span class="dot" style="background:${p.color}"></span>
       <div><div class="phase-name">${p.name} <span style="font-size:13px;font-weight:500;color:var(--sub)">· ${p.sci}</span></div>
-      <div class="phase-day">주기 ${ph.day}일째${dd !== null ? ` · 다음 생리 예상 ${dd}일 뒤` : ""}</div></div></div>
+      <div class="phase-day">${ph.key === "late" ? `마지막 생리 시작 후 ${ph.day - 1}일 · ${ph.lateBy === 0 ? "오늘이 생리 예정일" : `예정일보다 ${ph.lateBy}일 지남`}` : `주기 ${ph.day}일째${dd !== null ? ` · 다음 생리 예상 ${dd}일 뒤` : ""}`}</div></div></div>
       <div class="sec-t" style="margin-top:12px">이 시기 피부</div>
       <ul class="tips">${p.skin.map(s => `<li>${s}</li>`).join("")}</ul>
       <div class="sec-t" style="margin-top:10px">이렇게 관리해요</div>
       <ul class="tips">${p.care.map(s => `<li>${s}</li>`).join("")}</ul>
-      ${p.book ? `<div class="book">${p.book}</div>` : ""}`;
+      ${p.book ? `<div class="book">${p.book}</div>` : ""}
+      ${ph.key === "late" && ph.day - 1 > 35 ? `<div class="book">생리 간격이 35일을 넘었어요. 이런 일이 반복되면 산부인과 상담을 받아 보세요.</div>` : ""}`;
   }
   html += `<button class="btn btn-main" style="margin-top:12px" onclick="openSheet('${t}')">${log ? "오늘 기록 고치기" : "오늘 기록하기"}</button>`;
   el.innerHTML = html;
@@ -480,7 +493,7 @@ function renderReport() {
 
   // 시기별
   const acc = { mens: [], fol: [], ovu: [], lut: [], pms: [] };
-  Object.keys(m.logs).forEach(s => { const ph = phaseOf(s); if (ph) acc[ph.key].push(m.logs[s].level || 0); });
+  Object.keys(m.logs).forEach(s => { const ph = phaseOf(s); if (ph && acc[ph.key]) acc[ph.key].push(m.logs[s].level || 0); });
   const ph = Object.keys(acc).map(k => {
     const a = acc[k]; const v = a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
     return `<div class="rep-row"><span>${({mens:"월경기",fol:"난포기",ovu:"배란기",lut:"황체기 초반",pms:"황체기 후반"})[k]}</span><div class="bar"><div style="width:${(v / 3) * 100}%;background:${PHASES[k].color}"></div></div><span class="v">${a.length ? v.toFixed(1) : "-"}</span></div>`;
