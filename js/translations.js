@@ -67,6 +67,7 @@ window.translations = {
     mypageApprovedSince: '교육생 승인일: {date}',
 
     navEarCheck: '자가 컨디션 체크',
+    navDiary: '트러블 다이어리',
     navEarPoints: '이어포인트',
     navEarReading: '이어 리딩 가이드 (전문가용)',
     navProducts: '상품',
@@ -378,6 +379,7 @@ window.translations = {
     mypageApprovedSince: 'Approved on {date}',
 
     navEarCheck: 'Self Condition Check',
+    navDiary: 'Trouble Diary',
     navEarPoints: 'Ear Points',
     navEarReading: 'Ear Reading Guide (Pro)',
     navProducts: 'Products',

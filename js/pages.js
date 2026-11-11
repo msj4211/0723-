@@ -295,6 +295,21 @@ window.Pages = (function () {
   // 띄우며, checkEducationAccess()로 감싸 승인된 교육생에게만 보인다.
   // 도구 안에서 결과 칸이 고정(sticky)되도록 iframe은 화면 높이만큼만 잡고
   // 안쪽에서 스크롤한다.
+  // 트러블 다이어리: 먹은 것·트러블·생리 주기를 같이 기록하는 고객용 도구.
+  // 기록은 고객 휴대폰(브라우저)에만 저장되고 서버로 보내지 않는다.
+  // /diary/ 주소로 직접 열어도(로그인 없이) 쓸 수 있다.
+  function renderDiaryEmbed(container) {
+    container.innerHTML = `
+      <div class="iframe-page">
+        <iframe
+          class="embed-frame ear-reading-frame"
+          src="/diary/"
+          title="730 트러블 다이어리"
+          loading="lazy"></iframe>
+      </div>
+    `;
+  }
+
   function renderEarReadingEmbed(container) {
     container.innerHTML = `
       <div class="iframe-page">
@@ -1978,6 +1993,8 @@ window.Pages = (function () {
     // 이 페이지가 불러오는 외부 사이트 자체의 콘텐츠라, 그 부분의 공개
     // 범위 조정은 이 저장소 밖의 별도 작업이 필요하다 — 아래 보고 참고.)
     earCheck: renderEarCheckEmbed,
+
+    diary: renderDiaryEmbed,
 
     earReading: function (container) {
       window.AccessControl.checkEducationAccess(container, function (c) {

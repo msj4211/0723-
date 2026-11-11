@@ -109,14 +109,14 @@
 
   .calc-btn {
     width: 100%; max-width: 100%; padding: 14px; margin-top: 10px; font-size: 15px; font-weight: 700;
-    background: #FFFFFF; color: #1F1F1F; border: 1px solid #D9D1C7; border-radius: 16px; cursor: pointer;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    background: #FFCC00; color: #000000; border: 1px solid #FFCC00; border-radius: 999px; cursor: pointer;
+    box-shadow: none;
     transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
   }
-  .calc-btn:hover { background: #FAF8F5; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09); transform: translateY(-1px); }
+  .calc-btn:hover { background: #A5563F; border-color: #A5563F; color: #FFFFFF; transform: translateY(-1px); }
   .calc-btn:active { transform: scale(0.99); }
   .calc-btn.is-disabled { opacity: 0.55; box-shadow: none; }
-  .calc-btn.is-disabled:hover { background: #FFFFFF; transform: none; box-shadow: none; }
+  .calc-btn.is-disabled:hover { background: #FFCC00; border-color: #FFCC00; color: #000000; transform: none; box-shadow: none; }
 
   .progress-row {
     display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;
@@ -125,17 +125,17 @@
   .unanswered-count { color: #B0522F; font-weight: 700; }
 
   .item-row.unanswered {
-    box-shadow: inset 3px 0 0 #C97B5A;
-    background: #FBF3EC;
-    border-radius: 6px;
+    box-shadow: inset 0 0 0 1px #DDD6C8;
+    background: transparent;
+    border-radius: 10px;
     padding-left: 8px;
   }
   .item-row.flash-highlight {
     animation: item-flash 1.1s ease;
   }
   @keyframes item-flash {
-    0%, 100% { box-shadow: inset 3px 0 0 #C97B5A; }
-    30%, 70% { box-shadow: inset 3px 0 0 #C97B5A, 0 0 0 3px rgba(201, 123, 90, 0.35); }
+    0%, 100% { box-shadow: inset 0 0 0 1px #DDD6C8; }
+    30%, 70% { box-shadow: inset 0 0 0 1.5px #A5563F; }
   }
 
   .lifestyle-section { max-width: 100%; border-top: 1px solid #EFE8DB; padding: 16px 0; }
