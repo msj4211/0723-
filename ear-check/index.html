@@ -206,20 +206,23 @@
 
 <script>
 // ============================================================
-// 공통 4단계 척도. 모든 영역(회복 리듬 포함)이 같은 선택지를 쓰고,
+// 공통 3단계 척도(없었다/가끔/자주, 2026-11 4단계→3단계로 단순화). 모든 영역(회복 리듬 포함)이 같은 선택지를 쓰고,
 // 회복 리듬만 채점 시 방향을 반전한다(아래 calculate() 참고).
 // ============================================================
-var OPTS = ['전혀 없었다', '가끔 있었다', '자주 있었다', '거의 매일 있었다'];
-var MAX_SCORE = OPTS.length - 1; // 문항당 최고 점수 (3)
+var OPTS = ['없었다', '가끔', '자주'];
+var MAX_SCORE = OPTS.length - 1; // 문항당 최고 점수 (2)
 
 // 생리 전후 컨디션 변화(36~43) 전용 4단계 척도. 다른 영역과 같은
 // '빈도'가 아니라 '불편감·일상 영향 정도'를 묻는 별도 문구라 OPTS와
 // 분리했다. 점수 범위(0~3)는 동일해 채점 방식(합계·전체 제외)은
 // 그대로다 — scale:'cycle' 플래그가 붙은 영역에서만 이 척도를 쓴다.
-var CYCLE_OPTS = ['전혀 없었다', '있었지만 크게 불편하지 않았다', '신경 쓰일 정도였다', '일상에 영향을 줄 정도였다'];
-var CYCLE_MAX = CYCLE_OPTS.length - 1; // 문항당 최고 점수 (3, MAX_SCORE와 값은 같음)
+// 생리 전후도 3단계로 줄였다. result.html은 0~3 점수로 유형 문구를 고르므로
+// 선택지 위치(0,1,2)를 점수(0,2,3)로 바꿔 저장한다.
+var CYCLE_OPTS = ['없었다', '조금 불편했다', '일상에 영향을 줬다'];
+var CYCLE_SCORES = [0, 2, 3];
+var CYCLE_MAX = 3; // 문항당 최고 점수
 
-// 7개 핵심 영역(총 35문항, 전체 점수 0~105점에 포함) + 주기 전후 컨디션
+// 7개 핵심 영역(총 35문항, 전체 점수 0~70점에 포함) + 주기 전후 컨디션
 // 변화(8문항, conditional:true, 전체 점수와 영역 비교에서 제외).
 // reverse:true인 영역(회복 리듬)은 응답이 긍정적일수록(=거의 매일
 // 있었다) 채점 점수는 낮아지도록 calculate()에서 반전한다.
@@ -350,10 +353,10 @@ var EN = {
   cycleQuestionNote: "If it's been a while since your last period, or you'd rather not answer right now, feel free to choose \"No, skip this.\"",
   calcBtn: 'Check Results',
   footer: '730 Skin Ear Therapy',
-  opts: ['Not at all', 'Sometimes', 'Often', 'Almost every day'],
+  opts: ['No', 'Sometimes', 'Often'],
   // 생리 문항(36~43) 전용 척도 — '빈도'가 아니라 '불편감·일상 영향
   // 정도'를 자연스럽게 담은 문구로 직역하지 않았다.
-  cycleOpts: ['Not at all', 'Present, but not really bothersome', 'Noticeable enough to be on my mind', 'Enough to affect my daily life'],
+  cycleOpts: ['No', 'A little bothersome', 'Affected my daily life'],
   domainNotes: {
     cycle: "Please select the answer that best matches what you've noticed around your period"
   },
@@ -602,7 +605,7 @@ function buildForm() {
         btn.className = 'opt-btn';
         btn.textContent = optText;
         btn.addEventListener('click', function() {
-          answers[itemId] = idx;
+          answers[itemId] = d.scale === 'cycle' ? CYCLE_SCORES[idx] : idx;
           var siblings = btnGroup.querySelectorAll('.opt-btn');
           for (var i = 0; i < siblings.length; i++) siblings[i].classList.remove('active');
           btn.classList.add('active');
@@ -837,16 +840,16 @@ function onCalcClick() {
   calculate();
 }
 
-// 전체 점수(0~105점) 구간 — 의학적 진단 기준이 아니라 730스킨 상담을
+// 전체 점수(0~70점, 35문항×2) 구간 — 의학적 진단 기준이 아니라 730스킨 상담을
 // 위한 임시 운영 기준이다. 화면 안내에도 동일한 문구를 표시한다.
 function overallTier(total) {
-  if (total <= 26) return 0;
-  if (total <= 52) return 1;
-  if (total <= 78) return 2;
+  if (total <= 17) return 0;
+  if (total <= 35) return 1;
+  if (total <= 52) return 2;
   return 3;
 }
 
-// 채점 로직 — 7개 핵심 영역(0~105점)과 주기 전후 컨디션(0~24점, 전체
+// 채점 로직 — 7개 핵심 영역(0~70점)과 주기 전후 컨디션(0~24점, 전체
 // 점수 제외)을 완전히 분리해서 계산한다.
 function calculate() {
   var resultsData = [];
