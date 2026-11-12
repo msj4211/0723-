@@ -68,6 +68,7 @@ window.translations = {
 
     navEarCheck: '자가 컨디션 체크',
     navDiary: 'PMS 다이어리',
+    navTrouble: '트러블 다이어리',
     navEarPoints: '이어포인트',
     navEarReading: '이어 리딩 가이드 (전문가용)',
     navProducts: '상품',
@@ -380,6 +381,7 @@ window.translations = {
 
     navEarCheck: 'Self Condition Check',
     navDiary: 'PMS Diary',
+    navTrouble: 'Trouble Diary',
     navEarPoints: 'Ear Points',
     navEarReading: 'Ear Reading Guide (Pro)',
     navProducts: 'Products',

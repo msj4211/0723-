@@ -156,7 +156,7 @@ window.Pages = (function () {
   // iframe으로 띄우는 도구 페이지(자가 컨디션 체크·이어 리딩 가이드·PMS 다이어리)는
   // 브라우저가 옛 버전을 저장해 두고 계속 보여주는 경우가 있다. 도구 페이지를
   // 고칠 때마다 이 값을 바꾸면(예: 날짜) 모든 방문자가 새 버전을 바로 받는다.
-  var TOOL_PAGE_VERSION = '20261112a';
+  var TOOL_PAGE_VERSION = '20261112b';
 
   function renderEarCheckEmbed(container) {
     // 이어밸런스 체크(옛 별도 저장소 730skin-check)를 이 저장소의 /ear-check/
@@ -310,6 +310,20 @@ window.Pages = (function () {
           class="embed-frame diary-frame"
           src="/diary/?v=${TOOL_PAGE_VERSION}"
           title="730 PMS 다이어리"
+          loading="lazy"></iframe>
+      </div>
+    `;
+  }
+
+  // 트러블 다이어리: 남녀 모두 쓰는 일반 트러블 기록(생리 주기 없음).
+  // 기록은 고객 휴대폰에만 저장된다. /trouble/ 주소로 로그인 없이도 쓸 수 있다.
+  function renderTroubleEmbed(container) {
+    container.innerHTML = `
+      <div class="iframe-page is-fullheight">
+        <iframe
+          class="embed-frame diary-frame"
+          src="/trouble/?v=${TOOL_PAGE_VERSION}"
+          title="730 트러블 다이어리"
           loading="lazy"></iframe>
       </div>
     `;
@@ -2000,6 +2014,8 @@ window.Pages = (function () {
     earCheck: renderEarCheckEmbed,
 
     diary: renderDiaryEmbed,
+
+    trouble: renderTroubleEmbed,
 
     earReading: function (container) {
       window.AccessControl.checkEducationAccess(container, function (c) {
