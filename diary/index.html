@@ -448,7 +448,7 @@ function renderCal() {
       if (log.level >= 1) marks += `<span class="m" style="background:#C97B5A;opacity:${0.35 + log.level * 0.22}"></span>`;
       if ((log.foods && log.foods.length) || log.foodEtc) marks += `<span class="m" style="background:#7A5C3E"></span>`;
     }
-    html += `<button class="${cls}" style="${style}" onclick="calTap('${s}')">${d}${s === t && !hintSeen() ? '<span class="tap-hint"><span class="bubble">나를 눌러봐!</span><span class="finger">👇</span></span>' : ''}${starts.includes(s) ? '<span class="start">●</span>' : (ph && ph.ovDay ? '<span class="start" style="color:#7A5C3E">◆</span>' : "")}<span class="marks">${marks}</span></button>`;
+    html += `<button class="${cls}" style="${style}" onclick="calTap('${s}')">${d}${s === t && !hintSeen() ? '<span class="tap-hint"><span class="bubble">오늘 기록하기</span><span class="finger">👇</span></span>' : ''}${starts.includes(s) ? '<span class="start">●</span>' : (ph && ph.ovDay ? '<span class="start" style="color:#7A5C3E">◆</span>' : "")}<span class="marks">${marks}</span></button>`;
   }
   g.innerHTML = html;
 }

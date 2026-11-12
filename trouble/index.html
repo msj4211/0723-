@@ -314,7 +314,7 @@ function renderCal() {
     let marks = "";
     if (l && ((l.foods && l.foods.length) || l.foodEtc)) marks += `<span class="m" style="background:#7A5C3E"></span>`;
     if (l && l.life && l.life.length) marks += `<span class="m" style="background:#A89F92"></span>`;
-    html += `<button class="${cls}" onclick="calTap('${s}')">${d}${s === t && !hintSeen() ? '<span class="tap-hint"><span class="bubble">나를 눌러봐!</span><span class="finger">👇</span></span>' : ''}<span class="marks">${marks}</span></button>`;
+    html += `<button class="${cls}" onclick="calTap('${s}')">${d}${s === t && !hintSeen() ? '<span class="tap-hint"><span class="bubble">오늘 기록하기</span><span class="finger">👇</span></span>' : ''}<span class="marks">${marks}</span></button>`;
   }
   document.getElementById("grid").innerHTML = html;
 }
