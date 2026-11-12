@@ -314,6 +314,40 @@
     logoutBtn.hidden = !visible;
   }
 
+  // ===== 오른쪽 위 이름 표시 =====
+  var lastHeaderProfile = null;
+  function maskEmail(email) {
+    if (!email) return '';
+    var at = email.indexOf('@');
+    if (at <= 0) return '***';
+    var id = email.slice(0, at);
+    return id.slice(0, Math.min(2, id.length)) + '***' + email.slice(at);
+  }
+  function headerNameFrom(profile, user) {
+    var nick = profile && profile.nickname ? String(profile.nickname).trim() : '';
+    if (nick) return nick;
+    var name = profile && profile.name ? String(profile.name).trim() : '';
+    if (name) return name + (window.t ? window.t('headerNameSuffix') : '님');
+    return maskEmail(user && user.email);
+  }
+  function refreshHeaderName(user) {
+    client.from('profiles').select('*').eq('id', user.id).maybeSingle().then(function (res) {
+      lastHeaderProfile = res && res.data ? res.data : null;
+      client.auth.getSession().then(function (r) {
+        var cur = r.data.session && r.data.session.user;
+        if (cur && cur.id === user.id) userEmailEl.textContent = headerNameFrom(lastHeaderProfile, user);
+      });
+    });
+  }
+  if (window.i18nOnLanguageChange) {
+    window.i18nOnLanguageChange.push(function () {
+      client.auth.getSession().then(function (r) {
+        var cur = r.data.session && r.data.session.user;
+        if (cur && !userEmailEl.hidden) userEmailEl.textContent = headerNameFrom(lastHeaderProfile, cur);
+      });
+    });
+  }
+
   function renderAuthState(session) {
     var user = session ? session.user : null;
 
@@ -328,7 +362,10 @@
     if (user) {
       loginBtn.hidden = true;
       setLoggedInUiVisible(true);
-      userEmailEl.textContent = user.email;
+      // 이메일은 개인정보라 화면에 그대로 보여주지 않는다.
+      // 별명 → 이름+님 → 가린 이메일(ms***@gmail.com) 순서로 보여준다.
+      userEmailEl.textContent = maskEmail(user.email);
+      refreshHeaderName(user);
     } else {
       loginBtn.hidden = false;
       setLoggedInUiVisible(false);
@@ -528,6 +565,7 @@
   var profileModalClose = document.getElementById('profile-modal-close');
   var profileForm = document.getElementById('profile-form');
   var profileNameInput = document.getElementById('profile-name');
+  var profileNicknameInput = document.getElementById('profile-nickname');
   var profilePhoneInput = document.getElementById('profile-phone');
   var profileGenderInput = document.getElementById('profile-gender');
   var profileAgeInput = document.getElementById('profile-age');
@@ -551,6 +589,7 @@
     profileSubmitBtn.textContent = window.t('profileSave');
     if (profileRow) {
       profileNameInput.value = profileRow.name || '';
+      if (profileNicknameInput) profileNicknameInput.value = profileRow.nickname || '';
       profilePhoneInput.value = profileRow.phone || '';
       profileGenderInput.value = profileRow.gender || '';
       profileAgeInput.value = profileRow.age || '';
@@ -587,6 +626,7 @@
       if (!session) return;
 
       var name = profileNameInput.value.trim();
+      var nickname = profileNicknameInput ? profileNicknameInput.value.trim() : '';
       var phone = profilePhoneInput.value.trim();
       var gender = profileGenderInput.value;
       var ageValue = profileAgeInput.value;
@@ -596,14 +636,23 @@
       profileSubmitBtn.disabled = true;
       profileSubmitBtn.textContent = window.t('profileSaving');
 
-      client.from('profiles').upsert({
+      var row = {
         id: session.user.id,
         name: name || null,
+        nickname: nickname || null,
         phone: phone || null,
         gender: gender || null,
         age: age,
         marketing_agreed: marketingAgreed,
         updated_at: new Date().toISOString()
+      };
+      // DB에 별명 칸(nickname)을 아직 안 만들었으면 별명만 빼고 다시 저장한다.
+      client.from('profiles').upsert(row).then(function (r) {
+        if (r.error && /nickname/i.test(r.error.message || '')) {
+          delete row.nickname;
+          return client.from('profiles').upsert(row);
+        }
+        return r;
       }).then(function (res2) {
         profileSubmitBtn.disabled = false;
         profileSubmitBtn.textContent = window.t('profileSave');
@@ -613,6 +662,7 @@
           return;
         }
         closeProfileModal();
+        refreshHeaderName(session.user);
       });
     });
   });
