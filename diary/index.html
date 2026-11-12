@@ -61,6 +61,14 @@
   .day .marks { position: absolute; bottom: 4px; display: flex; gap: 2px; }
   .day .m { width: 5px; height: 5px; border-radius: 50%; }
   .day .start { position: absolute; top: 3px; right: 5px; font-size: 9px; color: #C97B5A; }
+
+  /* 처음 쓰는 사람용: 오늘 칸 위에 '눌러봐' 말풍선 + 손가락 */
+  .tap-hint { position: absolute; left: 50%; bottom: calc(100% + 4px); transform: translateX(-50%); z-index: 3; pointer-events: none; display: flex; flex-direction: column; align-items: center; animation: hintBob 1.1s ease-in-out infinite; }
+  .tap-hint .bubble { background: #fff; color: #A8693F; border: 1.5px solid #A8693F; font-size: 12px; font-weight: 700; white-space: nowrap; padding: 5px 10px; border-radius: 999px; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+  .tap-hint .finger { font-size: 18px; line-height: 1; margin-top: 1px; }
+  @keyframes hintBob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -6px); } }
+  .cal-tip { font-size: 12px; color: var(--sub); text-align: center; margin: 0 0 8px; }
+  @media (prefers-reduced-motion: reduce) { .tap-hint { animation: none; } }
   .legend { display: flex; flex-wrap: wrap; gap: 8px 12px; margin-top: 10px; font-size: 12px; color: var(--sub); }
   .legend span { display: inline-flex; align-items: center; gap: 4px; }
   .legend i { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
@@ -139,6 +147,7 @@
         <b id="month-label"></b>
         <button id="next" aria-label="다음 달">›</button>
       </div>
+      <p class="cal-tip">날짜를 누르면 그날 기록을 넣고 볼 수 있어요</p>
       <div class="grid" id="dows"></div>
       <div class="grid" id="grid"></div>
       <div class="legend">
@@ -408,6 +417,13 @@ function renderToday() {
 
 /* ===== calendar ===== */
 let view = new Date(); view.setDate(1);
+/* ===== 날짜 누르기 안내 (한 번 눌러보면 사라짐) ===== */
+const HINT_KEY = "730-cal-tap-hint-seen" + location.pathname;
+function hintSeen() { try { return localStorage.getItem(HINT_KEY) === "1"; } catch (e) { return true; } }
+function calTap(s) {
+  if (!hintSeen()) { try { localStorage.setItem(HINT_KEY, "1"); } catch (e) {} renderCal(); }
+  openSheet(s);
+}
 function renderCal() {
   document.getElementById("month-label").textContent = `${view.getFullYear()}년 ${view.getMonth() + 1}월`;
   document.getElementById("dows").innerHTML = DOW.map(d => `<div class="dow">${d}</div>`).join("");
@@ -424,13 +440,13 @@ function renderCal() {
     const log = load().logs[s];
     let style = "", cls = "day";
     if (ph) { style = `background:${PHASES[ph.key].bg};box-shadow:inset 0 -4px 0 ${PHASES[ph.key].color}`; if (ph.predicted || s > t) cls += " pred"; }
-    if (s === t) cls += " today";
+    if (s === t) cls += " today" + (hintSeen() ? "" : " hinting");
     let marks = "";
     if (log) {
       if (log.level >= 1) marks += `<span class="m" style="background:#C97B5A;opacity:${0.35 + log.level * 0.22}"></span>`;
       if ((log.foods && log.foods.length) || log.foodEtc) marks += `<span class="m" style="background:#7A5C3E"></span>`;
     }
-    html += `<button class="${cls}" style="${style}" onclick="openSheet('${s}')">${d}${starts.includes(s) ? '<span class="start">●</span>' : (ph && ph.ovDay ? '<span class="start" style="color:#7A5C3E">◆</span>' : "")}<span class="marks">${marks}</span></button>`;
+    html += `<button class="${cls}" style="${style}" onclick="calTap('${s}')">${d}${s === t && !hintSeen() ? '<span class="tap-hint"><span class="bubble">오늘 기록하기</span><span class="finger">👇</span></span>' : ''}${starts.includes(s) ? '<span class="start">●</span>' : (ph && ph.ovDay ? '<span class="start" style="color:#7A5C3E">◆</span>' : "")}<span class="marks">${marks}</span></button>`;
   }
   g.innerHTML = html;
 }
