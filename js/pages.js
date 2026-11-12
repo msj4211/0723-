@@ -153,10 +153,10 @@ window.Pages = (function () {
     `);
   }
 
-  // iframe으로 띄우는 도구 페이지(자가 컨디션 체크·이어 리딩 가이드·트러블 다이어리)는
+  // iframe으로 띄우는 도구 페이지(자가 컨디션 체크·이어 리딩 가이드·PMS 다이어리)는
   // 브라우저가 옛 버전을 저장해 두고 계속 보여주는 경우가 있다. 도구 페이지를
   // 고칠 때마다 이 값을 바꾸면(예: 날짜) 모든 방문자가 새 버전을 바로 받는다.
-  var TOOL_PAGE_VERSION = '20261111h';
+  var TOOL_PAGE_VERSION = '20261112a';
 
   function renderEarCheckEmbed(container) {
     // 이어밸런스 체크(옛 별도 저장소 730skin-check)를 이 저장소의 /ear-check/
@@ -300,7 +300,7 @@ window.Pages = (function () {
   // 띄우며, checkEducationAccess()로 감싸 승인된 교육생에게만 보인다.
   // 도구 안에서 결과 칸이 고정(sticky)되도록 iframe은 화면 높이만큼만 잡고
   // 안쪽에서 스크롤한다.
-  // 트러블 다이어리: 먹은 것·트러블·생리 주기를 같이 기록하는 고객용 도구.
+  // PMS 다이어리: 먹은 것·트러블·생리 주기를 같이 기록하는 고객용 도구.
   // 기록은 고객 휴대폰(브라우저)에만 저장되고 서버로 보내지 않는다.
   // /diary/ 주소로 직접 열어도(로그인 없이) 쓸 수 있다.
   function renderDiaryEmbed(container) {
@@ -309,7 +309,7 @@ window.Pages = (function () {
         <iframe
           class="embed-frame diary-frame"
           src="/diary/?v=${TOOL_PAGE_VERSION}"
-          title="730 트러블 다이어리"
+          title="730 PMS 다이어리"
           loading="lazy"></iframe>
       </div>
     `;

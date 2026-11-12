@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>트러블 다이어리 | 730스킨</title>
-<meta name="description" content="먹은 것, 트러블, 생리 주기를 같이 기록하는 730스킨 트러블 다이어리">
+<title>PMS 다이어리 | 730스킨</title>
+<meta name="description" content="생리 주기에 따라 달라지는 피부와 몸을 기록하는 730스킨 PMS 다이어리">
 <style>
   :root {
     --bg: #FFFFFF; --card: #FFFFFF; --ink: #2E2A26; --sub: #8A8378; --line: #DDD6C8;
@@ -110,14 +110,14 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>트러블 다이어리</h1>
+    <h1>PMS 다이어리</h1>
     <span class="brand">730 SKIN</span>
   </header>
 
   <!-- 처음 설정 -->
   <section id="setup" class="card" style="display:none">
     <h2>처음 한 번만 알려 주세요</h2>
-    <p class="muted" style="margin:0 0 6px">생리 주기를 알면 피부가 예민해지는 시기를 미리 알려 드려요. 생리를 하지 않거나 잘 모르면 건너뛰어도 기록은 할 수 있어요.</p>
+    <p class="muted" style="margin:0 0 6px">생리 주기에 맞춰 피부가 예민해지는 시기와 PMS 시기를 미리 알려 드려요. 날짜가 기억나지 않으면 건너뛰고 다음 생리 때 캘린더에서 체크해도 돼요.</p>
     <label class="f">가장 최근 생리 시작일</label>
     <input type="date" id="s-start">
     <div class="row">
@@ -608,7 +608,7 @@ function goHome(msg) {
 }
 document.getElementById("b-export").onclick = () => {
   const blob = new Blob([JSON.stringify(load(), null, 2)], { type: "application/json" });
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `730-트러블다이어리-${todayS()}.json`; a.click();
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `730-PMS다이어리-${todayS()}.json`; a.click();
 };
 document.getElementById("b-import").onchange = e => {
   const f = e.target.files[0]; if (!f) return;
