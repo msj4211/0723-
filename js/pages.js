@@ -23,6 +23,45 @@ window.Pages = (function () {
   // "java\tscript:"처럼 문자를 끼워 넣는 흔한 우회도 URL 파서 자체가
   // 공백류 문자를 제거하고 해석하므로 정규식 방식보다 안전하다. 유효하면
   // 원래 문자열(상대 경로 형태 그대로)을 돌려주고, 아니면 null을 돌려준다.
+  // ===== 이어포인트 그림: 영어 화면에서는 영어 라벨 그림을 보여준다 =====
+  // 규칙: 한국어 그림과 같은 폴더 안 en/ 폴더에 "같은 파일 이름"으로 영어 그림을 올리면 된다.
+  //   images/ear-points/acne.jpg  →  images/ear-points/en/acne.jpg
+  //   images/귀.png               →  images/en/귀.png
+  // 영어 그림이 아직 없으면 자동으로 한국어 그림을 보여준다. DB는 건드리지 않는다.
+  var earImgEnMissing = {};
+  function earImgEnPath(ko) {
+    var q = ko.indexOf('?');
+    var path = q === -1 ? ko : ko.slice(0, q);
+    var i = path.lastIndexOf('/');
+    return path.slice(0, i + 1) + 'en/' + path.slice(i + 1) + (q === -1 ? '' : ko.slice(q));
+  }
+  function applyEarImageLanguage(root) {
+    var scope = root && root.querySelectorAll ? root : document;
+    var imgs = scope.matches && scope.matches('img[data-ep-img]') ? [scope] : scope.querySelectorAll('img[data-ep-img]');
+    Array.prototype.forEach.call(imgs, function (img) {
+      var ko = img.getAttribute('data-ko-src');
+      if (!ko) { ko = img.getAttribute('src'); if (!ko) return; img.setAttribute('data-ko-src', ko); }
+      var want = (window.currentLanguage === 'en') ? earImgEnPath(ko) : ko;
+      if (want !== ko && earImgEnMissing[want]) want = ko;
+      if (img.getAttribute('src') === want) return;
+      img.onerror = want === ko ? null : function () {
+        earImgEnMissing[want] = true;
+        img.onerror = null;
+        img.setAttribute('src', ko);
+      };
+      img.setAttribute('src', want);
+    });
+  }
+  if (window.MutationObserver) {
+    new MutationObserver(function (records) {
+      records.forEach(function (r) {
+        Array.prototype.forEach.call(r.addedNodes, function (n) { if (n.nodeType === 1) applyEarImageLanguage(n); });
+      });
+    }).observe(document.documentElement, { childList: true, subtree: true });
+  }
+  if (window.i18nOnLanguageChange) window.i18nOnLanguageChange.push(function () { applyEarImageLanguage(document); });
+  window.applyEarImageLanguage = applyEarImageLanguage;
+
   function safeUrl(value) {
     if (!value) return null;
     var trimmed = String(value).trim();
@@ -156,7 +195,7 @@ window.Pages = (function () {
   // iframe으로 띄우는 도구 페이지(자가 컨디션 체크·이어 리딩 가이드·PMS 다이어리)는
   // 브라우저가 옛 버전을 저장해 두고 계속 보여주는 경우가 있다. 도구 페이지를
   // 고칠 때마다 이 값을 바꾸면(예: 날짜) 모든 방문자가 새 버전을 바로 받는다.
-  var TOOL_PAGE_VERSION = '20261112h';
+  var TOOL_PAGE_VERSION = '20261112i';
 
   function renderEarCheckEmbed(container) {
     // 이어밸런스 체크(옛 별도 저장소 730skin-check)를 이 저장소의 /ear-check/
@@ -413,7 +452,7 @@ window.Pages = (function () {
         var safeDesc = escapeHtml(p.desc);
         var safeId = escapeHtml(p.id);
         var media = safeImg
-          ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '">'
+          ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '" data-ep-img>'
           : '<div class="point-media-placeholder" aria-hidden="true"></div>';
         var detailHref = '#/ear-point/' + encodeURIComponent(p.id);
         // 하트 버튼은 카드 클릭(상세페이지 이동)과 별개로 동작해야 해서,
@@ -539,7 +578,7 @@ window.Pages = (function () {
       var safeImg = safeUrl(point.imageUrl);
       var safeName = escapeHtml(point.name);
       var media = safeImg
-        ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '" class="epd-hero-img">'
+        ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '" class="epd-hero-img" data-ep-img>'
         : '<div class="point-media-placeholder" aria-hidden="true"></div>';
       return (
         '<section class="epd-hero point-card" data-point-id="' + escapeHtml(point.id) + '" data-point-name="' + safeName + '">' +
@@ -560,7 +599,7 @@ window.Pages = (function () {
       var safeImg = safeUrl(point.imageUrl);
       var safeName = escapeHtml(point.name);
       var img = safeImg
-        ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '" class="epd-location-image">'
+        ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '" class="epd-location-image" data-ep-img>'
         : '<div class="point-media-placeholder" aria-hidden="true"></div>';
       var zoomBtn = safeImg
         ? '<button type="button" class="epd-zoom-btn" data-i18n-aria-label="epdImageZoomBtn" aria-label="' + window.t('epdImageZoomBtn') + '"><span aria-hidden="true">⤢</span></button>'
@@ -708,7 +747,7 @@ window.Pages = (function () {
         var safeImg = safeUrl(basePoint.imageUrl);
         var safeName = escapeHtml(basePoint.name);
         var media = safeImg
-          ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '">'
+          ? '<img src="' + escapeHtml(safeImg) + '" alt="' + safeName + '" data-ep-img>'
           : '<div class="point-media-placeholder" aria-hidden="true"></div>';
         return (
           '<a class="epd-related-card" href="#/ear-point/' + encodeURIComponent(basePoint.id) + '">' +
@@ -1870,6 +1909,7 @@ window.Pages = (function () {
           var img = document.createElement('img');
           img.src = p.imageUrl;
           img.alt = name;
+          img.setAttribute('data-ep-img', '');
           media.appendChild(img);
         } else {
           var placeholder = document.createElement('div');
