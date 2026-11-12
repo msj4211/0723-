@@ -156,7 +156,7 @@ window.Pages = (function () {
   // iframe으로 띄우는 도구 페이지(자가 컨디션 체크·이어 리딩 가이드·PMS 다이어리)는
   // 브라우저가 옛 버전을 저장해 두고 계속 보여주는 경우가 있다. 도구 페이지를
   // 고칠 때마다 이 값을 바꾸면(예: 날짜) 모든 방문자가 새 버전을 바로 받는다.
-  var TOOL_PAGE_VERSION = '20261112g';
+  var TOOL_PAGE_VERSION = '20261112h';
 
   function renderEarCheckEmbed(container) {
     // 이어밸런스 체크(옛 별도 저장소 730skin-check)를 이 저장소의 /ear-check/
