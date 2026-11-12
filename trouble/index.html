@@ -237,6 +237,144 @@ const FOODS = ["단 음식", "유제품·우유", "밀가루", "기름진 음식
 const AREAS = ["이마", "볼", "코", "입가", "턱", "목·턱선", "등·가슴"];
 const LEVELS = ["없음", "조금", "보통", "많이"];
 
+/* ===== 언어: 메인 사이트 오른쪽 위 한국어/EN 버튼을 따라간다 =====
+   기록은 늘 한국어 값으로 저장하고(예: "단 음식"), 화면에 보일 때만 영어로 바꾼다.
+   그래서 언어를 바꿔도 지난 기록이 그대로 이어진다. */
+let LANG = "ko";
+const EN = {
+"이전 달": "Previous month",
+"다음 달": "Next month",
+"날짜를 누르면 그날 기록을 넣고 볼 수 있어요": "Tap a date to add or view that day's log",
+"최근 4주 돌아보기": "Last 4 weeks",
+"트러블 전날·당일에 먹은 것": "What you ate on and before breakout days",
+"자주 올라오는 자리": "Where breakouts appear most",
+"기록 목록": "All entries",
+"내 기록 보관": "Back up my records",
+"기록은 이 휴대폰에만 저장돼요. 관리실로 자동 전송되지 않아요. 휴대폰을 바꾸거나 브라우저 기록을 지우기 전에 파일로 백업해 두세요.": "Your records are saved only on this phone and are never sent to the clinic automatically. Back them up to a file before you change phones or clear your browser data.",
+"백업 파일 받기": "Download backup",
+"불러오기": "Restore",
+"모든 기록 지우기": "Delete all records",
+"캘린더": "Calendar",
+"돌아보기": "Review",
+"설정": "Settings",
+"오늘 트러블": "Breakouts today",
+"올라온 자리": "Where",
+"먹은 것": "What I ate",
+"메모": "Notes",
+"그 밖에 먹은 것 (예: 떡볶이, 라떼)": "Anything else you ate (e.g. tteokbokki, latte)",
+"기록 지우기": "Delete entry",
+"저장": "Save",
+"단 음식": "Sweets",
+"유제품·우유": "Dairy·milk",
+"밀가루": "Wheat flour",
+"기름진 음식": "Greasy food",
+"매운 음식": "Spicy food",
+"술": "Alcohol",
+"커피": "Coffee",
+"야식": "Late-night snack",
+"이마": "Forehead",
+"볼": "Cheeks",
+"코": "Nose",
+"입가": "Around mouth",
+"턱": "Chin",
+"목·턱선": "Neck·jawline",
+"등·가슴": "Back·chest",
+"없음": "None",
+"조금": "A little",
+"보통": "Moderate",
+"많이": "A lot",
+"잠 충분": "Slept well",
+"잠 부족": "Not enough sleep",
+"스트레스 적음": "Low stress",
+"스트레스 많음": "High stress",
+"마스크 오래": "Long mask wear",
+"운동·땀": "Exercise·sweat",
+"면도": "Shaving",
+"메이크업 오래": "Long makeup wear",
+"새 제품 사용": "Used a new product",
+"손으로 만짐": "Touched my face",
+"오늘 기록하기": "Log today",
+"오늘 기록 고치기": "Edit today's log",
+"기록했어요": "Saved",
+"이날 기록을 지울까요?": "Delete this day's entry?",
+"기록을 지웠어요": "Entry deleted",
+"기록을 불러왔어요": "Records restored",
+"백업 파일이 아니에요": "This isn't a backup file",
+"모든 기록을 지울까요? 되돌릴 수 없어요.": "Delete all records? This can't be undone.",
+"모든 기록을 지웠어요": "All records deleted",
+"아직 기록이 없어요": "No entries yet",
+"트러블이 '보통' 이상인 날이 쌓이면 보여요": "Shows up once you have days with 'Moderate' or worse breakouts",
+"기록한 날": "Days logged",
+"트러블 보통 이상": "Moderate+ days",
+"오늘 피부는 어땠나요?": "How was your skin today?",
+"트러블": "Breakouts",
+"트러블 다이어리": "Trouble Diary",
+"트러블 다이어리 | 730스킨": "Trouble Diary | 730 Skin",
+"없음·기록 없음": "None·not logged",
+"먹은 것 기록": "Food logged",
+"생활 기록": "Lifestyle logged",
+"칸 색은 그날 트러블 정도예요. 날짜를 누르면 그날을 기록할 수 있어요.": "Box color shows how bad breakouts were that day. Tap a date to log it.",
+"트러블 전날·당일에 있었던 일": "What happened on and before breakout days",
+"트러블이 '보통' 이상인 날과 그 전날의 생활을 세었어요.": "Counts your lifestyle on days with 'Moderate' or worse breakouts and the day before.",
+"많이 나온다고 꼭 원인은 아니에요. 관리실에서 같이 봐요.": "Showing up often doesn't mean it's the cause. Let's look at it together at the clinic.",
+"오늘 있었던 일": "What happened today",
+"새로 쓴 제품, 손으로 만짐, 컨디션 등": "New products, touching your face, how you felt, etc.",
+"최근 7일": "Last 7 days",
+"평균 점수 (0~3)": "Avg. score (0–3)",
+"하루 1분이면 충분해요. 2~4주 쌓이면 나만의 패턴이 보여요.": "One minute a day is enough. After 2–4 weeks, your own pattern starts to show."
+};
+function detectLang() {
+  try { const q = new URLSearchParams(location.search).get("lang"); if (q === "en" || q === "ko") return q; } catch (e) {}
+  try { if (window.parent !== window && window.parent.currentLanguage) return window.parent.currentLanguage === "en" ? "en" : "ko"; } catch (e) {}
+  return "ko";
+}
+const T = s => (LANG === "en" && Object.prototype.hasOwnProperty.call(EN, s)) ? EN[s] : s;
+const isEn = () => LANG === "en";
+const ORIG_TEXT = new WeakMap();
+let ORIG_TITLE = null;
+function applyStatic() {
+  document.documentElement.lang = LANG;
+  if (ORIG_TITLE === null) ORIG_TITLE = document.title;
+  document.title = T(ORIG_TITLE);
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let n;
+  while ((n = w.nextNode())) {
+    if (n.parentElement && n.parentElement.closest("script,style")) continue;
+    if (!ORIG_TEXT.has(n)) ORIG_TEXT.set(n, n.nodeValue);
+    const o = ORIG_TEXT.get(n), k = o.trim();
+    if (!k) continue;
+    n.nodeValue = (isEn() && EN[k] !== undefined) ? o.replace(k, EN[k]) : o;
+  }
+  document.querySelectorAll("[placeholder],[aria-label]").forEach(el => {
+    [["placeholder", "koPh"], ["aria-label", "koAria"]].forEach(([a, key]) => {
+      if (!el.hasAttribute(a)) return;
+      if (el.dataset[key] === undefined) el.dataset[key] = el.getAttribute(a);
+      el.setAttribute(a, T(el.dataset[key]));
+    });
+  });
+}
+const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const DOW_EN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const dowName = i => isEn() ? DOW_EN[i] : DOW[i];
+const monthLabel = d => isEn() ? `${MONTHS_EN[d.getMonth()]} ${d.getFullYear()}` : `${d.getFullYear()}년 ${d.getMonth() + 1}월`;
+const unit = (c, ko) => isEn() ? (ko === "번" ? `${c}×` : `${c} ${c === 1 ? "day" : "days"}`) : `${c}${ko}`;
+function setLang(l) {
+  l = l === "en" ? "en" : "ko";
+  if (l === LANG) return;
+  LANG = l; applyStatic(); renderAll();
+}
+(function hookParentLanguage() {
+  try {
+    const P = window.parent;
+    if (P === window || !P.i18nOnLanguageChange) return;
+    const hook = l => setLang(l);
+    P.i18nOnLanguageChange.push(hook);
+    window.addEventListener("pagehide", () => {
+      try { const i = P.i18nOnLanguageChange.indexOf(hook); if (i !== -1) P.i18nOnLanguageChange.splice(i, 1); } catch (e) {}
+    });
+  } catch (e) {}
+})();
+
 /* ===== storage ===== */
 const KEY = "730-trouble-only-diary-v1";
 let mem = null;
@@ -255,7 +393,7 @@ const parse = s => { const [y, m, d] = s.split("-").map(Number); return new Date
 const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); };
 const todayS = () => ymd(new Date());
 const DOW = ["일", "월", "화", "수", "목", "금", "토"];
-const fmt = s => { const d = parse(s); return `${d.getMonth() + 1}월 ${d.getDate()}일 (${DOW[d.getDay()]})`; };
+const fmt = s => { const d = parse(s); return isEn() ? `${MONTHS_EN[d.getMonth()].slice(0, 3)} ${d.getDate()} (${DOW_EN[d.getDay()]})` : `${d.getMonth() + 1}월 ${d.getDate()}일 (${DOW[d.getDay()]})`; };
 
 /* ===== toast ===== */
 function toast(msg) {
@@ -273,18 +411,18 @@ function renderToday() {
   let week = "";
   for (let k = 6; k >= 0; k--) {
     const s = addDays(t, -k), l = m.logs[s];
-    week += `<div><b class="lv${l ? l.level || 0 : 0}"></b>${DOW[parse(s).getDay()]}</div>`;
+    week += `<div><b class="lv${l ? l.level || 0 : 0}"></b>${dowName(parse(s).getDay())}</div>`;
   }
   let summary;
   if (L) {
-    const extra = [...(L.areas || [])].join(", ");
-    summary = `<div class="phase-name" style="margin:4px 0 2px">오늘 트러블 ${LEVELS[L.level || 0]}</div>${extra ? `<div class="phase-day">${extra}</div>` : ""}`;
+    const extra = [...(L.areas || [])].map(T).join(", ");
+    summary = `<div class="phase-name" style="margin:4px 0 2px">${T("오늘 트러블")} ${isEn() ? "· " : ""}${T(LEVELS[L.level || 0])}</div>${extra ? `<div class="phase-day">${extra}</div>` : ""}`;
   } else {
-    summary = `<div class="phase-name" style="margin:4px 0 2px">오늘 피부는 어땠나요?</div><div class="phase-day">하루 1분이면 충분해요. 2~4주 쌓이면 나만의 패턴이 보여요.</div>`;
+    summary = `<div class="phase-name" style="margin:4px 0 2px">${T("오늘 피부는 어땠나요?")}</div><div class="phase-day">${T("하루 1분이면 충분해요. 2~4주 쌓이면 나만의 패턴이 보여요.")}</div>`;
   }
   document.getElementById("today-card").innerHTML = `<div class="muted">${fmt(t)}</div>${summary}
-    <div class="sec-t" style="margin-top:14px">최근 7일</div><div class="week">${week}</div>
-    <button class="btn btn-main" style="margin-top:12px" onclick="openSheet('${t}')">${L ? "오늘 기록 고치기" : "오늘 기록하기"}</button>`;
+    <div class="sec-t" style="margin-top:14px">${T("최근 7일")}</div><div class="week">${week}</div>
+    <button class="btn btn-main" style="margin-top:12px" onclick="openSheet('${t}')">${T(L ? "오늘 기록 고치기" : "오늘 기록하기")}</button>`;
 }
 
 /* ===== calendar ===== */
@@ -297,8 +435,8 @@ function calTap(s) {
   openSheet(s);
 }
 function renderCal() {
-  document.getElementById("month-label").textContent = `${view.getFullYear()}년 ${view.getMonth() + 1}월`;
-  document.getElementById("dows").innerHTML = DOW.map(d => `<div class="dow">${d}</div>`).join("");
+  document.getElementById("month-label").textContent = monthLabel(view);
+  document.getElementById("dows").innerHTML = DOW.map((d, i) => `<div class="dow">${dowName(i)}</div>`).join("");
   const first = new Date(view.getFullYear(), view.getMonth(), 1);
   const days = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
   const t = todayS(), m = load();
@@ -312,7 +450,7 @@ function renderCal() {
     let marks = "";
     if (l && ((l.foods && l.foods.length) || l.foodEtc)) marks += `<span class="m" style="background:#7A5C3E"></span>`;
     if (l && l.life && l.life.length) marks += `<span class="m" style="background:#A89F92"></span>`;
-    html += `<button class="${cls}" onclick="calTap('${s}')">${d}${s === t && !hintSeen() ? '<span class="tap-hint"><span class="bubble">오늘 기록하기</span><span class="finger">👇</span></span>' : ''}<span class="marks">${marks}</span></button>`;
+    html += `<button class="${cls}" onclick="calTap('${s}')">${d}${s === t && !hintSeen() ? '<span class="tap-hint"><span class="bubble">' + T("오늘 기록하기") + '</span><span class="finger">👇</span></span>' : ''}<span class="marks">${marks}</span></button>`;
   }
   document.getElementById("grid").innerHTML = html;
 }
@@ -323,7 +461,7 @@ document.getElementById("next").onclick = () => { view.setMonth(view.getMonth() 
 let cur = null, draft = null;
 function chipRow(id, items, field) {
   const el = document.getElementById(id);
-  el.innerHTML = items.map(x => `<button class="chip" data-v="${x}">${x}</button>`).join("");
+  el.innerHTML = items.map(x => `<button class="chip" data-v="${x}">${T(x)}</button>`).join("");
   el.querySelectorAll(".chip").forEach(b => {
     const v = b.dataset.v;
     b.classList.toggle("on", (draft[field] || []).includes(v));
@@ -332,7 +470,7 @@ function chipRow(id, items, field) {
 }
 function renderLvl() {
   const el = document.getElementById("sh-lvl");
-  el.innerHTML = LEVELS.map((x, i) => `<button class="chip${draft.level === i ? " on" : ""}" data-i="${i}">${x}</button>`).join("");
+  el.innerHTML = LEVELS.map((x, i) => `<button class="chip${draft.level === i ? " on" : ""}" data-i="${i}">${T(x)}</button>`).join("");
   el.querySelectorAll(".chip").forEach(b => b.onclick = () => { draft.level = Number(b.dataset.i); renderLvl(); });
 }
 function openSheet(s) {
@@ -356,18 +494,18 @@ document.getElementById("sh-save").onclick = () => {
   const rec = { level: draft.level, areas: draft.areas, life: draft.life, foods: draft.foods, foodEtc: document.getElementById("sh-food-etc").value.trim(), memo: document.getElementById("sh-memo").value.trim() };
   const empty = !rec.level && !rec.areas.length && !rec.life.length && !rec.foods.length && !rec.foodEtc && !rec.memo;
   if (empty) delete m.logs[cur]; else m.logs[cur] = rec;
-  save(); closeSheet(); renderAll(); toast("기록했어요");
+  save(); closeSheet(); renderAll(); toast(T("기록했어요"));
 };
 document.getElementById("sh-del").onclick = () => {
-  if (!confirmSafe("이날 기록을 지울까요?")) return;
-  delete load().logs[cur]; save(); closeSheet(); renderAll(); toast("기록을 지웠어요");
+  if (!confirmSafe(T("이날 기록을 지울까요?"))) return;
+  delete load().logs[cur]; save(); closeSheet(); renderAll(); toast(T("기록을 지웠어요"));
 };
 
 /* ===== report ===== */
-function bars(entries, color, unit) {
+function bars(entries, color, u) {
   if (!entries.length) return "";
   const max = entries[0][1];
-  return entries.map(([k, c]) => `<div class="rep-row"><span>${k}</span><div class="bar"><div style="width:${(c / max) * 100}%;background:${color}"></div></div><span class="v">${c}${unit}</span></div>`).join("");
+  return entries.map(([k, c]) => `<div class="rep-row"><span>${T(k)}</span><div class="bar"><div style="width:${(c / max) * 100}%;background:${color}"></div></div><span class="v">${unit(c, u)}</span></div>`).join("");
 }
 function countBefore(days, field) {
   const m = load(), cnt = {};
@@ -379,17 +517,17 @@ function renderReport() {
   const days = Object.keys(m.logs).filter(s => s >= from && s <= t).sort();
   const tr = days.filter(s => m.logs[s].level >= 2);
   const avg = days.length ? (days.reduce((a, s) => a + (m.logs[s].level || 0), 0) / days.length).toFixed(1) : "-";
-  document.getElementById("r-stat").innerHTML = `<div><b>${days.length}</b><span>기록한 날</span></div><div><b>${tr.length}</b><span>트러블 보통 이상</span></div><div><b>${avg}</b><span>평균 점수 (0~3)</span></div>`;
-  const empty = `<div class="empty">트러블이 '보통' 이상인 날이 쌓이면 보여요</div>`;
+  document.getElementById("r-stat").innerHTML = `<div><b>${days.length}</b><span>${T("기록한 날")}</span></div><div><b>${tr.length}</b><span>${T("트러블 보통 이상")}</span></div><div><b>${avg}</b><span>${T("평균 점수 (0~3)")}</span></div>`;
+  const empty = `<div class="empty">${T("트러블이 '보통' 이상인 날이 쌓이면 보여요")}</div>`;
   document.getElementById("r-life").innerHTML = bars(countBefore(tr, "life"), "#A89F92", "번") || empty;
   document.getElementById("r-food").innerHTML = bars(countBefore(tr, "foods"), "#7A5C3E", "번") || empty;
   const ac = {}; days.forEach(s => (m.logs[s].areas || []).forEach(a => ac[a] = (ac[a] || 0) + 1));
-  document.getElementById("r-area").innerHTML = bars(Object.entries(ac).sort((a, b) => b[1] - a[1]), "#C97B5A", "일") || `<div class="empty">아직 기록이 없어요</div>`;
+  document.getElementById("r-area").innerHTML = bars(Object.entries(ac).sort((a, b) => b[1] - a[1]), "#C97B5A", "일") || `<div class="empty">${T("아직 기록이 없어요")}</div>`;
   const all = Object.keys(m.logs).sort().reverse().slice(0, 30);
   document.getElementById("r-list").innerHTML = all.length ? all.map(s => {
-    const L = m.logs[s]; const food = [...(L.foods || []), L.foodEtc].filter(Boolean).join(", ");
-    return `<div class="list-item"><b>${fmt(s)}</b> · 트러블 ${LEVELS[L.level || 0]}${(L.areas || []).length ? " · " + L.areas.join(", ") : ""}${(L.life || []).length ? `<br><span class="muted">생활: ${L.life.join(", ")}</span>` : ""}${food ? `<br><span class="muted">먹은 것: ${food}</span>` : ""}${L.memo ? `<br><span class="muted">${L.memo}</span>` : ""}</div>`;
-  }).join("") : `<div class="empty">아직 기록이 없어요</div>`;
+    const L = m.logs[s]; const food = [...(L.foods || []).map(T), L.foodEtc].filter(Boolean).join(", ");
+    return `<div class="list-item"><b>${fmt(s)}</b> · ${T("트러블")}${isEn() ? ":" : ""} ${T(LEVELS[L.level || 0])}${(L.areas || []).length ? " · " + L.areas.map(T).join(", ") : ""}${(L.life || []).length ? `<br><span class="muted">${isEn() ? "Lifestyle" : "생활"}: ${L.life.map(T).join(", ")}</span>` : ""}${food ? `<br><span class="muted">${T("먹은 것")}: ${food}</span>` : ""}${L.memo ? `<br><span class="muted">${L.memo}</span>` : ""}</div>`;
+  }).join("") : `<div class="empty">${T("아직 기록이 없어요")}</div>`;
 }
 
 /* ===== settings ===== */
@@ -399,9 +537,9 @@ document.getElementById("b-export").onclick = () => {
 };
 document.getElementById("b-import").onchange = e => {
   const f = e.target.files[0]; if (!f) return;
-  f.text().then(txt => { try { const d = JSON.parse(txt); if (d && d.logs) { mem = { logs: d.logs }; save(); renderAll(); goHome("기록을 불러왔어요"); } else toast("백업 파일이 아니에요"); } catch (err) { toast("백업 파일이 아니에요"); } });
+  f.text().then(txt => { try { const d = JSON.parse(txt); if (d && d.logs) { mem = { logs: d.logs }; save(); renderAll(); goHome(T("기록을 불러왔어요")); } else toast(T("백업 파일이 아니에요")); } catch (err) { toast(T("백업 파일이 아니에요")); } });
 };
-document.getElementById("b-reset").onclick = () => { if (!confirmSafe("모든 기록을 지울까요? 되돌릴 수 없어요.")) return; mem = { logs: {} }; save(); renderAll(); goHome("모든 기록을 지웠어요"); };
+document.getElementById("b-reset").onclick = () => { if (!confirmSafe(T("모든 기록을 지울까요? 되돌릴 수 없어요."))) return; mem = { logs: {} }; save(); renderAll(); goHome(T("모든 기록을 지웠어요")); };
 
 document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => {
   document.querySelectorAll("nav.tabs button").forEach(x => x.classList.toggle("on", x === b));
@@ -411,6 +549,8 @@ document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => {
 });
 
 function renderAll() { renderToday(); renderCal(); renderReport(); }
+LANG = detectLang();
+applyStatic();
 renderAll();
 </script>
 </body>
