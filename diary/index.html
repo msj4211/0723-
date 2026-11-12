@@ -311,6 +311,196 @@ const LEVELS = ["없음", "조금", "보통", "많이"];
 const SLEEPS = ["잠 충분", "잠 부족"];
 const STRESS = ["스트레스 적음", "스트레스 많음"];
 
+/* 영어 화면용 시기 설명 (위 한국어 내용을 고치면 여기도 같이 고쳐 주세요) */
+const PHASES_EN = {
+  mens: { name: "On your period", sci: "Menstrual phase",
+    skin: ["Skin may feel sensitive and dull", "Small bumps or inflamed breakouts may appear", "Your face may look puffy and lackluster"],
+    care: ["<b>Less irritation</b> Pause exfoliation and new products", "<b>Calm & hydrate</b> Focus on gentle cleansing and moisturizing", "<b>Hands off</b> Don't squeeze breakouts"] },
+  fol: { name: "7 days after your period", sci: "Follicular phase",
+    skin: ["As estrogen rises, your skin settles down", "Oil production balances out and skin feels firmer"],
+    care: ["<b>Great time for care</b> Start exfoliating and intensive treatments", "<b>Fade marks</b> Work on marks left by your last breakouts"] },
+  ovu: { name: "Ovulation", sci: "Estrogen peak",
+    skin: ["Your skin is at its most stable", "Oil and moisture are balanced, so makeup sits well"],
+    care: ["<b>Intensive care</b> A good time for firming and tone treatments", "<b>Build the base</b> Keep up moisturizing and barrier care"] },
+  lut: { name: "Early luteal phase", sci: "Progesterone rising",
+    skin: ["As progesterone rises, oil starts to increase", "Pores may feel clogged and skin may look shinier"],
+    care: ["<b>Light cleanup</b> Gentle exfoliation keeps pores from clogging", "<b>Plan ahead</b> Sensitive days are coming, so it's a good time to book a treatment"] },
+  late: { name: "Period is late", sci: "Log your start date",
+    skin: ["Cycles can shift by a few days from person to person and month to month", "Your skin may be sensitive, like right before a period"],
+    care: ["<b>Mark the start</b> If your period has started, tap that day on the calendar and check 'Period started this day'", "<b>Keep it gentle</b> Focus on moisture and soothing, and pause new products for now"] },
+  pms: { name: "7 days before your period", sci: "Late luteal phase",
+    skin: ["Skin becomes sensitive and dull", "It gets dry and flaky more easily", "Tone may look dull, with small bumps or inflamed breakouts", "Your face may look puffy and lackluster"],
+    care: ["<b>Boost moisture</b> Moisturize more before dryness and flaking start", "<b>No new products</b> Don't switch products during this time", "<b>Sleep & stress</b> Sleeping early and cutting back on salty food and alcohol helps with puffiness"],
+    book: "This is a great time for <b>730 PMS Care</b>. Ask the clinic for details." }
+};
+const PH = k => isEn() ? Object.assign({}, PHASES[k], PHASES_EN[k]) : PHASES[k];
+/* ===== 언어: 메인 사이트 오른쪽 위 한국어/EN 버튼을 따라간다 =====
+   기록은 늘 한국어 값으로 저장하고(예: "단 음식"), 화면에 보일 때만 영어로 바꾼다.
+   그래서 언어를 바꿔도 지난 기록이 그대로 이어진다. */
+let LANG = "ko";
+const EN = {
+"이전 달": "Previous month",
+"다음 달": "Next month",
+"날짜를 누르면 그날 기록을 넣고 볼 수 있어요": "Tap a date to add or view that day's log",
+"최근 4주 돌아보기": "Last 4 weeks",
+"트러블 전날·당일에 먹은 것": "What you ate on and before breakout days",
+"자주 올라오는 자리": "Where breakouts appear most",
+"기록 목록": "All entries",
+"내 기록 보관": "Back up my records",
+"기록은 이 휴대폰에만 저장돼요. 관리실로 자동 전송되지 않아요. 휴대폰을 바꾸거나 브라우저 기록을 지우기 전에 파일로 백업해 두세요.": "Your records are saved only on this phone and are never sent to the clinic automatically. Back them up to a file before you change phones or clear your browser data.",
+"백업 파일 받기": "Download backup",
+"불러오기": "Restore",
+"모든 기록 지우기": "Delete all records",
+"캘린더": "Calendar",
+"돌아보기": "Review",
+"설정": "Settings",
+"오늘 트러블": "Breakouts today",
+"올라온 자리": "Where",
+"먹은 것": "What I ate",
+"메모": "Notes",
+"그 밖에 먹은 것 (예: 떡볶이, 라떼)": "Anything else you ate (e.g. tteokbokki, latte)",
+"기록 지우기": "Delete entry",
+"저장": "Save",
+"단 음식": "Sweets",
+"유제품·우유": "Dairy·milk",
+"밀가루": "Wheat flour",
+"기름진 음식": "Greasy food",
+"매운 음식": "Spicy food",
+"술": "Alcohol",
+"커피": "Coffee",
+"야식": "Late-night snack",
+"이마": "Forehead",
+"볼": "Cheeks",
+"코": "Nose",
+"입가": "Around mouth",
+"턱": "Chin",
+"목·턱선": "Neck·jawline",
+"등·가슴": "Back·chest",
+"없음": "None",
+"조금": "A little",
+"보통": "Moderate",
+"많이": "A lot",
+"잠 충분": "Slept well",
+"잠 부족": "Not enough sleep",
+"스트레스 적음": "Low stress",
+"스트레스 많음": "High stress",
+"마스크 오래": "Long mask wear",
+"운동·땀": "Exercise·sweat",
+"면도": "Shaving",
+"메이크업 오래": "Long makeup wear",
+"새 제품 사용": "Used a new product",
+"손으로 만짐": "Touched my face",
+"오늘 기록하기": "Log today",
+"오늘 기록 고치기": "Edit today's log",
+"기록했어요": "Saved",
+"이날 기록을 지울까요?": "Delete this day's entry?",
+"기록을 지웠어요": "Entry deleted",
+"기록을 불러왔어요": "Records restored",
+"백업 파일이 아니에요": "This isn't a backup file",
+"모든 기록을 지울까요? 되돌릴 수 없어요.": "Delete all records? This can't be undone.",
+"모든 기록을 지웠어요": "All records deleted",
+"아직 기록이 없어요": "No entries yet",
+"트러블이 '보통' 이상인 날이 쌓이면 보여요": "Shows up once you have days with 'Moderate' or worse breakouts",
+"기록한 날": "Days logged",
+"트러블 보통 이상": "Moderate+ days",
+"오늘 피부는 어땠나요?": "How was your skin today?",
+"트러블": "Breakouts",
+"PMS 다이어리": "PMS Diary",
+"PMS 다이어리 | 730스킨": "PMS Diary | 730 Skin",
+"처음 한 번만 알려 주세요": "Tell us once to get started",
+"생리 주기에 맞춰 피부가 예민해지는 시기와 PMS 시기를 미리 알려 드려요. 날짜가 기억나지 않으면 건너뛰고 다음 생리 때 캘린더에서 체크해도 돼요.": "Based on your cycle, we'll let you know ahead of time when your skin tends to get sensitive and when PMS days are coming. If you don't remember the date, skip this and mark it on the calendar when your next period starts.",
+"가장 최근 생리 시작일": "Start date of your last period",
+"평균 주기 (일)": "Average cycle (days)",
+"생리 기간 (일)": "Period length (days)",
+"건너뛰기": "Skip",
+"시작하기": "Start",
+"월경기": "Menstrual phase",
+"난포기": "Follicular phase",
+"배란기": "Ovulation",
+"황체기 초반": "Early luteal phase",
+"황체기 후반 (PMS)": "Late luteal phase (PMS)",
+"황체기 후반": "Late luteal phase",
+"음식 기록": "Food logged",
+"생리 시작": "Period started",
+"배란 예상": "Expected ovulation",
+"점선 칸 = 예상일": "Dashed box = predicted",
+"날짜를 누르면 그날을 기록할 수 있어요. 예상 날짜와 배란일은 평균 주기로 계산한 참고용이에요.": "Tap a date to log that day. Predicted dates and ovulation are estimates based on your average cycle.",
+"시기별 트러블": "Breakouts by phase",
+"시기마다 트러블 점수 평균이에요. 어느 시기에 올라오는지 보여요.": "Average breakout score for each phase, so you can see when breakouts tend to appear.",
+"트러블이 '보통' 이상인 날과 그 전날에 먹은 것을 세었어요. 많이 나온다고 꼭 원인은 아니니, 관리실에서 같이 봐요.": "Counts what you ate on days with 'Moderate' or worse breakouts and the day before. Showing up often doesn't mean it's the cause, so let's look at it together at the clinic.",
+"생리 시작일 고치기": "Fix period start dates",
+"날짜를 잘못 넣었다면 지우고 맞는 날짜를 다시 넣어 주세요.": "If you entered a wrong date, delete it and add the correct one.",
+"생리 시작일 추가": "Add a period start date",
+"추가": "Add",
+"생리 주기 설정": "Cycle settings",
+"생리 시작일을 2번 이상 체크하면 실제 기록으로 평균 주기를 자동 계산해요.": "Once you've marked two or more start dates, your average cycle is calculated from your actual records.",
+"이날 생리 시작": "Period started this day",
+"잠과 스트레스": "Sleep & stress",
+"새로 쓴 제품, 마스크 오래 씀, 컨디션 등": "New products, long mask wear, how you felt, etc.",
+"생리 시작일을 캘린더에서 체크하면 시기별 피부 변화와 관리법을 알려 드려요.": "Mark your period start date on the calendar to see how your skin changes in each phase and how to care for it.",
+"이 시기 피부": "Skin in this phase",
+"이렇게 관리해요": "How to care for it",
+"생리 간격이 35일을 넘었어요. 이런 일이 반복되면 산부인과 상담을 받아 보세요.": "It's been more than 35 days since your last period started. If this keeps happening, consider seeing a gynecologist.",
+"생리 시작일을 잘못 넣었나요? 다시 고르기": "Entered the wrong start date? Fix it",
+"생리 시작일을 체크하면 시기별로 볼 수 있어요": "Mark your period start dates to see this by phase",
+"아직 체크한 생리 시작일이 없어요": "No period start dates yet",
+"지우기": "Delete",
+"평균 주기": "Avg. cycle",
+"날짜를 먼저 골라 주세요": "Pick a date first",
+"저장했어요 · 캘린더에 반영했어요": "Saved · calendar updated"
+};
+function detectLang() {
+  try { const q = new URLSearchParams(location.search).get("lang"); if (q === "en" || q === "ko") return q; } catch (e) {}
+  try { if (window.parent !== window && window.parent.currentLanguage) return window.parent.currentLanguage === "en" ? "en" : "ko"; } catch (e) {}
+  return "ko";
+}
+const T = s => (LANG === "en" && Object.prototype.hasOwnProperty.call(EN, s)) ? EN[s] : s;
+const isEn = () => LANG === "en";
+const ORIG_TEXT = new WeakMap();
+let ORIG_TITLE = null;
+function applyStatic() {
+  document.documentElement.lang = LANG;
+  if (ORIG_TITLE === null) ORIG_TITLE = document.title;
+  document.title = T(ORIG_TITLE);
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let n;
+  while ((n = w.nextNode())) {
+    if (n.parentElement && n.parentElement.closest("script,style")) continue;
+    if (!ORIG_TEXT.has(n)) ORIG_TEXT.set(n, n.nodeValue);
+    const o = ORIG_TEXT.get(n), k = o.trim();
+    if (!k) continue;
+    n.nodeValue = (isEn() && EN[k] !== undefined) ? o.replace(k, EN[k]) : o;
+  }
+  document.querySelectorAll("[placeholder],[aria-label]").forEach(el => {
+    [["placeholder", "koPh"], ["aria-label", "koAria"]].forEach(([a, key]) => {
+      if (!el.hasAttribute(a)) return;
+      if (el.dataset[key] === undefined) el.dataset[key] = el.getAttribute(a);
+      el.setAttribute(a, T(el.dataset[key]));
+    });
+  });
+}
+const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const DOW_EN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const dowName = i => isEn() ? DOW_EN[i] : DOW[i];
+const monthLabel = d => isEn() ? `${MONTHS_EN[d.getMonth()]} ${d.getFullYear()}` : `${d.getFullYear()}년 ${d.getMonth() + 1}월`;
+const unit = (c, ko) => isEn() ? (ko === "번" ? `${c}×` : `${c} ${c === 1 ? "day" : "days"}`) : `${c}${ko}`;
+function setLang(l) {
+  l = l === "en" ? "en" : "ko";
+  if (l === LANG) return;
+  LANG = l; applyStatic(); renderAll();
+}
+(function hookParentLanguage() {
+  try {
+    const P = window.parent;
+    if (P === window || !P.i18nOnLanguageChange) return;
+    const hook = l => setLang(l);
+    P.i18nOnLanguageChange.push(hook);
+    window.addEventListener("pagehide", () => {
+      try { const i = P.i18nOnLanguageChange.indexOf(hook); if (i !== -1) P.i18nOnLanguageChange.splice(i, 1); } catch (e) {}
+    });
+  } catch (e) {}
+})();
+
 /* ===== storage ===== */
 const KEY = "730-trouble-diary-v1";
 let mem = null;
@@ -330,7 +520,7 @@ const diff = (a, b) => Math.round((parse(a) - parse(b)) / 86400000);
 const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); };
 const todayS = () => ymd(new Date());
 const DOW = ["일", "월", "화", "수", "목", "금", "토"];
-const fmt = s => { const d = parse(s); return `${d.getMonth() + 1}월 ${d.getDate()}일 (${DOW[d.getDay()]})`; };
+const fmt = s => { const d = parse(s); return isEn() ? `${MONTHS_EN[d.getMonth()].slice(0, 3)} ${d.getDate()} (${DOW_EN[d.getDay()]})` : `${d.getMonth() + 1}월 ${d.getDate()}일 (${DOW[d.getDay()]})`; };
 
 /* ===== cycle ===== */
 function avgCycle() {
@@ -394,24 +584,26 @@ function renderToday() {
   const log = load().logs[t];
   let html = `<div class="muted">${fmt(t)}</div>`;
   if (!ph) {
-    html += `<div class="phase-name" style="margin:4px 0 8px">오늘 피부는 어땠나요?</div>
-      <p class="muted" style="margin:0">생리 시작일을 캘린더에서 체크하면 시기별 피부 변화와 관리법을 알려 드려요.</p>`;
+    html += `<div class="phase-name" style="margin:4px 0 8px">${T("오늘 피부는 어땠나요?")}</div>
+      <p class="muted" style="margin:0">${T("생리 시작일을 캘린더에서 체크하면 시기별 피부 변화와 관리법을 알려 드려요.")}</p>`;
   } else {
-    const p = PHASES[ph.key];
+    const p = PH(ph.key);
     const ns = nextStart();
     const dd = ns ? diff(ns, t) : null;
     html += `<div class="today-phase" style="margin-top:6px"><span class="dot" style="background:${p.color}"></span>
       <div><div class="phase-name">${p.name} <span style="font-size:13px;font-weight:500;color:var(--sub)">· ${p.sci}</span></div>
-      <div class="phase-day">${ph.key === "late" ? `마지막 생리 시작 후 ${ph.day - 1}일 · ${ph.lateBy === 0 ? "오늘이 생리 예정일" : `예정일보다 ${ph.lateBy}일 지남`}` : `주기 ${ph.day}일째${dd !== null ? ` · 다음 생리 예상 ${dd}일 뒤` : ""}`}</div></div></div>
-      <div class="sec-t" style="margin-top:12px">이 시기 피부</div>
+      <div class="phase-day">${isEn()
+        ? (ph.key === "late" ? `Day ${ph.day - 1} since your last period started · ${ph.lateBy === 0 ? "Your period is due today" : `${ph.lateBy} ${ph.lateBy === 1 ? "day" : "days"} late`}` : `Cycle day ${ph.day}${dd !== null ? ` · Next period expected in ${dd} ${dd === 1 ? "day" : "days"}` : ""}`)
+        : (ph.key === "late" ? `마지막 생리 시작 후 ${ph.day - 1}일 · ${ph.lateBy === 0 ? "오늘이 생리 예정일" : `예정일보다 ${ph.lateBy}일 지남`}` : `주기 ${ph.day}일째${dd !== null ? ` · 다음 생리 예상 ${dd}일 뒤` : ""}`)}</div></div></div>
+      <div class="sec-t" style="margin-top:12px">${T("이 시기 피부")}</div>
       <ul class="tips">${p.skin.map(s => `<li>${s}</li>`).join("")}</ul>
-      <div class="sec-t" style="margin-top:10px">이렇게 관리해요</div>
+      <div class="sec-t" style="margin-top:10px">${T("이렇게 관리해요")}</div>
       <ul class="tips">${p.care.map(s => `<li>${s}</li>`).join("")}</ul>
       ${p.book ? `<div class="book">${p.book}</div>` : ""}
-      ${ph.key === "late" && ph.day - 1 > 35 ? `<div class="book">생리 간격이 35일을 넘었어요. 이런 일이 반복되면 산부인과 상담을 받아 보세요.</div>` : ""}`;
+      ${ph.key === "late" && ph.day - 1 > 35 ? `<div class="book">${T("생리 간격이 35일을 넘었어요. 이런 일이 반복되면 산부인과 상담을 받아 보세요.")}</div>` : ""}`;
   }
-  html += `<button class="btn btn-main" style="margin-top:12px" onclick="openSheet('${t}')">${log ? "오늘 기록 고치기" : "오늘 기록하기"}</button>`;
-  if (load().starts.length) html += `<button class="fix-link" onclick="goFixStarts()">생리 시작일을 잘못 넣었나요? 다시 고르기</button>`;
+  html += `<button class="btn btn-main" style="margin-top:12px" onclick="openSheet('${t}')">${T(log ? "오늘 기록 고치기" : "오늘 기록하기")}</button>`;
+  if (load().starts.length) html += `<button class="fix-link" onclick="goFixStarts()">${T("생리 시작일을 잘못 넣었나요? 다시 고르기")}</button>`;
   el.innerHTML = html;
 }
 
@@ -425,8 +617,8 @@ function calTap(s) {
   openSheet(s);
 }
 function renderCal() {
-  document.getElementById("month-label").textContent = `${view.getFullYear()}년 ${view.getMonth() + 1}월`;
-  document.getElementById("dows").innerHTML = DOW.map(d => `<div class="dow">${d}</div>`).join("");
+  document.getElementById("month-label").textContent = monthLabel(view);
+  document.getElementById("dows").innerHTML = DOW.map((d, i) => `<div class="dow">${dowName(i)}</div>`).join("");
   const g = document.getElementById("grid");
   const first = new Date(view.getFullYear(), view.getMonth(), 1);
   const days = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
@@ -439,14 +631,14 @@ function renderCal() {
     const ph = phaseOf(s);
     const log = load().logs[s];
     let style = "", cls = "day";
-    if (ph) { style = `background:${PHASES[ph.key].bg};box-shadow:inset 0 -4px 0 ${PHASES[ph.key].color}`; if (ph.predicted || s > t) cls += " pred"; }
+    if (ph) { style = `background:${PH(ph.key).bg};box-shadow:inset 0 -4px 0 ${PH(ph.key).color}`; if (ph.predicted || s > t) cls += " pred"; }
     if (s === t) cls += " today" + (hintSeen() ? "" : " hinting");
     let marks = "";
     if (log) {
       if (log.level >= 1) marks += `<span class="m" style="background:#C97B5A;opacity:${0.35 + log.level * 0.22}"></span>`;
       if ((log.foods && log.foods.length) || log.foodEtc) marks += `<span class="m" style="background:#7A5C3E"></span>`;
     }
-    html += `<button class="${cls}" style="${style}" onclick="calTap('${s}')">${d}${s === t && !hintSeen() ? '<span class="tap-hint"><span class="bubble">오늘 기록하기</span><span class="finger">👇</span></span>' : ''}${starts.includes(s) ? '<span class="start">●</span>' : (ph && ph.ovDay ? '<span class="start" style="color:#7A5C3E">◆</span>' : "")}<span class="marks">${marks}</span></button>`;
+    html += `<button class="${cls}" style="${style}" onclick="calTap('${s}')">${d}${s === t && !hintSeen() ? '<span class="tap-hint"><span class="bubble">' + T("오늘 기록하기") + '</span><span class="finger">👇</span></span>' : ''}${starts.includes(s) ? '<span class="start">●</span>' : (ph && ph.ovDay ? '<span class="start" style="color:#7A5C3E">◆</span>' : "")}<span class="marks">${marks}</span></button>`;
   }
   g.innerHTML = html;
 }
@@ -457,7 +649,7 @@ document.getElementById("next").onclick = () => { view.setMonth(view.getMonth() 
 let cur = null, draft = null;
 function chipRow(id, items, field, single) {
   const el = document.getElementById(id);
-  el.innerHTML = items.map(x => `<button class="chip" data-v="${x}">${x}</button>`).join("");
+  el.innerHTML = items.map(x => `<button class="chip" data-v="${x}">${T(x)}</button>`).join("");
   el.querySelectorAll(".chip").forEach(b => {
     const v = b.dataset.v;
     const on = single ? draft[field] === v : (draft[field] || []).includes(v);
@@ -471,7 +663,7 @@ function chipRow(id, items, field, single) {
 }
 function renderLvl() {
   const el = document.getElementById("sh-lvl");
-  el.innerHTML = LEVELS.map((x, i) => `<button class="chip${draft.level === i ? " on" : ""}" data-i="${i}">${x}</button>`).join("");
+  el.innerHTML = LEVELS.map((x, i) => `<button class="chip${draft.level === i ? " on" : ""}" data-i="${i}">${T(x)}</button>`).join("");
   el.querySelectorAll(".chip").forEach(b => b.onclick = () => { draft.level = Number(b.dataset.i); renderLvl(); });
 }
 function openSheet(s) {
@@ -480,7 +672,7 @@ function openSheet(s) {
   draft = { level: L.level ?? 0, areas: [...(L.areas || [])], foods: [...(L.foods || [])], sleep: L.sleep || "", stress: L.stress || "", mens: load().starts.includes(s) };
   document.getElementById("sh-date").textContent = fmt(s);
   const ph = phaseOf(s);
-  document.getElementById("sh-phase").textContent = ph ? `${PHASES[ph.key].name} · ${PHASES[ph.key].sci} · 주기 ${ph.day}일째` : "";
+  document.getElementById("sh-phase").textContent = ph ? `${PH(ph.key).name} · ${PH(ph.key).sci} · ${isEn() ? `Cycle day ${ph.day}` : `주기 ${ph.day}일째`}` : "";
   document.getElementById("sh-food-etc").value = L.foodEtc || "";
   document.getElementById("sh-memo").value = L.memo || "";
   const mb = document.getElementById("sh-mens");
@@ -508,10 +700,10 @@ document.getElementById("sh-save").onclick = () => {
   if (draft.mens) m.starts.push(cur);
   m.starts.sort();
   m.setup = true;
-  save(); closeSheet(); renderAll(); toast("기록했어요");
+  save(); closeSheet(); renderAll(); toast(T("기록했어요"));
 };
 document.getElementById("sh-del").onclick = () => {
-  if (!confirmSafe("이날 기록을 지울까요?")) return;
+  if (!confirmSafe(T("이날 기록을 지울까요?"))) return;
   const m = load(); delete m.logs[cur]; m.starts = m.starts.filter(x => x !== cur);
   save(); closeSheet(); renderAll();
 };
@@ -523,16 +715,16 @@ function renderReport() {
   const days = Object.keys(m.logs).filter(s => s >= from && s <= t).sort();
   const tr = days.filter(s => m.logs[s].level >= 2);
   document.getElementById("r-stat").innerHTML =
-    `<div><b>${days.length}</b><span>기록한 날</span></div><div><b>${tr.length}</b><span>트러블 보통 이상</span></div><div><b>${avgCycle()}일</b><span>평균 주기</span></div>`;
+    `<div><b>${days.length}</b><span>${T("기록한 날")}</span></div><div><b>${tr.length}</b><span>${T("트러블 보통 이상")}</span></div><div><b>${isEn() ? avgCycle() + " days" : avgCycle() + "일"}</b><span>${T("평균 주기")}</span></div>`;
 
   // 시기별
   const acc = { mens: [], fol: [], ovu: [], lut: [], pms: [] };
   Object.keys(m.logs).forEach(s => { const ph = phaseOf(s); if (ph && acc[ph.key]) acc[ph.key].push(m.logs[s].level || 0); });
   const ph = Object.keys(acc).map(k => {
     const a = acc[k]; const v = a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
-    return `<div class="rep-row"><span>${({mens:"월경기",fol:"난포기",ovu:"배란기",lut:"황체기 초반",pms:"황체기 후반"})[k]}</span><div class="bar"><div style="width:${(v / 3) * 100}%;background:${PHASES[k].color}"></div></div><span class="v">${a.length ? v.toFixed(1) : "-"}</span></div>`;
+    return `<div class="rep-row"><span>${T(({mens:"월경기",fol:"난포기",ovu:"배란기",lut:"황체기 초반",pms:"황체기 후반"})[k])}</span><div class="bar"><div style="width:${(v / 3) * 100}%;background:${PH(k).color}"></div></div><span class="v">${a.length ? v.toFixed(1) : "-"}</span></div>`;
   }).join("");
-  document.getElementById("r-phase").innerHTML = m.starts.length ? ph : `<div class="empty">생리 시작일을 체크하면 시기별로 볼 수 있어요</div>`;
+  document.getElementById("r-phase").innerHTML = m.starts.length ? ph : `<div class="empty">${T("생리 시작일을 체크하면 시기별로 볼 수 있어요")}</div>`;
 
   // 음식
   const cnt = {};
@@ -544,8 +736,8 @@ function renderReport() {
   const fs = Object.entries(cnt).sort((a, b) => b[1] - a[1]);
   const max = fs.length ? fs[0][1] : 1;
   document.getElementById("r-food").innerHTML = fs.length ? fs.map(([f, c]) =>
-    `<div class="rep-row"><span>${f}</span><div class="bar"><div style="width:${(c / max) * 100}%;background:var(--sage)"></div></div><span class="v">${c}번</span></div>`).join("")
-    : `<div class="empty">트러블이 '보통' 이상인 날이 쌓이면 보여요</div>`;
+    `<div class="rep-row"><span>${T(f)}</span><div class="bar"><div style="width:${(c / max) * 100}%;background:var(--sage)"></div></div><span class="v">${unit(c, "번")}</span></div>`).join("")
+    : `<div class="empty">${T("트러블이 '보통' 이상인 날이 쌓이면 보여요")}</div>`;
 
   // 자리
   const ac = {};
@@ -553,30 +745,30 @@ function renderReport() {
   const as = Object.entries(ac).sort((a, b) => b[1] - a[1]);
   const amax = as.length ? as[0][1] : 1;
   document.getElementById("r-area").innerHTML = as.length ? as.map(([a, c]) =>
-    `<div class="rep-row"><span>${a}</span><div class="bar"><div style="width:${(c / amax) * 100}%;background:#C97B5A"></div></div><span class="v">${c}일</span></div>`).join("")
-    : `<div class="empty">아직 기록이 없어요</div>`;
+    `<div class="rep-row"><span>${T(a)}</span><div class="bar"><div style="width:${(c / amax) * 100}%;background:#C97B5A"></div></div><span class="v">${unit(c, "일")}</span></div>`).join("")
+    : `<div class="empty">${T("아직 기록이 없어요")}</div>`;
 
   // 목록
   const all = Object.keys(m.logs).sort().reverse().slice(0, 30);
   document.getElementById("r-list").innerHTML = all.length ? all.map(s => {
     const L = m.logs[s], p = phaseOf(s);
-    const food = [...(L.foods || []), L.foodEtc].filter(Boolean).join(", ");
-    return `<div class="list-item"><b>${fmt(s)}</b> ${p ? `<span class="badge" style="background:${PHASES[p.key].bg}">${PHASES[p.key].name}</span>` : ""}<br>
-      트러블 ${LEVELS[L.level || 0]}${(L.areas || []).length ? " · " + L.areas.join(", ") : ""}${food ? `<br><span class="muted">먹은 것: ${food}</span>` : ""}${L.memo ? `<br><span class="muted">${L.memo}</span>` : ""}</div>`;
-  }).join("") : `<div class="empty">아직 기록이 없어요</div>`;
+    const food = [...(L.foods || []).map(T), L.foodEtc].filter(Boolean).join(", ");
+    return `<div class="list-item"><b>${fmt(s)}</b> ${p ? `<span class="badge" style="background:${PH(p.key).bg}">${PH(p.key).name}</span>` : ""}<br>
+      ${T("트러블")}${isEn() ? ":" : ""} ${T(LEVELS[L.level || 0])}${(L.areas || []).length ? " · " + L.areas.map(T).join(", ") : ""}${food ? `<br><span class="muted">${T("먹은 것")}: ${food}</span>` : ""}${L.memo ? `<br><span class="muted">${L.memo}</span>` : ""}</div>`;
+  }).join("") : `<div class="empty">${T("아직 기록이 없어요")}</div>`;
 }
 
 /* ===== setup & settings ===== */
 function renderStarts() {
   const el = document.getElementById("starts-list");
   const st = [...load().starts].sort().reverse();
-  el.innerHTML = st.length ? st.map(s => `<div class="start-row"><span>${fmt(s)}</span><button onclick="removeStart('${s}')">지우기</button></div>`).join("")
-    : `<div class="empty">아직 체크한 생리 시작일이 없어요</div>`;
+  el.innerHTML = st.length ? st.map(s => `<div class="start-row"><span>${fmt(s)}</span><button onclick="removeStart('${s}')">${T("지우기")}</button></div>`).join("")
+    : `<div class="empty">${T("아직 체크한 생리 시작일이 없어요")}</div>`;
 }
 function removeStart(s) {
-  if (!confirmSafe(fmt(s) + " 생리 시작일을 지울까요?")) return;
+  if (!confirmSafe(isEn() ? `Delete the period start date ${fmt(s)}?` : fmt(s) + " 생리 시작일을 지울까요?")) return;
   const m = load(); m.starts = m.starts.filter(x => x !== s); save(); renderAll();
-  toast(fmt(s) + " 시작일을 지웠어요. 맞는 날짜를 아래에서 추가해 주세요");
+  toast(isEn() ? `Deleted ${fmt(s)}. Add the correct date below.` : fmt(s) + " 시작일을 지웠어요. 맞는 날짜를 아래에서 추가해 주세요");
 }
 function goFixStarts() {
   document.querySelector('nav.tabs button[data-v="v-set"]').click();
@@ -584,13 +776,13 @@ function goFixStarts() {
 }
 document.getElementById("add-start-btn").onclick = () => {
   const v = document.getElementById("add-start").value;
-  if (!v) { toast("날짜를 먼저 골라 주세요"); return; }
+  if (!v) { toast(T("날짜를 먼저 골라 주세요")); return; }
   const m = load();
   if (!m.starts.includes(v)) m.starts.push(v);
   m.starts.sort(); m.setup = true; save();
   document.getElementById("add-start").value = "";
   renderAll();
-  goHome(fmt(v) + "을 생리 시작일로 넣었어요");
+  goHome(isEn() ? `Added ${fmt(v)} as a period start date` : fmt(v) + "을 생리 시작일로 넣었어요");
 };
 function renderAll() { renderStarts(); renderToday(); renderCal(); renderReport(); const m = load(); document.getElementById("c-cycle").value = m.cycle; document.getElementById("c-len").value = m.len; }
 function initSetup() {
@@ -611,7 +803,7 @@ document.getElementById("s-save").onclick = () => {
   renderAll();
 };
 document.getElementById("s-skip").onclick = () => { const m = load(); m.setup = true; save(); document.getElementById("setup").style.display = "none"; document.getElementById("v-home").classList.add("on"); renderAll(); };
-document.getElementById("c-save").onclick = () => { const m = load(); m.cycle = Number(document.getElementById("c-cycle").value) || 28; m.len = Number(document.getElementById("c-len").value) || 5; save(); renderAll(); goHome("저장했어요 · 캘린더에 반영했어요"); };
+document.getElementById("c-save").onclick = () => { const m = load(); m.cycle = Number(document.getElementById("c-cycle").value) || 28; m.len = Number(document.getElementById("c-len").value) || 5; save(); renderAll(); goHome(T("저장했어요 · 캘린더에 반영했어요")); };
 function toast(msg) {
   let t = document.getElementById("toast");
   if (!t) { t = document.createElement("div"); t.id = "toast"; document.body.appendChild(t); }
@@ -628,9 +820,9 @@ document.getElementById("b-export").onclick = () => {
 };
 document.getElementById("b-import").onchange = e => {
   const f = e.target.files[0]; if (!f) return;
-  f.text().then(txt => { try { const d = JSON.parse(txt); if (d && d.logs) { mem = d; save(); renderAll(); goHome("기록을 불러왔어요"); } else toast("백업 파일이 아니에요"); } catch (err) {} });
+  f.text().then(txt => { try { const d = JSON.parse(txt); if (d && d.logs) { mem = d; save(); renderAll(); goHome(T("기록을 불러왔어요")); } else toast(T("백업 파일이 아니에요")); } catch (err) {} });
 };
-document.getElementById("b-reset").onclick = () => { if (!confirmSafe("모든 기록을 지울까요? 되돌릴 수 없어요.")) return; mem = { setup: true, cycle: 28, len: 5, starts: [], logs: {} }; save(); renderAll(); goHome("모든 기록을 지웠어요"); };
+document.getElementById("b-reset").onclick = () => { if (!confirmSafe(T("모든 기록을 지울까요? 되돌릴 수 없어요."))) return; mem = { setup: true, cycle: 28, len: 5, starts: [], logs: {} }; save(); renderAll(); goHome(T("모든 기록을 지웠어요")); };
 
 document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => {
   document.querySelectorAll("nav.tabs button").forEach(x => x.classList.toggle("on", x === b));
@@ -640,6 +832,8 @@ document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => {
   window.scrollTo(0, 0);
 });
 
+LANG = detectLang();
+applyStatic();
 initSetup();
 renderAll();
 </script>
