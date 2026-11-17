@@ -4393,6 +4393,19 @@ body.er-focus .embed-frame.ear-reading-frame {
   height: calc(100vh - var(--header-height, 10rem) - 12px);
   height: calc(100dvh - var(--header-height, 10rem) - 12px);
   min-height: 520px;
+  transition: height 0.3s ease;
+}
+
+/* 도구(이어 리딩 가이드·다이어리) 안에서 아래로 내리면 상단바가 숨고,
+   상단바가 있던 자리까지 도구를 끌어올려 화면 전체를 쓰게 한다. */
+#app { transition: padding-top 0.3s ease; }
+body.er-focus #app { padding-top: 0; }
+body.er-focus .iframe-page.is-fullheight { padding-top: 8px; margin-top: 0; }
+
+/* 다이어리 안에서 아래로 내리면 상단바가 숨고 다이어리가 화면 전체를 쓴다 */
+body.er-focus .embed-frame.diary-frame {
+  height: calc(100vh - 16px);
+  height: calc(100dvh - 16px);
 }
 
 /* 화면 높이에 맞춘 도구 페이지에서는 아래 노란 푸터 띠를 숨겨
