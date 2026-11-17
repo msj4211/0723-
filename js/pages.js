@@ -313,6 +313,7 @@ window.Pages = (function () {
           loading="lazy"></iframe>
       </div>
     `;
+    setupEmbedHeaderAutoHide(container.querySelector('.diary-frame'));
   }
 
   // 트러블 다이어리: 남녀 모두 쓰는 일반 트러블 기록(생리 주기 없음).
@@ -327,6 +328,7 @@ window.Pages = (function () {
           loading="lazy"></iframe>
       </div>
     `;
+    setupEmbedHeaderAutoHide(container.querySelector('.diary-frame'));
   }
 
   function renderEarReadingEmbed(container) {
@@ -339,13 +341,16 @@ window.Pages = (function () {
           loading="lazy"></iframe>
       </div>
     `;
-    setupEarReadingHeaderAutoHide(container.querySelector('.ear-reading-frame'));
+    setupEmbedHeaderAutoHide(container.querySelector('.ear-reading-frame'));
   }
 
-  // 이어 리딩 가이드는 iframe 안에서 스크롤되므로 바깥 창의 스크롤로는
-  // 상단바가 숨지 않는다. iframe이 보내는 스크롤 위치를 받아서
-  // 도구 맨 위 근처에서만 상단바를 보여주고, 아래를 보는 동안에는 숨긴다.
-  function setupEarReadingHeaderAutoHide(frame) {
+  // 화면 높이에 맞춘 도구(이어 리딩 가이드·PMS 다이어리·트러블 다이어리)는
+  // iframe 안에서 스크롤되므로 바깥 창의 스크롤로는 상단바가 숨지 않는다.
+  // iframe 안의 스크롤 위치를 받아서, 도구 맨 위 근처에서만 상단바를 보여주고
+  // 아래를 보는 동안에는 숨긴 채 도구가 화면 전체를 쓰게 한다.
+  // (같은 주소의 도구라 iframe 스크롤을 직접 듣고, 이어 리딩 가이드가 보내는
+  //  er-scroll 메시지도 그대로 받는다.)
+  function setupEmbedHeaderAutoHide(frame) {
     if (!frame) return;
     var lastY = 0, focused = false, busy = false;
     function setFocus(on) {
@@ -354,13 +359,20 @@ window.Pages = (function () {
       document.body.classList.toggle('er-focus', on);
       var hdr = document.querySelector('.site-header');
       if (hdr) hdr.classList.toggle('is-hidden', on);
-      var top = on ? Math.max(frame.getBoundingClientRect().top + window.scrollY - 8, 0) : 0;
-      window.scrollTo({ top: top, behavior: 'smooth' });
+      // 상단바가 빠진 자리만큼 도구를 위로 올리는 건 CSS(body.er-focus #app)가 한다.
+      window.scrollTo(0, 0);
       setTimeout(function () {
         busy = false;
         if (lastY > 80) setFocus(true);
         else if (lastY <= 40) setFocus(false);
       }, 450);
+    }
+    // 스크롤 방향과 상관없이 위치로만 정한다.
+    function handleY(y) {
+      if (!frame.isConnected) { document.body.classList.remove('er-focus'); return; }
+      lastY = y;
+      if (y > 80) setFocus(true);
+      else if (y <= 40) setFocus(false);
     }
     function onMessage(e) {
       if (!frame.isConnected) {
@@ -371,14 +383,19 @@ window.Pages = (function () {
       if (e.source !== frame.contentWindow || e.origin !== window.location.origin) return;
       var d = e.data;
       if (!d || d.type !== 'er-scroll') return;
-      // 스크롤 방향과 상관없이 위치로만 정한다:
-      // 도구 맨 위 근처면 상단바를 보여주고, 그 아래를 보고 있으면 숨긴다.
-      var y = d.y;
-      lastY = y;
-      if (y > 80) setFocus(true);
-      else if (y <= 40) setFocus(false);
+      handleY(d.y);
     }
     window.addEventListener('message', onMessage);
+    var ticking = false;
+    frame.addEventListener('load', function () {
+      try {
+        var w = frame.contentWindow;
+        w.addEventListener('scroll', function () {
+          if (ticking) return; ticking = true;
+          w.requestAnimationFrame(function () { ticking = false; handleY(Math.max(w.scrollY, 0)); });
+        }, { passive: true });
+      } catch (err) {}
+    });
   }
 
   // 이어포인트 이름/설명/이미지는 js/ear-points-data.js가 Supabase(RLS로
