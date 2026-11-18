@@ -489,7 +489,14 @@
 
     var request = mode === 'login'
       ? client.auth.signInWithPassword({ email: email, password: password })
-      : client.auth.signUp({ email: email, password: password });
+      // 이름·전화번호를 가입 정보에도 함께 저장한다. 이메일 인증을 다른 탭/기기에서
+      // 하면 브라우저에 잠깐 맡겨 둔 프로필이 사라져서, 관리자 화면에 이름이 비어
+      // 보이던 문제가 있었다. 가입 정보(서버)에 있으면 항상 남는다.
+      : client.auth.signUp({
+          email: email,
+          password: password,
+          options: { data: { name: name, phone: phone } }
+        });
 
     request.then(function (res) {
       submitting = false;

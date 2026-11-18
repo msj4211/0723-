@@ -2017,7 +2017,6 @@ window.Pages = (function () {
       } else {
         html += '<ul class="admin-list">' + list.map(function (m) {
           var me = m.id === session.user.id;
-          var who = m.nickname || m.name || '';
           var btns = '';
           if (me) {
             btns = '<span class="admin-me">내 계정</span>';
@@ -2028,11 +2027,14 @@ window.Pages = (function () {
           }
           return '<li class="admin-item">' +
             '<div class="admin-info">' +
-            '<p class="admin-email">' + adminEsc(m.email) + (who ? ' <span class="admin-who">' + adminEsc(who) + '</span>' : '') + '</p>' +
+            '<p class="admin-name">' + (m.name ? adminEsc(m.name) + (m.nickname ? ' <span class="admin-who">(' + adminEsc(m.nickname) + ')</span>' : '') : '<span class="admin-noname">이름 미입력</span>') +
+            (m.phone ? ' <span class="admin-phone">' + adminEsc(m.phone) + '</span>' : '') + '</p>' +
+            '<p class="admin-email">' + adminEsc(m.email) + '</p>' +
             '<p class="admin-meta">' +
             '<span class="admin-status admin-status--' + m.education_status + '">' + ADMIN_STATUS_LABEL[m.education_status] + '</span>' +
             '가입 ' + adminDate(m.created_at) +
-            (m.phone ? ' · ' + adminEsc(m.phone) : '') +
+            (m.email_confirmed_at === null ? ' · <span class="admin-warn">이메일 인증 안 함</span>' : '') +
+            (m.last_sign_in_at ? '' : ' · <span class="admin-warn">로그인 기록 없음</span>') +
             (m.approved_at ? ' · 승인 ' + adminDate(m.approved_at) : '') +
             '</p>' +
             '</div>' +
@@ -2040,7 +2042,7 @@ window.Pages = (function () {
             '</li>';
         }).join('') + '</ul>';
       }
-      html += '<p class="admin-note">프로필을 아직 안 채운 회원은 이름·전화번호가 비어 보여요. 승인하면 바로 교육생 메뉴를 볼 수 있어요.</p>';
+      html += '<p class="admin-note">이름이 비어 있는 회원은 예전 방식으로 가입해 이름이 저장되지 않은 경우예요. 누구인지 모르면 승인하지 말고, 회원이 로그인해 내 프로필을 채우면 이름이 보여요.</p>';
       card.innerHTML = html;
     }
 
