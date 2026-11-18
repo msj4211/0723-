@@ -4452,7 +4452,11 @@ body:has(.iframe-page.is-fullheight) .site-footer {
 }
 .admin-item:first-child { border-top: none; }
 .admin-info { min-width: 0; }
-.admin-email { margin: 0; font-weight: 700; word-break: break-all; }
+.admin-name { margin: 0; font-weight: 700; font-size: 1.02rem; }
+.admin-noname { color: #B0563A; font-weight: 700; }
+.admin-phone { font-weight: 500; color: #6B6258; margin-left: 6px; font-size: 0.9rem; }
+.admin-email { margin: 2px 0 0; font-size: 0.88rem; color: #3D3833; word-break: break-all; }
+.admin-warn { color: #B0563A; }
 .admin-who { font-weight: 500; color: #6B6258; margin-left: 4px; }
 .admin-meta { margin: 4px 0 0; font-size: 0.82rem; color: #6B6258; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .admin-status { padding: 2px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; border: 1px solid #DDD6C8; }
