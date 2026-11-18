@@ -12,7 +12,8 @@
     'recommend/sleep': window.Pages.recommendSleep,
     'search': window.Pages.search,
     'favorites': window.Pages.favorites,
-    'mypage': window.Pages.mypage
+    'mypage': window.Pages.mypage,
+    'admin': window.Pages.admin
   };
 
   // "#/ear-point/sleep"처럼 이어포인트 id가 뒤에 붙는 상세페이지 주소.
@@ -55,6 +56,7 @@
   function updateActiveNav(routeName) {
     var activeRoute = routeName === '' ? 'home' : routeName;
     if (activeRoute === 'ear-point-detail') activeRoute = 'ear-point';
+    if (activeRoute === 'admin') activeRoute = 'mypage';
     document.querySelectorAll('[data-route]').forEach(function (link) {
       if (link.dataset.route === activeRoute) {
         link.setAttribute('aria-current', 'page');
