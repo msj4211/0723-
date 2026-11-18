@@ -1966,6 +1966,146 @@ window.Pages = (function () {
 
   // 마이페이지: 승인된 교육생의 기본 정보 요약 + 관심 혈자리 바로가기.
   // 세미나 신청 내역 확인은 실제 연동된 데이터가 없어 준비 중 안내만 표시한다.
+  // ===== 회원 승인 관리 (관리자 전용) =====
+  // 실제 권한 확인은 Supabase 함수(is_site_admin / admin_list_members /
+  // admin_set_member_status)가 서버에서 한다. 관리자가 아니면 목록이 비어
+  // 오는 게 아니라 오류가 나므로, 화면에는 "권한 없음"만 보여준다.
+  var ADMIN_STATUS_LABEL = { pending: '승인 대기', approved: '승인됨', suspended: '정지' };
+
+  function adminEsc(v) {
+    var d = document.createElement('div');
+    d.textContent = v == null ? '' : String(v);
+    return d.innerHTML;
+  }
+  function adminDate(v) {
+    if (!v) return '-';
+    var d = new Date(v);
+    if (isNaN(d.getTime())) return '-';
+    return d.toLocaleString('ko-KR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+  }
+
+  function renderAdmin(container, session) {
+    var client = window.supabaseClient;
+    var filter = 'pending';
+    var members = [];
+
+    container.innerHTML =
+      '<section class="page-section admin-page">' +
+      '<div class="section-title"><h2>회원 승인 관리</h2></div>' +
+      '<div class="admin-card"><p class="admin-loading">불러오는 중…</p></div>' +
+      '</section>';
+    var card = container.querySelector('.admin-card');
+
+    function counts() {
+      var c = { pending: 0, approved: 0, suspended: 0, all: members.length };
+      members.forEach(function (m) { c[m.education_status] = (c[m.education_status] || 0) + 1; });
+      return c;
+    }
+
+    function draw() {
+      if (!container.isConnected) return;
+      var c = counts();
+      var tabs = [['pending', '승인 대기'], ['approved', '승인됨'], ['suspended', '정지'], ['all', '전체']];
+      var list = members.filter(function (m) { return filter === 'all' || m.education_status === filter; });
+      var html = '<div class="admin-tabs" role="tablist">' + tabs.map(function (t) {
+        return '<button type="button" class="admin-tab' + (filter === t[0] ? ' is-active' : '') + '" data-filter="' + t[0] + '">' +
+          t[1] + ' <span class="admin-count">' + (c[t[0]] || 0) + '</span></button>';
+      }).join('') + '</div>';
+
+      if (!list.length) {
+        html += '<p class="admin-empty">' + (filter === 'pending' ? '승인을 기다리는 회원이 없어요.' : '해당하는 회원이 없어요.') + '</p>';
+      } else {
+        html += '<ul class="admin-list">' + list.map(function (m) {
+          var me = m.id === session.user.id;
+          var who = m.nickname || m.name || '';
+          var btns = '';
+          if (me) {
+            btns = '<span class="admin-me">내 계정</span>';
+          } else {
+            if (m.education_status !== 'approved') btns += '<button type="button" class="admin-btn admin-btn--approve" data-id="' + m.id + '" data-status="approved">승인</button>';
+            if (m.education_status !== 'suspended') btns += '<button type="button" class="admin-btn" data-id="' + m.id + '" data-status="suspended">정지</button>';
+            if (m.education_status !== 'pending') btns += '<button type="button" class="admin-btn" data-id="' + m.id + '" data-status="pending">대기로</button>';
+          }
+          return '<li class="admin-item">' +
+            '<div class="admin-info">' +
+            '<p class="admin-email">' + adminEsc(m.email) + (who ? ' <span class="admin-who">' + adminEsc(who) + '</span>' : '') + '</p>' +
+            '<p class="admin-meta">' +
+            '<span class="admin-status admin-status--' + m.education_status + '">' + ADMIN_STATUS_LABEL[m.education_status] + '</span>' +
+            '가입 ' + adminDate(m.created_at) +
+            (m.phone ? ' · ' + adminEsc(m.phone) : '') +
+            (m.approved_at ? ' · 승인 ' + adminDate(m.approved_at) : '') +
+            '</p>' +
+            '</div>' +
+            '<div class="admin-actions">' + btns + '</div>' +
+            '</li>';
+        }).join('') + '</ul>';
+      }
+      html += '<p class="admin-note">프로필을 아직 안 채운 회원은 이름·전화번호가 비어 보여요. 승인하면 바로 교육생 메뉴를 볼 수 있어요.</p>';
+      card.innerHTML = html;
+    }
+
+    function load() {
+      return client.rpc('admin_list_members').then(function (res) {
+        if (!container.isConnected) return;
+        if (res.error) {
+          card.innerHTML = '<p class="admin-empty">회원 목록을 불러오지 못했어요. 관리자 계정으로 로그인했는지 확인해 주세요.</p>';
+          return;
+        }
+        members = (res.data || []).map(function (m) {
+          if (['pending', 'approved', 'suspended'].indexOf(m.education_status) === -1) m.education_status = 'pending';
+          return m;
+        });
+        draw();
+      });
+    }
+
+    card.addEventListener('click', function (e) {
+      var tab = e.target.closest('.admin-tab');
+      if (tab) { filter = tab.dataset.filter; draw(); return; }
+      var btn = e.target.closest('.admin-btn');
+      if (!btn) return;
+      var status = btn.dataset.status;
+      var m = members.filter(function (x) { return x.id === btn.dataset.id; })[0];
+      if (!m) return;
+      if (status === 'suspended' && !window.confirm(m.email + ' 회원을 정지할까요? 정지하면 교육생 메뉴를 볼 수 없어요.')) return;
+      btn.disabled = true;
+      btn.textContent = '처리 중…';
+      client.rpc('admin_set_member_status', { target_user: m.id, new_status: status }).then(function (res) {
+        if (res.error) {
+          btn.disabled = false;
+          btn.textContent = '다시 시도';
+          window.alert('바꾸지 못했어요: ' + res.error.message);
+          return;
+        }
+        load();
+      });
+    });
+
+    load();
+  }
+
+  // 마이페이지에 관리자에게만 '회원 승인 관리' 바로가기를 붙인다.
+  function attachAdminShortcut(container) {
+    var client = window.supabaseClient;
+    if (!client) return;
+    client.rpc('is_site_admin').then(function (res) {
+      if (!container.isConnected || res.error || res.data !== true) return;
+      var cardEl = container.querySelector('.mypage-card');
+      if (!cardEl || container.querySelector('.admin-shortcut')) return;
+      var box = document.createElement('a');
+      box.className = 'admin-shortcut';
+      box.href = '#/admin';
+      box.innerHTML = '<span>회원 승인 관리</span><span class="admin-shortcut-count"></span>';
+      cardEl.parentNode.insertBefore(box, cardEl.nextSibling);
+      client.rpc('admin_list_members').then(function (r) {
+        if (r.error || !box.isConnected) return;
+        var n = (r.data || []).filter(function (m) { return (m.education_status || 'pending') === 'pending'; }).length;
+        box.querySelector('.admin-shortcut-count').textContent = n ? '승인 대기 ' + n + '명' : '대기 없음';
+        if (n) box.classList.add('has-pending');
+      });
+    });
+  }
+
   function renderMyPage(container, session, profile) {
     var lang = window.currentLanguage;
 
@@ -2080,6 +2220,13 @@ window.Pages = (function () {
     mypage: function (container) {
       window.AccessControl.checkEducationAccess(container, function (c, session, profile) {
         renderMyPage(c, session, profile);
+        attachAdminShortcut(c);
+      });
+    },
+
+    admin: function (container) {
+      window.AccessControl.checkEducationAccess(container, function (c, session) {
+        renderAdmin(c, session);
       });
     }
   };
