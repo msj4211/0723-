@@ -23,6 +23,8 @@
   var emailInput = document.getElementById('auth-email');
   var phoneField = document.getElementById('auth-phone-field');
   var phoneInput = document.getElementById('auth-phone');
+  var shopInput = document.getElementById('auth-shop');
+  var shopField = document.getElementById('auth-shop-field');
   var passwordInput = document.getElementById('auth-password');
   var passwordHint = document.getElementById('auth-password-hint');
   var togglePasswordBtn = document.getElementById('auth-toggle-password');
@@ -253,6 +255,7 @@
     var isSignup = mode === 'signup';
     nameField.hidden = !isSignup;
     phoneField.hidden = !isSignup;
+    if (shopField) shopField.hidden = !isSignup;
     passwordHint.hidden = !isSignup;
     passwordConfirmField.hidden = !isSignup;
     privacyField.hidden = !isSignup;
@@ -405,14 +408,30 @@
   // 회원가입과 동시에 입력받은 이름/휴대폰/마케팅 동의를 profiles 테이블에 저장한다.
   // 이메일 인증이 필요해 세션이 바로 생기지 않는 경우, 실제 로그인 시점까지
   // sessionStorage에 임시 보관했다가 그때 저장한다.
+  // DB에 아직 없는 칸(상호명·별명 등)이나 권한이 없는 칸 때문에 저장이 통째로
+  // 실패하지 않도록, 실패하면 기본 칸(이름·전화번호 등)만으로 한 번 더 저장한다.
+  var OPTIONAL_PROFILE_COLUMNS = ['shop_name', 'nickname'];
+  function writeProfileWithFallback(method, row) {
+    return client.from('profiles')[method](row).then(function (r) {
+      if (!r.error) return r;
+      var hasOptional = OPTIONAL_PROFILE_COLUMNS.some(function (k) { return k in row; });
+      if (!hasOptional) return r;
+      var basic = {};
+      Object.keys(row).forEach(function (k) { if (OPTIONAL_PROFILE_COLUMNS.indexOf(k) === -1) basic[k] = row[k]; });
+      return client.from('profiles')[method](basic);
+    });
+  }
+
   function saveProfileNow(userId, profileData) {
-    return client.from('profiles').insert({
+    var row = {
       id: userId,
       name: profileData.name,
       phone: profileData.phone,
-      marketing_agreed: profileData.marketing_agreed,
+      marketing_agreed: !!profileData.marketing_agreed,
       updated_at: new Date().toISOString()
-    });
+    };
+    if (profileData.shop_name) row.shop_name = profileData.shop_name;
+    return writeProfileWithFallback('insert', row);
   }
 
   function stashPendingProfile(profileData) {
@@ -428,10 +447,18 @@
     } catch (e) {
       raw = null;
     }
-    if (!raw) return;
-
-    sessionStorage.removeItem(PENDING_PROFILE_KEY);
-    var pending = JSON.parse(raw);
+    var pending = null;
+    if (raw) {
+      sessionStorage.removeItem(PENDING_PROFILE_KEY);
+      try { pending = JSON.parse(raw); } catch (e) { pending = null; }
+    }
+    // 이메일 인증을 다른 탭·기기에서 하면 위 임시 저장이 없다. 그럴 땐 가입할 때
+    // 서버(가입 정보)에 함께 저장해 둔 이름·전화번호·상호명으로 프로필을 만든다.
+    if (!pending) {
+      var meta = user.user_metadata || {};
+      if (!meta.name && !meta.phone && !meta.shop_name) return;
+      pending = { name: meta.name || null, phone: meta.phone || null, shop_name: meta.shop_name || '', marketing_agreed: false };
+    }
     client.from('profiles').select('id').eq('id', user.id).maybeSingle().then(function (res) {
       if (!res.error && !res.data) {
         saveProfileNow(user.id, pending);
@@ -448,6 +475,7 @@
     var name = nameInput.value.trim();
     var email = emailInput.value.trim();
     var phone = phoneInput.value.trim();
+    var shopName = shopInput ? shopInput.value.trim() : '';
     var password = passwordInput.value;
 
     if (!email || !password) {
@@ -495,7 +523,7 @@
       : client.auth.signUp({
           email: email,
           password: password,
-          options: { data: { name: name, phone: phone } }
+          options: { data: { name: name, phone: phone, shop_name: shopName } }
         });
 
     request.then(function (res) {
@@ -523,7 +551,7 @@
         return;
       }
 
-      var profileData = { name: name, phone: phone, marketing_agreed: marketingCheckbox.checked };
+      var profileData = { name: name, phone: phone, shop_name: shopName, marketing_agreed: marketingCheckbox.checked };
 
       if (res.data.session) {
         if (window.SingleSession) window.SingleSession.claim(res.data.session);
@@ -574,6 +602,7 @@
   var profileNameInput = document.getElementById('profile-name');
   var profileNicknameInput = document.getElementById('profile-nickname');
   var profilePhoneInput = document.getElementById('profile-phone');
+  var profileShopInput = document.getElementById('profile-shop');
   var profileGenderInput = document.getElementById('profile-gender');
   var profileAgeInput = document.getElementById('profile-age');
   var profileMarketingCheckbox = document.getElementById('profile-marketing-agree');
@@ -598,6 +627,7 @@
       profileNameInput.value = profileRow.name || '';
       if (profileNicknameInput) profileNicknameInput.value = profileRow.nickname || '';
       profilePhoneInput.value = profileRow.phone || '';
+      if (profileShopInput) profileShopInput.value = profileRow.shop_name || '';
       profileGenderInput.value = profileRow.gender || '';
       profileAgeInput.value = profileRow.age || '';
       profileMarketingCheckbox.checked = !!profileRow.marketing_agreed;
@@ -635,6 +665,7 @@
       var name = profileNameInput.value.trim();
       var nickname = profileNicknameInput ? profileNicknameInput.value.trim() : '';
       var phone = profilePhoneInput.value.trim();
+      var shopName = profileShopInput ? profileShopInput.value.trim() : '';
       var gender = profileGenderInput.value;
       var ageValue = profileAgeInput.value;
       var age = ageValue ? parseInt(ageValue, 10) : null;
@@ -647,6 +678,7 @@
         id: session.user.id,
         name: name || null,
         nickname: nickname || null,
+        shop_name: shopName || null,
         phone: phone || null,
         gender: gender || null,
         age: age,
@@ -654,13 +686,7 @@
         updated_at: new Date().toISOString()
       };
       // DB에 별명 칸(nickname)을 아직 안 만들었으면 별명만 빼고 다시 저장한다.
-      client.from('profiles').upsert(row).then(function (r) {
-        if (r.error && /nickname/i.test(r.error.message || '')) {
-          delete row.nickname;
-          return client.from('profiles').upsert(row);
-        }
-        return r;
-      }).then(function (res2) {
+      writeProfileWithFallback('upsert', row).then(function (res2) {
         profileSubmitBtn.disabled = false;
         profileSubmitBtn.textContent = window.t('profileSave');
 
