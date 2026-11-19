@@ -4542,3 +4542,18 @@ body:has(.iframe-page.is-fullheight) .site-footer {
   .shop-fields, .admin-settings { grid-template-columns: 1fr; }
   .admin-tab--link { margin-left: 0; }
 }
+
+/* 상품 관리 (관리자) */
+.admin-products-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.admin-products-head .admin-note { margin: 0; flex: 1 1 300px; }
+.admin-product-row { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.admin-product-thumb { width: 56px; height: 56px; border-radius: 12px; overflow: hidden; background: #F4F1EC; flex-shrink: 0; }
+.admin-product-thumb img, .admin-photo-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.admin-product-form { width: 100%; padding: 1rem; border: 1px solid #FFCC00; border-radius: 20px; background: #FFFDF5; margin: 0.5rem 0 1rem; }
+.admin-item--form { display: block; }
+.admin-photo { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.admin-photo-preview { width: 96px; height: 96px; border-radius: 12px; overflow: hidden; background: #F4F1EC; display: flex; align-items: center; justify-content: center; color: #A59B90; font-size: 0.8rem; }
+.admin-photo-btn { display: inline-flex; align-items: center; }
+.admin-photo .admin-note { margin: 0; }
+.admin-check { flex-direction: row !important; align-items: center; gap: 8px !important; }
+.admin-form-btns { display: flex; gap: 8px; }
