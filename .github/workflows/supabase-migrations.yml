@@ -46,18 +46,23 @@ jobs:
           fi
 
       - name: Supabase 프로젝트 연결
-        run: supabase link --project-ref "$PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
+        run: |
+          supabase link --project-ref "$PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
 
       - name: 지금까지의 SQL을 적용된 것으로 표시 (baseline)
         if: github.event_name == 'workflow_dispatch' && inputs.mode == 'baseline'
         run: |
+          # CLI 버전마다 원격 DB 지정 옵션 이름이 다르다 (--linked 또는 --remote). 비밀번호는 SUPABASE_DB_PASSWORD 환경변수로 자동 전달된다.
+          tgt() { h=$(supabase "$@" --help 2>&1); if echo "$h" | grep -q -- '--linked'; then echo --linked; elif echo "$h" | grep -q -- '--remote'; then echo --remote; fi; }
           versions=$(ls supabase/migrations/*.sql | xargs -n1 basename | cut -d_ -f1 | tr '\n' ' ')
           echo "표시할 버전: $versions"
-          supabase migration repair --status applied $versions --password "$SUPABASE_DB_PASSWORD"
-          supabase migration list --password "$SUPABASE_DB_PASSWORD"
+          supabase migration repair --status applied $versions $(tgt migration repair)
+          supabase migration list $(tgt migration list)
 
       - name: 새 SQL 적용
         if: github.event_name == 'push' || inputs.mode == 'push'
         run: |
-          supabase migration list --password "$SUPABASE_DB_PASSWORD"
-          supabase db push --password "$SUPABASE_DB_PASSWORD"
+          # CLI 버전마다 원격 DB 지정 옵션 이름이 다르다 (--linked 또는 --remote). 비밀번호는 SUPABASE_DB_PASSWORD 환경변수로 자동 전달된다.
+          tgt() { h=$(supabase "$@" --help 2>&1); if echo "$h" | grep -q -- '--linked'; then echo --linked; elif echo "$h" | grep -q -- '--remote'; then echo --remote; fi; }
+          supabase migration list $(tgt migration list)
+          supabase db push $(tgt db push)
