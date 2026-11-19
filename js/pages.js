@@ -1966,6 +1966,327 @@ window.Pages = (function () {
 
   // 마이페이지: 승인된 교육생의 기본 정보 요약 + 관심 혈자리 바로가기.
   // 세미나 신청 내역 확인은 실제 연동된 데이터가 없어 준비 중 안내만 표시한다.
+  // ===== 파트너 전용몰 (승인된 회원 전용 · 계좌이체) =====
+  // 가격·합계는 서버 함수(place_order)가 상품 표에서 다시 계산한다.
+  // 화면의 금액은 미리보기일 뿐이라, 화면을 고쳐 보내도 실제 주문 금액은 바뀌지 않는다.
+  var ORDER_STATUS_LABEL = { pending_payment: '입금 대기', paid: '입금 확인', shipped: '발송 완료', cancelled: '취소' };
+  function won(n) { return (Number(n) || 0).toLocaleString('ko-KR') + '원'; }
+  function shopEsc(v) { var d = document.createElement('div'); d.textContent = v == null ? '' : String(v); return d.innerHTML; }
+  function shopDate(v) {
+    var d = new Date(v);
+    return isNaN(d.getTime()) ? '' : d.toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+  }
+  function bankLine(s) {
+    if (!s || !s.account_number) return '<span class="shop-muted">입금 계좌를 준비 중이에요. 730스킨으로 문의해 주세요.</span>';
+    return shopEsc((s.bank_name || '') + ' ' + s.account_number + (s.account_holder ? ' (예금주 ' + s.account_holder + ')' : ''));
+  }
+  function shippingFor(sum, s) {
+    if (!s) return 0;
+    if (s.free_shipping_over && sum >= s.free_shipping_over) return 0;
+    return s.shipping_fee || 0;
+  }
+
+  function renderShop(container, session, profile) {
+    var client = window.supabaseClient;
+    var products = [], settings = null, orders = [], qty = {};
+
+    container.innerHTML =
+      '<section class="page-section shop-page">' +
+      '<div class="section-title"><h2>파트너 전용몰</h2></div>' +
+      '<div class="shop-body"><p class="shop-loading">불러오는 중…</p></div>' +
+      '</section>';
+    var body = container.querySelector('.shop-body');
+
+    function loadOrders() {
+      return client.from('orders').select('*').order('created_at', { ascending: false }).then(function (r) {
+        orders = r.error ? [] : (r.data || []);
+      });
+    }
+
+    function sumNow() {
+      var sum = 0;
+      products.forEach(function (p) { sum += (qty[p.id] || 0) * p.partner_price; });
+      return sum;
+    }
+
+    function ordersHtml() {
+      if (!orders.length) return '';
+      return '<div class="shop-card"><h3 class="shop-h">내 주문 내역</h3><ul class="shop-orders">' + orders.map(function (o) {
+        var items = (o.items || []).map(function (it) { return shopEsc(it.name) + ' × ' + it.qty; }).join(', ');
+        return '<li class="shop-order">' +
+          '<div class="shop-order-top"><b>' + shopEsc(o.order_no) + '</b>' +
+          '<span class="shop-status shop-status--' + o.status + '">' + ORDER_STATUS_LABEL[o.status] + '</span></div>' +
+          '<p class="shop-order-items">' + items + '</p>' +
+          '<p class="shop-order-meta">' + shopDate(o.created_at) + ' · ' + won(o.total) +
+          (o.tracking ? ' · 송장 ' + shopEsc(o.tracking) : '') + '</p>' +
+          (o.status === 'pending_payment' ? '<p class="shop-order-bank">입금 계좌: ' + bankLine(settings) + '</p>' +
+            '<button type="button" class="shop-link-btn" data-cancel="' + shopEsc(o.order_no) + '">주문 취소</button>' : '') +
+          '</li>';
+      }).join('') + '</ul></div>';
+    }
+
+    function draw() {
+      if (!container.isConnected) return;
+      if (!products.length) {
+        body.innerHTML = '<div class="shop-card"><p class="shop-empty">지금 준비된 상품이 없어요. 곧 채워질 예정이에요.</p></div>' + ordersHtml();
+        return;
+      }
+      var sum = sumNow(), ship = shippingFor(sum, settings);
+      var grid = '<div class="shop-grid">' + products.map(function (p) {
+        var q = qty[p.id] || 0;
+        var off = p.price && p.price > p.partner_price ? Math.round((1 - p.partner_price / p.price) * 100) : 0;
+        return '<div class="shop-item">' +
+          '<div class="shop-thumb">' + (p.thumbnail_url ? '<img src="' + shopEsc(p.thumbnail_url) + '" alt="' + shopEsc(p.name) + '">' : '') + '</div>' +
+          '<p class="shop-name">' + shopEsc(p.name) + '</p>' +
+          (p.summary ? '<p class="shop-summary">' + shopEsc(p.summary) + '</p>' : '') +
+          '<p class="shop-price">' +
+          (off ? '<span class="shop-was">' + won(p.price) + '</span><span class="shop-off">' + off + '%</span>' : '') +
+          '<b>' + won(p.partner_price) + '</b></p>' +
+          '<div class="shop-qty" data-id="' + shopEsc(p.id) + '">' +
+          '<button type="button" data-step="-1" aria-label="빼기">−</button><span>' + q + '</span><button type="button" data-step="1" aria-label="더하기">+</button>' +
+          '</div></div>';
+      }).join('') + '</div>';
+
+      var lines = products.filter(function (p) { return qty[p.id]; }).map(function (p) {
+        return '<div class="shop-line"><span>' + shopEsc(p.name) + ' × ' + qty[p.id] + '</span><span>' + won(qty[p.id] * p.partner_price) + '</span></div>';
+      }).join('');
+
+      var form =
+        '<div class="shop-card shop-order-form">' +
+        '<h3 class="shop-h">주문서</h3>' +
+        (lines || '<p class="shop-muted">위에서 수량을 골라 주세요.</p>') +
+        (sum ? '<div class="shop-line"><span>배송비</span><span>' + (ship ? won(ship) : '무료') + '</span></div>' +
+          '<div class="shop-line shop-total"><span>입금하실 금액</span><span>' + won(sum + ship) + '</span></div>' : '') +
+        (settings && settings.free_shipping_over && settings.shipping_fee ? '<p class="shop-muted">' + won(settings.free_shipping_over) + ' 이상 주문하면 배송비 무료</p>' : '') +
+        '<div class="shop-fields">' +
+        '<label>받는 분<input id="so-name" type="text" maxlength="30"></label>' +
+        '<label>연락처<input id="so-phone" type="tel" maxlength="20" placeholder="010-0000-0000"></label>' +
+        '<label class="shop-wide">주소<input id="so-addr" type="text" maxlength="200" placeholder="우편번호, 주소, 상세주소"></label>' +
+        '<label>입금자명<input id="so-depositor" type="text" maxlength="30"></label>' +
+        '<label>요청사항 (선택)<input id="so-memo" type="text" maxlength="200"></label>' +
+        '</div>' +
+        '<p class="shop-bank">입금 계좌 · ' + bankLine(settings) + '</p>' +
+        (settings && settings.notice ? '<p class="shop-muted">' + shopEsc(settings.notice) + '</p>' : '') +
+        '<p class="shop-error" id="so-error" hidden></p>' +
+        '<button type="button" class="shop-submit" id="so-submit"' + (sum ? '' : ' disabled') + '>계좌이체로 주문하기</button>' +
+        '<p class="shop-muted">주문 후 ' + ((settings && settings.deposit_days) || 3) + '일 안에 입금해 주세요. 입금이 확인되면 발송해 드려요.</p>' +
+        '</div>';
+
+      var keep = {};
+      ['so-name', 'so-phone', 'so-addr', 'so-depositor', 'so-memo'].forEach(function (id) {
+        var el = body.querySelector('#' + id); if (el) keep[id] = el.value;
+      });
+      body.innerHTML = grid + form + ordersHtml();
+      var defaults = { 'so-name': profile && profile.name, 'so-phone': profile && profile.phone, 'so-depositor': profile && profile.name };
+      ['so-name', 'so-phone', 'so-addr', 'so-depositor', 'so-memo'].forEach(function (id) {
+        var el = body.querySelector('#' + id);
+        if (el) el.value = keep[id] != null ? keep[id] : (defaults[id] || '');
+      });
+    }
+
+    function showDone(no, total) {
+      var days = (settings && settings.deposit_days) || 3;
+      body.innerHTML =
+        '<div class="shop-card shop-done">' +
+        '<h3 class="shop-h">주문이 접수됐어요</h3>' +
+        '<p>주문번호 <b>' + shopEsc(no) + '</b></p>' +
+        '<p class="shop-done-amount">입금하실 금액 <b>' + won(total) + '</b></p>' +
+        '<p class="shop-bank">' + bankLine(settings) + '</p>' +
+        '<p class="shop-muted">' + days + '일 안에 입금해 주세요. 입금자명이 주문서와 같아야 빠르게 확인돼요.</p>' +
+        '<button type="button" class="shop-submit" id="so-back">주문 내역 보기</button>' +
+        '</div>';
+    }
+
+    function notifyWebhook(payload) {
+      if (!settings || !settings.order_webhook_url) return;
+      try {
+        fetch(settings.order_webhook_url, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+      } catch (e) {}
+    }
+
+    body.addEventListener('click', function (e) {
+      var step = e.target.closest('[data-step]');
+      if (step) {
+        var id = step.parentNode.dataset.id;
+        qty[id] = Math.min(99, Math.max(0, (qty[id] || 0) + Number(step.dataset.step)));
+        draw();
+        return;
+      }
+      if (e.target.id === 'so-back') { loadOrders().then(draw); return; }
+      var cancel = e.target.closest('[data-cancel]');
+      if (cancel) {
+        if (!window.confirm('이 주문을 취소할까요?')) return;
+        client.rpc('cancel_my_order', { p_order_no: cancel.dataset.cancel }).then(function (r) {
+          if (r.error) { window.alert(r.error.message); return; }
+          loadOrders().then(draw);
+        });
+        return;
+      }
+      if (e.target.id === 'so-submit') {
+        var v = function (id) { var el = body.querySelector('#' + id); return el ? el.value.trim() : ''; };
+        var err = body.querySelector('#so-error');
+        if (!v('so-name') || !v('so-phone') || !v('so-addr') || !v('so-depositor')) {
+          err.textContent = '받는 분, 연락처, 주소, 입금자명을 모두 적어 주세요.'; err.hidden = false; return;
+        }
+        var items = products.filter(function (p) { return qty[p.id]; }).map(function (p) { return { id: p.id, qty: qty[p.id] }; });
+        e.target.disabled = true; e.target.textContent = '주문 넣는 중…';
+        client.rpc('place_order', {
+          order_items: items, p_recipient_name: v('so-name'), p_recipient_phone: v('so-phone'),
+          p_address: v('so-addr'), p_depositor_name: v('so-depositor'), p_memo: v('so-memo')
+        }).then(function (r) {
+          if (r.error || !r.data || !r.data.length) {
+            e.target.disabled = false; e.target.textContent = '계좌이체로 주문하기';
+            err.textContent = '주문을 넣지 못했어요: ' + (r.error ? r.error.message : '다시 시도해 주세요'); err.hidden = false;
+            return;
+          }
+          var res = r.data[0];
+          notifyWebhook({
+            type: 'order', order_no: res.order_no, total: res.total,
+            items: products.filter(function (p) { return qty[p.id]; }).map(function (p) { return p.name + ' x ' + qty[p.id]; }).join(', '),
+            member_email: session.user.email, recipient: v('so-name'), phone: v('so-phone'),
+            address: v('so-addr'), depositor: v('so-depositor'), memo: v('so-memo')
+          });
+          qty = {};
+          showDone(res.order_no, res.total);
+        });
+      }
+    });
+
+    Promise.all([
+      client.rpc('list_partner_products'),
+      client.rpc('get_shop_settings'),
+      loadOrders()
+    ]).then(function (res) {
+      if (!container.isConnected) return;
+      if (res[0].error) {
+        body.innerHTML = '<div class="shop-card"><p class="shop-empty">상품을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.</p></div>';
+        return;
+      }
+      products = res[0].data || [];
+      settings = res[1].data && res[1].data[0] ? res[1].data[0] : null;
+      draw();
+    });
+  }
+
+  // ===== 주문 관리 (관리자 전용) =====
+  function renderAdminOrders(container) {
+    var client = window.supabaseClient;
+    var tab = 'orders', filter = 'pending_payment', orders = [], mallProducts = [], settings = null;
+
+    container.innerHTML =
+      '<section class="page-section admin-page">' +
+      '<div class="section-title"><h2>파트너 전용몰 관리</h2></div>' +
+      '<div class="admin-card"><p class="admin-loading">불러오는 중…</p></div>' +
+      '</section>';
+    var card = container.querySelector('.admin-card');
+
+    function topTabs() {
+      return '<div class="admin-tabs admin-tabs--main">' + [['orders', '주문'], ['prices', '전용몰 가격'], ['settings', '입금 계좌·배송비']].map(function (t) {
+        return '<button type="button" class="admin-tab' + (tab === t[0] ? ' is-active' : '') + '" data-tab="' + t[0] + '">' + t[1] + '</button>';
+      }).join('') + '<a class="admin-tab admin-tab--link" href="#/admin">회원 승인 관리 →</a></div>';
+    }
+
+    function drawOrders() {
+      var c = { pending_payment: 0, paid: 0, shipped: 0, cancelled: 0, all: orders.length };
+      orders.forEach(function (o) { c[o.status]++; });
+      var list = orders.filter(function (o) { return filter === 'all' || o.status === filter; });
+      var html = '<div class="admin-tabs">' + [['pending_payment', '입금 대기'], ['paid', '입금 확인'], ['shipped', '발송 완료'], ['cancelled', '취소'], ['all', '전체']].map(function (t) {
+        return '<button type="button" class="admin-tab' + (filter === t[0] ? ' is-active' : '') + '" data-filter="' + t[0] + '">' + t[1] + ' <span class="admin-count">' + c[t[0]] + '</span></button>';
+      }).join('') + '</div>';
+      if (!list.length) return html + '<p class="admin-empty">해당하는 주문이 없어요.</p>';
+      return html + '<ul class="admin-list">' + list.map(function (o) {
+        var items = (o.items || []).map(function (it) { return shopEsc(it.name) + ' × ' + it.qty + ' (' + won(it.unit_price * it.qty) + ')'; }).join('<br>');
+        return '<li class="admin-order" data-id="' + o.id + '">' +
+          '<div class="admin-order-head"><b>' + shopEsc(o.order_no) + '</b> <span class="admin-status admin-status--o-' + o.status + '">' + ORDER_STATUS_LABEL[o.status] + '</span>' +
+          '<span class="admin-order-date">' + shopDate(o.created_at) + '</span></div>' +
+          '<p class="admin-order-who">' + shopEsc(o.member_name || '이름 미입력') + (o.shop_name ? ' · ' + shopEsc(o.shop_name) : '') + ' · ' + shopEsc(o.email) + '</p>' +
+          '<p class="admin-order-items">' + items + '</p>' +
+          '<p class="admin-order-total">상품 ' + won(o.items_total) + ' + 배송비 ' + won(o.shipping_fee) + ' = <b>' + won(o.total) + '</b> · 입금자명 <b>' + shopEsc(o.depositor_name) + '</b></p>' +
+          '<p class="admin-order-ship">' + shopEsc(o.recipient_name) + ' · ' + shopEsc(o.recipient_phone) + '<br>' + shopEsc(o.address) + (o.memo ? '<br>요청: ' + shopEsc(o.memo) : '') + '</p>' +
+          '<div class="admin-order-edit">' +
+          '<select class="ao-status">' + Object.keys(ORDER_STATUS_LABEL).map(function (k) { return '<option value="' + k + '"' + (k === o.status ? ' selected' : '') + '>' + ORDER_STATUS_LABEL[k] + '</option>'; }).join('') + '</select>' +
+          '<input class="ao-tracking" type="text" placeholder="송장번호" value="' + shopEsc(o.tracking || '') + '">' +
+          '<input class="ao-memo" type="text" placeholder="메모 (나만 보임)" value="' + shopEsc(o.admin_memo || '') + '">' +
+          '<button type="button" class="admin-btn admin-btn--approve ao-save">저장</button>' +
+          '</div></li>';
+      }).join('') + '</ul>';
+    }
+
+    function drawPrices() {
+      if (!mallProducts.length) return '<p class="admin-empty">등록된 상품이 없어요.</p>';
+      return '<p class="admin-note">전용몰 가격을 넣은 상품만 파트너 전용몰에 보여요. 비우고 저장하면 전용몰에서 빠져요. (일반 가격은 상품 페이지·스마트스토어 가격)</p>' +
+        '<ul class="admin-list">' + mallProducts.map(function (p) {
+          return '<li class="admin-item" data-pid="' + shopEsc(p.id) + '">' +
+            '<div class="admin-info"><p class="admin-name">' + shopEsc(p.name) + (p.status !== 'active' ? ' <span class="admin-warn">(비공개 상품)</span>' : '') + '</p>' +
+            '<p class="admin-meta">일반 가격 ' + (p.price != null ? won(p.price) : '-') + '</p></div>' +
+            '<div class="admin-actions"><input class="ap-price" type="number" min="0" step="1000" placeholder="전용몰 가격" value="' + (p.partner_price || '') + '">' +
+            '<button type="button" class="admin-btn admin-btn--approve ap-save">저장</button></div></li>';
+        }).join('') + '</ul>';
+    }
+
+    function drawSettings() {
+      var s = settings || {};
+      var f = function (id, label, val, type, ph) {
+        return '<label>' + label + '<input id="' + id + '" type="' + (type || 'text') + '" value="' + shopEsc(val == null ? '' : val) + '" placeholder="' + (ph || '') + '"></label>';
+      };
+      return '<div class="admin-settings">' +
+        f('st-bank', '은행', s.bank_name, 'text', '예: 국민은행') +
+        f('st-account', '계좌번호', s.account_number, 'text', '000000-00-000000') +
+        f('st-holder', '예금주', s.account_holder) +
+        f('st-ship', '배송비 (원)', s.shipping_fee, 'number', '0이면 무료') +
+        f('st-free', '이 금액 이상이면 배송비 무료 (원, 선택)', s.free_shipping_over, 'number') +
+        f('st-days', '입금 기한 (일)', s.deposit_days || 3, 'number') +
+        '<label class="shop-wide">주문서 안내 문구 (선택)<input id="st-notice" type="text" value="' + shopEsc(s.notice || '') + '" placeholder="예: 평일 오후 2시 전 입금 확인 시 당일 발송"></label>' +
+        '<label class="shop-wide">주문 알림 주소 (구글 Apps Script 웹앱 URL, 선택)<input id="st-webhook" type="url" value="' + shopEsc(s.order_webhook_url || '') + '"></label>' +
+        '<button type="button" class="admin-btn admin-btn--approve" id="st-save">저장</button>' +
+        '</div>';
+    }
+
+    function draw() {
+      if (!container.isConnected) return;
+      card.innerHTML = topTabs() + (tab === 'orders' ? drawOrders() : tab === 'prices' ? drawPrices() : drawSettings());
+    }
+
+    function load() {
+      return Promise.all([client.rpc('admin_list_orders'), client.rpc('admin_list_products_for_mall'), client.rpc('get_shop_settings')]).then(function (r) {
+        if (!container.isConnected) return;
+        if (r[0].error) { card.innerHTML = '<p class="admin-empty">불러오지 못했어요. 관리자 계정으로 로그인했는지, 전용몰 SQL을 실행했는지 확인해 주세요.</p>'; return; }
+        orders = r[0].data || []; mallProducts = r[1].data || []; settings = r[2].data && r[2].data[0] ? r[2].data[0] : null;
+        draw();
+      });
+    }
+
+    function done(btn, res, okText) {
+      if (res.error) { btn.disabled = false; btn.textContent = '다시 시도'; window.alert('저장하지 못했어요: ' + res.error.message); return; }
+      btn.textContent = okText || '저장됨'; load();
+    }
+
+    card.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-tab]'); if (t) { tab = t.dataset.tab; draw(); return; }
+      var f = e.target.closest('[data-filter]'); if (f) { filter = f.dataset.filter; draw(); return; }
+      var btn = e.target.closest('button'); if (!btn) return;
+      if (btn.classList.contains('ao-save')) {
+        var li = btn.closest('.admin-order'); btn.disabled = true; btn.textContent = '저장 중…';
+        client.rpc('admin_update_order', { p_id: li.dataset.id, p_status: li.querySelector('.ao-status').value,
+          p_tracking: li.querySelector('.ao-tracking').value, p_admin_memo: li.querySelector('.ao-memo').value })
+          .then(function (r) { done(btn, r); });
+      } else if (btn.classList.contains('ap-save')) {
+        var row = btn.closest('[data-pid]'); var val = row.querySelector('.ap-price').value;
+        btn.disabled = true; btn.textContent = '저장 중…';
+        client.rpc('admin_set_partner_price', { p_id: row.dataset.pid, p_partner_price: val ? parseInt(val, 10) : null }).then(function (r) { done(btn, r); });
+      } else if (btn.id === 'st-save') {
+        var g = function (id) { return card.querySelector('#' + id).value.trim(); };
+        var num = function (id) { var x = g(id); return x === '' ? null : parseInt(x, 10); };
+        btn.disabled = true; btn.textContent = '저장 중…';
+        client.rpc('admin_save_shop_settings', { p_bank_name: g('st-bank'), p_account_number: g('st-account'), p_account_holder: g('st-holder'),
+          p_shipping_fee: num('st-ship') || 0, p_free_shipping_over: num('st-free'), p_deposit_days: num('st-days') || 3,
+          p_notice: g('st-notice'), p_order_webhook_url: g('st-webhook') }).then(function (r) { done(btn, r); });
+      }
+    });
+
+    load();
+  }
+
   // ===== 회원 승인 관리 (관리자 전용) =====
   // 실제 권한 확인은 Supabase 함수(is_site_admin / admin_list_members /
   // admin_set_member_status)가 서버에서 한다. 관리자가 아니면 목록이 비어
@@ -2100,6 +2421,17 @@ window.Pages = (function () {
       box.href = '#/admin';
       box.innerHTML = '<span>회원 승인 관리</span><span class="admin-shortcut-count"></span>';
       cardEl.parentNode.insertBefore(box, cardEl.nextSibling);
+      var ob = document.createElement('a');
+      ob.className = 'admin-shortcut';
+      ob.href = '#/admin-orders';
+      ob.innerHTML = '<span>파트너 전용몰 주문 관리</span><span class="admin-shortcut-count"></span>';
+      box.parentNode.insertBefore(ob, box.nextSibling);
+      client.rpc('admin_list_orders').then(function (r) {
+        if (r.error || !ob.isConnected) { if (r.error) ob.querySelector('.admin-shortcut-count').textContent = '설정 필요'; return; }
+        var n = (r.data || []).filter(function (o) { return o.status === 'pending_payment'; }).length;
+        ob.querySelector('.admin-shortcut-count').textContent = n ? '입금 대기 ' + n + '건' : '새 주문 없음';
+        if (n) ob.classList.add('has-pending');
+      });
       client.rpc('admin_list_members').then(function (r) {
         if (r.error || !box.isConnected) return;
         var n = (r.data || []).filter(function (m) { return (m.education_status || 'pending') === 'pending'; }).length;
@@ -2225,6 +2557,18 @@ window.Pages = (function () {
       window.AccessControl.checkEducationAccess(container, function (c, session, profile) {
         renderMyPage(c, session, profile);
         attachAdminShortcut(c);
+      });
+    },
+
+    shop: function (container) {
+      window.AccessControl.checkEducationAccess(container, function (c, session, profile) {
+        renderShop(c, session, profile);
+      });
+    },
+
+    adminOrders: function (container) {
+      window.AccessControl.checkEducationAccess(container, function (c) {
+        renderAdminOrders(c);
       });
     },
 
