@@ -1639,17 +1639,16 @@ window.Pages = (function () {
           var thumb = p.thumbnail_url || p.image_url || '';
           var name = (lang === 'en' && p.name_en) ? p.name_en : (p.name || '');
           var summary = (lang === 'en' && p.summary_en) ? p.summary_en : p.summary;
+          var detailHref = '#/product/' + encodeURIComponent(p.id);
           return '<div class="product-card">' +
-            '<div class="product-thumb">' +
+            '<a class="product-thumb" href="' + detailHref + '">' +
             (p.is_featured ? '<span class="product-badge" data-i18n="productsFeaturedBadge">' + window.t('productsFeaturedBadge') + '</span>' : '') +
             (thumb ? '<img src="' + thumb + '" alt="' + name + '">' : '') +
-            '</div>' +
-            '<p class="product-name">' + name + '</p>' +
+            '</a>' +
+            '<a class="product-name" href="' + detailHref + '">' + name + '</a>' +
             (summary ? '<p class="product-summary">' + summary + '</p>' : '') +
             (p.price != null ? '<p class="product-price">' + formatPrice(p.price) + '</p>' : '') +
-            (p.purchase_url
-              ? '<a class="product-buy-btn" href="' + p.purchase_url + '" target="_blank" rel="noopener" data-i18n="productsBuyBtn">' + window.t('productsBuyBtn') + '</a>'
-              : '') +
+            '<a class="product-buy-btn" href="' + detailHref + '">' + (window.currentLanguage === 'en' ? 'View details' : '자세히 보기') + '</a>' +
             '</div>';
         }).join('') +
         '</div>';
@@ -1966,6 +1965,76 @@ window.Pages = (function () {
 
   // 마이페이지: 승인된 교육생의 기본 정보 요약 + 관심 혈자리 바로가기.
   // 세미나 신청 내역 확인은 실제 연동된 데이터가 없어 준비 중 안내만 표시한다.
+
+  // ===== 상품 상세페이지 (#/product/상품id) =====
+  // 누구나 볼 수 있다. 승인된 회원이면 파트너 전용가와 '전용몰에서 주문하기'를,
+  // 아니면 스마트스토어 구매 버튼을 보여준다.
+  function renderProductDetail(container, queryString, productId) {
+    var client = window.supabaseClient;
+    container.innerHTML = '<section class="page-section pd-page"><div class="pd-wrap"><p class="shop-loading">불러오는 중…</p></div></section>';
+    var wrap = container.querySelector('.pd-wrap');
+    if (!client || !productId) { wrap.innerHTML = '<p class="shop-empty">상품을 찾을 수 없어요.</p>'; return; }
+    var pid = decodeURIComponent(productId);
+
+    Promise.all([
+      client.from('products').select('*').eq('status', 'active'),
+      client.rpc('list_partner_products')
+    ]).then(function (res) {
+      if (!container.isConnected) return;
+      var p = ((res[0] && res[0].data) || []).filter(function (x) { return String(x.id) === pid; })[0];
+      if (!p) { wrap.innerHTML = '<p class="shop-empty">상품을 찾을 수 없어요.</p><p class="pd-back"><a href="#/products">← 상품 목록</a></p>'; return; }
+      var partner = (!res[1].error && res[1].data) ? res[1].data.filter(function (x) { return x.id === pid; })[0] : null;
+      var isPartner = !res[1].error;
+      var images = [p.thumbnail_url || p.image_url].concat(p.detail_images || []).filter(Boolean);
+      var desc = (p.description || '').split(/\n{2,}/).map(function (para) {
+        return '<p>' + shopEsc(para).replace(/\n/g, '<br>') + '</p>';
+      }).join('');
+      var qty = 1;
+
+      var priceHtml = partner
+        ? '<p class="pd-price">' + (p.price ? '<span class="shop-was">' + won(p.price) + '</span>' : '') +
+          (p.price && p.price > partner.partner_price ? '<span class="shop-off">' + Math.round((1 - partner.partner_price / p.price) * 100) + '%</span>' : '') +
+          '<b>' + won(partner.partner_price) + '</b><span class="pd-tag">파트너 전용가</span></p>'
+        : (p.price != null ? '<p class="pd-price"><b>' + won(p.price) + '</b></p>' : '');
+
+      var buyHtml = partner
+        ? '<div class="pd-buy"><div class="shop-qty pd-qty"><button type="button" data-step="-1" aria-label="빼기">−</button><span id="pd-qty">1</span><button type="button" data-step="1" aria-label="더하기">+</button></div>' +
+          '<button type="button" class="shop-submit pd-order" id="pd-order">전용몰에서 주문하기</button></div>'
+        : (p.purchase_url ? '<a class="shop-submit pd-order pd-link" href="' + shopEsc(p.purchase_url) + '" target="_blank" rel="noopener">스마트스토어에서 구매하기</a>' : '') +
+          (isPartner ? '' : '<p class="shop-muted">승인된 파트너 회원은 파트너 전용몰에서 더 저렴하게 구매할 수 있어요.</p>');
+
+      wrap.innerHTML =
+        '<p class="pd-back"><a href="' + (isPartner ? '#/shop' : '#/products') + '">← ' + (isPartner ? '파트너 전용몰' : '상품 목록') + '</a></p>' +
+        '<div class="pd-top">' +
+        '<div class="pd-gallery"><div class="pd-main">' + (images[0] ? '<img id="pd-main-img" src="' + shopEsc(images[0]) + '" alt="' + shopEsc(p.name) + '">' : '') + '</div>' +
+        (images.length > 1 ? '<div class="pd-thumbs">' + images.map(function (u, i) {
+          return '<button type="button" class="pd-thumb' + (i === 0 ? ' is-active' : '') + '" data-img="' + shopEsc(u) + '"><img src="' + shopEsc(u) + '" alt=""></button>';
+        }).join('') + '</div>' : '') + '</div>' +
+        '<div class="pd-info"><h2 class="pd-name">' + shopEsc(p.name) + '</h2>' +
+        (p.summary ? '<p class="pd-summary">' + shopEsc(p.summary) + '</p>' : '') +
+        priceHtml + buyHtml + '</div></div>' +
+        (desc ? '<div class="pd-desc"><h3 class="shop-h">상품 설명</h3>' + desc + '</div>' : '') +
+        ((p.detail_images || []).length ? '<div class="pd-detail-images">' + p.detail_images.map(function (u) {
+          return '<img src="' + shopEsc(u) + '" alt="" loading="lazy">';
+        }).join('') + '</div>' : '');
+
+      wrap.addEventListener('click', function (e) {
+        var t = e.target.closest('.pd-thumb');
+        if (t) {
+          wrap.querySelector('#pd-main-img').src = t.dataset.img;
+          wrap.querySelectorAll('.pd-thumb').forEach(function (b) { b.classList.toggle('is-active', b === t); });
+          return;
+        }
+        var st = e.target.closest('[data-step]');
+        if (st) { qty = Math.min(99, Math.max(1, qty + Number(st.dataset.step))); wrap.querySelector('#pd-qty').textContent = qty; return; }
+        if (e.target.id === 'pd-order') {
+          try { sessionStorage.setItem('shopPreset', JSON.stringify({ id: pid, qty: qty })); } catch (err) {}
+          window.location.hash = '#/shop';
+        }
+      });
+    });
+  }
+
   // ===== 파트너 전용몰 (승인된 회원 전용 · 계좌이체) =====
   // 가격·합계는 서버 함수(place_order)가 상품 표에서 다시 계산한다.
   // 화면의 금액은 미리보기일 뿐이라, 화면을 고쳐 보내도 실제 주문 금액은 바뀌지 않는다.
@@ -2036,8 +2105,8 @@ window.Pages = (function () {
         var q = qty[p.id] || 0;
         var off = p.price && p.price > p.partner_price ? Math.round((1 - p.partner_price / p.price) * 100) : 0;
         return '<div class="shop-item">' +
-          '<div class="shop-thumb">' + (p.thumbnail_url ? '<img src="' + shopEsc(p.thumbnail_url) + '" alt="' + shopEsc(p.name) + '">' : '') + '</div>' +
-          '<p class="shop-name">' + shopEsc(p.name) + '</p>' +
+          '<a class="shop-thumb" href="#/product/' + encodeURIComponent(p.id) + '">' + (p.thumbnail_url ? '<img src="' + shopEsc(p.thumbnail_url) + '" alt="' + shopEsc(p.name) + '">' : '') + '</a>' +
+          '<a class="shop-name" href="#/product/' + encodeURIComponent(p.id) + '">' + shopEsc(p.name) + '</a>' +
           (p.summary ? '<p class="shop-summary">' + shopEsc(p.summary) + '</p>' : '') +
           '<p class="shop-price">' +
           (off ? '<span class="shop-was">' + won(p.price) + '</span><span class="shop-off">' + off + '%</span>' : '') +
@@ -2164,7 +2233,17 @@ window.Pages = (function () {
       }
       products = res[0].data || [];
       settings = res[1].data && res[1].data[0] ? res[1].data[0] : null;
+      // 상세페이지에서 '전용몰에서 주문하기'로 넘어온 경우 그 수량을 미리 담아 둔다.
+      try {
+        var preset = JSON.parse(sessionStorage.getItem('shopPreset') || 'null');
+        sessionStorage.removeItem('shopPreset');
+        if (preset && products.some(function (p) { return p.id === preset.id; })) qty[preset.id] = preset.qty || 1;
+      } catch (err) {}
       draw();
+      if (Object.keys(qty).length) {
+        var formEl = body.querySelector('.shop-order-form');
+        if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
   }
 
@@ -2214,10 +2293,28 @@ window.Pages = (function () {
 
     var editing = null; // null | 'new' | 상품 id
     var editImage = '';
+    var editDetails = [];
+    function detailListHtml() {
+      if (!editDetails.length) return '<span class="admin-note">아직 없어요.</span>';
+      return editDetails.map(function (u, i) {
+        return '<div class="admin-detail-item"><img src="' + shopEsc(u) + '" alt="">' +
+          '<button type="button" class="admin-detail-del" data-del="' + i + '" aria-label="빼기">×</button></div>';
+      }).join('');
+    }
+    function uploadImage(file) {
+      return shrinkImage(file).then(function (blob) {
+        var path = 'products/' + Date.now() + '-' + Math.random().toString(36).slice(2, 7) + '.jpg';
+        return client.storage.from('product-images').upload(path, blob, { contentType: 'image/jpeg', upsert: false }).then(function (r) {
+          if (r.error) throw r.error;
+          return client.storage.from('product-images').getPublicUrl(path).data.publicUrl;
+        });
+      });
+    }
 
     function productForm(p) {
       p = p || { name: '', summary: '', price: '', partner_price: '', purchase_url: '', status: 'active', sort_order: (mallProducts.length + 1) * 10 };
       editImage = p.thumbnail_url || '';
+      editDetails = (p.detail_images || []).slice();
       var f = function (id, label, val, type, ph, wide) {
         return '<label' + (wide ? ' class="shop-wide"' : '') + '>' + label + '<input id="' + id + '" type="' + (type || 'text') + '" value="' + shopEsc(val == null ? '' : val) + '" placeholder="' + (ph || '') + '"></label>';
       };
@@ -2232,6 +2329,11 @@ window.Pages = (function () {
         f('pf-price', '일반 가격 (스마트스토어 판매가, 원)', p.price, 'number') +
         f('pf-partner', '파트너 전용몰 가격 (원, 비우면 전용몰에 안 나옴)', p.partner_price, 'number') +
         f('pf-url', '스마트스토어 상품 링크 (선택)', p.purchase_url, 'url', 'https://smartstore.naver.com/730pelises/products/…', true) +
+        '<label class="shop-wide">상세 설명 (선택 · 빈 줄로 문단을 나눠요)<textarea id="pf-desc" rows="6">' + shopEsc(p.description || '') + '</textarea></label>' +
+        '<div class="shop-wide admin-detail-images"><span class="admin-label">상세 사진 (선택 · 상세페이지 아래에 순서대로 보여요)</span>' +
+        '<div class="admin-detail-list" id="pf-details">' + detailListHtml() + '</div>' +
+        '<label class="admin-btn admin-photo-btn">상세 사진 추가<input id="pf-detail-file" type="file" accept="image/*" multiple hidden></label>' +
+        '<span class="admin-note" id="pf-detail-note"></span></div>' +
         f('pf-order', '보이는 순서 (작을수록 앞)', p.sort_order, 'number') +
         '<label class="admin-check"><input id="pf-active" type="checkbox"' + (p.status === 'active' ? ' checked' : '') + '> 사이트에 공개</label>' +
         '<div class="shop-wide admin-form-btns"><button type="button" class="admin-btn admin-btn--approve" id="pf-save">저장</button>' +
@@ -2274,6 +2376,14 @@ window.Pages = (function () {
     }
 
     card.addEventListener('change', function (e) {
+      if (e.target.id === 'pf-detail-file' && e.target.files.length) {
+        var dn = card.querySelector('#pf-detail-note'); var files = Array.prototype.slice.call(e.target.files);
+        dn.textContent = '사진 ' + files.length + '장 올리는 중…';
+        files.reduce(function (pr, f) { return pr.then(function () { return uploadImage(f).then(function (u) { editDetails.push(u); }); }); }, Promise.resolve())
+          .then(function () { dn.textContent = '올렸어요. 저장을 눌러야 반영돼요.'; card.querySelector('#pf-details').innerHTML = detailListHtml(); })
+          .catch(function (err) { dn.textContent = '올리지 못했어요: ' + (err && err.message ? err.message : '다시 시도해 주세요'); card.querySelector('#pf-details').innerHTML = detailListHtml(); });
+        return;
+      }
       if (e.target.id !== 'pf-file' || !e.target.files[0]) return;
       var note = card.querySelector('#pf-photo-note');
       note.textContent = '사진 올리는 중…';
@@ -2334,6 +2444,7 @@ window.Pages = (function () {
       var f = e.target.closest('[data-filter]'); if (f) { filter = f.dataset.filter; draw(); return; }
       var btn = e.target.closest('button'); if (!btn) return;
       if (btn.id === 'pf-new') { editing = 'new'; draw(); return; }
+      if (btn.dataset.del != null) { editDetails.splice(Number(btn.dataset.del), 1); card.querySelector('#pf-details').innerHTML = detailListHtml(); return; }
       if (btn.id === 'pf-cancel') { editing = null; draw(); return; }
       if (btn.classList.contains('ap-edit')) { editing = btn.closest('[data-pid]').dataset.pid; draw(); return; }
       if (btn.id === 'pf-save') {
@@ -2345,7 +2456,8 @@ window.Pages = (function () {
           p_id: editing === 'new' ? null : editing, p_name: gv('pf-name'), p_summary: gv('pf-summary'),
           p_price: nv('pf-price'), p_partner_price: nv('pf-partner'), p_thumbnail_url: editImage,
           p_purchase_url: gv('pf-url'), p_status: card.querySelector('#pf-active').checked ? 'active' : 'draft',
-          p_sort_order: nv('pf-order') || 0
+          p_sort_order: nv('pf-order') || 0,
+          p_description: card.querySelector('#pf-desc').value, p_detail_images: editDetails
         }).then(function (r) {
           if (r.error) { btn.disabled = false; btn.textContent = '저장'; window.alert('저장하지 못했어요: ' + r.error.message); return; }
           editing = null; load();
@@ -2646,6 +2758,8 @@ window.Pages = (function () {
         attachAdminShortcut(c);
       });
     },
+
+    productDetail: renderProductDetail,
 
     shop: function (container) {
       window.AccessControl.checkEducationAccess(container, function (c, session, profile) {

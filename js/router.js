@@ -15,7 +15,8 @@
     'mypage': window.Pages.mypage,
     'admin': window.Pages.admin,
     'admin-orders': window.Pages.adminOrders,
-    'shop': window.Pages.shop
+    'shop': window.Pages.shop,
+    'product-detail': window.Pages.productDetail
   };
 
   // "#/ear-point/sleep"처럼 이어포인트 id가 뒤에 붙는 상세페이지 주소.
@@ -41,6 +42,13 @@
     var routeName = qIndex === -1 ? raw : raw.slice(0, qIndex);
     var queryString = qIndex === -1 ? '' : raw.slice(qIndex + 1);
 
+    if (routeName.indexOf('product/') === 0) {
+      var productId = routeName.slice('product/'.length);
+      if (productId && productId.indexOf('/') === -1) {
+        return { routeName: 'product-detail', queryString: queryString, pointId: productId };
+      }
+    }
+
     if (routeName.indexOf(EAR_POINT_DETAIL_PREFIX) === 0) {
       var pointId = routeName.slice(EAR_POINT_DETAIL_PREFIX.length);
       if (pointId && pointId.indexOf('/') === -1) {
@@ -58,6 +66,7 @@
   function updateActiveNav(routeName) {
     var activeRoute = routeName === '' ? 'home' : routeName;
     if (activeRoute === 'ear-point-detail') activeRoute = 'ear-point';
+    if (activeRoute === 'product-detail') activeRoute = 'shop';
     if (activeRoute === 'admin' || activeRoute === 'admin-orders') activeRoute = 'mypage';
     document.querySelectorAll('[data-route]').forEach(function (link) {
       if (link.dataset.route === activeRoute) {
