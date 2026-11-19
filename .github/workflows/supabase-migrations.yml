@@ -1,0 +1,63 @@
+# Supabase DB 자동 적용
+# - main에 supabase/migrations 안의 SQL 파일이 새로 들어오면(=PR 머지) 자동으로 Supabase에 실행한다.
+# - 이미 실행된 SQL은 Supabase가 기록해 두므로 다시 실행하지 않는다.
+# - 처음 한 번은 Actions 탭에서 이 워크플로를 mode=baseline 으로 직접 실행해
+#   "지금까지 손으로 실행한 SQL은 이미 적용됨"으로 표시해 둬야 한다.
+# 필요한 GitHub Secrets: SUPABASE_ACCESS_TOKEN, SUPABASE_DB_PASSWORD
+name: Supabase DB 자동 적용
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/**'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'push = 아직 안 된 SQL 적용 / baseline = 지금까지의 SQL을 적용된 것으로 표시 (처음 한 번)'
+        required: true
+        default: 'push'
+        type: choice
+        options: [push, baseline]
+
+concurrency:
+  group: supabase-migrations
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      PROJECT_REF: sqsnhoflrrcqgehwjqzr
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: 비밀값 확인
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ] || [ -z "$SUPABASE_DB_PASSWORD" ]; then
+            echo "::error::GitHub Settings > Secrets and variables > Actions 에 SUPABASE_ACCESS_TOKEN, SUPABASE_DB_PASSWORD 를 등록해 주세요."
+            exit 1
+          fi
+
+      - name: Supabase 프로젝트 연결
+        run: supabase link --project-ref "$PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
+
+      - name: 지금까지의 SQL을 적용된 것으로 표시 (baseline)
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'baseline'
+        run: |
+          versions=$(ls supabase/migrations/*.sql | xargs -n1 basename | cut -d_ -f1 | tr '\n' ' ')
+          echo "표시할 버전: $versions"
+          supabase migration repair --status applied $versions --password "$SUPABASE_DB_PASSWORD"
+          supabase migration list --password "$SUPABASE_DB_PASSWORD"
+
+      - name: 새 SQL 적용
+        if: github.event_name == 'push' || inputs.mode == 'push'
+        run: |
+          supabase migration list --password "$SUPABASE_DB_PASSWORD"
+          supabase db push --password "$SUPABASE_DB_PASSWORD"
