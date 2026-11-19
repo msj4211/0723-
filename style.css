@@ -4455,6 +4455,7 @@ body:has(.iframe-page.is-fullheight) .site-footer {
 .admin-name { margin: 0; font-weight: 700; font-size: 1.02rem; }
 .admin-noname { color: #B0563A; font-weight: 700; }
 .admin-phone { font-weight: 500; color: #6B6258; margin-left: 6px; font-size: 0.9rem; }
+.admin-shop { margin: 2px 0 0; font-size: 0.88rem; font-weight: 600; color: #6B4E2E; }
 .admin-email { margin: 2px 0 0; font-size: 0.88rem; color: #3D3833; word-break: break-all; }
 .admin-warn { color: #B0563A; }
 .admin-who { font-weight: 500; color: #6B6258; margin-left: 4px; }

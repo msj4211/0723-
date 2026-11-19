@@ -2029,6 +2029,7 @@ window.Pages = (function () {
             '<div class="admin-info">' +
             '<p class="admin-name">' + (m.name ? adminEsc(m.name) + (m.nickname ? ' <span class="admin-who">(' + adminEsc(m.nickname) + ')</span>' : '') : '<span class="admin-noname">이름 미입력</span>') +
             (m.phone ? ' <span class="admin-phone">' + adminEsc(m.phone) + '</span>' : '') + '</p>' +
+            (m.shop_name ? '<p class="admin-shop">' + adminEsc(m.shop_name) + '</p>' : '') +
             '<p class="admin-email">' + adminEsc(m.email) + '</p>' +
             '<p class="admin-meta">' +
             '<span class="admin-status admin-status--' + m.education_status + '">' + ADMIN_STATUS_LABEL[m.education_status] + '</span>' +
@@ -2139,6 +2140,7 @@ window.Pages = (function () {
       '<dl class="mypage-info-list">' +
       '<div><dt data-i18n="profileNameLabel">' + window.t('profileNameLabel') + '</dt><dd>' + escapeText(profile.name) + '</dd></div>' +
       '<div><dt data-i18n="profilePhoneLabel">' + window.t('profilePhoneLabel') + '</dt><dd>' + escapeText(profile.phone) + '</dd></div>' +
+      '<div><dt data-i18n="profileShopLabel">' + window.t('profileShopLabel') + '</dt><dd>' + escapeText(profile.shop_name) + '</dd></div>' +
       '<div><dt data-i18n="profileGenderLabel">' + window.t('profileGenderLabel') + '</dt><dd data-i18n="' + genderLabelKey + '">' + window.t(genderLabelKey) + '</dd></div>' +
       '<div><dt data-i18n="profileAgeLabel">' + window.t('profileAgeLabel') + '</dt><dd>' + escapeText(profile.age) + '</dd></div>' +
       '</dl>' +
