@@ -2181,7 +2181,7 @@ window.Pages = (function () {
     var card = container.querySelector('.admin-card');
 
     function topTabs() {
-      return '<div class="admin-tabs admin-tabs--main">' + [['orders', '주문'], ['prices', '전용몰 가격'], ['settings', '입금 계좌·배송비']].map(function (t) {
+      return '<div class="admin-tabs admin-tabs--main">' + [['orders', '주문'], ['prices', '상품·가격'], ['settings', '입금 계좌·배송비']].map(function (t) {
         return '<button type="button" class="admin-tab' + (tab === t[0] ? ' is-active' : '') + '" data-tab="' + t[0] + '">' + t[1] + '</button>';
       }).join('') + '<a class="admin-tab admin-tab--link" href="#/admin">회원 승인 관리 →</a></div>';
     }
@@ -2212,17 +2212,85 @@ window.Pages = (function () {
       }).join('') + '</ul>';
     }
 
-    function drawPrices() {
-      if (!mallProducts.length) return '<p class="admin-empty">등록된 상품이 없어요.</p>';
-      return '<p class="admin-note">전용몰 가격을 넣은 상품만 파트너 전용몰에 보여요. 비우고 저장하면 전용몰에서 빠져요. (일반 가격은 상품 페이지·스마트스토어 가격)</p>' +
-        '<ul class="admin-list">' + mallProducts.map(function (p) {
-          return '<li class="admin-item" data-pid="' + shopEsc(p.id) + '">' +
-            '<div class="admin-info"><p class="admin-name">' + shopEsc(p.name) + (p.status !== 'active' ? ' <span class="admin-warn">(비공개 상품)</span>' : '') + '</p>' +
-            '<p class="admin-meta">일반 가격 ' + (p.price != null ? won(p.price) : '-') + '</p></div>' +
-            '<div class="admin-actions"><input class="ap-price" type="number" min="0" step="1000" placeholder="전용몰 가격" value="' + (p.partner_price || '') + '">' +
-            '<button type="button" class="admin-btn admin-btn--approve ap-save">저장</button></div></li>';
-        }).join('') + '</ul>';
+    var editing = null; // null | 'new' | 상품 id
+    var editImage = '';
+
+    function productForm(p) {
+      p = p || { name: '', summary: '', price: '', partner_price: '', purchase_url: '', status: 'active', sort_order: (mallProducts.length + 1) * 10 };
+      editImage = p.thumbnail_url || '';
+      var f = function (id, label, val, type, ph, wide) {
+        return '<label' + (wide ? ' class="shop-wide"' : '') + '>' + label + '<input id="' + id + '" type="' + (type || 'text') + '" value="' + shopEsc(val == null ? '' : val) + '" placeholder="' + (ph || '') + '"></label>';
+      };
+      return '<div class="admin-product-form">' +
+        '<h3 class="shop-h">' + (editing === 'new' ? '새 상품 추가' : '상품 수정') + '</h3>' +
+        '<div class="admin-settings">' +
+        '<div class="shop-wide admin-photo"><div class="admin-photo-preview" id="pf-preview">' + (editImage ? '<img src="' + shopEsc(editImage) + '" alt="">' : '<span>사진 없음</span>') + '</div>' +
+        '<label class="admin-btn admin-photo-btn">사진 고르기<input id="pf-file" type="file" accept="image/*" hidden></label>' +
+        '<span class="admin-note" id="pf-photo-note">스마트스토어 상품 사진을 저장해서 올리면 돼요.</span></div>' +
+        f('pf-name', '상품 이름', p.name, 'text', '예: 한방허브볼 [페이스&바디]', true) +
+        f('pf-summary', '한 줄 설명 (선택)', p.summary, 'text', '', true) +
+        f('pf-price', '일반 가격 (스마트스토어 판매가, 원)', p.price, 'number') +
+        f('pf-partner', '파트너 전용몰 가격 (원, 비우면 전용몰에 안 나옴)', p.partner_price, 'number') +
+        f('pf-url', '스마트스토어 상품 링크 (선택)', p.purchase_url, 'url', 'https://smartstore.naver.com/730pelises/products/…', true) +
+        f('pf-order', '보이는 순서 (작을수록 앞)', p.sort_order, 'number') +
+        '<label class="admin-check"><input id="pf-active" type="checkbox"' + (p.status === 'active' ? ' checked' : '') + '> 사이트에 공개</label>' +
+        '<div class="shop-wide admin-form-btns"><button type="button" class="admin-btn admin-btn--approve" id="pf-save">저장</button>' +
+        '<button type="button" class="admin-btn" id="pf-cancel">취소</button></div>' +
+        '</div></div>';
     }
+
+    function drawPrices() {
+      var html = '<div class="admin-products-head"><p class="admin-note">전용몰 가격을 넣은 상품만 파트너 전용몰에 보여요. 일반 가격과 스마트스토어 링크는 비회원이 보는 상품 페이지에 쓰여요.</p>' +
+        (editing ? '' : '<button type="button" class="admin-btn admin-btn--approve" id="pf-new">+ 새 상품 추가</button>') + '</div>';
+      if (editing === 'new') html += productForm(null);
+      if (!mallProducts.length && editing !== 'new') return html + '<p class="admin-empty">등록된 상품이 없어요.</p>';
+      return html + '<ul class="admin-list">' + mallProducts.map(function (p) {
+        if (editing === p.id) return '<li class="admin-item admin-item--form">' + productForm(p) + '</li>';
+        return '<li class="admin-item" data-pid="' + shopEsc(p.id) + '">' +
+          '<div class="admin-product-row">' +
+          '<div class="admin-product-thumb">' + (p.thumbnail_url ? '<img src="' + shopEsc(p.thumbnail_url) + '" alt="">' : '') + '</div>' +
+          '<div class="admin-info"><p class="admin-name">' + shopEsc(p.name) + (p.status !== 'active' ? ' <span class="admin-warn">(비공개)</span>' : '') + '</p>' +
+          '<p class="admin-meta">일반 ' + (p.price != null ? won(p.price) : '-') + ' · 전용몰 ' + (p.partner_price ? won(p.partner_price) : '<span class="admin-warn">미판매</span>') + '</p></div></div>' +
+          '<div class="admin-actions"><input class="ap-price" type="number" min="0" step="1000" placeholder="전용몰 가격" value="' + (p.partner_price || '') + '">' +
+          '<button type="button" class="admin-btn admin-btn--approve ap-save">가격 저장</button>' +
+          '<button type="button" class="admin-btn ap-edit">수정</button></div></li>';
+      }).join('') + '</ul>';
+    }
+
+    // 사진을 1200px 이하 JPEG로 줄여서 올린다 (휴대폰 사진도 가볍게).
+    function shrinkImage(file) {
+      return new Promise(function (resolve) {
+        var img = new Image();
+        img.onload = function () {
+          var max = 1200, w = img.width, h = img.height, k = Math.min(1, max / Math.max(w, h));
+          var cv = document.createElement('canvas'); cv.width = Math.round(w * k); cv.height = Math.round(h * k);
+          var cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height);
+          cx.drawImage(img, 0, 0, cv.width, cv.height);
+          cv.toBlob(function (b) { resolve(b || file); }, 'image/jpeg', 0.88);
+        };
+        img.onerror = function () { resolve(file); };
+        img.src = URL.createObjectURL(file);
+      });
+    }
+
+    card.addEventListener('change', function (e) {
+      if (e.target.id !== 'pf-file' || !e.target.files[0]) return;
+      var note = card.querySelector('#pf-photo-note');
+      note.textContent = '사진 올리는 중…';
+      shrinkImage(e.target.files[0]).then(function (blob) {
+        var path = 'products/' + Date.now() + '-' + Math.random().toString(36).slice(2, 7) + '.jpg';
+        return client.storage.from('product-images').upload(path, blob, { contentType: 'image/jpeg', upsert: false }).then(function (r) {
+          if (r.error) throw r.error;
+          return client.storage.from('product-images').getPublicUrl(path).data.publicUrl;
+        });
+      }).then(function (url) {
+        editImage = url;
+        card.querySelector('#pf-preview').innerHTML = '<img src="' + shopEsc(url) + '" alt="">';
+        note.textContent = '사진을 올렸어요. 저장을 눌러야 상품에 반영돼요.';
+      }).catch(function (err) {
+        note.textContent = '사진을 올리지 못했어요: ' + (err && err.message ? err.message : '다시 시도해 주세요');
+      });
+    });
 
     function drawSettings() {
       var s = settings || {};
@@ -2265,6 +2333,25 @@ window.Pages = (function () {
       var t = e.target.closest('[data-tab]'); if (t) { tab = t.dataset.tab; draw(); return; }
       var f = e.target.closest('[data-filter]'); if (f) { filter = f.dataset.filter; draw(); return; }
       var btn = e.target.closest('button'); if (!btn) return;
+      if (btn.id === 'pf-new') { editing = 'new'; draw(); return; }
+      if (btn.id === 'pf-cancel') { editing = null; draw(); return; }
+      if (btn.classList.contains('ap-edit')) { editing = btn.closest('[data-pid]').dataset.pid; draw(); return; }
+      if (btn.id === 'pf-save') {
+        var gv = function (id) { return card.querySelector('#' + id).value.trim(); };
+        var nv = function (id) { var x = gv(id); return x === '' ? null : parseInt(x, 10); };
+        if (!gv('pf-name')) { window.alert('상품 이름을 적어 주세요.'); return; }
+        btn.disabled = true; btn.textContent = '저장 중…';
+        client.rpc('admin_save_product', {
+          p_id: editing === 'new' ? null : editing, p_name: gv('pf-name'), p_summary: gv('pf-summary'),
+          p_price: nv('pf-price'), p_partner_price: nv('pf-partner'), p_thumbnail_url: editImage,
+          p_purchase_url: gv('pf-url'), p_status: card.querySelector('#pf-active').checked ? 'active' : 'draft',
+          p_sort_order: nv('pf-order') || 0
+        }).then(function (r) {
+          if (r.error) { btn.disabled = false; btn.textContent = '저장'; window.alert('저장하지 못했어요: ' + r.error.message); return; }
+          editing = null; load();
+        });
+        return;
+      }
       if (btn.classList.contains('ao-save')) {
         var li = btn.closest('.admin-order'); btn.disabled = true; btn.textContent = '저장 중…';
         client.rpc('admin_update_order', { p_id: li.dataset.id, p_status: li.querySelector('.ao-status').value,
