@@ -4477,3 +4477,68 @@ body:has(.iframe-page.is-fullheight) .site-footer {
   .admin-item { flex-direction: column; align-items: flex-start; }
   .admin-actions { justify-content: flex-start; }
 }
+
+
+/* ===== 파트너 전용몰 ===== */
+.shop-body { max-width: 980px; margin: 0 auto; display: grid; gap: 1.25rem; }
+.shop-loading, .shop-empty { text-align: center; color: #6B6258; padding: 2rem 0; margin: 0; }
+.shop-card { background: #FFFFFF; border: 1px solid #DDD6C8; border-radius: 20px; padding: 1.5rem; }
+.shop-h { margin: 0 0 1rem; font-size: 1.05rem; }
+.shop-muted { color: #8A7F73; font-size: 0.85rem; margin: 0.5rem 0 0; }
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+.shop-item { background: #FFFFFF; border: 1px solid #DDD6C8; border-radius: 20px; padding: 1rem; display: flex; flex-direction: column; }
+.shop-thumb { aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: #F4F1EC; margin-bottom: 0.75rem; }
+.shop-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.shop-name { margin: 0; font-weight: 700; }
+.shop-summary { margin: 4px 0 0; font-size: 0.85rem; color: #6B6258; }
+.shop-price { margin: 0.6rem 0 0.75rem; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+.shop-price b { font-size: 1.15rem; }
+.shop-was { color: #A59B90; text-decoration: line-through; font-size: 0.85rem; }
+.shop-off { color: #B0563A; font-weight: 700; font-size: 0.85rem; }
+.shop-qty { margin-top: auto; display: flex; align-items: center; justify-content: space-between; border: 1px solid #DDD6C8; border-radius: 999px; padding: 4px; }
+.shop-qty button { width: 36px; height: 36px; border-radius: 999px; border: none; background: #F4F1EC; font-size: 1.1rem; cursor: pointer; }
+.shop-qty button[data-step="1"] { background: #FFCC00; }
+.shop-qty span { font-weight: 700; }
+.shop-line { display: flex; justify-content: space-between; gap: 1rem; padding: 6px 0; border-bottom: 1px solid #EEE8DD; font-size: 0.92rem; }
+.shop-total { font-weight: 800; font-size: 1.05rem; border-bottom: none; }
+.shop-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem; }
+.shop-fields label, .admin-settings label { display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; font-weight: 600; color: #3D3833; }
+.shop-fields input, .admin-settings input, .admin-order-edit input, .admin-order-edit select, .ap-price {
+  min-height: 42px; border: 1px solid #DDD6C8; border-radius: 12px; padding: 0 12px; font: inherit; font-weight: 500; background: #FFFFFF;
+}
+.shop-wide { grid-column: 1 / -1; }
+.shop-bank { margin: 1rem 0 0; padding: 12px 14px; border: 1px solid #FFCC00; border-radius: 12px; background: #FFFBEA; font-weight: 600; }
+.shop-error { color: #B0563A; font-weight: 600; margin: 0.75rem 0 0; }
+.shop-submit { width: 100%; min-height: 50px; margin-top: 1rem; border: none; border-radius: 999px; background: #FFCC00; color: #1a1a1a; font-size: 1rem; font-weight: 800; cursor: pointer; }
+.shop-submit:disabled { background: #EEE8DD; color: #A59B90; cursor: default; }
+.shop-done { text-align: center; }
+.shop-done-amount b { font-size: 1.3rem; }
+.shop-orders { list-style: none; margin: 0; padding: 0; }
+.shop-order { padding: 12px 0; border-top: 1px solid #EEE8DD; }
+.shop-order:first-child { border-top: none; }
+.shop-order-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.shop-order-items, .shop-order-meta, .shop-order-bank { margin: 4px 0 0; font-size: 0.88rem; color: #3D3833; }
+.shop-order-meta { color: #8A7F73; }
+.shop-status { padding: 2px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; border: 1px solid #DDD6C8; }
+.shop-status--pending_payment, .admin-status--o-pending_payment { background: #FFF6CC; border-color: #FFCC00; }
+.shop-status--paid, .admin-status--o-paid { background: #FFFFFF; border-color: #171717; }
+.shop-status--shipped, .admin-status--o-shipped { background: #171717; color: #FFFFFF; border-color: #171717; }
+.shop-status--cancelled, .admin-status--o-cancelled { background: #F2EEE8; color: #8A7F73; }
+.shop-link-btn { margin-top: 6px; background: none; border: none; padding: 0; color: #8A7F73; text-decoration: underline; cursor: pointer; font-size: 0.85rem; }
+.admin-tabs--main { padding-bottom: 1rem; border-bottom: 1px solid #EEE8DD; }
+.admin-tab--link { display: inline-flex; align-items: center; text-decoration: none; margin-left: auto; }
+.admin-order { padding: 16px 0; border-top: 1px solid #EEE8DD; }
+.admin-order:first-child { border-top: none; }
+.admin-order-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.admin-order-date { margin-left: auto; font-size: 0.82rem; color: #8A7F73; }
+.admin-order-who, .admin-order-items, .admin-order-total, .admin-order-ship { margin: 6px 0 0; font-size: 0.9rem; color: #3D3833; }
+.admin-order-ship { color: #6B6258; }
+.admin-order-edit { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.admin-order-edit input { flex: 1 1 140px; }
+.ap-price { width: 140px; }
+.admin-settings { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.admin-settings #st-save { grid-column: 1 / -1; justify-self: start; min-width: 120px; }
+@media (max-width: 600px) {
+  .shop-fields, .admin-settings { grid-template-columns: 1fr; }
+  .admin-tab--link { margin-left: 0; }
+}
