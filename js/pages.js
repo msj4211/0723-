@@ -2715,6 +2715,16 @@ window.Pages = (function () {
 
   function renderMyPage(container, session, profile) {
     var lang = window.currentLanguage;
+    // 프로필 칸이 비어 있으면 가입할 때 적은 정보(가입 정보)로 대신 보여준다.
+    profile = Object.assign({}, profile || {});
+    var signupMeta = (session && session.user && session.user.user_metadata) || {};
+    ['name', 'phone', 'shop_name'].forEach(function (k) {
+      var v = profile[k] == null ? '' : String(profile[k]).trim();
+      if (!v && signupMeta[k]) profile[k] = signupMeta[k];
+    });
+    var missingInfo = ['name', 'phone', 'shop_name'].some(function (k) {
+      return !(profile[k] && String(profile[k]).trim());
+    });
 
     function escapeText(str) {
       var div = document.createElement('div');
@@ -2752,6 +2762,7 @@ window.Pages = (function () {
       '<div class="mypage-actions">' +
       '<button type="button" class="mypage-edit-btn" id="mypage-edit-btn" data-i18n="mypageEditProfileBtn">' + window.t('mypageEditProfileBtn') + '</button>' +
       '</div>' +
+      (missingInfo ? '<p class="mypage-missing-note">' + window.t('mypageMissingNote') + '</p>' : '') +
       '<p class="mypage-seminar-note" data-i18n="mypageSeminarNote">' + window.t('mypageSeminarNote') + '</p>' +
       '</div>' +
       '</section>';

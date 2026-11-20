@@ -459,9 +459,21 @@
       if (!meta.name && !meta.phone && !meta.shop_name) return;
       pending = { name: meta.name || null, phone: meta.phone || null, shop_name: meta.shop_name || '', marketing_agreed: false };
     }
-    client.from('profiles').select('id').eq('id', user.id).maybeSingle().then(function (res) {
-      if (!res.error && !res.data) {
+    client.from('profiles').select('*').eq('id', user.id).maybeSingle().then(function (res) {
+      if (res.error) return;
+      if (!res.data) {
         saveProfileNow(user.id, pending);
+        return;
+      }
+      // 프로필은 있는데 이름·전화번호·상호명이 비어 있으면, 가입 때 적은 값으로 빈 칸만 채운다.
+      var cur = res.data, patch = {};
+      ['name', 'phone', 'shop_name'].forEach(function (k) {
+        var have = cur[k] == null ? '' : String(cur[k]).trim();
+        var want = pending[k] == null ? '' : String(pending[k]).trim();
+        if (!have && want && Object.prototype.hasOwnProperty.call(cur, k)) patch[k] = want;
+      });
+      if (Object.keys(patch).length) {
+        client.from('profiles').update(patch).eq('id', user.id).then(function () {});
       }
     });
   }
