@@ -14,11 +14,20 @@ window.EarPointsRepo = (function () {
     return window.supabaseClient;
   }
 
+  // 영어 모드에서는 name_en/description_en(있으면)을 보여준다.
+  // 언어를 바꿔도 다시 불러오지 않도록, 읽을 때마다 현재 언어로 고르는 getter로 둔다.
+  function pickLang(ko, en) {
+    return (window.currentLanguage === 'en' && en) ? en : ko;
+  }
+
   function toItem(row) {
     return {
       id: row.id,
-      name: row.name,
-      desc: row.description,
+      get name() { return pickLang(row.name, row.name_en); },
+      get desc() { return pickLang(row.description, row.description_en); },
+      name_ko: row.name,
+      name_en: row.name_en || null,
+      desc_en: row.description_en || null,
       imageUrl: row.image_url || null
     };
   }
@@ -41,7 +50,7 @@ window.EarPointsRepo = (function () {
       return Promise.resolve([]);
     }
 
-    loadPromise = client().from('ear_points').select('id, name, description, image_url').then(function (res) {
+    loadPromise = client().from('ear_points').select('*').then(function (res) {
       if (res.error || !res.data) {
         if (res.error) console.error('[EarPointsRepo] ear_points 조회 실패:', res.error);
         populateLegacyGlobal([]);

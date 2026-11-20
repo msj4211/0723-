@@ -20,7 +20,7 @@ window.EarPointDetailRepo = (function () {
 
     return client()
       .from('ear_point_details')
-      .select('selection_reason, location_guide, combo_points, usage_steps, management_tips, avoid_when, video_title, video_url, video_description')
+      .select('*')
       .eq('ear_point_id', pointId)
       .maybeSingle()
       .then(function (res) {
@@ -28,19 +28,28 @@ window.EarPointDetailRepo = (function () {
           return { data: null, error: res.error || null };
         }
         var row = res.data;
+        // 영어 모드에서는 *_en 칸에 번역이 있으면 그것을 쓴다 (없으면 한국어).
+        function en() { return window.currentLanguage === 'en'; }
+        function txt(k) { return (en() && row[k + '_en']) ? row[k + '_en'] : (row[k] || ''); }
+        function arr(k) {
+          var v = (en() && Array.isArray(row[k + '_en']) && row[k + '_en'].length) ? row[k + '_en'] : row[k];
+          return toArray(v);
+        }
         return {
           data: {
-            selectionReason: row.selection_reason || '',
-            locationGuide: row.location_guide || '',
-            comboPoints: toArray(row.combo_points).filter(function (item) {
-              return item && typeof item === 'object' && item.name;
-            }),
-            usageSteps: toArray(row.usage_steps).filter(Boolean),
-            managementTips: toArray(row.management_tips).filter(Boolean),
-            avoidWhen: toArray(row.avoid_when).filter(Boolean),
-            videoTitle: row.video_title || '',
+            get selectionReason() { return txt('selection_reason'); },
+            get locationGuide() { return txt('location_guide'); },
+            get comboPoints() {
+              return arr('combo_points').filter(function (item) {
+                return item && typeof item === 'object' && item.name;
+              });
+            },
+            get usageSteps() { return arr('usage_steps').filter(Boolean); },
+            get managementTips() { return arr('management_tips').filter(Boolean); },
+            get avoidWhen() { return arr('avoid_when').filter(Boolean); },
+            get videoTitle() { return txt('video_title'); },
             videoUrl: row.video_url || '',
-            videoDescription: row.video_description || ''
+            get videoDescription() { return txt('video_description'); }
           },
           error: null
         };
@@ -57,7 +66,7 @@ window.EarPointDetailRepo = (function () {
 
     return client()
       .from('ear_point_related_points')
-      .select('related_ear_point_id, reason, sort_order')
+      .select('*')
       .eq('ear_point_id', pointId)
       .order('sort_order', { ascending: true })
       .limit(limit || 3)
@@ -67,7 +76,10 @@ window.EarPointDetailRepo = (function () {
         }
         return {
           data: res.data.map(function (row) {
-            return { id: row.related_ear_point_id, reason: row.reason || '' };
+            return {
+              id: row.related_ear_point_id,
+              get reason() { return (window.currentLanguage === 'en' && row.reason_en) ? row.reason_en : (row.reason || ''); }
+            };
           }),
           error: null
         };
