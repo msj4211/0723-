@@ -331,6 +331,20 @@ window.Pages = (function () {
     setupEmbedHeaderAutoHide(container.querySelector('.diary-frame'));
   }
 
+  // 고객 관리 동의서: 승인된 원장님이 고객에게 보여주거나 인쇄해 서명받는 양식.
+  function renderConsentEmbed(container) {
+    container.innerHTML = `
+      <div class="iframe-page is-fullheight">
+        <iframe
+          class="embed-frame consent-frame"
+          src="/consent/?v=${TOOL_PAGE_VERSION}"
+          title="730 관리 동의서"
+          loading="lazy"></iframe>
+      </div>
+    `;
+    setupEmbedHeaderAutoHide(container.querySelector('.consent-frame'));
+  }
+
   function renderEarReadingEmbed(container) {
     container.innerHTML = `
       <div class="iframe-page is-fullheight">
@@ -2801,6 +2815,12 @@ window.Pages = (function () {
     diary: renderDiaryEmbed,
 
     trouble: renderTroubleEmbed,
+
+    consent: function (container) {
+      window.AccessControl.checkEducationAccess(container, function (c) {
+        renderConsentEmbed(c);
+      });
+    },
 
     earReading: function (container) {
       window.AccessControl.checkEducationAccess(container, function (c) {
