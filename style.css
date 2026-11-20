@@ -4604,3 +4604,13 @@ a.auth-user-email:focus-visible {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* 관심 혈자리 → 마이페이지로 돌아가기 */
+.mypage-back-link {
+  display: inline-block;
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: #7A5C3E;
+  text-decoration: none;
+}
+.mypage-back-link:hover { text-decoration: underline; }

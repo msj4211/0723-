@@ -64,6 +64,7 @@ window.translations = {
     navShop: '파트너 전용몰',
     mypageEditProfileBtn: '프로필 수정',
     mypageFavoritesLink: '관심 혈자리 보러가기',
+    mypageBackLink: '‹ 마이페이지',
     mypageSeminarNote: '세미나 신청 내역 확인 기능은 준비 중입니다.',
     mypageApprovedSince: '교육생 승인일: {date}',
 
@@ -384,6 +385,7 @@ window.translations = {
     navShop: 'Partner Shop',
     mypageEditProfileBtn: 'Edit Profile',
     mypageFavoritesLink: 'View My Ear Points',
+    mypageBackLink: '‹ My Page',
     mypageSeminarNote: 'Seminar registration history is coming soon.',
     mypageApprovedSince: 'Approved on {date}',
 
