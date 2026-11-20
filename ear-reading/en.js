@@ -2018,6 +2018,2440 @@ window.ER_EN = {
 "Balances the left and right cerebral hemispheres. Treating this point before therapy helps people with left-right bias (laterality switching). Used for dyslexia, learning disorders, ADD and hypersensitivity to prescription drugs."
 ]
 ],
+"외비": [
+[
+"Basic role",
+"The outer nose gets the most sunlight, has densely packed sebaceous glands, and has blood vessels running close to the surface of the face. That's why redness, breakouts and pores show there first. This point looks at discomfort of the nose's outer skin and around the nasal bone."
+],
+[
+"Everyday signals",
+"Entering a warm place, the tip of your nose turns red quickly. Redness beside the nostrils won't go away. Nose pores and blackheads bother you. The skin around the nose is dry and flaky. In the sun, your nose burns first."
+],
+[
+"In Korean medicine",
+"In Korean medicine the nose is the window of the lungs (肺開竅於鼻), and the lungs govern the skin (肺主皮毛). The stomach meridian (胃經), which runs across the face, also starts beside the nostrils. So redness and breakouts on the nose are read together as lung heat and stomach heat. This explains why alcohol and spicy, greasy food redden the nose."
+],
+[
+"Body and mind",
+"The nose sits in the very center of the face, so even slight redness stands out. Many clients go through a vicious cycle: makeup gets heavier to cover a red nose, and that makeup makes the skin sensitive again."
+],
+[
+"730 Skin application",
+"A point used directly in consultations on redness and rosacea around the nose, sebum breakouts and sun damage. Grouping it with the Stomach and Lung points as heat-cooling care makes the explanation natural."
+],
+[
+"What to say",
+"\"Does the tip of your nose turn red often and bother you? It may be a sign that heat in your body is rising to the center of your face. Today I'll care for the point that cools the heat with you.\""
+],
+[
+"Points that go well together",
+"Skin Disease (breakouts · redness), Ear Apex (cooling heat), Lung (skin and nose), Stomach (stomach heat), Internal Nose"
+],
+[
+"Caution",
+"If after a nose injury its shape is twisted or pain and swelling are severe, recommend seeing a doctor first."
+],
+[
+"Reference",
+"Used for nasal pain, nasal bone fractures, sunburn, rosacea and acne."
+]
+],
+"하악": [
+[
+"Basic role",
+"The lower jaw is the only movable bone in the face. Each time you speak or chew, the masseter (square-jaw muscle) and surrounding muscles pull it up. This point looks at tension in the mandible and its chewing muscles and pain in the lower teeth, and is used as a pair with the TMJ."
+],
+[
+"Everyday signals",
+"Your jaw feels stiff when you wake up. You clench your teeth when concentrating. Chewing tough food makes your jaw hurt. Your lower molars feel sensitive. The muscle at the angle of the jaw feels hard to the touch."
+],
+[
+"In Korean medicine",
+"The stomach meridian (胃經) runs along the lower jaw and cheeks, and the 'Jiache' (頰車) point sits on the masseter. The large intestine meridian (大腸經) is believed to enter the lower gums. So when heat builds up in the stomach and large intestine, the lower gums swell and the jaw feels heavy."
+],
+[
+"Body and mind",
+"The jaw is where 'held-back emotions' build up. When swallowing words and suppressing anger, people clench their teeth without realizing. That's why the lower jaw hardens during periods of heavy stress."
+],
+[
+"730 Skin application",
+"Constant tension in the chewing muscles enlarges the masseter, giving a square-jaw look, and differences between sides create asymmetry. Blocked lymph flow under the jaw can also make the jawline look puffy and collapsed. Good to release first before contour and lifting care."
+],
+[
+"What to say",
+"\"Your jaw feels stiff when you wake up, right? You may have been clenching your teeth even while sleeping. Today I'll release your jaw muscles first, then do contour care.\""
+],
+[
+"Points that go well together",
+"TMJ (partner), Maxilla, Muscle Relaxation, Teeth, Shenmen (tension relief)"
+],
+[
+"Caution",
+"If the mouth won't open well, the jaw catches and won't move, or toothache persists, recommend seeing a dentist or oral medicine specialist first."
+],
+[
+"Reference",
+"Provides pain relief during tooth extraction; used for toothache, jaw pain, teeth grinding, TMJ dysfunction and trigeminal neuralgia."
+]
+],
+"상악": [
+[
+"Basic role",
+"The upper jaw is fixed to the skull and doesn't move, but it holds the upper teeth and forms the central skeleton of the face. Inside is the hollow space beside the nose (maxillary sinus), so it's close to the nose as well. This point looks at upper tooth pain and tension around the upper jaw."
+],
+[
+"Everyday signals",
+"Your upper molars feel sensitive. After a head cold your upper teeth seem to hurt. Below the cheekbones feels stiff. Clenching your teeth pulls the upper cheeks. Only one side of your face feels heavy."
+],
+[
+"In Korean medicine",
+"The stomach meridian (胃經) is believed to enter the upper gums. So excess heat in the stomach is said to swell the upper gums, cause bad breath and make the upper molars throb. This explains why gums swell after eating spicy, greasy food."
+],
+[
+"Body and mind",
+"The habit of clenching tires both the upper and lower jaws. That's why the whole face feels stiff during periods of high tension."
+],
+[
+"730 Skin application",
+"The upper jaw is the skeletal base of the cheekbone and nasolabial line. When this area is tense, the center of the face stiffens and circulation drops, making the cheeks look saggy. Release it together before midface lifting care."
+],
+[
+"What to say",
+"\"Do you sometimes feel stiffness below your cheekbones and sensitivity in your upper teeth? The muscles in the center of your face are quite tense. Today I'll release that area first.\""
+],
+[
+"Points that go well together",
+"Mandible, TMJ, Teeth, Face, Muscle Relaxation"
+],
+[
+"Caution",
+"If upper tooth pain comes with nasal congestion, yellow discharge and cheekbone pain, it may be sinusitis, so recommend seeing a doctor. If toothache persists, recommend seeing a dentist first."
+],
+[
+"Reference",
+"Provides pain relief during tooth extraction. Used for toothache, jaw pain, teeth grinding, TMJ dysfunction and trigeminal neuralgia."
+]
+],
+"턱관절": [
+[
+"Basic role",
+"The TMJ is the joint just in front of the ear connecting the mandible and the skull (temporal bone). It moves thousands of times a day as you speak, chew and swallow, and is a complex joint that both opens and closes like a door and slides forward. A disc between the bones absorbs shock."
+],
+[
+"Everyday signals",
+"There's a 'click' when you open your mouth. In the morning your jaw is stiff and your head heavy. Your jaw catches when you yawn. Your temples throb. The area in front of the ear hurts or your ears feel blocked. You avoid tough foods."
+],
+[
+"In simple terms",
+"The TMJ is the hinge of a door that opens and closes thousands of times a day. Chewing on one side and clenching wear the hinge unevenly and make it creak. It moves as a set with the neck and shoulders, so with forward head posture the lower jaw is pulled back, straining the hinge."
+],
+[
+"Body and mind",
+"The jaw is where 'held-back emotions' build up. People clench their teeth when suppressing anger and swallowing words. When this continues as grinding at night, the chewing muscles can't rest even during sleep, leaving morning headaches, a stiff jaw and unrefreshing sleep."
+],
+[
+"730 Skin application",
+"Constant tension in the chewing muscles gives a square-jaw look and creates asymmetry. Blocked lymph flow under the jaw can also make the jawline puffy. Pressing the TMJ and Muscle Relaxation points first before lifting and contour care improves results."
+],
+[
+"What to say",
+"\"Does your jaw click when you open your mouth, or feel stiff in the morning? You may have been clenching your teeth while you sleep. Today I'll release your jaw first before care. In daily life, try resting your tongue on the roof of your mouth with your upper and lower teeth slightly apart.\""
+],
+[
+"Points that go well together",
+"Mandible, Maxilla, Muscle Relaxation, Shenmen (tension relief), Point Zero, Cervical Spine (neck posture)"
+],
+[
+"Caution",
+"If the mouth opens only two fingers' width or less, the jaw catches and won't move, or pain is severe, recommend seeing a dentist or oral medicine specialist first."
+],
+[
+"Reference",
+"Used for jaw pain, temple headaches, toothache and teeth grinding. Note: TMJ point."
+]
+],
+"테니스 엘보(후방)": [
+[
+"Basic role",
+"The muscles that move the wrist and fingers attach to the elbow bone by tendons. Repeating the same movement accumulates small injuries where these tendons begin. Pain on the outside is called tennis elbow, on the inside golfer's elbow. It happens even without playing sports."
+],
+[
+"Everyday signals",
+"Lifting a cup or frying pan sends a twinge through the outer elbow. It hurts when wringing a cloth. Long mouse use makes the elbow ache. Shaking hands hurts. Resting your elbow on a desk hurts."
+],
+[
+"Body and mind",
+"Common in jobs that use the hands a lot, mothers carrying children and homemakers with lots of housework. Skin therapists are a classic job that repeatedly uses the wrists and arms, so directors can use it for their own care too."
+],
+[
+"What to say",
+"\"When you lift things, does your elbow twinge? When you use your hands a lot, the tendons tire easily. Today I'll release the tension around your elbow with you.\""
+],
+[
+"Points that go well together",
+"Elbow, Forearm, Upper Limb Master, Muscle Relaxation, Wrist"
+],
+[
+"Caution",
+"If there's swelling and warmth, pain doesn't ease after several weeks, or hand tingling comes with it, recommend seeing an orthopedist."
+],
+[
+"Reference",
+"Used for tennis elbow, golfer's elbow, student's elbow and elbow pain."
+]
+],
+"팔": [
+[
+"Basic role",
+"The arm is the body's work tool, lifting, pushing, pulling and typing all day. The Arm point is a reflex area that looks at the tension and fatigue built up across the whole arm."
+],
+[
+"Everyday signals",
+"By evening your arms feel like lead. Holding a smartphone or mouse for long makes the outer arm ache. You wake with numb arms. The day after carrying heavy grocery bags, your arms ache. It's especially common in mothers who carry their children and directors who do a lot of hands-on care."
+],
+[
+"Body and mind",
+"The arms are where the 'things that must get done' actually get done. The more work piles up and the more responsibility you carry, the more you spend the day with tense shoulders and arms. Clients whose arms always feel heavy are often carrying as much in their minds as in their bodies."
+],
+[
+"730 Skin application",
+"When arm tension carries up to the shoulders and neck, even the facial lines stiffen. Good to release together with the shoulder and neck points before facial care."
+],
+[
+"What to say",
+"\"Do your arms feel heavy every evening lately? It's from using them so much all day. Today I'll release the arm point too.\""
+],
+[
+"Points that go well together",
+"Shoulder, Elbow, Wrist, Hand, Upper Limb Master, Muscle Relaxation"
+],
+[
+"Caution",
+"If arm tingling persists, or strength drops and sensation dulls, recommend seeing a doctor first to check for issues like a neck disc."
+],
+[
+"Reference",
+"Used for arm pain or dysfunction."
+]
+],
+"팔꿈치": [
+[
+"Basic role",
+"The elbow is the joint where the force for bending and straightening the arm and rotating the wrist gathers. The more you use your hands, the more strain builds on the tendons on the outer and inner elbow."
+],
+[
+"Everyday signals",
+"Wringing a mop or cloth sends a twinge through the outer elbow. Lifting a frying pan or bag makes it ache. Straightening your arm fully feels stiff. Your elbow is stiff in the morning. Often seen in work where the hands never rest, like beauty work, cooking and childcare."
+],
+[
+"Body and mind",
+"Elbow pain is often the result of 'hands that never got a rest'. You have to keep using them even while they hurt, so recovery is slow, and you become that much more worn out and sensitive."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. Used together in condition care for clients who use their hands a lot."
+],
+[
+"What to say",
+"\"Does your elbow ache when you wring out a cloth? When you use your hands a lot, fatigue builds up there. Today I'll care for the elbow point too.\""
+],
+[
+"Points that go well together",
+"Arm, Wrist, Hand, Shoulder, Muscle Relaxation"
+],
+[
+"Caution",
+"If there's swelling and warmth, or pain continues for more than a few weeks, recommend seeing an orthopedist first."
+],
+[
+"Reference",
+"Used for pain, swelling or dysfunction of the elbow."
+]
+],
+"편도C": [
+[
+"Basic role",
+"The tonsils are immune tissue that first meets the bacteria and viruses entering through the mouth and nose. All four tonsil points lie along the rim of the auricle."
+],
+[
+"In simple terms",
+"The tonsils are the 'guard post' at the entrance to the throat. When the body is tired or exposed to cold wind, the guard slackens, and the throat swells and swallowing becomes uncomfortable. If the post is breached often, it may mean your overall stamina has dropped."
+],
+[
+"Everyday signals",
+"When tired, your throat hurts first. In the morning your throat is scratchy and dry. On days you talk a lot, your voice goes. Swallowing stings. Colds always start in your throat."
+],
+[
+"Body and mind",
+"The throat is also the passage for the words you want to say. Both people in talk-heavy jobs and those who swallow what they want to say find their throats tire easily."
+],
+[
+"730 Skin application",
+"Periods when the throat often swells are when the immune system is busy, so skin breakouts tend to come up too. Pressed together with the Thymus in care for clients whose condition has dropped."
+],
+[
+"What to say",
+"\"Lately when you're tired, does your throat get scratchy first? It's a sign your body's guard post is worn out. Today I'll care for the tonsil point with you.\""
+],
+[
+"Points that go well together",
+"Throat, Thymus, Ear Apex, Helix 1–6, Antihistamine"
+],
+[
+"Caution",
+"If there's high fever, pain bad enough that you can't swallow, or one side of the throat is badly swollen, recommend seeing a doctor first."
+],
+[
+"Reference",
+"All four tonsil points are located around the auricle."
+]
+],
+"감정의뇌": [
+[
+"Basic role",
+"The amygdala is an almond-shaped cluster of nerves inside the temporal lobe, just in front of the hippocampus. When it senses danger, it reacts before thought, making the heart race, tensing the muscles and releasing stress hormones. Together with the hippocampus, it also stores emotionally charged memories."
+],
+[
+"In simple terms",
+"The amygdala is the house's 'fire alarm'. Working properly, it protects us, but when it becomes sensitive, it blares even at smoke from toast. The brake that calms the alarm is the frontal lobe, which handles rational judgment. Lack of sleep and long-term stress weaken this brake."
+],
+[
+"Everyday signals",
+"You startle at small sounds. Your heart pounds over nothing. Breathing is shallow and your shoulders are always raised. You feel your stomach tighten when eating. Even similar situations bring old painful memories back to life in your body."
+],
+[
+"Body and mind",
+"A body whose alarm keeps ringing is always in emergency mode. The mind is sensitive and anger flares easily, and the body can't release tension. A client who says 'I don't know why I'm so sensitive' may not have changed in personality; their alarm may simply be worn out."
+],
+[
+"730 Skin application",
+"Linked to consultations for clients whose redness, itching and breakouts worsen under heavy emotional stress."
+],
+[
+"What to say",
+"\"Lately, do you startle at small things or feel anger flare up suddenly? Your mind's alarm may have become very sensitive. Today I'll care for the point that calms the mind with you.\""
+],
+[
+"Points that go well together",
+"Shenmen, Tranquilizer, Hippocampus, Sympathetic, Occiput"
+],
+[
+"Caution",
+"This does not replace treatment for anxiety disorders, depression or trauma. If daily life is difficult, also guide the client to specialist services."
+],
+[
+"Reference",
+"Affects the brain region that regulates behavioral and mental conditions such as anxiety, fear, aggression, anger, instinctive reactions and uncontrollable sexual desire."
+]
+],
+"폐": [
+[
+"Basic role",
+"The lungs take in oxygen from inhaled air and expel carbon dioxide. Along with the nose, throat and bronchi, they're the organs that first meet outside air, so they're directly affected by dust, dryness and cold wind. On the ear, the lung point is divided into two, 1 and 2. It's also one of the five points of the ear detox protocol (NADA) that supports quitting smoking and drinking."
+],
+[
+"Everyday signals",
+"Every change of season, a lingering cough drags on. Your throat and nose dry out easily. Even a short walk leaves you breathless and your voice weak. Phlegm collects often. You sigh often. Your skin is dull and feels tight easily."
+],
+[
+"In Korean medicine",
+"In Korean medicine the lungs are 'the prime minister' (相傅之官) assisting the sovereign. They govern the body's qi (肺主氣), the skin and hair (肺主皮毛), and open into the nose (肺開竅於鼻). That's why weak lungs are believed to leave the skin dry and easily harmed by outside irritants. They pair with the large intestine, correspond to dry autumn, and their hours are 3–5 am."
+],
+[
+"Body and mind",
+"The lungs' emotion is 'grief and sorrow' (悲·憂). After great sadness the chest feels stifled, breathing becomes shallow and sighs increase. The lungs are like a house's windows: just as a house breathes when you open the windows to air it, deep breathing releases the stale air pooled in the mind."
+],
+[
+"730 Skin application",
+"Because the lungs are seen as governing the skin, this is a core point in consultations on dryness, weakened barriers and sensitive skin. The guidebook also includes the Lung in the recommended combination for the Skin Disease point."
+],
+[
+"What to say",
+"\"Have you been sighing often lately, and does your skin keep feeling tight? Korean medicine holds that the lungs govern the skin. Today I'll care for the lung point to ease both your breathing and your skin.\""
+],
+[
+"Points that go well together",
+"Large Intestine, Skin Disease, Antihistamine, Throat"
+],
+[
+"Caution",
+"If a cough continues for more than three weeks, there's blood-streaked phlegm, or breathlessness is severe, recommend seeing a doctor first."
+],
+[
+"Reference",
+"Used for respiratory disorders (pneumonia, bronchitis, asthma, cough, sore throat, tuberculosis, chest congestion, phlegm). Helps with detoxification from addiction and substance abuse."
+],
+[
+"Reference (Lung 2)",
+"Used for respiratory disorders (pneumonia, bronchitis, asthma, cough, sore throat, tuberculosis, chest congestion, phlegm). Helps with detoxification from addiction and substance abuse."
+]
+],
+"포인트0": [
+[
+"Basic role",
+"This point is around the root where the helix begins to turn into the ear (helix crus). It's used as a balance point that brings the sympathetic and parasympathetic nerves back to the center (Zero) when they tilt to one side. It acts as a 'booster' that helps other points' signals come through more clearly, so it's included in any program. It's described as a point where branches of the vagus nerve pass nearby, easing stomach tension and helping deep breathing."
+],
+[
+"In simple terms",
+"Point Zero is a scale's 'zero calibration'. A scale with a misaligned zero shows the wrong number whatever you put on it. Like rebooting a computer when it lags, if you reset the body's signals to their starting state before pressing other points, the response becomes clearer."
+],
+[
+"Everyday signals",
+"Your condition goes up and down day to day. You're tired but can't sleep. When tense, your belly hurts first. You can't breathe deeply. It's hard to start things you've decided to do. Unexplained discomfort moves around here and there."
+],
+[
+"Body and mind",
+"The original notes this point boosts willpower and brings balance to discomfort caused by unresolved emotions. When unsorted emotions remain in the mind, the body can't let go of tension. It's easy to understand Point Zero as finding the starting end of a tangled ball of thread."
+],
+[
+"730 Skin application",
+"Used as the starting point of care for clients whose skin concerns come with stress and condition swings. It helps the response of the Skin Disease and Endocrine points pressed afterward."
+],
+[
+"What to say",
+"\"Has your condition been up and down day to day lately? I'll start with the point that resets your body's balance to zero. That way other points are received better too.\""
+],
+[
+"Points that go well together",
+"Shenmen, Sympathetic, Master Oscillation, Corpus Callosum, Stomach"
+],
+[
+"Reference",
+"Restores whole-body homeostatic balance, balances energy, hormones and brain activity, assists the action of other points, and regulates the internal organs through peripheral ganglia. Strengthens willpower. Note: when symptoms arise from unresolved emotional states, stimulating Point Zero can bring balance to unresolved emotional resistance."
+]
+],
+"프로락틴": [
+[
+"Basic role",
+"Prolactin is the 'nursing switch' hormone from the pituitary. It rises during pregnancy to help the mammary glands develop and prepare milk, and after birth it makes milk flow. If released excessively when not pregnant, it can suppress ovulation and the menstrual cycle, leading to irregular periods."
+],
+[
+"In simple terms",
+"Prolactin is the 'milk factory on switch'. Turned on when needed it helps mother and baby, but if it's on at the wrong time, the body thinks it's nursing time and pauses ovulation. Stress and lack of sleep can also flip this switch."
+],
+[
+"Everyday signals",
+"Your menstrual cycle is irregular. Before your period your breasts swell and hurt unusually. While nursing, milk supply fluctuates. Recovery after childbirth is slow."
+],
+[
+"Body and mind",
+"Nursing mothers are short on sleep and always tense. Since the body's switches are strongly affected by the state of mind during this time, rest and a sense of security matter above all."
+],
+[
+"730 Skin application",
+"Used as support with the Endocrine point in consultations for clients whose melasma and breakouts come with periods of hormonal imbalance, such as after childbirth or with irregular periods."
+],
+[
+"What to say",
+"\"Has your menstrual cycle been a bit irregular lately? When the hormone switch wavers, it shows on the skin right away. Today I'll care for the hormone-balance point with you.\""
+],
+[
+"Points that go well together",
+"Mammary Gland, Anterior Pituitary, Endocrine, Gonads (ovary · testis), Uterus"
+],
+[
+"Caution",
+"If the client is pregnant or nursing, always check before care. If milk comes out when not pregnant, or periods stop for several months, recommend getting checked at a hospital first."
+],
+[
+"Reference",
+"Regulates mammary gland function and helps milk production and secretion."
+]
+],
+"프로스타글란딘": [
+[
+"Basic role",
+"Prostaglandins are signaling substances made throughout the body. They send inflammation and pain signals to injured areas, and during menstruation they contract the uterus to help the lining shed. When made in excess, pain and swelling grow. Common painkillers and anti-inflammatories work precisely by reducing their production."
+],
+[
+"In simple terms",
+"Prostaglandins are the body's 'siren'. They sound to alert you when something is injured, but if the volume is too loud, the whole body gets noisy over small things. Understand this point as one that checks that volume."
+],
+[
+"Everyday signals",
+"On the first day of your period, the lower belly cramps as if wrung. Headaches and diarrhea come along during your period. You ache and swell here and there. You often reach for painkillers."
+],
+[
+"Body and mind",
+"When pain repeats, the body tenses before the day even comes. Tension makes pain feel bigger. Warm care that breaks the cycle of pain and tension is needed."
+],
+[
+"730 Skin application",
+"Used as support in consultations on red inflammatory breakouts and skin that flares around the period."
+],
+[
+"What to say",
+"\"Is your period so painful you have to take painkillers? Your body's pain siren is sounding loudly. Today I'll care for the point that turns down that volume with you.\""
+],
+[
+"Points that go well together",
+"Uterus, Shenmen, Endocrine, Skin Disease, Muscle Relaxation"
+],
+[
+"Caution",
+"If menstrual cramps suddenly worsen or aren't controlled even with painkillers, recommend seeing a gynecologist first."
+],
+[
+"Reference",
+"Relieves pain and inflammation."
+]
+],
+"피부질환": [
+[
+"Basic role",
+"The skin is both a shield against outside irritants and a mirror reflecting the state inside the body. This is the basic reflex area to press when the skin reacts sensitively with burning, itching, rashes or red inflammation."
+],
+[
+"In simple terms",
+"The skin is the body's 'bulletin board'. News sent from the organs, hormones and mind ends up posted on the skin. Just wiping the board means the same news gets posted again. That's why you also look at the senders (Lung, Liver, Spleen, Shenmen)."
+],
+[
+"Everyday signals",
+"After washing, your face burns and feels tight. New cosmetics redden it easily. Your body itches every night. Scratched spots swell up. When tired, blisters form around your lips. Even a little sun makes your skin burn."
+],
+[
+"Body and mind",
+"The skin is also the mind's thermometer. On tense, sensitive days, itching and redness get worse, and the stress of seeing such skin irritates it again."
+],
+[
+"730 Skin application",
+"The 'core axis' of 730 Skin ear therapy. The first point to press in consultations on melasma and blemishes, sensitivity, barrier damage and breakouts."
+],
+[
+"What to say",
+"\"Does your skin keep itching or reddening lately? The skin is the first place to show news from your body and mind. Today I'll care for you centered on the skin point.\""
+],
+[
+"Points that go well together",
+"Lung, Liver, Spleen, Shenmen, Antihistamine"
+],
+[
+"Caution",
+"If blisters spread in a band with pain, eye redness and pain come with it, or there's pus or fever, recommend seeing a doctor first."
+],
+[
+"Reference",
+"Used for skin disorders: burning, itching, rashes, inflammation, conjunctivitis, dermatitis, hives, prostatitis, shingles, herpes, sunburn and cold sores."
+]
+],
+"피질하": [
+[
+"Basic role",
+"Subcortex is the umbrella term for the deep brain regions beneath the cerebral cortex (the brain's outer layer). It takes in sensations, regulates alertness, and processes emotion and memory. Besides this point, this dictionary has separate subcortex points for digestion, the nervous system and vasomotor function."
+],
+[
+"In simple terms",
+"The subcortex is a company's 'operations department'. The CEO (cerebral cortex) makes the decisions, but it's the operations department that actually receives, sorts and routes information to each department. When operations is overworked, approvals pile up and work gets tangled."
+],
+[
+"Everyday signals",
+"Your head feels foggy as if in mist. You forget what you were just about to do. Reading, the content doesn't sink in. You're sleepy during the day and wide awake at night. You become sensitive to sound and light."
+],
+[
+"Body and mind",
+"When the operations department tires, emotional processing slows too. You may choke up over nothing or, conversely, feel nothing at all. It's a signal that you need rest."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. Used as support in condition care for clients who say their skin is slow to recover because their sleep rhythm is broken."
+],
+[
+"What to say",
+"\"Is your head foggy and are you forgetful lately? It's a sign your brain keeps working without rest. Today I'll care for the point that lets your head rest with you.\""
+],
+[
+"Points that go well together",
+"Subcortex (nervous system), Subcortex (digestion), Subcortex (vasomotor), Thalamus, Hippocampus, Shenmen"
+],
+[
+"Reference",
+"Regulates functions of the subcortical regions such as memory, attention, perception, sensory processing, arousal and emotion."
+]
+],
+"피질하(소화)": [
+[
+"Basic role",
+"Digestion isn't done by the stomach and intestines alone. The brain decides 'it's okay to eat now' or 'handling the crisis comes before digestion right now'. This point is a reflex area looking at brain functions related to digestion, and the original lists liver and gallbladder function along with it."
+],
+[
+"In simple terms",
+"The brain and gut are connected by a direct phone line. Under stress, the brain calls the digestion department to say 'hold on'. If those calls come too often, the gut is always half-stopped. This point checks for crossed wires on that line."
+],
+[
+"Everyday signals",
+"When tense, you get indigestion right away. Before meetings or exams your belly hurts. After eating, your belly feels tight. You feel queasy. Constipation and diarrhea alternate. Greasy food leaves you bloated."
+],
+[
+"Body and mind",
+"When the mind is uncomfortable, the gut is too. Korean expressions like 'my insides hurt' or 'my insides are burning' didn't come from nowhere. For clients who worry a lot, caring for digestive signals first eases the mind as well."
+],
+[
+"730 Skin application",
+"Many clients complain of breakouts around the mouth or a dull complexion during periods of digestive discomfort. Used as support for such clients together with the Stomach and Large Intestine points."
+],
+[
+"What to say",
+"\"When you're tense, do you get indigestion right away or an upset stomach? It's because the brain and gut are directly connected. Today I'll care for the digestion-related point with you.\""
+],
+[
+"Points that go well together",
+"Stomach, Large Intestine, Liver, Gallbladder, Point Zero, Subcortex"
+],
+[
+"Caution",
+"If weight drops for no reason, there's bloody or black stool, or vomiting continues, recommend seeing a doctor first."
+],
+[
+"Reference",
+"Regulates brain functions related to digestion. Effective for indigestion, bloating, nausea, vomiting, diarrhea, constipation and liver/gallbladder dysfunction."
+]
+],
+"피질하(신경계)": [
+[
+"Basic role",
+"The nervous system is the wiring network that sends and receives signals to every corner of the body. This point is a reflex area looking at the brain functions that manage that network; the original says it's used for states of nervous exhaustion (neurosis, neurasthenia, etc.)."
+],
+[
+"In simple terms",
+"The nervous system is the house's 'electrical wiring'. When overloaded, the lights flicker and the breaker trips often. When the nerves are overworked, you startle at small stimuli and the body drains quickly."
+],
+[
+"Everyday signals",
+"Trivial sounds get on your nerves. It's hard to fall asleep and you wake often. Your head throbs and your eyelids twitch. You're tired even after resting. You keep going over the same worry."
+],
+[
+"Body and mind",
+"Clients with sensitive nerves have sensitive bodily senses too. The same pressure hurts more; the same cosmetic stings more. Approach slowly, seeing it not as a personality problem but as overheated wiring."
+],
+[
+"730 Skin application",
+"The more sensitive the nerves, the more the skin reacts with stinging and itching. Builds the foundation together with Shenmen before sensitive-skin care."
+],
+[
+"What to say",
+"\"Lately do your nerves stand on end at small sounds, and are you tired even after resting? Your nerves are overheated. Today I'll start with the point that lets your nerves rest.\""
+],
+[
+"Points that go well together",
+"Shenmen, Occiput, Tranquilizer, Subcortex, Insomnia, Sympathetic"
+],
+[
+"Caution",
+"This does not replace psychiatric care or medication. If symptoms make daily life difficult, guide the client to specialist services, and make sure they don't stop medications on their own."
+],
+[
+"Reference",
+"Regulates brain functions related to nervous disorders (neurosis, schizophrenia, neurasthenia)."
+]
+],
+"피질하(혈관운동)": [
+[
+"Basic role",
+"Blood vessels are wrapped in muscle, so they narrow and widen depending on the situation. In the cold they tighten the vessels in the hands and feet to keep heat in; in the heat they widen skin vessels to release heat. The brain handles this regulation through the autonomic nerves. The original says this point is used for brain functions related to blood pressure, veins, constriction of hand and foot vessels (Raynaud's) and the heart's vessels."
+],
+[
+"In simple terms",
+"Vasomotor function is the 'valve' of a water pipe. If the valve is closed too tight, water doesn't reach the ends (hands and feet); if it's too open, it rushes to one side (the face). This point checks the handle that opens and closes the valve."
+],
+[
+"Everyday signals",
+"Your hands and feet are always cold. In the cold, your fingers turn white or purple. Even slight tension makes your face flush suddenly. Standing long, your legs feel heavy and veins stand out. You get dizzy standing up from sitting."
+],
+[
+"Body and mind",
+"Blood vessels are honest about emotions. Embarrassment reddens the face; fear chills the hands. The more often someone is tense, the less rest the valve gets."
+],
+[
+"730 Skin application",
+"The brain point most directly linked in redness consultations. Used together for redness where heat rushes to the face, and for clients whose hands and feet are cold while only the face is red."
+],
+[
+"What to say",
+"\"Are your hands and feet cold while your face flushes quickly? The blood vessel valve control is wavering. Today I'll care for the point that regulates the blood vessels with you.\""
+],
+[
+"Points that go well together",
+"High Blood Pressure, Energy Up, Heart, Sympathetic, Skin Disease"
+],
+[
+"Caution",
+"If there's chest pain, breathlessness, or one leg is swollen and painful, recommend seeing a doctor immediately. Advise clients not to stop blood pressure medication on their own."
+],
+[
+"Reference",
+"Regulates brain functions related to the coronary system: high blood pressure, phlebitis, Raynaud's syndrome and coronary artery disease."
+]
+],
+"하지 마스터": [
+[
+"Basic role",
+"The legs bear the weight of the whole body and house the 'second heart' (the calf), which pushes blood that has come down back up. The Lower Limb Master is the representative point that covers all the leg points at once. It pairs with the Upper Limb Master, which represents the arms."
+],
+[
+"Everyday signals",
+"By evening your shoes feel tight. Your calves knot hard. Your legs cramp in your sleep. Standing or sitting long makes your legs tingle. Climbing stairs makes your legs feel like lead."
+],
+[
+"Body and mind",
+"When the legs are heavy you don't want to move, and when you don't move, the legs swell more. Only when the legs feel light does the mind find the strength to step outside."
+],
+[
+"730 Skin application",
+"Clients with severe lower-body swelling often have facial swelling too. Used with the Kidney and Bladder points in swelling care programs."
+],
+[
+"What to say",
+"\"Do your legs swell up and feel heavy every evening? I'll care for the point that represents the whole leg to make them lighter.\""
+],
+[
+"Points that go well together",
+"Upper Limb Master, Knee, Heel, Lumbar Spine, Pelvis, Kidney, Bladder, Muscle Relaxation"
+],
+[
+"Caution",
+"If only one leg suddenly swells, hurts or reddens, recommend seeing a doctor immediately to check for a blood clot."
+],
+[
+"Reference",
+"Used for pain and swelling of the legs and feet."
+]
+],
+"우울감": [
+[
+"Basic role",
+"Though named 'antidepressant', this point doesn't treat depression like medication. It's used as a supporting stimulation point that helps psychological stability when mood sinks and motivation drops. The 80 Hz in the original refers to the frequency used with electrical stimulation devices and has nothing to do with ear therapy ball care."
+],
+[
+"In simple terms",
+"The mind has a 'battery' too. When it runs out, the body may move but the mind doesn't follow. Understand this point as one that checks the mind battery's charge."
+],
+[
+"Everyday signals",
+"Getting up in the morning is especially hard. Even things you used to love feel dull. Messages feel like a bother. Tears come for no reason. You have no appetite or, conversely, crave only sweets. You sleep too much or too little."
+],
+[
+"Body and mind",
+"When mood droops, the body droops too: shoulders roll, breathing becomes shallow and skin loses its glow. Conversely, small moments of caring for the body can become the trigger that lifts the mind. The treatment room can be that space."
+],
+[
+"730 Skin application",
+"When you feel lethargic, the skin also looks dull and lifeless. Used together with the Vitality point in condition-recovery programs."
+],
+[
+"What to say",
+"\"Do even the things you used to love feel a bit dull lately? Your mind battery seems quite drained. Today I'll care for the point that puts your mind at ease with you.\""
+],
+[
+"Points that go well together",
+"Shenmen, Vitality, Be Happy, Point Zero, Pineal Gland"
+],
+[
+"Caution",
+"This cannot replace treatment for depression. If low mood continues for more than two weeks, or the client says they don't want to live, be sure to guide them to professional counseling or medical care."
+],
+[
+"Reference",
+"Used for depression and mood changes. In electrical stimulation therapy, the frequency commonly used for this point is 80 Hz."
+]
+],
+"히스타민": [
+[
+"Basic role",
+"Histamine is the substance that rings the alarm bell when something foreign enters the body. It widens blood vessels and causes a runny nose and itching to try to expel the invader. Allergy is when this alarm rings even for harmless things like pollen and house dust. This point is used in supporting care to calm that hypersensitive reaction."
+],
+[
+"In simple terms",
+"Histamine is an apartment's 'security alarm'. It should ring when a burglar comes, but if it starts ringing whenever the wind rattles the door, the whole neighborhood loses sleep. This point checks an alarm whose sensitivity has become too high."
+],
+[
+"Everyday signals",
+"Every change of season, sneezing and a runny nose burst out. Your nose is blocked in the morning. Your eyes itch and swell. Scratching makes your skin swell up. You lose sleep from itching at night. Coughs linger."
+],
+[
+"Body and mind",
+"Itching shakes daily life greatly. It wakes you, sets your nerves on edge, and that stress makes the itching worse. Rather than saying 'don't scratch', finding ways together to calm the itch is more comforting."
+],
+[
+"730 Skin application",
+"Often used in care for allergic skin, atopic dermatitis, hives and red itching. The guidebook recommends remembering it as a set with the Skin Disease point."
+],
+[
+"What to say",
+"\"Every change of season, do your nose and skin flare up together? Your body's alarm sensitivity has become too high. Today I'll care for the point that checks allergic reactions with you.\""
+],
+[
+"Points that go well together",
+"Skin Disease, Lung, Thymus, Adrenal, Endocrine"
+],
+[
+"Caution",
+"If the lips, tongue or throat swell, or breathing becomes difficult, emergency care is needed immediately."
+],
+[
+"Reference",
+"Relieves symptoms of colds, allergies, bronchitis, cough and asthma."
+]
+],
+"해마F": [
+[
+"Basic role",
+"The hippocampus is a structure in the brain shaped like a seahorse. It holds newly arrived information for a while and passes the important parts on to long-term memory, and it also acts as a navigator that tracks where you are right now. It communicates closely with the amygdala, which handles emotion, so when it remembers an event it also stores the feeling of that moment, and it's involved in regulating stress hormones."
+],
+[
+"In simple terms",
+"The hippocampus is the brain's 'temporary storage folder'. It gathers the files that come in during the day and, while you sleep, sorts them and moves them to main storage. Without enough sleep the folder fills up so new files don't go in well, and painful memory files keep popping up on the screen unsorted."
+],
+[
+"Everyday signals",
+"You forget a name right after hearing it. You often search for where you put things. You get lost easily. Similar smells or sounds bring past hardships back vividly. You often have nightmares."
+],
+[
+"Body and mind",
+"Long-term stress wears out the hippocampus. Many clients who worry their memory has declined haven't gotten worse at thinking; they've simply been tense for too long. The original also says this point is used to soften the emotions tied to painful memories."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. Used as support in mind care for clients facing both stress and lack of sleep."
+],
+[
+"What to say",
+"\"Have you been forgetting things more often lately? It's not that your memory has gotten worse; you've been tense for too long. Today I'll care for the point that lets your head and mind rest with you.\""
+],
+[
+"Points that go well together",
+"Amygdala, Shenmen, Insomnia, Thalamus, Temporal Cortex"
+],
+[
+"Caution",
+"When trauma makes daily life difficult, this does not replace treatment. Also guide the client to specialist services. If memory declines rapidly, recommend getting checked at a hospital first."
+],
+[
+"Reference",
+"Eases emotions associated with painful physical memories and helps resolve traumatic memories such as nightmares and sensory flashbacks involving sounds or smells."
+]
+],
+"헬릭스 1~6(나선)": [
+[
+"Basic role",
+"The helix is the rounded outer rim of the auricle. Points 1 through 6 run along this rim. The original says these points are used to lower heat and calm swelling and inflammation. It's easy to remember them grouped with the Ear Apex as 'heat-lowering points'."
+],
+[
+"In Korean medicine",
+"The original's phrase 'calms liver wind' (肝風) is a Korean-medicine term. Liver wind refers to symptoms that sway like blowing wind as liver qi surges upward — dizziness, tremors and heat rising to the head. The helix points are seen as settling heat and wind that have gathered upward."
+],
+[
+"Everyday signals",
+"When tired, your throat swells and your tonsils hurt. A low fever lingers in the body. Your face and ears flush hot. Your head feels foggy and the back of your neck is stiff. When you have a fever, your body swells."
+],
+[
+"Body and mind",
+"Heat doesn't rise only in the body. When angry, the face reddens and it feels like heat rises to the top of the head. Cooling heat that has surged upward calms the mind too."
+],
+[
+"730 Skin application",
+"Used with the Ear Apex for clients with redness where heat gathers in the face and red breakouts accompanied by warmth."
+],
+[
+"What to say",
+"\"Does your face often burn and heat rise? Heat has gathered in the upper body. Today I'll care for the auricle points that cool the heat with you.\""
+],
+[
+"Points that go well together",
+"Ear Apex, Tonsil C, Throat, High Blood Pressure, Liver"
+],
+[
+"Caution",
+"If a fever above 38°C persists, or the throat is so swollen that breathing or swallowing is difficult, recommend seeing a doctor first. For high blood pressure, medical care comes first."
+],
+[
+"Reference",
+"Lowers heat and calms liver wind; used for fever, sore throat, tonsillitis, high blood pressure, inflammation and edema."
+]
+],
+"고혈압": [
+[
+"Basic role",
+"Blood pressure is the pressure on the vessel walls as the heart pumps blood out. Tension tightens the vessels and speeds the heart, raising blood pressure. This point is used as a supporting relaxation point that releases the body's tension and eases tension in the vessels. The guidebook also clearly states that it is not a point that replaces medical treatment."
+],
+[
+"In simple terms",
+"Blood pressure is a hose's 'water pressure'. Turn the faucet on full and squeeze the hose and the pressure rises. This point gently loosens the hand that's been squeezing the hose."
+],
+[
+"Everyday signals",
+"The back of your neck is stiff and tight. Your head is heavy in the morning. Your face reddens easily. When angry, you feel blood rushing to your head. You hear your pulse in your ears. The day after eating salty food, your body swells."
+],
+[
+"Body and mind",
+"The more someone is always pressed for time and holding things in, the more easily tension builds up as blood pressure. The very time spent closing your eyes and letting your body go in the treatment room becomes time to loosen the hand gripping the hose."
+],
+[
+"730 Skin application",
+"Used as support with Subcortex (vasomotor) for clients with redness where heat rises to the face."
+],
+[
+"What to say",
+"\"Is the back of your neck often stiff, and does your face flush quickly? Your body is gripping tension tightly. Today I'll care for the point that releases tension with you.\""
+],
+[
+"Points that go well together",
+"Subcortex (vasomotor), Shenmen, Occiput, Heart, Helix 1–6"
+],
+[
+"Caution",
+"For clients on blood pressure medication, present ear therapy only as a supporting relaxation method, and be sure to tell them not to stop medication on their own. A severe headache, chest pain or numbness in one arm or leg requires emergency care immediately."
+],
+[
+"Reference",
+"Has a calming effect, lowers blood pressure and relieves stress. Bleeding may occur."
+]
+],
+"활력": [
+[
+"Basic role",
+"The original introduces this as a dynamic point that boosts overall energy when immunity is low, chronic fatigue drags on, or strength is depleted after a long serious illness. The guidebook also describes it as a reflex area related to whole-body energy metabolism, used widely for clients with chronic fatigue."
+],
+[
+"In simple terms",
+"Vitality is the body's 'power bank charger'. A body that has been through something big or has been ill for long has a drained main battery. Understand this point as plugging in the charger."
+],
+[
+"Everyday signals",
+"Eight hours of sleep doesn't leave you refreshed. By afternoon even sitting is hard. When you catch a cold, it lasts long. Lying down all weekend doesn't relieve fatigue. Your voice lacks strength. Wounds heal slowly."
+],
+[
+"Body and mind",
+"When energy is low, the mind shrinks too. Even when there's something you want to do, you can't bring yourself to try. As energy returns little by little, the mind moves forward again."
+],
+[
+"730 Skin application",
+"When fatigue builds up, the skin looks dull and recovers slowly. Used as a basic point in condition-recovery programs."
+],
+[
+"What to say",
+"\"Even after a good rest on the weekend, the tiredness doesn't lift, right? Your body's battery is quite drained. Today I'll care for the point that restores energy with you.\""
+],
+[
+"Points that go well together",
+"Thymus, Adrenal, Kidney, Spleen, Energy Up, Depression"
+],
+[
+"Caution",
+"For clients being treated for a serious illness, present it only as supporting care that doesn't replace their medical team's treatment. If unexplained fatigue and weight loss continue, recommend getting checked at a hospital first."
+],
+[
+"Reference",
+"This dynamic point is used to strengthen vitality in immune disorders, chronic fatigue, AIDS and cancer patients, and to boost overall energy and vitality. Effective when illness persists for a long time."
+]
+],
+"횡격막": [
+[
+"Basic role",
+"The diaphragm is the dome-shaped muscle separating the chest and abdomen, and it's at the center of breathing. The original says it's used for diaphragm spasms and abnormal bleeding (uterine bleeding, heavy periods, bloody stools)."
+],
+[
+"In simple terms",
+"The diaphragm is the body's 'bellows'. When the bellows stiffen, little air comes in, and the whole body is always busy as if short of breath."
+],
+[
+"Everyday signals",
+"You have to sigh to be able to breathe. After meals, the pit of your stomach feels lifted and blocked. Eating in a hurry gives you hiccups. Talking a lot makes you breathless. Your periods are heavy."
+],
+[
+"Body and mind",
+"Anxious people's breath stays in the upper chest. Short breath makes anxiety grow, and anxiety makes breath shorter. Releasing the diaphragm is the easiest way to break this loop."
+],
+[
+"730 Skin application",
+"Pressed for clients who hold their breath and tense up during care, to ease their breathing."
+],
+[
+"What to say",
+"\"Lately do you have to sigh to be able to breathe? It's because your breathing muscle is tense. Today I'll care for the point that eases your airway with you.\""
+],
+[
+"Points that go well together",
+"Lung, Shenmen, Point Zero, Stomach"
+],
+[
+"Caution",
+"If menstrual flow suddenly increases, or there's bleeding outside the period or bloody/black stool, recommend seeing a doctor first. Bleeding during pregnancy requires immediate care."
+],
+[
+"Reference",
+"Used for bleeding disorders such as uterine bleeding, heavy menstruation and bloody stools, and for diaphragm disorders and phrenic nerve spasms."
+]
+],
+"후두골": [
+[
+"Basic role",
+"The occipital region is seen as a point directly connected to the brain and spinal cord (central nervous system). The brain and spinal cord are the 'central control room' that receives every sensation and sends every command. This point is used to lower overall output when the control room overheats. That's why its range is so wide, covering the mind, pain, nerve symptoms and even blood pressure."
+],
+[
+"In simple terms",
+"The occiput is the control room's 'volume dial'. When the dial is turned all the way up, every sound is loud and every stimulus feels painful. Turn the dial down and the whole body catches its breath."
+],
+[
+"Everyday signals",
+"The back of your neck and head ache and your head throbs. You wake with a sore jaw (clenching). The skin under your eyes or your face twitches. You feel dizzy and your ears ring. Your vision is dim. Your mind is always anxious and restless."
+],
+[
+"Body and mind",
+"When the nervous system is excited and can't rest, it shows in the mind as anxiety, restlessness and mood swings, and in the body as headaches, jaw tension, facial twitching, dizziness, ringing ears and rising blood pressure. The appearances differ, but the root is one: 'overheated nerves'."
+],
+[
+"730 Skin application",
+"Pressed together with Shenmen before care to build the foundation for clients whose redness, itching and breakouts worsen as their nerves get more sensitive, and for clients whose facial lines are stiff from jaw tension."
+],
+[
+"What to say",
+"\"When you wake up, is your jaw stiff and the back of your neck heavy? The nerves around your head aren't getting any rest. Today I'll start with the point that calms the nerves.\""
+],
+[
+"Points that go well together",
+"Occiput (posterior), Shenmen, Point Zero, Tranquilizer, Amygdala, TMJ"
+],
+[
+"Caution",
+"For seizures/epilepsy, shingles, sudden loss of vision or hearing, and high blood pressure, medical care comes first. Present ear therapy as supporting care, and make sure clients don't stop medications on their own."
+],
+[
+"Reference",
+"This point is very dynamic and one of the most used points on the ear. Because the occiput connects directly to the brain and spinal cord, its functions are nearly limitless. It calms the mind, relieves headaches, TMJ dysfunction, emotional disorders and anxiety, and lowers blood pressure. Treats nervous system disorders (seizures, epilepsy, facial spasm, dizziness, vertigo, shingles, tinnitus) and vision and hearing disorders. Note: Occiput (posterior) point."
+]
+],
+"후두부(후면)": [
+[
+"Basic role",
+"This is the occiput point on the back (posterior) of the ear. Like the occiput on the front, it's seen as directly connected to the brain and spinal cord (central nervous system) and is used to calm overheated nerves. Its range is equally wide, covering the mind, pain, nerve symptoms and even blood pressure."
+],
+[
+"In simple terms",
+"If the front occiput is the control room's volume dial, the posterior occiput is the hand turning that dial from behind. Pressing both front and back delivers stimulation evenly, as if wrapping the ear front and back."
+],
+[
+"Everyday signals",
+"After sitting at work for long, the back of your neck stiffens like stone. Headaches come as if the back of your head is being squeezed. Even resting your head on a pillow isn't comfortable. You feel dizzy and your ears feel blocked. Thoughts chase each other and it's hard to fall asleep."
+],
+[
+"Body and mind",
+"The back of the neck is where tension builds first. The more responsibility and worry someone carries, the stiffer the back of their neck. When it releases, the noise of thoughts quiets down too."
+],
+[
+"730 Skin application",
+"Pressed together with the front occiput to build the foundation of care for clients whose sensitive nerves bring on redness and itching, and for clients whose facial lines are stiff from neck and jaw tension."
+],
+[
+"What to say",
+"\"Is the back of your neck always stiff as stone? The nerves around your head can't let go of tension. Today I'll care for the points that calm the nerves from the front and back of the ear with you.\""
+],
+[
+"Points that go well together",
+"Occiput, Shenmen (posterior), Shenmen, Cervical Spine, Tranquilizer, TMJ"
+],
+[
+"Caution",
+"For seizures/epilepsy, shingles, sudden loss of vision or hearing, and high blood pressure, medical care comes first. Present ear therapy as supporting care, and make sure clients don't stop medications on their own."
+],
+[
+"Reference",
+"This point is very dynamic and one of the most used points on the ear. Because the occiput connects directly to the brain and spinal cord, its functions are nearly limitless. It calms the mind, relieves headaches, TMJ dysfunction, emotional disorders and anxiety, and lowers blood pressure. Treats nervous system disorders (seizures, epilepsy, facial spasm, dizziness, vertigo, shingles, tinnitus) and vision and hearing disorders. Note: Occiput point."
+]
+],
+"후두피질": [
+[
+"Basic role",
+"The occipital lobe is the brain at the back of the head, the 'visual processing center' that turns light signals received by the eyes into shape, color and movement. What we experience as 'seeing' is really the joint work of the eyes and the occipital lobe."
+],
+[
+"In simple terms",
+"If the eyes are a camera, the occipital lobe is the 'photo lab'. Even with a working camera, if the lab is overworked, photos come out blurry. A life of looking at screens all day keeps the lab from resting."
+],
+[
+"Everyday signals",
+"By afternoon text looks blurry. Long screen time makes the inside of your eyes feel heavy and your head ache. Bright light feels especially glaring. Things shimmer before your eyes."
+],
+[
+"Body and mind",
+"When the eyes are tired, the face stiffens and the brows tense. Visual fatigue leads straight to headaches and irritability. A few minutes of rest with your eyes closed is a bigger break than you'd think."
+],
+[
+"730 Skin application",
+"Used as support with the Eye point for clients who habitually frown from eye fatigue, and in eye-area tension care."
+],
+[
+"What to say",
+"\"By afternoon, do your eyes feel dim and your head heavy too? Your eyes and brain are worn out together. Today I'll care for it along with the eye point.\""
+],
+[
+"Points that go well together",
+"Eye, Liver, Occiput, Parietal Lobe, Temporal Cortex"
+],
+[
+"Caution",
+"If vision in one eye is suddenly blocked, you see double, or flashes of light keep appearing, seeing a doctor immediately is necessary."
+],
+[
+"Reference",
+"Affects vision related to nervous system disorders."
+]
+],
+"흉선": [
+[
+"Basic role",
+"The thymus is an immune organ just behind the breastbone. It's the 'immune military academy' that educates and trains immune cells (T cells) before sending them out. It's largest at puberty and shrinks with age."
+],
+[
+"In simple terms",
+"Only when the academy runs properly can the soldiers guarding the body tell friend from foe accurately. With poor training, they miss enemies or needlessly attack their own side."
+],
+[
+"Everyday signals",
+"You catch colds often and they last long. You get mouth sores often. When tired, blisters come up on your lips. Wounds don't heal well. Even small breakouts fester easily."
+],
+[
+"Body and mind",
+"The thymus is especially vulnerable to the stress hormone (cortisol) and shrinks quickly under heavy stress. That's why colds, mouth ulcers and lip blisters become frequent after emotional hardship."
+],
+[
+"730 Skin application",
+"Used as support for clients whose immune balance has collapsed, with recurring breakouts or slow recovery."
+],
+[
+"What to say",
+"\"After a hard time emotionally, do you get mouth sores or blisters on your lips? It's a sign your body's immunity is worn out. Today I'll care for the immune point with you.\""
+],
+[
+"Points that go well together",
+"Vitality, Tonsil C, Antihistamine, Adrenal, Skin Disease"
+],
+[
+"Reference",
+"Strengthens immune function."
+]
+],
+"흉추": [
+[
+"Basic role",
+"The thoracic spine is the 12 vertebrae running from below the neck to above the lower back. Connected to the ribs, it wraps the chest and protects the heart and lungs. A life of sitting at work and long phone use rolls the thoracic spine forward."
+],
+[
+"Everyday signals",
+"The area between your shoulder blades throbs. Your back is always stiff. Forward head and a rounded back bother you. Taking a deep breath makes your back catch. Sitting long, the middle of your back feels like it's burning."
+],
+[
+"Body and mind",
+"When the back rounds, the chest closes and breathing becomes shallow. When the mind shrinks, the body hunches too. Just straightening the back opens up both breath and mood."
+],
+[
+"730 Skin application",
+"A rounded back makes even the neck and facial lines look saggy. Used together with neck and shoulder care."
+],
+[
+"What to say",
+"\"Does the area between your shoulder blades often ache? It's because you lean forward all day. Today I'll release the back point too.\""
+],
+[
+"Points that go well together",
+"Cervical Spine, Lumbar Spine, Shoulder, Muscle Relaxation, Low Back Pain"
+],
+[
+"Caution",
+"If back pain comes with chest pain or breathlessness, or keeps getting worse at night even at rest, recommend seeing a doctor first."
+],
+[
+"Reference",
+"Used for pain or dysfunction of the upper, middle and lower back and shoulders."
+]
+],
+"흉추척수": [
+[
+"Basic role",
+"This is the spinal cord running through the 12 thoracic vertebrae. Nerves to the skin of the chest and abdomen and the muscles between the ribs, as well as sympathetic nerves regulating the heart, lungs and stomach, branch out from this section."
+],
+[
+"Everyday signals",
+"The area between your shoulder blades throbs and aches. Your back is rounded and breathing shallow. Deep breaths pull at your chest or sides. When tense, the pit of your stomach feels blocked and digestion slows."
+],
+[
+"In simple terms",
+"If the cervical spinal cord is the main line to the arms, the thoracic spinal cord is the distribution panel sending power to the trunk organs. When the back stiffens, the panel overheats and tension signals go even to the heart and stomach."
+],
+[
+"Body and mind",
+"As in 'shouldering' responsibility and burden, the mind's load piles up on the back. When the back rounds and breathing grows shallow, mood sinks too. Helping someone open their chest and breathe deeply is the start."
+],
+[
+"730 Skin application",
+"A rounded back pulls the neck forward, leading to facial sagging and a double chin. Connect it with talk about posture in body and facial-line care."
+],
+[
+"What to say",
+"\"Lately does the area between your shoulder blades ache and your breathing feel shallow? Tension built up in your back can make your chest and stomach feel stifled too. Today I'll care for your spine with you.\""
+],
+[
+"Points that go well together",
+"Thoracic Spine, Chest, Intercostal Area, Sympathetic, Cervical Spinal Cord"
+],
+[
+"Caution",
+"If chest pain is suddenly severe or you're breathless, seeing a doctor comes before care."
+],
+[
+"Reference",
+"This point isn't in the original PDF. It was added to match the director's ear map (outer rim of the helix)."
+]
+],
+"흥분": [
+[
+"Basic role",
+"The original says this point wakes the cerebral cortex (the brain's sensory and motor areas) to help with drowsiness, low mood, emotional numbness and reduced sexual function. The guidebook introduces it as a point used with Shenmen for clients in states of over-tension or excitement or with big mood swings. Understood as a point that checks the balance of arousal, whether drooping or heightened, both explanations fit together."
+],
+[
+"In simple terms",
+"The Excitement point is the brain's 'dimmer switch'. Too dark and you're sleepy and don't want to do anything; too bright and it's glaring and you can't sleep. This point checks which way the lighting has tilted right now."
+],
+[
+"Everyday signals",
+"You keep getting sleepy during the day. Your head is foggy and you lack motivation. Your emotions feel dulled. Or conversely, you're keyed up all day and then suddenly sink. Your mood swings are big."
+],
+[
+"Body and mind",
+"When arousal droops, the body droops too, moving less and gaining weight easily (the original also lists obesity). When keyed up, you can't rest and eventually burn out. Many clients alternate between the two."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. Used as support with Shenmen in condition care for clients with lethargy and big mood swings."
+],
+[
+"What to say",
+"\"Lately do you keep drooping during the day, and then on some days feel keyed up? Your body's arousal rhythm is wavering. Today I'll care for the point that checks that balance with you.\""
+],
+[
+"Points that go well together",
+"Shenmen, Depression, Tranquilizer, Vitality, Libido"
+],
+[
+"Caution",
+"This does not replace treatment for depression or sexual dysfunction. If symptoms persist, guide the client to specialist services."
+],
+[
+"Reference",
+"Activates the cerebral cortex (affecting the brain's sensory and motor areas) to relieve drowsiness, depression, emotional withdrawal, erectile dysfunction, sexual dysfunction and obesity."
+]
+],
+"ACTH": [
+[
+"Basic role",
+"ACTH (adrenocorticotropic hormone) is the 'order form' the pituitary sends to the adrenals. When stress is felt, the signal travels hypothalamus → pituitary (ACTH release) → adrenals (cortisol release). This flow is called the stress axis (HPA axis). This point is used when looking at chronic tension, where orders pour out excessively."
+],
+[
+"Everyday signals",
+"Your shoulders are always tense. You're tired but can't sleep. Small sounds startle you easily. Even on days off your mind keeps running. You keep craving sweets. Your belly keeps growing."
+],
+[
+"In simple terms",
+"The ACTH point is 'the side giving orders (the brain)', and the Adrenal point is 'the side receiving orders and working (the factory)'. When the head can't rest and orders pour out excessively — chronic tension, hyperarousal, trouble falling asleep, sensitivity — it's the ACTH side. When the factory is burned out — difficulty getting up in the morning, slow recovery — it's the adrenal side. Long-term stress is usually a mix of both, so they're often pressed together."
+],
+[
+"Body and mind",
+"When worry and tension never stop, the brain keeps sending down order forms. The body stays in emergency mode, so sleep is shallow, you startle easily and rest doesn't relieve fatigue. A client who says 'I can't sleep and I'm always on edge' is exactly who this point is for."
+],
+[
+"730 Skin application",
+"ACTH and the hormone that stimulates melanin (MSH) are made from the same precursor substance. This can explain the background of the saying 'stress darkens melasma'. Care for it together for clients under heavy stress in melasma and pigmentation consultations."
+],
+[
+"What to say",
+"\"You're tired yet can't sleep and always feel on edge, right? It's a sign stress orders keep coming down. Stress can also darken melasma, so today I'll care for this point with you.\""
+],
+[
+"Points that go well together",
+"Shenmen, Adrenal F, Adrenal C, Anterior Pituitary, Thalamus, Skin Disease (melasma)"
+],
+[
+"Caution",
+"Evidence that auricular stimulation directly changes hormone levels is insufficient. Present it as supporting care that helps relieve tension and aid recovery. If insomnia or anxiety continues for several weeks, also recommend seeing a doctor."
+],
+[
+"Reference",
+"Regulates cortisone secretion and is used for stress and stress-related disorders."
+]
+],
+"하체자율신경": [
+[
+"Related organs",
+"Autonomic nerves from the lower back and tailbone, blood vessels of the lower limbs, pelvic organs"
+],
+[
+"Main effects",
+"Cold lower body, leg swelling and heaviness, 'hot above, cold below' (heat in the upper body with cold in the lower), pelvic circulation, menstrual cramps, urination and bowel rhythm"
+],
+[
+"Clinical use",
+"Used as the central point of lower-body circulation programs for clients with cold feet and legs that swell easily, clients whose heat rises only to the face, and clients who sit for long hours at work."
+],
+[
+"Recommended combination",
+"Autonomic, Sympathetic, Pelvis, Thigh, Kidney F, Bladder"
+],
+[
+"Basic role",
+"The autonomic nerves divide their territory between upper and lower body. In the lower body, ① sympathetic nerves from the lower back (lumbar segments) regulate the blood vessels and sweat glands of the legs, and ② parasympathetic nerves from the tailbone area (sacral segments) move the pelvic organs such as the bladder, rectum and uterus. In other words, these nerves handle 'blood flow in the legs' and 'the rhythm of the pelvic organs'."
+],
+[
+"Difference from Autonomic",
+"If the Autonomic point balances tension and relaxation throughout the body, the Lower Body Autonomic point focuses that balance on the lower body and pelvis."
+],
+[
+"Body and mind",
+"When tense, the body sends blood toward the head and upper body. When this lasts long, it becomes 'hot above, cold below': the face flushes while the feet are cold, the legs swell and menstrual cramps worsen. Jiggling your legs or going to the bathroom often when anxious, and your 'legs giving out' when scared, are also lower-body autonomic responses. It's also why sleep comes only when your feet are warm."
+],
+[
+"730 Skin application",
+"For clients with redness, don't just cool the face; open lower-body circulation to give the heat a path to descend. Pairs well with lower-body swelling and body care."
+]
+],
+"각성": [
+[
+"Related organs",
+"Brain arousal, consciousness"
+],
+[
+"Main effects",
+"Drowsiness, poor concentration, lethargy"
+],
+[
+"Clinical use",
+"Used when focus is needed for studying, driving or work."
+],
+[
+"Understanding",
+"A point used to raise the body's state of arousal, improve concentration and promote mental clarity. Good to stimulate when fatigue is severe or the mind needs waking up."
+]
+],
+"집중": [
+[
+"Related organs",
+"Frontal lobe"
+],
+[
+"Main effects",
+"Concentration, memory"
+],
+[
+"Clinical use",
+"Programs for students, exam-takers and work focus"
+],
+[
+"Understanding",
+"Use together with Alertness."
+]
+],
+"날씨요정": [
+[
+"Related organs",
+"Autonomic nervous system, adaptability to changes in air pressure and temperature, biorhythm"
+],
+[
+"Main effects",
+"Headaches, achy joints, swelling and drowsiness with weather and pressure changes; dropping condition at seasonal transitions; seasonal low mood and lethargy"
+],
+[
+"Clinical use",
+"Apply ahead of time at seasonal transitions for clients who say 'my body knows before it rains', clients whose condition and skin collapse together at every change of season, and clients whose mood sinks in autumn and winter."
+],
+[
+"Recommended combination",
+"Autonomic, Shenmen, Pineal Gland, Adrenal F, Vitality"
+],
+[
+"Basic role",
+"A point that helps the body and mind adapt to weather and seasonal changes. It corresponds to the 'Weather point' on Nogier-style ear maps and addresses constitutions especially sensitive to weather (meteoropathy). Why we react to weather: ① when air pressure drops, the inner ear senses it and the autonomic nerves waver, blood vessels dilate and tissues swell, bringing headaches, joint pain and drowsiness. ② When sunlight decreases, serotonin (mood) falls and melatonin (sleep) rises, causing lethargy, increased appetite and low mood. ③ Large daily temperature swings at seasonal transitions use a lot of energy for temperature regulation, leading to fatigue and lowered immunity."
+],
+[
+"Body and mind",
+"Feeling heavy as lead in the rainy season, spring fatigue in spring, and unexplained loneliness in autumn aren't about willpower; they're the body working hard to adapt to the climate. Just this explanation comforts clients."
+],
+[
+"730 Skin application",
+"Connect it to consultations on skin that changes with the seasons, such as seasonal dryness, itching and redness, or increased sebum in summer."
+]
+],
+"풍류": [
+[
+"Related organs",
+"Wind (風) symptoms, circulatory system"
+],
+[
+"Main effects",
+"Itching, skin rashes, circulation disorders"
+],
+[
+"Clinical use",
+"Used for allergic skin conditions or severe skin itching."
+],
+[
+"Understanding",
+"In Korean medicine, 'wind' (風) refers to migratory symptoms that come and go suddenly, like itching and hives. Good to use as a set with Skin Disease and Histamine."
+]
+],
+"십이지장": [
+[
+"Related organs",
+"Duodenum"
+],
+[
+"Main effects",
+"Digestive function, neutralizing stomach acid, nutrient absorption, discomfort at the pit of the stomach when hungry"
+],
+[
+"Clinical use",
+"Used for clients with chronic indigestion."
+],
+[
+"Basic role",
+"The first section of the small intestine (about 25 cm), right after the stomach. It's the 'crossroads of digestion' where pancreatic enzymes and bile from the gallbladder meet food. It neutralizes stomach acid, full breakdown of carbohydrates, proteins and fats begins here, and iron and calcium are absorbed."
+],
+[
+"Body and mind",
+"A site vulnerable to stress where ulcers form easily. If someone who often skips meals and lives under tension feels pain at the pit of the stomach when hungry, it may be a signal from here."
+],
+[
+"730 Skin application",
+"When iron absorption drops, the complexion turns pale and dull. Looked at as a digestion-absorption line together with the Stomach, Pancreas and Gallbladder."
+]
+],
+"시상하부": [
+[
+"Related organs",
+"Hypothalamus"
+],
+[
+"Main effects",
+"Body temperature regulation, sleep, appetite, autonomic regulation, hormone regulation"
+],
+[
+"Clinical use",
+"Used for lack of sleep, chronic fatigue and stress management."
+],
+[
+"Understanding",
+"Acts as the supreme command center maintaining the body's homeostasis. It handles temperature regulation, control of heartbeat, blood pressure and digestion through the sympathetic and parasympathetic nerves, overall direction of hormone secretion via its link to the pituitary, and control of basic drives like hunger, thirst, sleep and libido."
+],
+[
+"730 Skin application",
+"Applied as support when lifestyle and stress affect skin condition."
+]
+],
+"뇌하수체": [
+[
+"Related organs",
+"Pituitary gland"
+],
+[
+"Main effects",
+"Endocrine regulation, growth hormone, reproductive hormones, thyroid-stimulating hormone"
+],
+[
+"Clinical use",
+"Used in programs that consider hormone balance."
+],
+[
+"Understanding",
+"Many ear maps show only one pituitary point, but in reality it's divided into the anterior lobe (which produces hormones directly) and the posterior lobe (which stores and releases hormones)."
+]
+],
+"연수": [
+[
+"Related organs",
+"Medulla oblongata, brainstem, vagus nerve"
+],
+[
+"Main effects",
+"Autonomic stability, breathing and heart rhythm, dizziness, tension at the back of the neck, sleep"
+],
+[
+"Clinical use",
+"Used as support in autonomic balance programs, together with other calming points rather than alone."
+],
+[
+"Recommended combination",
+"Shenmen, Thalamus, Sympathetic, Brainstem"
+],
+[
+"Understanding",
+"The medulla is a vital center that keeps us alive automatically, without conscious effort. It regulates breathing, heartbeat and blood pressure, swallowing, and the cough, sneeze and vomiting reflexes; regulates the autonomic system via the vagus nerve; and serves as the pathway connecting the spinal cord and brain. Paul Nogier's auriculotherapy doesn't use the medulla point 'only when the medulla is diseased' but sees it as a key control point that stabilizes the autonomic system and regulates life-sustaining functions. In practice it's widely used for stress, anxiety, tension, autonomic imbalance, dizziness, headaches, supporting blood pressure regulation, stifled breathing, tension at the back of the neck, chronic fatigue and sleep disorders. However, it can't be claimed that stimulating the medulla point will definitely lower blood pressure or stabilize heart rate. While some research suggests auricular stimulation may influence the autonomic system, evidence of consistent therapeutic effects on disease is insufficient. In practice, it's best understood as a supporting point that helps autonomic balance."
+]
+],
+"교뇌": [
+[
+"Related organs",
+"Pons"
+],
+[
+"Main effects",
+"Autonomic regulation, sleep, sense of balance"
+],
+[
+"Clinical use",
+"Insomnia and stress management"
+],
+[
+"Understanding",
+"The main functions of the pons are: ① Breathing regulation — fine-tunes breathing rhythm together with the medulla. ② Sleep and wakefulness — plays an important role in regulating REM sleep and controls falling asleep and staying awake. ③ Facial nerve function — several cranial nerves handling facial expression, chewing strength, eye closing, tear and saliva secretion, facial sensation, and part of hearing and balance emerge from the pons. ④ Connection to the cerebellum — relays information to the cerebellum that regulates balance, posture, accuracy of movement and coordination. Paul Nogier's ear map treats the pons as one of the central nervous system control points, selected for tension relief, stress reduction, sleep support, facial tension, support for facial-nerve-related symptoms, dizziness, balance problems and headaches."
+]
+],
+"전두동": [
+[
+"Related organs",
+"Frontal region"
+],
+[
+"Main effects",
+"Forehead headaches"
+],
+[
+"Clinical use",
+"Tension headache care"
+],
+[
+"Understanding",
+"Frontal headaches have various main causes. The most common, tension headache, arises when the neck, shoulder and scalp muscles become overly rigid from stress, lack of sleep, accumulated fatigue or forward head posture. Eye strain occurs when the muscles around the eyes tense from long smartphone and monitor use; sinusitis headaches occur when inflammation in the spaces around the nose raises pressure; and migraines bring throbbing pain caused by constriction and dilation of cerebral vessels and neural inflammation. Asking about the client's headache pattern helps narrow down the type of cause."
+]
+],
+"정수리": [
+[
+"Related organs",
+"Parietal region"
+],
+[
+"Main effects",
+"Headache, heavy head, poor concentration"
+],
+[
+"Clinical use",
+"Used for tension headaches and stress management"
+],
+[
+"Understanding",
+"A reflex area that addresses overall heaviness of the head together with the Frontal Sinus."
+]
+],
+"접형골": [
+[
+"Related organs",
+"Sphenoid bone"
+],
+[
+"Main effects",
+"Cranial tension, facial balance"
+],
+[
+"Clinical use",
+"Used in headache programs"
+],
+[
+"Understanding",
+"The sphenoid bone correspondence point is interpreted not as just part of the skull but as a key control tower governing 'hormone balance' and 'the center of facial structure'. ① Anti-aging and hormone balance switch — because it cradles the pituitary, which oversees the endocrine system, stimulating this point is like supporting pituitary function and stabilizing hormonal flow. It can help fundamentally manage melasma and melanin pigmentation that darken with hormonal imbalance, making it a point that can create synergy for the complex skin concerns of women in their 30s and 40s. ② Biorhythm recovery — as a central axis aiding cerebrospinal fluid circulation, gentle stimulation promotes stagnant internal circulation and stabilizes biorhythms, maximizing oxygen and nutrient supply to skin cells. ③ Facial contour and symmetry care — because it interlocks with facial bones like the cheekbones and maxilla, it helps release deep fascial and skeletal tension in facial asymmetry or sagging care, boosting lifting synergy."
+]
+],
+"안면신경": [
+[
+"Related organs",
+"Facial nerve"
+],
+[
+"Main effects",
+"Facial muscle tension, facial circulation"
+],
+[
+"Clinical use",
+"Used to relax the facial muscles."
+],
+[
+"Understanding",
+"A reflex area used with the Face point for facial-line care."
+]
+],
+"허벅지": [
+[
+"Related organs",
+"Thigh"
+],
+[
+"Main effects",
+"Thigh pain, muscle tension, blood circulation"
+],
+[
+"Clinical use",
+"Used in lower-limb circulation programs."
+],
+[
+"Understanding",
+"Recommended to manage as a lower-limb circulation line together with Calf F and Buttocks."
+]
+],
+"후아": [
+[
+"Related organs",
+"Brain, spinal cord (central nervous system)"
+],
+[
+"Main effects",
+"Calming the mind, anxiety and emotional instability, headaches, TMJ dysfunction, dizziness, tinnitus, facial spasm, blood pressure stability"
+],
+[
+"Clinical use",
+"A calming point pressed first with Shenmen for clients with sensitive nerves and high tension. Used as the central point for clients with overlapping nerve symptoms in the head and face, such as headaches, jaw tension and tinnitus."
+],
+[
+"Recommended combination",
+"Shenmen, Point Zero, Tranquilizer, Emotional Brain (amygdala), TMJ"
+],
+[
+"Basic role",
+"A dynamic point that is the most used on the ear, seen as directly connected to the brain and spinal cord (central nervous system). The brain and spinal cord are the 'central control room' that receives every sensation and sends every command. It's easy to understand the Occiput as the point that lowers overall output when this control room overheats. That's why its range is so wide, covering the mind, pain, nerve symptoms and even blood pressure."
+],
+[
+"Body and mind",
+"When the nervous system is excited and can't rest, it shows in the mind as anxiety, restlessness and mood swings, and in the body as headaches, clenching and TMJ discomfort, twitching under the eyes or in the face, dizziness, ringing ears and rising blood pressure. The appearances differ, but the root is one: 'overheated nerves'. The Occiput calms the mind while settling these bodily nerve symptoms too. Range in auriculotherapy: ① Emotion: anxiety, emotional disorders, calming the mind ② Pain: headaches, TMJ dysfunction ③ Nervous system: seizures/epilepsy, facial spasm, dizziness, shingles, tinnitus ④ Senses: vision and hearing disorders ⑤ Circulation: lowers blood pressure."
+],
+[
+"730 Skin application",
+"Pressed together with Shenmen before care to build the foundation for clients whose redness, itching and breakouts worsen as their nerves get more sensitive, and for clients whose facial lines are stiff from jaw tension."
+],
+[
+"Caution",
+"For seizures/epilepsy, shingles, sudden loss of vision or hearing, and high blood pressure, medical care comes first. Present auriculotherapy as supporting care, and make sure clients don't stop medications on their own."
+]
+],
+"자율신경": [
+[
+"Basic role",
+"The autonomic nerves automatically regulate the heart, breathing, digestion, body temperature and sweating, regardless of will. The sympathetic (tension, activity) and parasympathetic (relaxation, recovery) must balance like a seesaw."
+],
+[
+"Difference from Sympathetic",
+"If the Sympathetic point takes your foot off an over-pressed 'gas pedal' to relax tension in the blood vessels and visceral muscles, the Autonomic point balances the whole seesaw of gas and brake."
+],
+[
+"Everyday signals",
+"It's hard to fall asleep. Your heart often pounds. Digestion is poor. Trivial things make you sensitive. Or conversely, getting up in the morning is hard and you're lethargic. Your mood swings are big."
+],
+[
+"Body and mind",
+"When the seesaw tilts toward the sympathetic side, insomnia, palpitations, indigestion and sensitivity appear; when it tilts too far toward the parasympathetic side, lethargy, low mood and difficulty getting up in the morning appear. Clients with big mood swings usually have this balance broken."
+],
+[
+"730 Skin application",
+"Often applied for clients with stress breakouts, sensitive skin and lack of sleep. Along with Shenmen, it's one of the 'top two' points of ear therapy."
+],
+[
+"What to say",
+"\"Your sleep, digestion and mood are all shaken at once, right? It's because your body's seesaw has tilted to one side. Today I'll start with the point that rebalances the seesaw.\""
+],
+[
+"Points that go well together",
+"Shenmen, Thalamus, Sympathetic, Lower Body Autonomic"
+],
+[
+"Reference",
+"Source: 730 Skin Ear Map Guidebook, Part 1"
+]
+],
+"순환계": [
+[
+"Basic role",
+"The circulatory system is the route by which blood from the heart travels through the vessels around the whole body and back to the heart. It carries oxygen and nutrients and collects waste. When this route slows, nutrients don't reach the body's extremities and waste lingers. This point supports that whole flow."
+],
+[
+"Everyday signals",
+"Your hands and feet are always cold. Your face swells in the morning and your legs in the evening. Sitting long makes your legs tingle and feel heavy. You bruise easily. Your complexion is dull and lacks color."
+],
+[
+"In Korean medicine",
+"Korean medicine holds that 'where qi goes, blood follows' (氣行則血行). When qi is weak or blocked, blood can't circulate properly either. So supporting circulation means releasing the flow of both qi and blood."
+],
+[
+"Body and mind",
+"Tension tightens the blood vessels and chills the hands and feet. Circulation eases only when the mind is at ease. That's why clients under a lot of stress have cold hands and feet."
+],
+[
+"730 Skin application",
+"Only with good circulation do nutrients and oxygen reach the skin and waste drain away. Used as a basic point in care for dull complexions, swelling, dark circles and loss of firmness."
+],
+[
+"What to say",
+"\"Are your hands and feet cold and your legs swollen every evening? Your body's flow has slowed a little. Today I'll care for the point that gets circulation moving. Your complexion will look much clearer too.\""
+],
+[
+"Points that go well together",
+"Heart C · Heart F, Liver, Spleen C, Kidney F, Sympathetic"
+]
+],
+"공격성": [
+[
+"Basic role",
+"When the brain's emotional alarm (amygdala) becomes oversensitive, anger and aggressive reactions burst out first even at things that aren't dangerous. This point is used to soften those edgy reactions."
+],
+[
+"Everyday signals",
+"Anger flares up even at small things. Your words get sharp. You hold it in and then explode all at once. You regret it after getting angry. Your shoulders and jaw are tense."
+],
+[
+"Body and mind",
+"Lack of sleep and chronic stress weaken the brake of reason (frontal lobe), making the alarm ring at even small stimuli. Sudden flares of anger may not be personality but a sign of a worn-out brake."
+],
+[
+"730 Skin application",
+"When angry, heat rushes to the face, worsening redness and breakouts. Linked to consultations for clients whose skin flares up under heavy emotional stress."
+],
+[
+"What to say",
+"\"Lately have you flared up over small things and then regretted it? It's because your body's alarm has become too sensitive. Today I'll add the point that calms that alarm.\""
+],
+[
+"Points that go well together",
+"Emotional Brain, Shenmen, Tranquilizer, Frontal Lobe"
+],
+[
+"Caution",
+"If anger is hard to control or emotional problems are severe, also guide the client to professional counseling."
+],
+[
+"Reference",
+"Compiled from the anger-response content of the guidebook's 'Emotional Brain (amygdala)' entry."
+]
+],
+"심신안정": [
+[
+"Basic role",
+"When the body tenses, the mind tightens along with it, and when the mind is anxious, the body stiffens too. Mind-Body Calm is a point that helps both body and mind settle down together, used at the end of care to signal 'it's okay to rest now'."
+],
+[
+"Everyday signals",
+"Even lying down, your body won't let go of tension. Your mind is keyed up and it's hard to stay still. You're restless even when nothing is wrong. Even on days off, you don't feel rested."
+],
+[
+"Body and mind",
+"When tension lasts long, the body forgets how to relax. Like opening a clenched fist, this point gives both body and mind the signal that 'it's okay to let go'."
+],
+[
+"730 Skin application",
+"Used with Shenmen and Tranquilizer at the end of care for clients with sensitive skin, lack of sleep or stress breakouts. When clients become relaxed enough to fall asleep during care, skin recovery begins too."
+],
+[
+"What to say",
+"\"Resting doesn't feel like rest, right? It's because your body and mind haven't let go of tension yet. Today I'll finish with the point that puts both at ease.\""
+],
+[
+"Points that go well together",
+"Shenmen, Tranquilizer, Emotional Brain, Autonomic"
+]
+],
+"조증": [
+[
+"Basic role",
+"Mania is a state of excessively elevated mood and overflowing energy. You don't feel tired even with little sleep, speech speeds up, thoughts chase one another, and all the things you want to do pour out at once. This point turns down the volume of a mood that has climbed too high."
+],
+[
+"Everyday signals",
+"You feel fresh even with almost no sleep. Your speech speeds up and is hard to stop. You have so many thoughts you can't focus on one. You impulsively buy things or start projects. You get excited easily over small things and irritation flares up."
+],
+[
+"In Korean medicine",
+"Korean medicine sees this state as heart fire (心火) and liver fire (肝火) surging upward. When fire gathers upward, the head is hot and the mind floats and can't keep still. The direction of care is to bring the fire down and seat the mind back in its place."
+],
+[
+"Body and mind",
+"Feeling good and being keyed up are different. A keyed-up mood tends to crash hard over time. The higher the rollercoaster climbs, the bigger the drop. Lowering the height a little makes the ups and downs gentler too."
+],
+[
+"730 Skin application",
+"When a keyed-up state with little sleep continues, heat rises to the face and the skin becomes sensitive. Used with calming points for redness, heat and sleep-deprived skin in clients with big mood swings."
+],
+[
+"What to say",
+"\"Lately you feel strangely fresh even with less sleep, and your thoughts won't stop, right? Your body and mind are floating too high. Today I'll care for the point that gently brings a floating mood back down.\""
+],
+[
+"Points that go well together",
+"Shenmen, Tranquilizer, Mind-Body Calm, Depression (look at mood ups and downs together), Master Cerebral"
+],
+[
+"Caution",
+"If mood swings to extremes or several days without sleep continue, recommend professional counseling and medical care first."
+]
+],
+"금연": [
+[
+"Basic role",
+"When you quit smoking, as nicotine leaves the body it sends restlessness, irritability, emptiness and a craving to have something in your mouth. This point softens those withdrawal signals and the urge to smoke, helping you hold out in quitting."
+],
+[
+"Everyday signals",
+"After meals or with coffee, you strongly think of a cigarette. Holding off, your hands feel empty and you're fidgety. You get irritable for no reason and can't concentrate. Your mouth wants something, so snacking increases."
+],
+[
+"Body and mind",
+"Smoking is both a habit of the body and a pause for the mind. So when quitting, along with physical withdrawal comes the emptiness of losing 'a way to rest'. Used with the soothing Shenmen and Tranquilizer points, quitting becomes much less hard."
+],
+[
+"730 Skin application",
+"Smoking narrows the skin's blood vessels, dulling the complexion and lowering firmness. Adding this point for clients who've decided to quit lets you support both their skin care and quitting."
+],
+[
+"What to say",
+"\"Quitting smoking really isn't easy, is it? There's a point that soothes the restlessness that comes up when you hold off. I'll put it on for you today. You'll soon see your skin improving too.\""
+],
+[
+"Points that go well together",
+"Lung, Mouth, Shenmen, Tranquilizer, Point Zero, Sympathetic"
+]
+],
+"흥분심장": [
+[
+"Basic role",
+"When people are startled, angry or excited, the heart beats fast. The body judges it an 'emergency' and circulates blood quickly. This response is fine briefly, but if excitement doesn't settle and lasts long, both the heart and body wear out. This point acts as a brake that returns a racing beat to its place."
+],
+[
+"Everyday signals",
+"Your heart sinks with a thud even at small things. When angry, your face flushes and your heart pounds. Before important events like presentations or exams, the palpitations won't stop. Long after an argument, your chest still won't calm down. Even lying down at night, your heartbeat sounds loud."
+],
+[
+"In Korean medicine",
+"In Korean medicine the heart is 'the sovereign' (君主之官) and the home where the mind (神) resides. Its emotion is 'joy' (喜), but even joy in excess is believed to scatter the mind. Great excitement makes heart fire (心火) surge upward, reddening the face, causing palpitations and making sleep shallow. This point's use is to bring that fire down and send the mind back home."
+],
+[
+"Body and mind",
+"Excitement is an emotion mixing anger, startle, thrill and tension. Clients who get excited easily are always half on emergency standby. Like taking a boiling kettle off the stove, once the heartbeat calms, the mind calms a great deal too."
+],
+[
+"730 Skin application",
+"Excitement sends heat to the face, deepening redness and making the skin sensitive. Used in care for facial redness, heat and sensitive skin in clients who anger easily or get very tense."
+],
+[
+"What to say",
+"\"Lately does your heart pound even at small things, and your face flush suddenly? It's because your mind is always on emergency standby. Today I'll care for the point that calms a racing heart with you.\""
+],
+[
+"Points that go well together",
+"Shenmen (calming the mind), Heart C · Heart F, Tranquilizer, Sympathetic, Excitement"
+],
+[
+"Caution",
+"If palpitations with chest pain, breathlessness or dizziness recur, recommend seeing a doctor first."
+]
+],
+"분문": [
+[
+"Basic role",
+"The esophagus is the muscular tube connecting the mouth and stomach. The sphincter at its end is the cardia, acting as a lid that lets food into the stomach and keeps stomach acid from coming back up."
+],
+[
+"Everyday signals",
+"You have heartburn. Sour fluid comes up. You burp often. Lying down, the pit of your stomach feels stifled. It feels like something is stuck in your throat."
+],
+[
+"Body and mind",
+"When overeating, late-night eating and stress loosen this lid, heartburn and a lump-in-the-throat feeling occur. It can also appear as a feeling of something stuck in the throat (plum-pit qi) when you swallow and hold back words you want to say."
+],
+[
+"730 Skin application",
+"Reflux symptoms lower sleep quality and cut the skin's regeneration time. Looked at with the Stomach, Esophagus and Throat."
+],
+[
+"What to say",
+"\"When you lie down at night, do you get heartburn or sour fluid coming up? The stomach's lid has loosened a bit. Today I'll put on the point that firms up that lid.\""
+],
+[
+"Points that go well together",
+"Esophagus, Stomach, Sympathetic"
+],
+[
+"Reference",
+"Source: 730 Skin Ear Map Guidebook, Part 4, Esophagus entry"
+]
+],
+"항문": [
+[
+"Basic role",
+"The anus is the last door that releases stool collected in the rectum after passing through the large intestine. Around it are bundles of veins acting as cushions and the sphincter muscle."
+],
+[
+"Everyday signals",
+"Bowel movements are uncomfortable. The anus itches or stings. There's a feeling of incomplete emptying. Sitting long makes it feel heavy."
+],
+[
+"Body and mind",
+"When elimination doesn't feel complete, both body and mind feel heavy. Since it's a hard area to talk about, handle it comfortably in consultation."
+],
+[
+"730 Skin application",
+"Used as support with the Large Intestine and Rectum F in constipation and lower-body circulation care."
+],
+[
+"Points that go well together",
+"Hemorrhoids C, Hemorrhoids, Rectum F, Large Intestine, Lower Body Autonomic"
+],
+[
+"Caution",
+"If there's bleeding or severe pain, recommend seeing a doctor first."
+]
+],
+"치질": [
+[
+"Basic role",
+"Around the anus are bundles of veins acting as cushions. Hemorrhoids are when pressure builds there from long sitting, straining with constipation, pregnancy and childbirth, drinking or a cold lower body, causing them to swell and sag."
+],
+[
+"Everyday signals",
+"Sitting long makes the anus feel heavy. Bowel movements hurt or show blood. You're often constipated. Your lower body is cold."
+],
+[
+"Body and mind",
+"It's a sign that circulation below the pelvis is blocked. Many clients stress over it alone because it's hard to talk about, so handle it comfortably in consultation."
+],
+[
+"730 Skin application",
+"Used as support with Lower Body Autonomic and Large Intestine in lower-body circulation and constipation care programs."
+],
+[
+"Points that go well together",
+"Hemorrhoids C, Large Intestine, Pelvis, Lower Body Autonomic, Anus"
+],
+[
+"Caution",
+"Explain that this is a supporting reflex area that doesn't replace medical treatment, and if there's bleeding, recommend seeing a doctor."
+],
+[
+"Reference",
+"Source: 730 Skin Ear Map Guidebook, Part 4, Hemorrhoids C entry"
+]
+],
+"간경변": [
+[
+"Basic role",
+"Cirrhosis is a state where a long-exhausted liver is repeatedly injured and recovers until it gradually hardens. A hardened liver struggles to do its jobs like detoxification, storing nutrients and making bile. This point is used with the Liver point to support a worn-out liver."
+],
+[
+"Everyday signals",
+"Rest doesn't relieve fatigue. You have no appetite and your belly feels bloated. Your legs swell. You bruise easily. Your complexion is dark and yellowish. You've been drinking for a long time."
+],
+[
+"In Korean medicine",
+"In Korean medicine the liver is the general that stores blood and keeps qi flowing without blockage. When liver qi is blocked for long and blood clumps, hard masses (積聚) are believed to form. The direction of care is to release blocked qi and support the liver."
+],
+[
+"Body and mind",
+"The liver is the 'silent organ', making no sound until it's badly damaged. It may be the result of years of drinking, fatigue and suppressed anger building up."
+],
+[
+"730 Skin application",
+"When the liver is worn out, the skin turns dull and yellowish, and melasma and dark circles deepen. Used as support with the Liver point in complexion care for clients with reduced liver function."
+],
+[
+"What to say",
+"\"When the liver has been worn out for a long time, the skin tone darkens first. Today I'll put on the point that supports the liver together with the Liver point.\""
+],
+[
+"Points that go well together",
+"Liver (use together), Liver Yang, Gallbladder, Abdomen, Shenmen"
+],
+[
+"Caution",
+"Cirrhosis is a disease that requires medical treatment. Use ear therapy only as supporting care, and always prioritize hospital treatment and regular checkups."
+]
+],
+"비장F": [
+[
+"Basic role",
+"In Western medicine the spleen is the largest lymphoid organ in the upper left abdomen, filtering bacteria from the blood, processing old red blood cells and supporting immune cells. The Korean-medicine spleen (脾) is a broader concept, meaning the 'center of digestion and absorption' that makes qi and blood from food, carries them throughout the body (transformation and transport) and handles water metabolism."
+],
+[
+"Everyday signals",
+"You have no appetite. You get sleepy after meals. The body feels heavy and swells easily. You bruise easily. You crave sweets."
+],
+[
+"Body and mind",
+"The spleen is linked to 'pensiveness' (思). When brooding and worry are excessive, the spleen tires and the signals above appear. Chronic fatigue in people who use their heads a lot is the classic example."
+],
+[
+"730 Skin application",
+"Often used in skin regeneration, barrier recovery, swelling relief and sagging programs."
+],
+[
+"Points that go well together",
+"Spleen C, Stomach, Liver, Pancreas, Kidney"
+],
+[
+"Reference",
+"Source: 730 Skin Ear Map Guidebook, Part 4, Spleen entry. This is the European location of the same organ as Spleen C (Chinese)."
+]
+],
+"에스트로겐": [
+[
+"Basic role",
+"Estrogen is the main female hormone made in the ovaries. It protects collagen, moisture, firmness, bones and blood vessels, and affects the mood hormone (serotonin)."
+],
+[
+"Everyday signals",
+"Your menstrual cycle is irregular. Premenstrual sensitivity, low mood and increased appetite (PMS) are severe. Your skin becomes dry and loses firmness. Menopause brings hot flashes, insomnia and anxiety."
+],
+[
+"Body and mind",
+"It's natural for mood to change with the cycle: energetic before ovulation, sensitive before the period. At menopause, estrogen drops sharply, bringing hot flashes, insomnia, anxiety and low mood together."
+],
+[
+"730 Skin application",
+"Looked at as a female hormone line with the Ovary, Gonadotropin and Uterus Calm points in consultations on pre-period jawline breakouts and menopausal dryness and loss of firmness."
+],
+[
+"What to say",
+"\"Does your skin feel drier and less firm than before lately? The flow of female hormones shows directly on the skin. Today I'll care for the hormone line with you.\""
+],
+[
+"Points that go well together",
+"Ovary & Testis, Gonadotropin, Uterus Calm, Endocrine"
+],
+[
+"Caution",
+"Evidence that auricular stimulation directly regulates hormone levels is insufficient, so present it as supporting care."
+],
+[
+"Reference",
+"Source: 730 Skin Ear Map Guidebook, Part 7, Ovary entry"
+]
+],
+"요관F": [
+[
+"Basic role",
+"Though it shares its name with the 'ureter' through which urine passes, it's often understood in practice as a reflex area that supports circulation throughout the pelvis. Related organs are the reproductive organs and pelvis."
+],
+[
+"Everyday signals",
+"The pelvis feels heavy and pulls. The lower belly is cold. The pelvis is uncomfortable around the period."
+],
+[
+"730 Skin application",
+"A supporting point that helps pelvic circulation, used together in women's health and lower-body circulation programs."
+],
+[
+"Points that go well together",
+"Pelvis, Uterus Calm, Lower Body Autonomic, External Genitals C"
+],
+[
+"Reference",
+"Source: 730 Skin Ear Map Guidebook, Part 7"
+]
+],
+"자궁안정": [
+[
+"Basic role",
+"The uterus is a pouch made of muscle. During the period the uterine muscle contracts to shed its inner lining, and when these contractions are too strong, the lower belly cramps as if wrung. This point relaxes and calms tense uterine muscle to ease menstrual cramps."
+],
+[
+"Everyday signals",
+"On the first day of your period, the lower belly cramps as if wrung. It pulls all the way to the lower back and tailbone. The lower belly is cold and knots hard. The lower belly feels heavy and uncomfortable around the period."
+],
+[
+"In Korean medicine",
+"Korean medicine holds that 'where there is free flow, there is no pain' (通則不痛). When the lower belly is cold (寒) or qi and blood are blocked (瘀), cramps worsen. The direction of care is to warm the lower belly and release blocked flow to ease the uterus."
+],
+[
+"Body and mind",
+"When stress and tension build up, the uterus tenses too. The lower belly relaxes only when the mind is at ease. For clients with severe cramps, look after their mental tension as well."
+],
+[
+"730 Skin application",
+"Many clients' skin becomes sensitive and jawline breakouts come up during their period. Adding hormone points along with cramp care extends into skin-condition care around the period."
+],
+[
+"What to say",
+"\"When you have your period, does your lower belly cramp as if wrung? It's because your uterus is too tense. Today I'll put on the point that relaxes the uterus.\""
+],
+[
+"Points that go well together",
+"Uterus C · Uterus F, Pelvis, Abdomen, Endocrine, Ovary & Testis, Shenmen"
+],
+[
+"Caution",
+"If menstrual cramps keep getting worse or aren't controlled even with painkillers, recommend seeing a gynecologist first."
+]
+],
+"성선자극혈": [
+[
+"Basic role",
+"Gonadotropins (FSH, LH) are upstream hormones secreted by the anterior pituitary that signal the ovaries and testes to 'make sex hormones'. If the ovary is the 'factory', it's easy to explain the Gonadotropin point as the 'ordering department'."
+],
+[
+"Everyday signals",
+"Your menstrual cycle is irregular. Menopausal changes have begun. Your skin wavers greatly around your period."
+],
+[
+"730 Skin application",
+"Referenced in consultations on skin concerns tied to hormonal fluctuations, such as melasma that darkens around the period, jawline breakouts, and menopausal dryness and loss of firmness."
+],
+[
+"What to say",
+"\"Does your skin change a lot with your cycle? When the body's hormone 'ordering department' wavers, it shows directly on the skin. Today I'll care for that point with you.\""
+],
+[
+"Points that go well together",
+"Endocrine, Pituitary (anterior), Ovary & Testis, Uterus Calm"
+],
+[
+"Caution",
+"Evidence that auricular stimulation directly regulates hormone levels is insufficient, so present it as supporting care."
+],
+[
+"Reference",
+"Source: 730 Skin Ear Map Guidebook, Part 7"
+]
+],
+"유방": [
+[
+"Basic role",
+"A reflex area that looks at tension and circulation around the breasts. Used as support when clients complain of breast-related discomfort."
+],
+[
+"Everyday signals",
+"Before your period your breasts swell and hurt. Your breasts feel knotted."
+],
+[
+"Body and mind",
+"A reflex area for a sensitive region that must be handled carefully in consultations with female clients."
+],
+[
+"730 Skin application",
+"Referenced with the Ovary and Endocrine points when clients complain of breast tension before their period."
+],
+[
+"Points that go well together",
+"Ovary & Testis, Endocrine, Mammary Gland, Chest"
+],
+[
+"Caution",
+"If a lump can be felt or there's discharge, recommend a medical examination first."
+],
+[
+"Reference",
+"Source: 730 Skin Ear Map Guidebook, Part 7"
+]
+],
+"측두골": [
+[
+"Basic role",
+"The temporal bone is the skull bone at the temples, meeting the mandible just in front of the ear to form the TMJ. The chewing muscles attach around here."
+],
+[
+"Everyday signals",
+"The sides of your head throb. You clench your teeth. Your jaw clicks when opening. The area around your ears feels blocked."
+],
+[
+"730 Skin application",
+"Severe jaw tension enlarges the masseter, leading to a square jaw and facial asymmetry. Press it with the TMJ and Mandible before lifting and contour care."
+],
+[
+"Points that go well together",
+"TMJ, Mandible, Sphenoid, Muscle Relaxation, Shenmen"
+],
+[
+"Reference",
+"Compiled from the guidebook's TMJ entry."
+]
+],
+"턱": [
+[
+"Basic role",
+"The jaw moves thousands of times a day as you speak, chew and swallow. The TMJ, where the lower jaw (mandible) meets the skull, is one of the most complexly moving joints in the body, so auriculotherapy treats it as an important point. Many nerves to the face and head pass around the jaw, so jaw tension easily spreads into headaches, stiff neck and facial tension."
+],
+[
+"Everyday signals",
+"Under stress you clench your teeth without realizing. You've been told you grind your teeth in your sleep. Your jaw is stiff when you wake up. Your jaw clicks when you open your mouth. Your upper and lower jaws don't align, making your face look asymmetric. Breakouts often appear along your jawline."
+],
+[
+"Body and mind",
+"The jaw is where the mind's tension gathers first. When swallowing words you want to say, or tensing up to endure, people clench their teeth. So stress leaks out as clenching by day and grinding by night. Chewing is also linked to hormones: while you chew thoroughly, the salivary glands work and both calming hormones and the satiety signal that 'you can stop eating' are released. So the jaw isn't just a jaw; it's a point to read along with the state of mind, hormones and chewing habits."
+],
+[
+"730 Skin application",
+"Constant tension in the chewing muscles enlarges the masseter and makes the jaw look square, and chewing on one side creates facial asymmetry. When lymph flow under the jaw is blocked, the jawline looks puffy and collapsed. Pressing the Jaw and Muscle Relaxation points first before lifting and contour care improves results. Pre-period jawline breakouts are looked at with the hormone points."
+],
+[
+"What to say",
+"\"Do you wake up with a stiff jaw, or have you been told you grind your teeth? It's a sign stress has gathered in your jaw. When your jaw relaxes, your facial lines soften too. Today I'll care for the point that releases jaw tension with you.\""
+],
+[
+"Home care tip",
+"Teach the jaw's resting position: 'tongue on the roof of the mouth, upper and lower teeth slightly apart, lips gently closed'. Also recommend the habit of chewing evenly on both sides."
+],
+[
+"Points that go well together",
+"TMJ, Maxilla, Mandible, Temporal Bone, Muscle Relaxation, Shenmen, Emotional Brain"
+],
+[
+"Caution",
+"If the mouth won't open well, the jaw catches and won't move, or pain is severe, recommend seeing a dentist or oral medicine specialist first."
+]
+],
+"뺨": [
+[
+"Basic role",
+"The cheeks are the widest surface of the face and where expression and complexion show first. Used when looking at redness, breakouts and sagging of the skin around the cheeks and cheekbones."
+],
+[
+"Everyday signals",
+"Your cheeks redden easily. Pores and breakouts come up on your cheeks. Melasma darkens around your cheekbones. Your cheeks look saggy."
+],
+[
+"Body and mind",
+"Just as the face reddens first when flustered or embarrassed, the cheeks are where emotional and blood-flow changes show immediately. When tension and heat build up, cheek redness lingers long."
+],
+[
+"730 Skin application",
+"Used with the Face and Skin Disease points in care for cheek redness, cheek breakouts, cheekbone melasma and sagging cheeks. Added as a supporting point to refine the cheek line during lifting care."
+],
+[
+"What to say",
+"\"Do your cheeks flush easily and the redness linger? Today I'll put on the point that brings down heat and tension around your cheeks.\""
+],
+[
+"Points that go well together",
+"Face, Skin Disease, Clear Heat, Endocrine"
+]
+],
+"입술": [
+[
+"Basic role",
+"The lips have thin skin and almost no sebaceous glands, making them the most vulnerable to dryness and irritation. Used when looking at dryness and cracking of the lips and around the mouth, breakouts at the corners of the mouth, and dullness."
+],
+[
+"Everyday signals",
+"Your lips chap and crack often. Breakouts keep recurring around your mouth. The area around your mouth is dull and dark. The corners of your mouth get sores."
+],
+[
+"In Korean medicine",
+"Korean medicine holds that the lips show the state of the spleen (脾, digestion) (脾開竅於口, 其華在脣). When digestion is weak or heat builds up in the body, the lips dry and crack and the corners of the mouth get sores."
+],
+[
+"730 Skin application",
+"Looked at with the Mouth, Stomach and Spleen C points in consultations on breakouts around the mouth, pigmentation around the mouth and dry lips. In clients with weak digestion, signals often appear around the mouth first."
+],
+[
+"What to say",
+"\"Do your lips chap often and breakouts come up around your mouth? The lips reflect the state of your digestion. Today I'll care for the mouth area and the digestion points with you.\""
+],
+[
+"Points that go well together",
+"Mouth, Tongue, Stomach, Spleen C, Skin Disease"
+]
+],
+"다윈포인트": [
+[
+"Basic role",
+"The small bump on the upper part of the outer rim of the auricle is called Darwin's tubercle. This area connects to the spinal cord and peripheral nerves and is used when looking at tingling and pain in the body's extremities, the arms and legs."
+],
+[
+"Everyday signals",
+"Your arms or legs often tingle. You wake with numb hands. Sitting long makes your legs prickle. There's discomfort radiating from your lower back down your leg. It feels like blood isn't reaching your fingertips and toes."
+],
+[
+"Body and mind",
+"When tingling and pain last long, not only the body but the mind wears out too. That's why using it with the Depression point, which helps manage the body's suffering, helps relieve pain."
+],
+[
+"730 Skin application",
+"Added along with pain points for clients who stand for long hours or use their hands a lot in the same posture, and clients who also complain of tingling in their arms and legs."
+],
+[
+"What to say",
+"\"Do your hands or legs tingle often? It's a sign nerves and circulation aren't reaching the ends of your body well. Today I'll put on the point that relieves tingling.\""
+],
+[
+"Points that go well together",
+"Depression (Depression point, pain synergy), Cervical Spinal Cord, Lumbosacral Spinal Cord, Muscle Relaxation"
+],
+[
+"Reference",
+"730 Skin point combination guide: Darwin Point + Depression point = tingling and pain in the limbs. In the Oleson system it's also placed at Darwin's tubercle, connected to the spinal cord and peripheral nerves, and used for limb pain and tingling."
+]
+],
+"종아리F": [
+[
+"Basic role",
+"The calf muscle is the 'second heart' that pushes blood in the legs back up to the heart. When this muscle stiffens or weakens, blood and fluid pool in the legs."
+],
+[
+"Everyday signals",
+"By afternoon your legs swell and feel heavy. Your calves cramp at night. Standing long makes your calves tight."
+],
+[
+"730 Skin application",
+"Recommended as a lower-limb circulation line together with the Thigh and Buttocks in lower-body swelling and body care."
+],
+[
+"Points that go well together",
+"Thigh, Buttocks, Lower Body Autonomic, Kidney F"
+],
+[
+"Reference",
+"From the guidebook's Thigh entry: recommended to manage as a lower-limb circulation line together with Calf F and Buttocks."
+]
+],
+"천골": [
+[
+"Basic role",
+"The sacrum is the triangular bone below the lumbar spine in the center of the pelvis. It's the base supporting the spine and the center of the pelvis, and nerves to the pelvic organs such as the bladder, rectum and uterus emerge from here."
+],
+[
+"Everyday signals",
+"Your tailbone area aches. Sitting long is hard. Below the waist feels heavy and cold. During your period it hurts all the way to the tailbone."
+],
+[
+"Body and mind",
+"When the sacrum stiffens, circulation through the whole pelvis drops and the lower body becomes cold and heavy. When the body's base wobbles, the lower back and neck above wear out holding on in its place."
+],
+[
+"730 Skin application",
+"Used with the Lumbar Spine, Pelvis and Lower Body Autonomic points in lower-back and lower-body care for clients who sit for long hours, and in menstrual cramp care."
+],
+[
+"What to say",
+"\"When you sit long, does your tailbone area ache? It's because the sacrum, your body's base, has stiffened. Today I'll put on the point that eases your tailbone area.\""
+],
+[
+"Points that go well together",
+"Lumbar Spine, Pelvis, Low Back Pain, Lower Body Autonomic, Sciatic Nerve"
+]
+],
+"엄지손": [
+[
+"Basic role",
+"The thumb handles nearly half of the hand's strength. It's used in almost every grabbing, pinching and pressing motion, making it the most overworked joint in the smartphone era."
+],
+[
+"Everyday signals",
+"Holding your phone long makes the base of your thumb ache. Opening a bottle cap hurts the thumb side of your wrist. Your thumb is stiff in the morning."
+],
+[
+"730 Skin application",
+"Used with the Hand and Wrist points for clients in hand-heavy jobs (skin therapists, hairdressers, nail artists) and those who use their phones a lot. Also a good point for therapists' own hand care."
+],
+[
+"What to say",
+"\"Does the thumb side ache when you look at your phone for long? The thumb is the joint we use most these days. Today I'll care for it along with the hand point.\""
+],
+[
+"Points that go well together",
+"Hand, Wrist, Fingers, Muscle Relaxation"
+]
+],
+"좌골신경": [
+[
+"Basic role",
+"The sciatic nerve is the thickest and longest nerve in the body, starting below the lower back and running through the buttocks down the back of the leg to the toes. When this nerve is compressed or irritated, pain radiates from the buttocks down the leg."
+],
+[
+"Everyday signals",
+"A tingling pain shoots from the buttocks down the back of the thigh. Sitting long makes your legs tingle. One leg pulls and feels heavy. Bending forward pulls all the way down your leg."
+],
+[
+"Body and mind",
+"Long sitting, crossing your legs and stiff buttock muscles press on this nerve. When pain lasts long, you avoid moving, which lowers circulation further."
+],
+[
+"730 Skin application",
+"Used with the Lumbar Spine, Buttocks and Sacrum points in care for lower-body tingling and pulling in clients who sit for long hours. Using it with the Darwin Point helps with tingling care."
+],
+[
+"What to say",
+"\"Does a tingling pull run from your buttocks down the back of your leg? It's because the large nerve going down your leg is compressed. Today I'll put on the point that frees that path.\""
+],
+[
+"Points that go well together",
+"Lumbar Spine, Buttocks, Sacrum, Thigh, Darwin Point"
+],
+[
+"Caution",
+"If the leg loses strength or sensation dulls, recommend seeing a doctor first."
+]
+],
+"엉덩이": [
+[
+"Basic role",
+"The buttock muscles are large muscles that support the pelvis and move the legs. Sitting long compresses and stiffens them, blocking circulation even to the lower back and legs."
+],
+[
+"Everyday signals",
+"Sitting long makes your buttocks tingle and ache. Below the waist pulls. Your legs feel heavy."
+],
+[
+"730 Skin application",
+"Used with the Thigh and Calf F in lower-body circulation and body care for clients who sit for long hours."
+],
+[
+"Points that go well together",
+"Thigh, Calf F, Pelvis, Low Back Pain, Lower Body Autonomic"
+],
+[
+"Reference",
+"From the guidebook's Thigh entry: recommended to manage as a lower-limb circulation line together with Calf F and Buttocks."
+]
+],
+"쇄골": [
+[
+"Basic role",
+"The clavicle is the horizontal bone at the front of the chest connecting the shoulder and trunk. It's like a 'hanger' from which the arm and shoulder hang, so the clavicle's position determines the shoulder's position. The hollow just above the clavicle is the 'lymph exit', where lymph that has circulated the whole body finally gathers and enters the bloodstream. When this exit is blocked, lymph from the face, neck and arms can't drain and pools."
+],
+[
+"Everyday signals",
+"Your shoulders are rolled forward. The front of your neck and upper chest feel stifled. Your face and neck swell often. Your collarbones don't show and look buried. The area around your shoulders and shoulder blades always aches."
+],
+[
+"Body and mind",
+"Long phone and computer use rolls the shoulders forward and buries the clavicles. Then the chest narrows and breathing becomes shallow, and the neck and shoulder muscles ache from holding on in their place. Conversely, when the collarbone line straightens, the shoulders open, the chest opens and breathing deepens. The clavicle is where posture, breathing and peace of mind show together."
+],
+[
+"730 Skin application",
+"In an esthetic shop the clavicle is a highly useful point. Lymphatic massage must start by opening the clavicle, the exit, for facial and neck swelling to drain well. When the collarbone line is refined, shoulder position is corrected and pain decreases, making the neck look longer and even the facial line slimmer. This is also why the collarbone line is always included in bridal care: many dresses reveal the shoulders and collarbones, so a smooth collarbone line and open shoulders shape the bride's first impression. Pressing the ear's Clavicle point along with décolleté, bridal and facial-line care helps boost results."
+],
+[
+"What to say",
+"\"The collarbone is the exit through which facial swelling drains. If the exit is blocked, swelling won't go down no matter how much you care for your face. Today I'll start by opening the collarbone line. Your shoulders will open and your neckline will look much longer.\""
+],
+[
+"Points that go well together",
+"Shoulder (Joint), Shoulder (Tension), Cervical Spine, Throat, Muscle Relaxation, Face"
+]
+],
+"혀": [
+[
+"Basic role",
+"The tongue is a mass of muscle that senses taste, helps mix and swallow food and forms speech. The tongue's color and shape mirror the body's condition, so Korean medicine places great importance on tongue diagnosis (舌診)."
+],
+[
+"Everyday signals",
+"Your sense of taste changes often. Your tongue cracks or stings. You often get mouth sores. Tooth marks remain on the edges of your tongue. A white coating forms on your tongue."
+],
+[
+"In Korean medicine",
+"Korean medicine calls the tongue 'the sprout of the heart' (舌爲心之苗), linking it to the mind. A red tongue tip is read as heat in the mind, and tooth marks on the edges as weak spleen (digestion) with fluid pooling in the body."
+],
+[
+"730 Skin application",
+"Clients whose mouths often get sores and whose tongues crack often have built-up fatigue and heat. Looked at with the Mouth and Lips in consultations on breakouts around the mouth and dryness around the mouth."
+],
+[
+"What to say",
+"\"Lately do you often get mouth sores or a stinging tongue? The tongue is a mirror reflecting your body's condition. Today I'll care for that point too.\""
+],
+[
+"Points that go well together",
+"Mouth, Lips, Salivary Gland, Heart C, Spleen C"
+]
+],
 "뇌하수체(전)": [
 [
 "Basic role",
@@ -5232,6 +7666,1020 @@ window.ER_EN = {
 [
 "Reference",
 "Used for eating disorders, regulating hunger, ulcers, acid reflux, nausea, vomiting, burping, gastritis, peptic ulcers and lactation."
+]
+],
+"유선": [
+[
+"Basic role",
+"The mammary glands are glandular tissue that makes breast milk and, together with fat, form the breasts. Influenced by female hormones and prolactin, they swell and subside repeatedly with the menstrual cycle."
+],
+[
+"Everyday signals",
+"Before your period the breasts swell firm and hurt. Your bra feels especially tight. The area around the breasts aches and pulls toward the armpits. Under stress the chest feels blocked. While nursing, milk doesn't flow well."
+],
+[
+"In Korean medicine",
+"Korean medicine holds that 'the breast belongs to the stomach meridian and the nipple to the liver meridian' (乳房屬胃 乳頭屬肝). So when liver qi knots from stress (liver qi stagnation), the breasts swell and hurt before the period and the sides ache too. Milk is believed to come from qi and blood made by the spleen and stomach, so when qi and blood are short, milk is insufficient."
+],
+[
+"Body and mind",
+"The chest is where emotions knot. Holding in hurt and anger makes 'my chest feels tight' come out on its own."
+],
+[
+"730 Skin application",
+"Referenced in consultations on skin changes tied to the menstrual cycle (jaw breakouts, darkening melasma). Handle carefully as a reflex area for a sensitive region."
+],
+[
+"What to say",
+"\"Before your period, do your breasts get very knotted and sensitive? It can happen when stress overlaps with hormonal change. Today I'll care for the point that eases that flow with you.\""
+],
+[
+"Points that go well together",
+"Prolactin, Gonads (ovary · testis), Endocrine, Liver, Chest"
+],
+[
+"Caution",
+"If there's a palpable lump, nipple discharge (especially with blood), or skin dimpling, always recommend a breast exam first. If the breast becomes red, hot and swollen while nursing, a doctor's visit comes first."
+],
+[
+"Reference",
+"Used for milk secretion, breast infections, breast cancer, breast development and breast tenderness."
+]
+],
+"이마": [
+[
+"Basic role",
+"Behind the forehead is the frontal lobe, which handles thinking, judgment and planning, and on either side are the hollow spaces around the nose (sinuses). So forehead discomfort can come from both mental fatigue and nasal congestion."
+],
+[
+"Everyday signals",
+"By afternoon the front of the forehead aches as if squeezed. The head feels foggy and heavy. When the nose is blocked, the forehead feels heavy too. Many worries bring many dreams, and you don't feel rested after sleeping. There's always tension between the brows."
+],
+[
+"In simple terms",
+"The forehead is the head's office. When paperwork piles up, the office overheats and the lights stay on even after hours. A night when racing thoughts keep you from sleeping is exactly that state."
+],
+[
+"Body and mind",
+"Worry and anxiety are etched into the forehead and between the brows. The more someone thinks, the deeper their frown lines. On days of low energy and low mood, the head also feels heavy."
+],
+[
+"730 Skin application",
+"Ties in well with consultations on frown and forehead lines and expression tension. Explain that releasing forehead tension softens one's impression."
+],
+[
+"What to say",
+"\"Do you often tense between your brows? When you think a lot, the forehead stiffens first. Today I'll release the forehead point with you.\""
+],
+[
+"Points that go well together",
+"Frontal Lobe, Occiput, Internal Nose, Shenmen, Sleep Disorder Zone"
+],
+[
+"Caution",
+"If a sudden extreme headache comes with vision changes or vomiting, recommend seeing a doctor immediately. If low mood continues for a long time, also recommend professional counseling."
+],
+[
+"Reference",
+"Used for frontal headache, sinusitis, rhinitis, colds, heavy head, worry, anxiety, vision problems, sleep disturbance from dreams, dizziness, high blood pressure, epilepsy, lethargy and depression. Lowers the waking threshold to relieve bedwetting. See also the Forehead (occipital) point."
+]
+],
+"이주첨": [
+[
+"Basic role",
+"The tragus is the small cartilage flap in front of the ear canal. The original introduces this point at its tip as one that lowers heat and reduces pain, inflammation and swelling."
+],
+[
+"Everyday signals",
+"When a cold is coming on, the body feels hot. The throat swells and hurts. Bumped areas swell and burn. The face flushes easily. When tired, mouth sores appear and gums swell."
+],
+[
+"In simple terms",
+"It's like coolant that cools an overheated engine. Coolant must circulate when the engine is hot so other parts aren't damaged."
+],
+[
+"Body and mind",
+"When angry, the face flushes and the body heats up. When the heat cools, the mind settles a great deal too."
+],
+[
+"730 Skin application",
+"Referenced in consultations on skin where 'heat' is felt, such as hot red breakouts and burning redness. Used together with calming care."
+],
+[
+"What to say",
+"\"Does your face often burn and turn red? It may be a sign heat has risen in your body. Today I'll care for the point that cools the heat with you.\""
+],
+[
+"Points that go well together",
+"Ear Apex, Interferon, Shenmen, Skin Disease, Helix 1–6"
+],
+[
+"Caution",
+"If high fever continues or pus forms in the swollen area, recommend seeing a doctor first."
+],
+[
+"Reference",
+"This point lowers heat, stops pain and reduces inflammation, fever and swelling."
+]
+],
+"인터페론": [
+[
+"Basic role",
+"Interferon is the name of a defensive substance the body makes when a virus enters. As the name suggests, this point is used to calm inflammation and support immunity. The original notes it lies in a depression."
+],
+[
+"Everyday signals",
+"You catch colds constantly. When tired, a low fever comes on. Mouth sores and gum inflammation are frequent. Cold food gives you diarrhea. Wounds get infected easily."
+],
+[
+"In Korean medicine",
+"The original explains this point corresponds to SP 4 on the body, the Gongsun (公孫) point of the spleen meridian. Korean medicine holds that the spleen makes qi from food and sends it throughout the body (脾主運化) and governs the body's dampness. A weak spleen is believed to cause loose stools and diarrhea, which explains why this point is used for diarrhea."
+],
+[
+"Body and mind",
+"Defenses stand firm only when you eat and sleep well. Skipping meals from worry wears out the spleen, and sore-throat colds come often."
+],
+[
+"730 Skin application",
+"When immunity drops, breakouts get infected and linger. Referenced as part of condition care for clients with recurring inflammatory breakouts."
+],
+[
+"What to say",
+"\"Have you been catching colds often and getting mouth sores lately? It may be a sign your body's defenses have dropped. Today I'll care for the point that supports your defenses with you.\""
+],
+[
+"Points that go well together",
+"Thymus, Spleen, Vitality, Tragus Tip, Ear Apex"
+],
+[
+"Caution",
+"If high fever continues, or diarrhea lasts several days with signs of dehydration, recommend seeing a doctor first."
+],
+[
+"Reference",
+"This point is effective for inflammation, lowers fever and strengthens the immune system. It corresponds to SP 4 on the body, so it's effective for diarrhea. Note: this point lies in a depression."
+]
+],
+"입": [
+[
+"Basic role",
+"The mouth is where food is first received and chewing begins digestion. Saliva keeps the mouth moist and washes away bacteria. Because it connects to the throat, it's looked at together with throat discomfort."
+],
+[
+"Everyday signals",
+"When tired, mouth sores appear and are slow to heal. You wake with a parched mouth. Gums bleed when brushing. The corners of the mouth crack. You have no appetite."
+],
+[
+"In Korean medicine",
+"Korean medicine holds that the mouth opens to the spleen (脾開竅於口) and the spleen's state shows in the lips (其華在脣). Dry, cracked or colorless lips are read as a sign of a worn-out spleen. The tongue is also said to open to the heart (心開竅於舌), so sores on the tip of the tongue are read as heat risen in the mind."
+],
+[
+"Body and mind",
+"Tension dries the mouth, and accumulated upsets bring mouth sores. As Director Moon's guidebook notes, frequent dry mouth and mouth ulcers when fatigue builds up are read as a sign your condition has dropped."
+],
+[
+"730 Skin application",
+"Referenced in consultations on dry, flaky lips and breakouts around the mouth. Asking about condition while looking at lip color makes the consultation feel natural."
+],
+[
+"What to say",
+"\"Have you been getting mouth sores often and a parched mouth lately? It may be a sign your body is worn out. Today I'll care for the mouth point with you.\""
+],
+[
+"Points that go well together",
+"Salivary Gland, Spleen, Vitality, Stomach, Heart"
+],
+[
+"Caution",
+"For sores inside the mouth that don't heal for more than two weeks, or ongoing gum bleeding, recommend seeing a dentist or doctor first."
+],
+[
+"Reference",
+"Used for oral disorders (glossitis, periodontal disease, TMJ dysfunction, bleeding gums), laryngitis, pharyngitis, stomatitis and facial paralysis; stops coughing. Also used for insomnia."
+],
+[
+"Reference (Mouth)",
+"Used for oral disorders (glossitis, periodontal disease, TMJ dysfunction, bleeding gums), laryngitis, pharyngitis, stomatitis and facial paralysis. Stops coughing. Also used for insomnia."
+]
+],
+"자궁C": [
+[
+"Basic role",
+"The uterus is a fist-sized muscular organ in the center of the pelvis. Each month, following hormonal signals, it repeatedly builds up a thick lining and then sheds it. Rich in blood flow, it's strongly affected by pelvic circulation, coldness in the body and stress."
+],
+[
+"Everyday signals",
+"Before your period the body swells and you become sensitive. You keep painkillers on hand for cramps. Your cycle is irregular. The lower belly, hands and feet are cold. During your period the lower back feels heavy enough to break. Breakouts come up on the jaw and around the mouth before and after your period."
+],
+[
+"In Korean medicine",
+"Korean medicine calls the uterus 'baogong' (胞宮) and regards it as an extraordinary organ (奇恒之腑) distinct from the ordinary organs. The liver that stores blood, the kidneys that hold the root of life, and the Chong and Ren vessels running along the front of the body are believed to work together with the uterus. So menstrual problems are looked at not just through the uterus but also through liver blood, kidney qi and warmth in the lower belly."
+],
+[
+"Body and mind",
+"Stress and cold make the uterine muscle contract excessively, intensifying cramps. Suppressed emotions and tension stiffen the pelvis. The uterus is like a month-long calendar: when life rhythm collapses the calendar slips, and the body signals that wobble first through mood and skin."
+],
+[
+"730 Skin application",
+"Skin changes along with the menstrual cycle too. Clients understand easily when you tie pre-period jawline breakouts, increased sebum around ovulation, and dull, rough skin after the period to the cycle. It's also a point looked at in consultations on hormonal melasma."
+],
+[
+"What to say",
+"\"Right before your period, do breakouts come up on your jaw and your mood get sensitive? It may be a sign the point in charge of your monthly rhythm is worn out. Today I'll care for the point that warmly releases your lower belly with you.\""
+],
+[
+"Points that go well together",
+"Gonads (ovary · testis) (hormonal rhythm), Endocrine (hormone balance), Liver (stores blood), Kidney (root qi), Pelvis (lower-belly circulation), Tranquilizer (sensitivity)"
+],
+[
+"Caution",
+"This point is known to possibly induce labor, so **do not use it on pregnant women**. If pregnancy is possible, check first. For extreme cramps, bleeding outside the period, or a suddenly changed cycle, recommend seeing a gynecologist first."
+],
+[
+"Reference",
+"Used for premenstrual syndrome, pelvic inflammatory disease, endometriosis, infertility and menstrual disorders. Because this point may help induce labor, use with caution in pregnant women."
+]
+],
+"자궁F": [
+[
+"Basic role",
+"The uterus is a fist-sized muscular organ in the center of the pelvis. Each month, following hormonal signals, it repeatedly builds up its lining and then sheds it. Rich in blood flow, it reacts sensitively to pelvic circulation, cold and stress."
+],
+[
+"Everyday signals",
+"Before your period the body swells and nerves get sharp. Cramps are so bad daily life stops. Your cycle isn't regular. The lower belly is always cold. During your period the lower back and pelvis feel heavy. Breakouts on the jaw and around the mouth recur before and after your period."
+],
+[
+"In Korean medicine",
+"Korean medicine calls the uterus 'baogong' (胞宮), an extraordinary organ (奇恒之腑) distinct from the ordinary organs. The liver that stores blood, the kidneys that hold root qi, and the Chong and Ren vessels are believed to share the uterus's work. That's why irregular periods are looked at together with liver blood, kidney qi and warmth in the lower belly."
+],
+[
+"Body and mind",
+"Stress and cold make the uterine muscle contract excessively, intensifying cramps. Suppressed emotions stiffen the pelvis. The uterus is like a month-long calendar: when life rhythm wavers the calendar slips, and mood and skin reveal that wobble first."
+],
+[
+"730 Skin application",
+"Clients understand easily when you tie pre-period jawline breakouts, increased sebum around ovulation, and dull, rough skin after the period to the cycle. It's also a point looked at in consultations on hormonal melasma."
+],
+[
+"What to say",
+"\"With every period, do your skin and mood waver together? It may be a sign the point in charge of your monthly rhythm is worn out. Today I'll care for the point that warmly releases your lower belly with you.\""
+],
+[
+"Points that go well together",
+"Gonads (ovary · testis) (hormonal rhythm), Endocrine (hormone balance), Liver (stores blood), Kidney (root qi), Pelvis (lower-belly circulation), Tranquilizer (sensitivity)"
+],
+[
+"Caution",
+"This point is known to possibly induce labor, so **do not use it on pregnant women**. If pregnancy is possible, check first. For extreme cramps, bleeding outside the period, or a suddenly changed cycle, recommend seeing a gynecologist first."
+],
+[
+"Reference",
+"Used for premenstrual syndrome, pelvic inflammatory disease, endometriosis, infertility and menstrual disorders. Because this point may help induce labor, use with caution in pregnant women."
+]
+],
+"재채기": [
+[
+"Basic role",
+"A sneeze is a defensive reflex that forcefully expels irritants like dust, pollen or cold air when they touch the nasal lining. It's a normal cleaning function, but when the lining becomes sensitive, it overreacts even to small stimuli."
+],
+[
+"Everyday signals",
+"You burst into a string of sneezes when you wake up. Even a cold breeze makes your nose run. Every change of season your nose tickles. In dusty places your eyes and nose itch together. You always carry tissues."
+],
+[
+"In simple terms",
+"The nose is like the alarm at a front door. If the alarm's sensitivity is set too high, it goes off at a mere breeze. Understand the Sneeze point as one that checks this alarm's sensitivity."
+],
+[
+"Body and mind",
+"Repeated sneezing and a runny nose disrupt sleep and lower concentration. Many clients find it worse when tired and short on sleep. When overall condition drops, the alarm becomes more sensitive too."
+],
+[
+"730 Skin application",
+"Blowing the nose often reddens and flakes the skin under the nose and on the nostrils. People with allergic constitutions often have sensitive skin barriers too, so it's looked at with seasonal redness and itching consultations."
+],
+[
+"What to say",
+"\"Do you sneeze in a row every morning? Your nose's alarm has become a bit sensitive. Today I'll care for the nose along with the point that soothes sensitivity.\""
+],
+[
+"Points that go well together",
+"Internal Nose (nasal lining), Allergy (sensitive reactions), Antihistamine (itching · runny nose), Lung (respiratory)"
+],
+[
+"Reference",
+"Used for sneezing and allergic reactions."
+]
+],
+"에너지업": [
+[
+"Basic role",
+"Blood pressure is the force with which the heart pushes out blood. When this force is too weak, blood doesn't reach the head and the tips of the hands and feet sufficiently, leaving them short of oxygen and nutrients. This point is looked at when lifting the condition of people whose usually low blood pressure leaves them drained."
+],
+[
+"Everyday signals",
+"Standing up from sitting, everything goes dark. Getting up in the morning is especially hard. Standing long makes you dizzy and nauseous. Your head is foggy and you can't concentrate. Hands and feet are always cold. By afternoon your energy runs out."
+],
+[
+"In simple terms",
+"Picture an apartment pump sending water to the upper floors. When water pressure is weak, the top floor (the head) gets only a trickle first. Dizziness on standing is the top floor's water pressure dropping for a moment."
+],
+[
+"Body and mind",
+"People with low blood pressure are easily misjudged as lazy, because they sleep in and tire easily. But it may not be about willpower; it may be the body's water pressure. Just this explanation puts clients at ease."
+],
+[
+"730 Skin application",
+"With weak circulation the face looks pale and lacks color, and the skin, like the hands and feet, tends to be cold and dry. Looked at with the Vitality point in consultations on complexion and radiance care."
+],
+[
+"What to say",
+"\"Is getting up in the morning really hard? And you feel dizzy when standing up? It may be a sign your body's pump has weakened a little. Today I'll care for the point that lifts your energy with you.\""
+],
+[
+"Points that go well together",
+"Vitality (energy recovery), Heart (pump), Adrenal (stress stamina), Kidney (blood pressure regulation), Subcortex (vasomotor) (vascular regulation)"
+],
+[
+"Caution",
+"If the client has fainted before, or dizziness comes with palpitations or chest pain, recommend getting checked at a hospital first. For clients on blood pressure medication, check first."
+],
+[
+"Reference",
+"Raises blood pressure and treats dizziness, fainting, blurred vision and poor concentration."
+]
+],
+"전두엽": [
+[
+"Basic role",
+"The frontal lobe is the brain region behind the forehead that organizes thoughts, makes plans and sets priorities. It also handles the brake that holds back words you want to say and suppresses impulses. It's the headquarters of concentration, gathering attention in one place."
+],
+[
+"Everyday signals",
+"You walk into a room and forget what you came for. You have lots to do but can't decide where to start. Even choosing a menu item feels like a chore. Reading, you reread the same line. You struggle to control emotions over trivial things. Your head is foggy as if in mist."
+],
+[
+"In simple terms",
+"The frontal lobe is like a company's CEO office. When the CEO is worn out, approvals pile up, meetings drag on and voices rise over small things. Lack of sleep and stress drain the CEO's stamina fastest."
+],
+[
+"Body and mind",
+"Lack of sleep or long smartphone use tires the frontal lobe first. Then the power to suppress impulses weakens, so you crave sweets, impulse-buy and get more irritable. If you often think 'why am I like this lately?', it's a sign your head wants a rest."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. However, looked at alongside tension-releasing care for clients whose frown lines deepen from tensing their brows with racing thoughts, and for those who sleep poorly."
+],
+[
+"What to say",
+"\"Have you been forgetting things often or feeling foggy lately? It's a sign the part of your head that organizes thoughts is very worn out. Today I'll let your head rest a little.\""
+],
+[
+"Points that go well together",
+"Master Cerebral (whole brain), Temporal Cortex (memory), Hippocampus (memory storage), Shenmen (tension relief), Insomnia (sleep)"
+],
+[
+"Caution",
+"If memory declines rapidly, or speech becomes slurred and one arm or leg loses strength, recommend seeing a doctor immediately."
+],
+[
+"Reference",
+"Affects memory, balance, concentration, reasoning and planning."
+]
+],
+"전립선": [
+[
+"Basic role",
+"The prostate is about the size of a chestnut and surrounds the passage that carries urine out (urethra) below the bladder. It makes part of the semen, protecting sperm. It tends to enlarge naturally with age, and when it enlarges it presses on the urinary passage and causes discomfort."
+],
+[
+"Everyday signals",
+"The urine stream is weaker than before. Even after urinating it doesn't feel complete. You go to the bathroom often. You wake once or twice at night to urinate. Sitting long makes the perineum ache. The lower body is cold and heavy."
+],
+[
+"In Korean medicine",
+"Korean medicine has no separate organ called the prostate. Because it holds that the kidneys (腎) and bladder share urinary and reproductive functions, a weakening urine stream and frequent waking at night are read as kidney qi weakening. Keeping the lower belly and lower body warm is seen as important."
+],
+[
+"Body and mind",
+"Waking often at night lowers sleep quality, leading to daytime fatigue. Male clients often find this discomfort hard to talk about and endure it alone. Long hours sitting at work, stress and a cold lower body stiffen the pelvis."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. A point looked at as support alongside sleep and fatigue consultations in care for male clients."
+],
+[
+"What to say",
+"\"Have you been waking often at night to use the bathroom lately? Broken sleep makes you more tired during the day, right? Today I'll care for the point that eases your lower belly and pelvis with you.\""
+],
+[
+"Points that go well together",
+"Bladder (urine storage), Urethra (urinary passage), Kidney (root qi), Pelvis (lower-belly circulation), External Genitals"
+],
+[
+"Caution",
+"If there's blood in the urine, urine barely comes out, or there's pain or fever when urinating, recommend seeing a urologist first."
+],
+[
+"Reference",
+"Used for prostatitis, urinary tract infections, blood in the urine, painful urination, spermatorrhea, premature ejaculation, prostate cancer and nocturnal emissions."
+]
+],
+"질&전립선": [
+[
+"Basic role",
+"The same location on the ear is read as the prostate in men and the vagina in women. The vagina is a mucosal organ that protects itself with a mildly acidic environment and beneficial bacteria. When immunity drops or hormones waver, this balance breaks, causing itching and changes in discharge. The male prostate is the gland surrounding the urinary passage."
+],
+[
+"Everyday signals",
+"(Women) Vaginitis recurs when you're tired. Discharge increases or its odor changes. After menopause it's dry and stings. Tight clothes are uncomfortable. (Men) The urine stream is weak and there's a feeling of incomplete emptying. (Both) Sitting long makes the lower area ache."
+],
+[
+"In Korean medicine",
+"Korean medicine holds that the kidneys (腎) are fundamentally in charge of reproductive and urinary function. Increased discharge that won't clear is read as dampness (濕) gathering downward, and easy recurrence as weakened overall qi."
+],
+[
+"Body and mind",
+"Frequently recurring vaginitis is often the body's signal that fatigue and stress have built up. Many clients worry alone because it's a hard discomfort to talk about, so handle it comfortably in consultation."
+],
+[
+"730 Skin application",
+"Vaginal dryness and skin dryness often come together from the same hormonal change. Looked at in dryness and firmness consultations for menopausal clients."
+],
+[
+"What to say",
+"\"When you're tired, does the lower area often become uncomfortable? It's one of the first places that shows when your body is worn out. Today I'll care for the point that warmly releases your lower belly with you.\""
+],
+[
+"Points that go well together",
+"External Genitals, Bladder, Urethra, Endocrine (hormones), Kidney (root qi), Pelvis (lower-belly circulation)"
+],
+[
+"Caution",
+"If discharge contains blood, there's pain or fever, or symptoms last long, recommend seeing a gynecologist or urologist first."
+],
+[
+"Reference",
+"Used for vaginitis, vulvitis, candidiasis, prostatitis, urinary tract infections, blood in the urine, painful urination, spermatorrhea, premature ejaculation, prostate cancer and nocturnal emissions."
+]
+],
+"팔뚝": [
+[
+"Basic role",
+"The forearm is packed with muscles that move the fingers and wrist. Every hand movement — gripping a mouse, holding a phone, picking things up — is actually the work of the forearm muscles."
+],
+[
+"Everyday signals",
+"Holding a mouse for long makes the outside of the arm ache. Holding your phone makes the arm tingle. Wringing a cloth makes the forearm ache. On days you use your hands a lot, the arm feels heavy."
+],
+[
+"Body and mind",
+"The more a job uses the hands, the sooner the forearm tires. Skin therapists are a classic hand-labor job, so this is also a point directors can use for their own arm care."
+],
+[
+"What to say",
+"\"Your arms feel heavy after long computer or phone use, right? Today I'll also care for the point that releases forearm tension.\""
+],
+[
+"Points that go well together",
+"Elbow, Wrist, Upper Limb Master, Muscle Relaxation, Tennis Elbow (posterior)"
+],
+[
+"Reference",
+"Used for pain, swelling or dysfunction of the forearm."
+]
+],
+"중이 뿌리(후이)": [
+[
+"Basic role",
+"This point is on the back of the ear, at the root where the ear attaches to the head. The uses the original lists (gallstones, stomach and duodenum, rapid pulse, nasal congestion, migraine) seem unrelated, but they overlap with the work of the parasympathetic nerves, which let the body rest and digest. So it's easiest to understand as a point looked at when tension disrupts digestion and heartbeat together."
+],
+[
+"Everyday signals",
+"When tense, the pit of the stomach feels blocked and you get indigestion. Fatty food makes the upper right belly uncomfortable. The heart pounds even at rest. A blocked nose makes the whole head heavy. One side of the head throbs."
+],
+[
+"In simple terms",
+"The body has 'running nerves' (sympathetic) and 'resting nerves' (parasympathetic), like a car's gas pedal and brake. When tension continues you keep pressing only the gas, so digestion stops and the heart races. It's easy to explain this point as one that looks after the brake side."
+],
+[
+"Body and mind",
+"Eating in a rush and going straight back to work, or eating while carrying worries, disturbs digestion. Clients who say they get indigestion every time they eat often don't have weak stomachs so much as resting nerves with no chance to work."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. Looked at in condition care for clients with digestive discomfort and high tension."
+],
+[
+"What to say",
+"\"When you're tense, does your stomach feel blocked and your heart pound? It's a sign your body isn't switching into rest mode well. Today I'll care for the point that lets your body rest with you.\""
+],
+[
+"Points that go well together",
+"Sympathetic (nerve balance), Stomach (digestion), Gallbladder (gallstones · fat digestion), Heart (palpitations), Internal Nose (nasal congestion), Shenmen (tension relief)"
+],
+[
+"Caution",
+"If upper right abdominal pain is severe or comes with fever or jaundice, or palpitations come with chest pain or breathing difficulty, recommend seeing a doctor first."
+],
+[
+"Reference",
+"Used for gallstones, nasal congestion, tachycardia, ulcers, duodenitis and migraine."
+]
+],
+"중추신경계": [
+[
+"Basic role",
+"The central nervous system means the brain and spinal cord. It receives information coming in through the eyes, ears and skin, makes judgments, and sends commands down to the muscles and internal organs. Digestion, hormones and even how strongly you feel pain all pass through here."
+],
+[
+"Everyday signals",
+"Your head is often heavy and aching. Sensation in the hands and feet is dull or tingling. You keep forgetting things. When tired, your hands tremble slightly. Muscles don't engage well. When tense, digestion stops."
+],
+[
+"In simple terms",
+"The central nervous system is like a city's central control room. When the control room is overloaded, traffic lights tangle, traffic jams and small accidents happen here and there. If several parts of the body are uncomfortable at once, the control room may be worn out."
+],
+[
+"Body and mind",
+"Lack of sleep, overwork and long-running stress keep the control room from resting. Then the body sends headaches, indigestion and sensitivity all at once. That's why the original also lists 'peace of mind'."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. However, looked at as care that lowers overall tension for clients whose skin becomes sensitive and breakouts increase under heavy stress."
+],
+[
+"What to say",
+"\"Lately your head feels heavy and your body is uncomfortable all over, right? The place that directs your whole body may be overloaded. Today I'll give you care that lowers tension overall.\""
+],
+[
+"Points that go well together",
+"Master Cerebral (whole brain), Brainstem, Thalamus, Shenmen (tension relief), Sympathetic"
+],
+[
+"Caution",
+"If sensation is suddenly lost, one side becomes paralyzed, speech is slurred, or the worst headache of one's life comes on, recommend emergency care immediately. If tremors continue, recommend seeing a neurologist."
+],
+[
+"Reference",
+"Headache, loss of sensation, memory loss, muscle weakness, tremors; digestive disorders; endocrine disorders; pain relief; peace of mind."
+]
+],
+"직장C": [
+[
+"Basic role",
+"The rectum is the section from the end of the large intestine to just before the anus. It holds stool for a while and, when the time comes, sends the 'go to the bathroom' signal. The final stage of peristalsis, where the gut wriggles to push contents along, also happens here."
+],
+[
+"Everyday signals",
+"Even after the bathroom it doesn't feel complete. You go days without a bowel movement. Constipation and diarrhea alternate. The belly is tight with gas. Sitting long makes the anus feel heavy. You strain hard when passing stool."
+],
+[
+"In Korean medicine",
+"In Korean medicine the rectum belongs to the large intestine. The large intestine is 'the official of conveyance' (傳導之官), passing residue down and out. It pairs with the lungs (exterior-interior), and stool moves well only when lung qi descends. This is how it explains why people with shallow breathing and a stifled chest often have constipation."
+],
+[
+"Body and mind",
+"The gut is very sensitive to emotions: travel brings constipation, and an important presentation brings a stomach ache. The rectum is like the house's garbage outlet. Just as the air in the house turns stale when the outlet is blocked, a body holding on to what it should release doesn't feel refreshed in mind either."
+],
+[
+"730 Skin application",
+"Ongoing constipation makes skin dull and brings frequent breakouts around the jaw and mouth. It's easy to explain that what the body couldn't release comes out through the skin. Looked at with the Large Intestine in consultations on breakouts and dullness."
+],
+[
+"What to say",
+"\"Even after the bathroom you don't feel refreshed, right? Breakouts around the jaw often come along with that. Today I'll care for the point that helps elimination with you.\""
+],
+[
+"Points that go well together",
+"Large Intestine (peristalsis), Small Intestine (absorption), Hemorrhoids C (anal discomfort), Pelvis (lower-belly circulation), Lung (the large intestine's partner)"
+],
+[
+"Caution",
+"If stool contains blood or is black, or bowel habits suddenly change along with weight loss, recommend getting checked at a hospital first."
+],
+[
+"Reference",
+"Affects the distal colon, hemorrhoids, hernia, colitis, rectal prolapse, anal fissures and fecal incontinence. Regulates peristalsis."
+]
+],
+"직장F": [
+[
+"Basic role",
+"The rectum is the section from the end of the large intestine to just before the anus. It holds stool for a while and sends the bowel signal when the time comes, and it handles the final stage of peristalsis, where the gut wriggles to push contents out."
+],
+[
+"Everyday signals",
+"Even after the bathroom it feels incomplete. Stools are hard and come irregularly. Constipation and diarrhea alternate. Gas fills the lower belly and you feel bloated. Sitting long makes the anus feel heavy."
+],
+[
+"In Korean medicine",
+"In Korean medicine the rectum belongs to the large intestine, 'the official of conveyance' (傳導之官) that passes residue down and out. The large intestine pairs with the lungs (exterior-interior), so shallow breathing and a stifled chest are believed to block bowel movements too. That's why you can explain that deep breathing helps elimination."
+],
+[
+"Body and mind",
+"The gut is so sensitive to emotions it's called the 'second brain'. Unfamiliar places bring constipation, and tension brings stomach aches. A body holding on to what it should release has a heavy mind too."
+],
+[
+"730 Skin application",
+"Ongoing constipation dulls the skin and brings frequent breakouts around the jaw and mouth. It's easy to explain that the skin tries to release what the body couldn't."
+],
+[
+"What to say",
+"\"Even after the bathroom there's a feeling of incompleteness, right? At such times breakouts around the jaw come up easily too. Today I'll care for the point that helps elimination with you.\""
+],
+[
+"Points that go well together",
+"Large Intestine (peristalsis), Small Intestine (absorption), Hemorrhoids C (anal discomfort), Pelvis (lower-belly circulation), Lung (the large intestine's partner)"
+],
+[
+"Caution",
+"If stool contains blood or is black, or bowel habits suddenly change along with weight loss, recommend getting checked at a hospital first."
+],
+[
+"Reference",
+"Affects the distal colon, hemorrhoids, hernia, colitis, rectal prolapse, anal fissures and fecal incontinence. Regulates peristalsis."
+]
+],
+"진정": [
+[
+"Basic role",
+"This point helps overall relaxation when the body is stiff with tension and anxiety. It's a representative calming point paired with Shenmen; pressing it first early in care makes the rest of the session much more comfortable."
+],
+[
+"Everyday signals",
+"Your shoulders are always up by your ears. The heart pounds even when nothing is wrong. Even lying down, thoughts chase each other and sleep won't come. You keep your teeth clenched. You startle at small sounds. Even on days off, you don't feel rested."
+],
+[
+"In simple terms",
+"The body has a gas pedal (sympathetic) and a brake (parasympathetic). Chronic stress is like living with the gas pedal pressed down. It's easy to explain the Tranquilizer point as gently pressing the brake."
+],
+[
+"Body and mind",
+"When tension lasts long, blood pressure rises, digestion stops and sleep becomes shallow. It's a state where the body wants to rest but the mind won't let go. If a client can't close their eyes even lying in the treatment room, start with this point."
+],
+[
+"730 Skin application",
+"Stress increases sebum and weakens the skin barrier. Clients with high tension get redness and breakouts easily. Lowering tension before sensitive-skin care improves the response to care."
+],
+[
+"What to say",
+"\"Lately resting doesn't feel like rest, right? Your body keeps running in tension mode. Today I'll start with the point that gently puts the brakes on your body.\""
+],
+[
+"Points that go well together",
+"Shenmen (representative calming), Psychosomatic Response F (mental tension), Insomnia (sleep), Lower Blood Pressure (tension-related BP), Sympathetic"
+],
+[
+"Caution",
+"If anxiety or insomnia interferes with daily life, also recommend a hospital or professional counseling. For high blood pressure, guide clients to continue medical management."
+],
+[
+"Reference",
+"Used for general calming, relaxation, anxiety, high blood pressure and chronic stress."
+]
+],
+"천식": [
+[
+"Basic role",
+"When the bronchi through which air flows to the lungs become sensitive, they narrow and produce more phlegm even at small stimuli like cold air, dust or stress. This point is looked at as supporting care that eases breathing for people with sensitive airways. As the original notes, tenderness may also appear at the Bronchi point."
+],
+[
+"Everyday signals",
+"Cold wind sets off coughing. You wake at night or dawn from coughing. Breathing makes a wheezing sound. Climbing stairs makes the chest feel tight. The cough lingers long after a cold. It feels like the breath won't go all the way in."
+],
+[
+"In Korean medicine",
+"In Korean medicine the lungs 'govern qi', drawing breath in and out. Pulling the inhaled breath deep down and holding it is believed to be the kidneys' job (腎主納氣). So asthma with shallow breathing and short inhalation is looked at through both the lungs and kidneys. The lungs' emotion is grief and sorrow (悲憂), which explains a tight chest and short breath after great sadness."
+],
+[
+"Body and mind",
+"Breathlessness brings anxiety, and anxiety makes breathing shallower. Clients with asthma always live on edge about breathing. Simply helping them release tension and exhale long makes the body more comfortable."
+],
+[
+"730 Skin application",
+"Asthma often comes with atopic dermatitis and allergic rhinitis. Such constitutions have sensitive skin barriers too, so look at it in connection with consultations on dryness, itching and redness."
+],
+[
+"What to say",
+"\"When you're in cold wind, coughing comes first, right? It's a sign your airways have become sensitive. Today I'll care for the point that eases breathing with you.\""
+],
+[
+"Points that go well together",
+"Bronchi (airway), Lung (breathing), Allergy (sensitive reactions), Adrenal (inflammation control), Shenmen (tension relief)"
+],
+[
+"Caution",
+"Asthma must continue to be treated medically. Advise clients not to stop prescribed inhalers on their own, and if they're too breathless to finish sentences or their lips turn blue, recommend emergency care immediately."
+],
+[
+"Reference",
+"Treats asthma. The Bronchi point may be tender."
+]
+],
+"청각선": [
+[
+"Basic role",
+"The ear receives sound, but it's the brain that 'hears'. The auditory cortex in the temporal lobe interprets sound by pitch. This point represents that auditory cortex as a line; according to the original, the middle of the line corresponds to high sounds and both ends to low sounds."
+],
+[
+"Everyday signals",
+"On quiet nights you hear a ringing. In noisy restaurants you can't make out what the other person says. You keep turning up the TV. On tired days your ears feel blocked. After wearing earphones for long, your ears feel dull."
+],
+[
+"In simple terms",
+"If the ear is the microphone, the auditory cortex is the sound mixer. Even with a working microphone, if the mixer is worn out, sound gets muddled and noise creeps in. This makes it easy to explain why tinnitus grows when stress and fatigue build up."
+],
+[
+"Body and mind",
+"Tinnitus sounds louder the quieter it gets, disturbing sleep, and the more you focus on it, the bigger it grows — a vicious cycle. Many clients become sensitive because of 'a sound only I can hear'."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. A point looked at in stress and sleep care consultations."
+],
+[
+"What to say",
+"\"Does a sound in your ears bother you when it's quiet? It can get louder when you're tired too. Today I'll care for the point that releases tension in both the ears and the head.\""
+],
+[
+"Points that go well together",
+"Auditory Nerve, Inner Ear, Temporal Cortex, External Ear, Shenmen (tension relief)"
+],
+[
+"Caution",
+"If hearing in one ear is suddenly lost, it may be sudden sensorineural hearing loss, so recommend seeing an ENT doctor right away. The same applies if dizziness comes with it."
+],
+[
+"Reference",
+"Represents the auditory cortex of the temporal lobe; the center of the line is high-frequency sound and both ends low-frequency sound. Used for hearing loss, tinnitus and hearing disorders."
+]
+],
+"청신경": [
+[
+"Basic role",
+"The auditory nerve sends two kinds of information received in the inner ear to the brain: sound, and the sense of balance that tells which way the body is tilting. So when this nerve tires, both hearing and balance can waver together."
+],
+[
+"Everyday signals",
+"There's a ringing in your ears. Your ears feel blocked and dull. Turning your head or standing up gives a spinning feeling. Car sickness has gotten worse. When tired, your ears get more sensitive."
+],
+[
+"In simple terms",
+"If the ear is the antenna, the auditory nerve is the cable connecting the antenna to the TV. When the cable loosens, the picture crackles and the sound cuts out. Korean medicine also sees the ear as the window of the kidneys (腎開竅於耳), explaining that when overwork weakens kidney qi, the ears ring first."
+],
+[
+"Body and mind",
+"Dizziness makes people very anxious. Not knowing when it'll strike again, they avoid going out, and that tension makes the ears more sensitive again."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. Looked at in condition care for clients who are overworked or short on sleep."
+],
+[
+"What to say",
+"\"Do your ears feel blocked or do you feel dizzy at times lately? When you're very tired, the ears sometimes send signals first. Today I'll release the tension around your ears.\""
+],
+[
+"Points that go well together",
+"Auditory Line, Inner Ear, External Ear, Kidney (connected to the ear), Shenmen (tension relief)"
+],
+[
+"Caution",
+"If hearing in one ear is suddenly lost, or dizziness comes with vomiting, slurred speech or paralysis on one side, recommend seeing a doctor immediately."
+],
+[
+"Reference",
+"Used for auditory sensation, spatial orientation and balance, hearing loss and tinnitus."
+]
+],
+"췌장": [
+[
+"Basic role",
+"The pancreas is an organ about 15 cm long, tucked behind the stomach, and it does two jobs. One is making digestive enzymes that break down carbohydrates, proteins and fats. The other is keeping blood sugar steady with insulin and glucagon."
+],
+[
+"Everyday signals",
+"After meals you get overwhelmingly sleepy. Around 3 or 4 pm you crave sweets. When hungry, your hands shake and you get irritable. Fatty food leaves you bloated with loose stools. The body swells easily."
+],
+[
+"In Korean medicine",
+"Korean medicine has no separate name for the pancreas and usually explains it as part of the function of the spleen (脾), which handles digestion and absorption. The spleen turns food into qi and blood, carries them throughout the body and circulates the body's water. A worn-out spleen is believed to make the body swollen and heavy and to increase phlegm — which is why the original lists edema, water metabolism and phlegm exactly as for the Spleen point. Since sweetness enters the spleen (甘入脾), a tired spleen is also interpreted as craving sweets."
+],
+[
+"Body and mind",
+"The spleen's emotion is pensiveness (思). Chewing over worries kills appetite and blocks digestion. When blood sugar rides a rollercoaster, unexplained irritability and anxiety follow — it looks like a 'mood problem' but is often a blood sugar problem. Stress hormones raise blood sugar, feeding this vicious cycle."
+],
+[
+"730 Skin application",
+"High blood sugar causes glycation, which hardens collagen, lowering firmness and dulling the skin. Sebum and breakouts increase too. Looked at in consultations on firmness, dullness and breakouts."
+],
+[
+"What to say",
+"\"You get very sleepy after eating and crave sweets in the afternoon, right? It may be a sign the worker that guards your blood sugar is a bit worn out. Today I'll care for the point that helps digestion and metabolism with you.\""
+],
+[
+"Points that go well together",
+"Spleen (a team with the pancreas), Stomach (digestion), Endocrine (hormones), Appetite Control (sugar cravings), Skin Disease (breakouts)"
+],
+[
+"Caution",
+"If thirst, frequent urination and weight loss come together, or severe pain spreads from the upper belly to the back, recommend getting checked at a hospital first. Guide clients with diabetes to continue medical treatment and blood sugar management."
+],
+[
+"Reference",
+"Used for pancreatic disorders including diabetes, hypoglycemia and pancreatitis. Also used for lymphatic disorders, water metabolism disorders, immune dysfunction, digestive disorders, constipation, edema, blood disorders and cough with phlegm."
+]
+],
+"측두엽": [
+[
+"Basic role",
+"The temporal lobe is the part of the brain just above the ear, inside the temples. It's the auditory center that analyzes sounds, voices and music coming in through the ears, and contains the area that understands the meaning of speech. Deep inside are the hippocampus, which forms memories, and the amygdala, which triggers emotions, so it turns what you hear into memories and ties them to feelings."
+],
+[
+"Everyday signals",
+"People's names or words are on the tip of your tongue. Even while listening, what the other person says doesn't sink in. You can't memorize song lyrics like before. Noisy places tire you quickly. Your temples often feel stiff."
+],
+[
+"In simple terms",
+"The temporal lobe is a room with both an audio system and a photo album shelf. It plays incoming sound (hearing), understands its meaning (language), and files important scenes in the album (memory). A single song bringing back old memories also happens in this room."
+],
+[
+"Body and mind",
+"When sleep is short and stress builds, filing memories into the album is the first thing to get pushed back. A client who says 'I keep forgetting things lately' may not have a failing memory but simply hasn't rested."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. For clients whose temples are stiff from clenching, look at it together with the TMJ point."
+],
+[
+"What to say",
+"\"Lately do names not come to mind easily, or does what people say not sink in? It's a sign your head is very worn out. Today I'll release the tension at the sides of your head.\""
+],
+[
+"Points that go well together",
+"Auditory Line (auditory cortex), Hippocampus (memory), Amygdala (emotion), Inner Ear, Frontal Lobe (concentration)"
+],
+[
+"Caution",
+"If memory loss worsens rapidly, or the client can't understand speech and says unrelated things, recommend seeing a neurologist."
+],
+[
+"Reference",
+"Affects the temporal lobe. Used for hearing, hearing loss, tone deafness and verbal memory."
+]
+],
+"치아": [
+[
+"Basic role",
+"A supporting stimulation point that eases discomfort in the teeth and gums and pain before and after dental treatment. It doesn't replace dental treatment; it's looked at to lower the body's tension and pain while receiving treatment."
+],
+[
+"Everyday signals",
+"Cold water makes your teeth sensitive. When tired, your gums swell and throb. They bleed when you brush. You chew on only one side. Just sitting in the dentist's chair makes your whole body stiffen."
+],
+[
+"In Korean medicine",
+"Korean medicine says 'teeth are the surplus of bone' (齒爲骨之餘), linking the teeth to the kidneys, which govern the bones. The gums are seen as where the stomach meridian (胃經) and large intestine meridian (大腸經) pass, so excess heat in the stomach is believed to swell the gums and cause bad breath. This is how swollen gums from overwork are tied to whole-body fatigue."
+],
+[
+"Body and mind",
+"Fear of the dentist is common. Just hearing the drill makes the shoulders rise and the jaw tense. The higher the tension, the bigger the pain feels. Simply easing tension before treatment makes clients more comfortable."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. However, chewing on one side leads to facial asymmetry, so it's looked at with the jaw points in contour-care consultations."
+],
+[
+"What to say",
+"\"When you're tired, do your gums swell and throb first? It can also be a sign your body is worn out. Please be sure to see your dentist, and today I'll release the tension around your jaw and mouth.\""
+],
+[
+"Points that go well together",
+"Maxilla, Mandible, TMJ, Shenmen (pain relief), Point Zero"
+],
+[
+"Caution",
+"Be sure to explain that this does not replace dental care. If the face swells, there's fever, or pain persists, recommend seeing a dentist first."
+],
+[
+"Reference",
+"Used for dental procedures, toothache, gum disease and pain relief from tooth decay."
+]
+],
+"치질C": [
+[
+"Basic role",
+"Around the anus are bundles of veins that act as cushions. When pressure builds there from long sitting, straining with constipation, pregnancy and childbirth, drinking or a cold lower body, they swell and sag. This is a hemorrhoid. This point is a supporting reflex area that eases that discomfort."
+],
+[
+"Everyday signals",
+"Sitting long makes the anus feel heavy. You strain hard when passing stool. After a bowel movement it stings or itches. It's worse the day after drinking. It got worse during pregnancy or after childbirth. The lower body is cold and swells easily."
+],
+[
+"In Korean medicine",
+"Korean medicine sees hemorrhoids as blood pooling and stagnating below (blood stasis) or damp-heat descending. It also calls the state where the body's qi sags and can't hold the organs in place 'sinking of middle qi' (中氣下陷), which explains a hemorrhoid protruding outward. So it also looks at cutting down spicy, greasy food and alcohol and lifting sagging qi."
+],
+[
+"Body and mind",
+"It's a sign that circulation below the pelvis is blocked. Many clients stress over it alone because it's hard to talk about, so handle it comfortably in consultation."
+],
+[
+"730 Skin application",
+"Little direct link to the skin. Clients with blocked lower-body circulation often also have leg swelling and coldness, so look at it together with body circulation care."
+],
+[
+"What to say",
+"\"When you sit long, does the lower area feel heavy? It may be a sign lower-body circulation is blocked. Today I'll care for the point that helps circulation below the pelvis with you.\""
+],
+[
+"Points that go well together",
+"Rectum C (outlet), Large Intestine (bowel movements), Pelvis (lower-belly circulation), Spleen (sagging qi)"
+],
+[
+"Caution",
+"Explain that this is a supporting reflex area that doesn't replace medical treatment. If there's bleeding or severe pain, recommend seeing a doctor. Blood in the stool may have other causes, so make sure it's checked."
+],
+[
+"Reference",
+"Relieves hemorrhoid symptoms."
+]
+],
+"침샘": [
+[
+"Basic role",
+"The salivary glands are in front of the ears, under the jaw and under the tongue, making 1–1.5 L of saliva a day. Saliva moistens food so it's easier to swallow, starts breaking down starch, and rinses the mouth to protect the teeth and gums."
+],
+[
+"Everyday signals",
+"You wake with a parched mouth. The mouth feels sticky and thick. Even drinking water, it dries again soon. Dry food is hard to swallow. Bad breath bothers you. When tense, your mouth gets drier."
+],
+[
+"In Korean medicine",
+"In Korean medicine, thin saliva (涎) is the fluid of the spleen (脾) and thick saliva (唾) the fluid of the kidneys (腎). Dry mouth is read as weakened digestion (spleen) or the body's root fluids (kidneys) drying up. This explains why the mouth gets drier with age."
+],
+[
+"Body and mind",
+"Tension dries the mouth; relaxation makes saliva pool. That's because saliva secretion is mainly handled by the resting nerves (parasympathetic). A client whose mouth is always dry may be in a state where the body can't come down from tension mode."
+],
+[
+"730 Skin application",
+"People with dry mouths tend to get chapped lips and flaking at the corners of the mouth. Seen as a sign of whole-body dehydration and looked at together with dry-skin consultations."
+],
+[
+"What to say",
+"\"Does your mouth get dry often and your lips chap easily? It may be a sign your body is short on moisture. Today I'll care for the salivary gland point with you.\""
+],
+[
+"Points that go well together",
+"Mouth (dry mouth), Stomach (digestion), Spleen (root of thin saliva), Kidney (body fluids), Sympathetic"
+],
+[
+"Caution",
+"If both the mouth and eyes are severely dry, or the area in front of the ears or under the jaw is swollen and painful, recommend seeing a doctor first. Medications being taken can also cause dry mouth."
+],
+[
+"Reference",
+"Used for salivary gland disorders (mumps, Sjögren's syndrome, dry mouth, digestive disorders)."
+]
+],
+"내비강": [
+[
+"Basic role",
+"The inside of the nose is covered with mucous membranes and hairs. It warms, moistens and filters dust from the air you breathe in before sending it to the lungs — the body's first air purifier. When the lining swells or becomes sensitive, the nose blocks and runs."
+],
+[
+"Everyday signals",
+"Your nose is blocked every morning. The nostrils block alternately. You sleep with your mouth open. Cold air makes your nose run. On dry days the inside of the nose stings and shows traces of blood. You can't smell well. Colds start in your nose."
+],
+[
+"In Korean medicine",
+"In Korean medicine the nose is 'the window of the lungs' (肺開竅於鼻). When lung qi is clear, breath flows freely and smell is keen. The lungs are also believed to govern the skin and hair (肺主皮毛), explaining why people with sensitive noses often have sensitive skin too. The lungs' season is autumn, so in dry autumn the nose and skin dry out together."
+],
+[
+"Body and mind",
+"A blocked nose makes sleep shallow; mouth breathing dries the throat and the head turns foggy. Just one blocked nose lowers your whole day's condition."
+],
+[
+"730 Skin application",
+"Easy to explain through the link that the lungs govern the skin. Clients with rhinitis often have redness around the nose, under-eye dark circles from congestion (allergic shiners) and dryness together."
+],
+[
+"What to say",
+"\"Is your nose blocked every morning? When the nose is sensitive, the skin often becomes sensitive too. Today I'll care for the point that eases your airway with you.\""
+],
+[
+"Points that go well together",
+"External Nose, Lung (the nose's partner), Sneeze, Allergy (sensitive reactions), Antihistamine (runny nose · itching)"
+],
+[
+"Caution",
+"If nosebleeds are frequent and hard to stop, or only one side stays blocked with bloody discharge, recommend seeing an ENT doctor first."
+],
+[
+"Reference",
+"Used for nasal congestion, nosebleeds, rhinitis, allergies and colds."
 ]
 ]
 }
