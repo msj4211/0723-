@@ -11,7 +11,7 @@
   body { margin: 0; background: #fff; color: var(--ink); font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; font-size: 14px; line-height: 1.6; word-break: keep-all; }
   .wrap { max-width: 760px; margin: 0 auto; padding: 24px 20px 60px; }
   .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 16px; }
-  .toolbar p { margin: 0; font-size: 13px; color: var(--sub); }
+  .toolbar p { margin: 0; font-size: 13px; color: var(--sub); line-height: 1.5; }
   .btn { border: 0; border-radius: 999px; padding: 10px 18px; font: inherit; font-size: 14px; font-weight: 700; background: var(--brand); color: #000; cursor: pointer; white-space: nowrap; }
   .sheet { padding: 8px 4px 24px; }
   .brand { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--brown); margin: 0 0 4px; }
@@ -26,7 +26,17 @@
   th, td { border: 1px solid var(--line); padding: 7px 9px; text-align: left; vertical-align: top; }
   th { background: #FAF7F1; font-weight: 700; }
   .note { color: var(--sub); font-size: 13px; margin: 6px 0 8px; }
-  .sign td { height: 40px; }
+  .tb-btns { display: flex; gap: 8px; flex: none; }
+  .btn-line { border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 999px; padding: 9px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .chk { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; padding: 3px 0; }
+  .chk input { flex: none; width: 22px; height: 22px; margin: 0; accent-color: #2E2A26; }
+  .fill { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; font: inherit; font-size: 15px; color: var(--ink); background: #fff; }
+  .fill.yr { width: 3.2em; padding: 3px 4px; text-align: center; font-size: 13px; margin: 0 2px; }
+  .sig-cell { padding: 8px 9px; }
+  .sig-pad { display: block; width: 100%; height: 160px; border: 1px dashed #BFB6A6; border-radius: 10px; background: #fff; touch-action: none; cursor: crosshair; }
+  .sig-tools { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; gap: 8px; }
+  .sig-hint { font-size: 12px; color: var(--sub); }
+  .sign td { height: auto; vertical-align: middle; }
   .sign th { width: 130px; }
   @media print {
     @page { size: A4; margin: 14mm; }
@@ -39,9 +49,15 @@
     h2 { font-size: 12.5px; margin: 10px 0 4px; }
     table { margin: 4px 0; font-size: 10.5px; }
     th, td { padding: 4px 7px; }
-    .sign td { height: 26px; }
     .note { font-size: 10.5px; margin: 3px 0 4px; }
-    .box { width: 12px; height: 12px; margin-top: 2px; }
+    .chk input { width: 13px; height: 13px; }
+    .fill { border: 0; border-bottom: 1px solid #999; border-radius: 0; padding: 2px 4px; font-size: 11px; }
+    .fill.yr { border-bottom: 1px solid #999; }
+    .sig-pad { height: 64px; border: 0; }
+    .sig-cell { padding: 2px 7px; }
+    .chk { padding: 1px 0; }
+    .sig-tools { display: none; }
+    input::placeholder { color: transparent; }
     th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
@@ -49,8 +65,11 @@
 <body>
 <div class="wrap">
   <div class="toolbar">
-    <p>고객님께 보여드리거나 인쇄해서 서명을 받아 보관하세요.</p>
-    <button class="btn" type="button" onclick="window.print()">인쇄하기</button>
+    <p>태블릿에서 고객님이 직접 체크하고 서명한 뒤, 저장하거나 인쇄해 보관하세요.<br>입력한 내용은 서버에 저장되지 않습니다.</p>
+    <div class="tb-btns">
+      <button class="btn-line" type="button" id="reset">새로 쓰기</button>
+      <button class="btn" type="button" onclick="window.print()">저장·인쇄</button>
+    </div>
   </div>
 
   <div class="sheet">
@@ -68,30 +87,30 @@
     <h2>관리 전 확인</h2>
     <p>아래 내용을 안내받고 이해했습니다.</p>
     <ul class="checks">
-      <li><span class="box"></span><span>이어테라피는 의료행위가 아닌 관리이며, 진단이나 치료를 하지 않는다는 점</span></li>
-      <li><span class="box"></span><span>관리 후 귀에 붙인 볼은 불편하면 언제든 떼어낼 수 있다는 점</span></li>
-      <li><span class="box"></span><span>붙인 자리가 가렵거나 붉어지면 볼을 떼고 관리사에게 알려야 한다는 점</span></li>
-      <li><span class="box"></span><span>임신 중이거나 귀에 상처·염증이 있으면 관리 전에 미리 말해야 한다는 점</span></li>
+      <li><label class="chk"><input type="checkbox"><span>이어테라피는 의료행위가 아닌 관리이며, 진단이나 치료를 하지 않는다는 점</span></label></li>
+      <li><label class="chk"><input type="checkbox"><span>관리 후 귀에 붙인 볼은 불편하면 언제든 떼어낼 수 있다는 점</span></label></li>
+      <li><label class="chk"><input type="checkbox"><span>붙인 자리가 가렵거나 붉어지면 볼을 떼고 관리사에게 알려야 한다는 점</span></label></li>
+      <li><label class="chk"><input type="checkbox"><span>임신 중이거나 귀에 상처·염증이 있으면 관리 전에 미리 말해야 한다는 점</span></label></li>
     </ul>
 
     <h2>개인정보 수집·이용 동의</h2>
     <p>관리와 상담 기록을 위해 아래 정보를 받습니다.</p>
     <table>
       <tr><th>구분</th><th>항목</th><th>이용 목적</th><th>보유 기간</th></tr>
-      <tr><td>필수</td><td>이름, 연락처, 성별, 나이대, 직업</td><td>예약, 관리 기록, 상담 차트 작성</td><td>관리 종료 후 (&nbsp;&nbsp;&nbsp;)년</td></tr>
-      <tr><td>민감정보</td><td>불편한 점, 건강 관련 상태</td><td>관리 방향 정하기</td><td>관리 종료 후 (&nbsp;&nbsp;&nbsp;)년</td></tr>
+      <tr><td>필수</td><td>이름, 연락처, 성별, 나이대, 직업</td><td>예약, 관리 기록, 상담 차트 작성</td><td>관리 종료 후 <input type="text" class="fill yr" inputmode="numeric" maxlength="2">년</td></tr>
+      <tr><td>민감정보</td><td>불편한 점, 건강 관련 상태</td><td>관리 방향 정하기</td><td>관리 종료 후 <input type="text" class="fill yr" inputmode="numeric" maxlength="2">년</td></tr>
     </table>
     <p class="note">동의를 거부할 수 있으며, 필수 항목에 동의하지 않으면 관리를 받기 어렵습니다.</p>
     <ul class="checks">
-      <li><span class="box"></span><span>필수 항목 수집·이용에 동의합니다.</span></li>
-      <li><span class="box"></span><span>민감정보(불편한 점, 건강 관련 상태) 수집·이용에 따로 동의합니다.</span></li>
+      <li><label class="chk"><input type="checkbox"><span>필수 항목 수집·이용에 동의합니다.</span></label></li>
+      <li><label class="chk"><input type="checkbox"><span>민감정보(불편한 점, 건강 관련 상태) 수집·이용에 따로 동의합니다.</span></label></li>
     </ul>
 
     <h2>귀 사진 촬영·팀 내 공유 동의 (선택)</h2>
     <p>더 정확한 관리를 위해 귀 사진을 730스킨이어테라피 팀 원장님들과 함께 보고 의견을 나눌 수 있습니다.</p>
     <table>
       <tr><th>제공받는 곳</th><th>이용 목적</th><th>공유 항목</th><th>보유 기간</th></tr>
-      <tr><td>730스킨이어테라피 팀 (팀 단체방)</td><td>관리 방향 피드백, 팀 교육</td><td>귀 사진, 성별, 나이대, 직업, 불편한 점</td><td>관리 종료 후 (&nbsp;&nbsp;&nbsp;)년</td></tr>
+      <tr><td>730스킨이어테라피 팀 (팀 단체방)</td><td>관리 방향 피드백, 팀 교육</td><td>귀 사진, 성별, 나이대, 직업, 불편한 점</td><td>관리 종료 후 <input type="text" class="fill yr" inputmode="numeric" maxlength="2">년</td></tr>
     </table>
     <ul>
       <li>얼굴은 찍지 않고 귀만 촬영합니다.</li>
@@ -100,19 +119,68 @@
       <li>동의하지 않아도 관리를 받는 데 불이익은 없습니다.</li>
     </ul>
     <ul class="checks" style="margin-top:6px">
-      <li><span class="box"></span><span>귀 사진 촬영과 팀 내 공유에 동의합니다.</span></li>
+      <li><label class="chk"><input type="checkbox"><span>귀 사진 촬영과 팀 내 공유에 동의합니다.</span></label></li>
     </ul>
 
     <h2>서명</h2>
     <p>위 내용을 충분히 안내받고 동의합니다.</p>
     <table class="sign">
-      <tr><th>날짜</th><td></td></tr>
-      <tr><th>고객 이름</th><td></td></tr>
-      <tr><th>고객 서명</th><td></td></tr>
-      <tr><th>관리샵</th><td></td></tr>
-      <tr><th>담당 원장님</th><td></td></tr>
+      <tr><th>날짜</th><td><input type="date" id="sign-date" class="fill"></td></tr>
+      <tr><th>고객 이름</th><td><input type="text" class="fill" autocomplete="off" placeholder="이름을 적어 주세요"></td></tr>
+      <tr><th>고객 서명</th><td class="sig-cell">
+        <canvas id="sig" class="sig-pad" aria-label="손가락이나 펜으로 서명하는 칸"></canvas>
+        <div class="sig-tools"><span class="sig-hint">손가락이나 펜으로 서명해 주세요</span><button type="button" class="btn-line" id="sig-clear">서명 지우기</button></div>
+      </td></tr>
+      <tr><th>관리샵</th><td><input type="text" class="fill" id="shop" autocomplete="off"></td></tr>
+      <tr><th>담당 원장님</th><td><input type="text" class="fill" id="owner" autocomplete="off"></td></tr>
     </table>
   </div>
 </div>
+<script>
+(function () {
+  var d = document.getElementById('sign-date');
+  function today() { var t = new Date(); t.setMinutes(t.getMinutes() - t.getTimezoneOffset()); return t.toISOString().slice(0, 10); }
+  d.value = today();
+
+  // 관리샵·담당 원장님은 이 기기에 기억해 두고 다음에 자동으로 채운다(고객 정보는 기억하지 않음).
+  ['shop', 'owner'].forEach(function (id) {
+    var el = document.getElementById(id);
+    try { el.value = localStorage.getItem('730-consent-' + id) || ''; } catch (e) {}
+    el.addEventListener('change', function () { try { localStorage.setItem('730-consent-' + id, el.value); } catch (e) {} });
+  });
+
+  // 서명 칸: 손가락·펜·마우스로 그린다.
+  var c = document.getElementById('sig'), ctx = c.getContext('2d'), drawing = false, last = null;
+  function fit() {
+    var r = c.getBoundingClientRect(), ratio = window.devicePixelRatio || 1;
+    var keep = c.width ? c.toDataURL() : null;
+    c.width = r.width * ratio; c.height = r.height * ratio;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ctx.lineWidth = 2.4; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#1F1B17';
+    if (keep && signed) { var img = new Image(); img.onload = function () { ctx.drawImage(img, 0, 0, r.width, r.height); }; img.src = keep; }
+  }
+  var signed = false;
+  function pos(e) { var r = c.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  c.addEventListener('pointerdown', function (e) { drawing = true; last = pos(e); c.setPointerCapture(e.pointerId); e.preventDefault(); });
+  c.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    var p = pos(e); ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke(); last = p; signed = true;
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) { c.addEventListener(t, function () { drawing = false; }); });
+  function clearSig() { ctx.clearRect(0, 0, c.width, c.height); signed = false; }
+  document.getElementById('sig-clear').addEventListener('click', clearSig);
+  window.addEventListener('resize', fit);
+  fit();
+
+  // 새로 쓰기: 다음 고객을 위해 체크·이름·서명을 비운다(관리샵·원장님·보유 기간은 남긴다).
+  document.getElementById('reset').addEventListener('click', function () {
+    document.querySelectorAll('.chk input').forEach(function (i) { i.checked = false; });
+    document.querySelectorAll('.sign input[type=text]').forEach(function (i) { if (i.id !== 'shop' && i.id !== 'owner') i.value = ''; });
+    d.value = today();
+    clearSig();
+    window.scrollTo(0, 0);
+  });
+})();
+</script>
 </body>
 </html>
