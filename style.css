@@ -4887,3 +4887,25 @@ a.auth-user-email[hidden],
 .apply-admin-meta { margin: 4px 0 0; font-size: 0.84rem; color: #6B6258; }
 .apply-admin-text { margin: 10px 0 0; font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; }
 .apply-admin-text b { font-size: 0.8rem; color: #6B6258; }
+
+/* ===== 오른쪽 위 마이페이지 버튼: 데스크톱은 동그란 사람 아이콘만 (2026-11-20) =====
+   이름(별명/가린 이메일)은 마우스를 올리면 말풍선으로 보인다. 모바일 드로어에서는 글자 그대로. */
+@media (min-width: 769px) {
+  a.auth-user-email {
+    width: 38px;
+    height: 38px;
+    max-width: none;
+    padding: 0;
+    overflow: hidden;
+    font-size: 0;
+    color: transparent;
+    border-radius: 50%;
+    background-position: center;
+    background-size: 18px;
+  }
+  a.auth-user-email::after { content: none; }
+  a.auth-user-email:hover,
+  a.auth-user-email:focus-visible { background-color: #FFF6CC; }
+  .auth-name-hint { left: 50%; translate: -50% 0; }
+  .auth-name-hint::before { left: 50%; margin-left: -5px; }
+}
