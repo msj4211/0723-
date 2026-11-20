@@ -56,7 +56,7 @@ jobs:
           tgt() { h=$(supabase "$@" --help 2>&1); if echo "$h" | grep -q -- '--linked'; then echo --linked; elif echo "$h" | grep -q -- '--remote'; then echo --remote; fi; }
           versions=$(ls supabase/migrations/*.sql | xargs -n1 basename | cut -d_ -f1 | tr '\n' ' ')
           echo "표시할 버전: $versions"
-          supabase migration repair --status applied $versions $(tgt migration repair)
+          supabase migration repair --status applied $versions $(tgt migration repair) --yes
           supabase migration list $(tgt migration list)
 
       - name: 새 SQL 적용
@@ -65,4 +65,4 @@ jobs:
           # CLI 버전마다 원격 DB 지정 옵션 이름이 다르다 (--linked 또는 --remote). 비밀번호는 SUPABASE_DB_PASSWORD 환경변수로 자동 전달된다.
           tgt() { h=$(supabase "$@" --help 2>&1); if echo "$h" | grep -q -- '--linked'; then echo --linked; elif echo "$h" | grep -q -- '--remote'; then echo --remote; fi; }
           supabase migration list $(tgt migration list)
-          supabase db push $(tgt db push)
+          supabase db push $(tgt db push) --yes
