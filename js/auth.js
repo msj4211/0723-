@@ -335,12 +335,24 @@
     if (name) return name + (window.t ? window.t('headerNameSuffix') : '님');
     return maskEmail(user && user.email);
   }
+  // 데스크톱에서는 사람 아이콘만 보이므로, 이름은 마우스를 올리면 뜨는 말풍선(title)과
+  // 화면 읽기 프로그램용 이름(aria-label)으로 함께 넣는다.
+  function setHeaderName(text) {
+    userEmailEl.textContent = text;
+    if (text) {
+      userEmailEl.title = text + ' · 마이페이지';
+      userEmailEl.setAttribute('aria-label', text + ' 마이페이지');
+    } else {
+      userEmailEl.removeAttribute('title');
+      userEmailEl.removeAttribute('aria-label');
+    }
+  }
   function refreshHeaderName(user) {
     client.from('profiles').select('*').eq('id', user.id).maybeSingle().then(function (res) {
       lastHeaderProfile = res && res.data ? res.data : null;
       client.auth.getSession().then(function (r) {
         var cur = r.data.session && r.data.session.user;
-        if (cur && cur.id === user.id) userEmailEl.textContent = headerNameFrom(lastHeaderProfile, user);
+        if (cur && cur.id === user.id) setHeaderName(headerNameFrom(lastHeaderProfile, user));
       });
     });
   }
@@ -348,7 +360,7 @@
     window.i18nOnLanguageChange.push(function () {
       client.auth.getSession().then(function (r) {
         var cur = r.data.session && r.data.session.user;
-        if (cur && !userEmailEl.hidden) userEmailEl.textContent = headerNameFrom(lastHeaderProfile, cur);
+        if (cur && !userEmailEl.hidden) setHeaderName(headerNameFrom(lastHeaderProfile, cur));
       });
     });
   }
@@ -359,7 +371,7 @@
     if (user && !isEmailConfirmed(user)) {
       loginBtn.hidden = false;
       setLoggedInUiVisible(false);
-      userEmailEl.textContent = '';
+      setHeaderName('');
       client.auth.signOut();
       return;
     }
@@ -369,12 +381,12 @@
       setLoggedInUiVisible(true);
       // 이메일은 개인정보라 화면에 그대로 보여주지 않는다.
       // 별명 → 이름+님 → 가린 이메일(ms***@gmail.com) 순서로 보여준다.
-      userEmailEl.textContent = maskEmail(user.email);
+      setHeaderName(maskEmail(user.email));
       refreshHeaderName(user);
     } else {
       loginBtn.hidden = false;
       setLoggedInUiVisible(false);
-      userEmailEl.textContent = '';
+      setHeaderName('');
     }
   }
 
