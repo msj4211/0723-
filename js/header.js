@@ -39,10 +39,35 @@
     link.addEventListener('click', closeMenu);
   });
   // 이름(별명)을 눌러 마이페이지로 갈 때도 모바일 드로어를 닫는다.
+  // 처음 로그인한 사람에게는 이름 아래에 '눌러서 마이페이지로 가요' 말풍선을
+  // 한 번 보여주고, 이름을 한 번 누르면 다시 보이지 않는다.
   var userNameLink = document.getElementById('auth-user-email');
-  if (userNameLink) userNameLink.addEventListener('click', function () {
-    if (mainNav.classList.contains('is-open')) closeMenu();
-  });
+  var NAME_HINT_KEY = '730-mypage-hint-seen';
+  var nameHint = null;
+  function nameHintSeen() { try { return localStorage.getItem(NAME_HINT_KEY) === '1'; } catch (e) { return true; } }
+  function updateNameHint() {
+    if (!userNameLink) return;
+    var show = !userNameLink.hidden && !nameHintSeen() && !mobileQuery.matches;
+    if (show && !nameHint) {
+      nameHint = document.createElement('span');
+      nameHint.className = 'auth-name-hint';
+      nameHint.setAttribute('aria-hidden', 'true');
+      userNameLink.parentNode.appendChild(nameHint);
+    }
+    if (nameHint) {
+      nameHint.textContent = window.t ? window.t('myHeaderHint') : '눌러서 마이페이지로 가요';
+      nameHint.hidden = !show;
+    }
+  }
+  if (userNameLink) {
+    userNameLink.addEventListener('click', function () {
+      try { localStorage.setItem(NAME_HINT_KEY, '1'); } catch (e) {}
+      updateNameHint();
+      if (mainNav.classList.contains('is-open')) closeMenu();
+    });
+    new MutationObserver(updateNameHint).observe(userNameLink, { attributes: true, attributeFilter: ['hidden'] });
+    if (window.i18nOnLanguageChange) window.i18nOnLanguageChange.push(updateNameHint);
+  }
 
   overlay.addEventListener('click', closeMenu);
 
@@ -76,6 +101,7 @@
   });
 
   var mobileQuery = window.matchMedia('(max-width: 768px)');
+  try { mobileQuery.addEventListener('change', function () { updateNameHint(); }); } catch (e) {}
   var isMobileLayout = false;
 
   function moveToMobile() {

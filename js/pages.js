@@ -1820,7 +1820,6 @@ window.Pages = (function () {
 
     container.innerHTML =
       '<section class="page-section favorites-page">' +
-      '<a class="mypage-back-link" href="#/mypage" data-i18n="mypageBackLink">' + window.t('mypageBackLink') + '</a>' +
       '<div class="section-title"><h2 data-i18n="navFavorites">' + window.t('navFavorites') + '</h2></div>' +
       '<div id="favorites-body"></div>' +
       '</section>';
@@ -2641,6 +2640,79 @@ window.Pages = (function () {
     });
   }
 
+  // ===== 마이페이지 영역: 왼쪽 세로 메뉴 + 오른쪽 내용 =====
+  // 내 정보 / 관심 혈자리 (+ 관리자: 회원 승인 관리, 파트너 전용몰 관리) / 로그아웃
+  var myAreaAdminCheck = null;
+  function isSiteAdminCached() {
+    var client = window.supabaseClient;
+    if (!client) return Promise.resolve(false);
+    if (!myAreaAdminCheck) {
+      myAreaAdminCheck = client.rpc('is_site_admin').then(function (res) {
+        return !res.error && res.data === true;
+      }, function () { return false; });
+      // 로그인 계정이 바뀌면 다시 확인한다
+      try {
+        client.auth.onAuthStateChange(function () { myAreaAdminCheck = null; });
+      } catch (e) {}
+    }
+    return myAreaAdminCheck;
+  }
+
+  function renderMyAreaNav(nav, active) {
+    var items = [
+      ['mypage', window.t('myNavInfo')],
+      ['favorites', window.t('myNavFavorites')]
+    ];
+    function itemHtml(route, label, extra) {
+      return '<a class="my-area-link' + (route === active ? ' is-active' : '') + '" href="#/' + route + '"' +
+        (route === active ? ' aria-current="page"' : '') + '><span>' + label + '</span>' + (extra || '') + '</a>';
+    }
+    nav.innerHTML =
+      '<p class="my-area-nav-title">' + window.t('mypageTitle') + '</p>' +
+      items.map(function (it) { return itemHtml(it[0], it[1]); }).join('') +
+      '<div class="my-area-admin" hidden></div>' +
+      '<button type="button" class="my-area-link my-area-logout">' + window.t('logout') + '</button>';
+    nav.querySelector('.my-area-logout').addEventListener('click', function () {
+      var btn = document.getElementById('auth-logout-btn');
+      if (btn) btn.click();
+    });
+    isSiteAdminCached().then(function (isAdmin) {
+      if (!isAdmin || !nav.isConnected) return;
+      var box = nav.querySelector('.my-area-admin');
+      box.hidden = false;
+      box.innerHTML =
+        '<p class="my-area-nav-sub">관리자</p>' +
+        itemHtml('admin', '회원 승인 관리', '<em class="my-area-count" data-count="members"></em>') +
+        itemHtml('admin-orders', '파트너 전용몰 관리', '<em class="my-area-count" data-count="orders"></em>');
+      var client = window.supabaseClient;
+      client.rpc('admin_list_members').then(function (r) {
+        if (r.error || !nav.isConnected) return;
+        var n = (r.data || []).filter(function (m) { return (m.education_status || 'pending') === 'pending'; }).length;
+        var el = box.querySelector('[data-count="members"]');
+        if (n) { el.textContent = n; el.classList.add('has-pending'); el.title = '승인 대기 ' + n + '명'; }
+      });
+      client.rpc('admin_list_orders').then(function (r) {
+        if (r.error || !nav.isConnected) return;
+        var n = (r.data || []).filter(function (o) { return o.status === 'pending_payment'; }).length;
+        var el = box.querySelector('[data-count="orders"]');
+        if (n) { el.textContent = n; el.classList.add('has-pending'); el.title = '입금 대기 ' + n + '건'; }
+      });
+    });
+  }
+
+  function withMyArea(active, render) {
+    return function (c, session, profile) {
+      c.innerHTML =
+        '<section class="page-section my-area">' +
+        '<div class="my-area-layout">' +
+        '<nav class="my-area-nav" aria-label="' + window.t('mypageTitle') + '"></nav>' +
+        '<div class="my-area-main"></div>' +
+        '</div></section>';
+      renderMyAreaNav(c.querySelector('.my-area-nav'), active);
+      render(c.querySelector('.my-area-main'), session, profile);
+    };
+  }
+
   function renderMyPage(container, session, profile) {
     var lang = window.currentLanguage;
 
@@ -2679,7 +2751,6 @@ window.Pages = (function () {
       approvedSinceHtml +
       '<div class="mypage-actions">' +
       '<button type="button" class="mypage-edit-btn" id="mypage-edit-btn" data-i18n="mypageEditProfileBtn">' + window.t('mypageEditProfileBtn') + '</button>' +
-      '<a class="mypage-favorites-link" href="#/favorites" data-i18n="mypageFavoritesLink">' + window.t('mypageFavoritesLink') + '</a>' +
       '</div>' +
       '<p class="mypage-seminar-note" data-i18n="mypageSeminarNote">' + window.t('mypageSeminarNote') + '</p>' +
       '</div>' +
@@ -2748,16 +2819,15 @@ window.Pages = (function () {
     search: renderSearchResults,
 
     favorites: function (container) {
-      window.AccessControl.checkEducationAccess(container, function (c, session) {
+      window.AccessControl.checkEducationAccess(container, withMyArea('favorites', function (c, session) {
         renderFavoritesList(c, session);
-      });
+      }));
     },
 
     mypage: function (container) {
-      window.AccessControl.checkEducationAccess(container, function (c, session, profile) {
+      window.AccessControl.checkEducationAccess(container, withMyArea('mypage', function (c, session, profile) {
         renderMyPage(c, session, profile);
-        attachAdminShortcut(c);
-      });
+      }));
     },
 
     productDetail: renderProductDetail,
@@ -2769,15 +2839,15 @@ window.Pages = (function () {
     },
 
     adminOrders: function (container) {
-      window.AccessControl.checkEducationAccess(container, function (c) {
+      window.AccessControl.checkEducationAccess(container, withMyArea('admin-orders', function (c) {
         renderAdminOrders(c);
-      });
+      }));
     },
 
     admin: function (container) {
-      window.AccessControl.checkEducationAccess(container, function (c, session) {
+      window.AccessControl.checkEducationAccess(container, withMyArea('admin', function (c, session) {
         renderAdmin(c, session);
-      });
+      }));
     }
   };
 })();
