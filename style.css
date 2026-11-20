@@ -4915,3 +4915,167 @@ a.auth-user-email[hidden],
 @media (min-width: 769px) {
   #auth-logout-btn { display: none !important; }
 }
+
+/* ── 묶음 메뉴(고객 관리 · 이어테라피) ─────────────────────────── */
+.nav-group[hidden] { display: none !important; }
+.nav-group { position: relative; }
+
+.main-nav .nav-group-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 clamp(12px, 1.2vw, 18px);
+  color: #000000;
+  font: inherit;
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 4px 14px rgba(70, 35, 25, 0.10);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+.main-nav .nav-group-btn:hover,
+.nav-group.is-open > .nav-group-btn {
+  background: rgba(255, 255, 255, 0.20);
+  border-color: rgba(255, 255, 255, 0.72);
+}
+.nav-group.has-current > .nav-group-btn {
+  background: #FFF8F2;
+  border-color: #FFF8F2;
+  color: #A95742;
+}
+.nav-group-caret {
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.nav-group.is-open .nav-group-caret { transform: translateY(1px) rotate(-135deg); }
+
+/* 펼쳐지는 칸: 흰 바탕 + 선 */
+.main-nav .nav-sub {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  margin: 0;
+  padding: 8px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  list-style: none;
+  background: #FFFFFF;
+  border: 1px solid #DDD6C8;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(46, 42, 38, 0.12);
+  z-index: 1200;
+}
+/* 버튼과 칸 사이 틈에서 마우스가 빠져도 닫히지 않게 */
+.main-nav .nav-sub::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: -10px; height: 10px;
+}
+.nav-group.is-open > .nav-sub { display: flex; }
+@media (hover: hover) and (min-width: 769px) {
+  .nav-group:hover > .nav-sub { display: flex; }
+}
+.main-nav .nav-sub a {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 14px;
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color: #2E2A26;
+  font-size: 14px;
+  transform: none;
+}
+.main-nav .nav-sub a:hover {
+  background: #FAF7F1;
+  color: #2E2A26;
+  transform: none;
+  box-shadow: none;
+}
+.main-nav .nav-sub a[aria-current="page"] {
+  background: #FFF3C2;
+  color: #2E2A26;
+  box-shadow: none;
+}
+
+/* 모바일 드로어: 묶음 이름은 작은 이름표, 항목은 늘 펼쳐서 보여준다 */
+@media (max-width: 768px) {
+  .main-nav .nav-group-btn {
+    width: 100%;
+    justify-content: flex-start;
+    min-height: 0;
+    margin-top: 14px;
+    padding: 0 0 4px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    color: #8A8378;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: default;
+  }
+  .main-nav .nav-group-btn:hover,
+  .nav-group.is-open > .nav-group-btn,
+  .nav-group.has-current > .nav-group-btn {
+    background: transparent;
+    color: #8A8378;
+  }
+  .nav-group-caret { display: none; }
+  .main-nav .nav-sub,
+  .nav-group.is-open > .nav-sub {
+    display: flex;
+    position: static;
+    transform: none;
+    min-width: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .main-nav .nav-sub::before { display: none; }
+  .main-nav .nav-sub a {
+    min-height: 44px;
+    padding: 0;
+    border-radius: 0;
+    border-bottom: 2px solid transparent;
+    font-size: 18px;
+    color: #000000;
+  }
+  .main-nav .nav-sub a:hover { background: transparent; }
+  .main-nav .nav-sub a[aria-current="page"] {
+    background: transparent;
+    border-bottom-color: #FFCC00;
+  }
+}
+@media (max-width: 768px) {
+  /* 묶음 뒤에 오는 세미나·파트너 전용몰은 묶음 안 항목처럼 보이지 않게 띄운다 */
+  .main-nav .nav-group + li:not(.nav-group) { margin-top: 16px; padding-top: 12px; border-top: 1px solid #E5DED2; }
+}

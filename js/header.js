@@ -71,6 +71,39 @@
 
   overlay.addEventListener('click', closeMenu);
 
+  // ===== 묶음 메뉴(고객 관리 · 이어테라피) =====
+  // 데스크톱: 버튼을 누르면 아래로 펼치고, 다른 곳을 누르거나 항목을 고르면 닫는다.
+  // (마우스를 올렸을 때 펼치는 건 CSS :hover가 맡는다.)
+  // 모바일 드로어에서는 CSS가 항목을 늘 펼쳐 보여주므로 버튼은 이름표 역할만 한다.
+  var navGroups = document.querySelectorAll('.nav-group');
+  function closeNavGroups(except) {
+    navGroups.forEach(function (g) {
+      if (g === except) return;
+      g.classList.remove('is-open');
+      var b = g.querySelector('.nav-group-btn');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
+  }
+  navGroups.forEach(function (group) {
+    var btn = group.querySelector('.nav-group-btn');
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = !group.classList.contains('is-open');
+      closeNavGroups(group);
+      group.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    group.querySelectorAll('.nav-sub a').forEach(function (link) {
+      link.addEventListener('click', function () { closeNavGroups(); });
+    });
+  });
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest || !e.target.closest('.nav-group')) closeNavGroups();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeNavGroups();
+  });
+
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && mainNav.classList.contains('is-open')) {
       closeMenu();

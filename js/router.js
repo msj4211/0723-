@@ -78,6 +78,10 @@
         link.removeAttribute('aria-current');
       }
     });
+    // 묶음 메뉴(고객 관리 · 이어테라피) 안의 항목이 지금 페이지면 묶음 버튼도 표시한다.
+    document.querySelectorAll('.nav-group').forEach(function (group) {
+      group.classList.toggle('has-current', !!group.querySelector('.nav-sub a[aria-current="page"]'));
+    });
   }
 
   function renderRoute() {
