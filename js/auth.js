@@ -258,6 +258,8 @@
     if (shopField) shopField.hidden = !isSignup;
     passwordHint.hidden = !isSignup;
     passwordConfirmField.hidden = !isSignup;
+    var forgotLink = document.getElementById('auth-forgot-link');
+    if (forgotLink) forgotLink.hidden = isSignup;
     privacyField.hidden = !isSignup;
     marketingField.hidden = !isSignup;
     nameInput.required = isSignup;
