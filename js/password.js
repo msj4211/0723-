@@ -11,48 +11,89 @@
   var PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
   var T = function (k) { return window.t ? window.t(k) : k; };
 
-  // ===== 1) 재설정 메일 보내기 =====
-  var forgotBtn = document.getElementById('auth-forgot-link');
-  var emailInput = document.getElementById('auth-email');
-  var authError = document.getElementById('auth-error');
-  var authNotice = document.getElementById('auth-notice');
+  // ===== 1) 비밀번호 찾기 창: 이메일 적고 재설정 메일 보내기 =====
+  var forgotLink = document.getElementById('auth-forgot-link');
+  var loginModal = document.getElementById('auth-modal');
+  var loginEmail = document.getElementById('auth-email');
+  var fModal = document.getElementById('forgot-modal');
+  var fForm = document.getElementById('forgot-form');
+  var fEmail = document.getElementById('forgot-email');
+  var fErr = document.getElementById('forgot-error');
+  var fNotice = document.getElementById('forgot-notice');
+  var fSubmit = document.getElementById('forgot-submit');
   var cooldownUntil = 0;
 
-  function showAuthMsg(el, other, msg) {
-    if (other) other.hidden = true;
-    if (!el) return;
-    el.textContent = msg;
-    el.hidden = false;
+  function openForgot() {
+    if (!fModal) return;
+    fErr.hidden = true;
+    fNotice.hidden = true;
+    fSubmit.hidden = false;
+    fSubmit.disabled = false;
+    fSubmit.textContent = T('forgotSubmit');
+    // 로그인 창에 이미 적어 둔 이메일이 있으면 그대로 가져온다.
+    fEmail.value = loginEmail ? loginEmail.value.trim() : '';
+    if (loginModal) loginModal.hidden = true;
+    fModal.hidden = false;
+    document.body.classList.add('no-scroll');
+    setTimeout(function () { try { fEmail.focus(); } catch (e) {} }, 30);
+  }
+  function closeForgot() {
+    fModal.hidden = true;
+    document.body.classList.remove('no-scroll');
+  }
+  function backToLogin() {
+    var email = fEmail.value.trim();
+    closeForgot();
+    if (window.Auth && window.Auth.openModal) window.Auth.openModal();
+    else if (loginModal) { loginModal.hidden = false; document.body.classList.add('no-scroll'); }
+    if (email && loginEmail) loginEmail.value = email;
   }
 
-  if (forgotBtn) {
-    forgotBtn.addEventListener('click', function () {
-      var email = emailInput ? emailInput.value.trim() : '';
-      if (!email || email.indexOf('@') < 1) {
-        showAuthMsg(authError, authNotice, T('errEmailFirst'));
-        if (emailInput) emailInput.focus();
+  if (forgotLink) forgotLink.addEventListener('click', openForgot);
+  if (fModal) {
+    document.getElementById('forgot-modal-close').addEventListener('click', closeForgot);
+    document.getElementById('forgot-modal-backdrop').addEventListener('click', closeForgot);
+    document.getElementById('forgot-back').addEventListener('click', backToLogin);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !fModal.hidden) closeForgot(); });
+
+    fForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      fErr.hidden = true;
+      var email = fEmail.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        fErr.textContent = T('errEmailFormatShort');
+        fErr.hidden = false;
+        fEmail.focus();
         return;
       }
       if (Date.now() < cooldownUntil) {
-        showAuthMsg(authError, authNotice, T('errResetWait'));
+        fErr.textContent = T('errResetWait');
+        fErr.hidden = false;
         return;
       }
       cooldownUntil = Date.now() + 60000;
-      forgotBtn.disabled = true;
+      fSubmit.disabled = true;
+      fSubmit.textContent = T('forgotSending');
       client.auth.resetPasswordForEmail(email, {
         redirectTo: window.location.origin + '/'
       }).then(function (res) {
-        forgotBtn.disabled = false;
+        fSubmit.disabled = false;
+        fSubmit.textContent = T('forgotSubmit');
         // 가입하지 않은 이메일이어도 같은 안내를 보여준다(가입 여부가 드러나지 않게).
         if (res && res.error && /rate|too many|seconds/i.test(res.error.message || '')) {
-          showAuthMsg(authError, authNotice, T('errResetWait'));
+          fErr.textContent = T('errResetWait');
+          fErr.hidden = false;
           return;
         }
-        showAuthMsg(authNotice, authError, T('authResetSent'));
+        fNotice.textContent = T('authResetSent');
+        fNotice.hidden = false;
+        fSubmit.hidden = true;
       }).catch(function () {
-        forgotBtn.disabled = false;
         cooldownUntil = 0;
-        showAuthMsg(authError, authNotice, T('errResetWait'));
+        fSubmit.disabled = false;
+        fSubmit.textContent = T('forgotSubmit');
+        fErr.textContent = T('errResetWait');
+        fErr.hidden = false;
       });
     });
   }
