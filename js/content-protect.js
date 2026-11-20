@@ -1,0 +1,88 @@
+// 교육 자료 보호: 이혈점·이혈 읽기 같은 교육 페이지에서
+// 오른쪽 클릭(이미지 저장), 이미지 끌어서 저장, 휴대폰 길게 눌러 저장,
+// 글자 드래그 복사, 저장·인쇄 단축키를 막고 화면에 흐린 워터마크를 깐다.
+// 스크린샷 자체는 브라우저에서 막을 수 없으므로 워터마크로 출처를 남긴다.
+//
+// 메인 사이트(index.html)에서는 해시 라우트를 보고 교육 페이지일 때만 켠다.
+// iframe이나 단독 페이지에서는 <html data-protect="always">로 항상 켠다.
+(function () {
+  var root = document.documentElement;
+  // 메인 사이트 안의 iframe이면 바깥 페이지가 이미 워터마크를 깔고 있으므로
+  // 안쪽에서는 워터마크를 다시 깔지 않는다(겹쳐서 진해지는 것 방지).
+  var framed = false;
+  try { framed = window.parent !== window; } catch (e) { framed = true; }
+  if (framed) root.classList.add('cp-framed');
+  var ALWAYS = root.getAttribute('data-protect') === 'always';
+  var PROTECTED_PREFIXES = ['ear-point', 'ear-reading', 'recommend/'];
+
+  var WM_TEXT = '730스킨이어테라피';
+  var svg =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="260" height="170">' +
+    '<text x="130" y="95" text-anchor="middle" transform="rotate(-24 130 85)" ' +
+    'font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="17" font-weight="700" ' +
+    'fill="#000" fill-opacity="0.07">' + WM_TEXT + '</text></svg>';
+  var wmUrl = 'url("data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg) + '")';
+
+  var css =
+    'html.cp-on body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}' +
+    'html.cp-on input,html.cp-on textarea,html.cp-on select,html.cp-on [contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}' +
+    'html.cp-on img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}' +
+    'html.cp-on:not(.cp-framed) body::after{content:"";position:fixed;inset:0;z-index:2147483000;pointer-events:none;background-image:' + wmUrl + ';background-repeat:repeat}' +
+    '@media print{html.cp-on body>*{display:none!important}html.cp-on body::after{display:none}' +
+    'html.cp-on body::before{content:"이 페이지는 인쇄할 수 없습니다. (730스킨이어테라피)";display:block;padding:40px;font-size:16px;color:#333}}';
+  var style = document.createElement('style');
+  style.setAttribute('data-content-protect', '');
+  style.textContent = css;
+  (document.head || root).appendChild(style);
+
+  function isOn() {
+    return root.classList.contains('cp-on');
+  }
+
+  function isEditable(el) {
+    if (!el || el.nodeType !== 1) return false;
+    var tag = el.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable;
+  }
+
+  function currentRoute() {
+    var raw = window.location.hash.replace(/^#\/?/, '');
+    var q = raw.indexOf('?');
+    return q === -1 ? raw : raw.slice(0, q);
+  }
+
+  function update() {
+    var on = ALWAYS;
+    if (!on) {
+      var r = currentRoute();
+      for (var i = 0; i < PROTECTED_PREFIXES.length; i++) {
+        if (r.indexOf(PROTECTED_PREFIXES[i]) === 0) { on = true; break; }
+      }
+    }
+    root.classList.toggle('cp-on', on);
+  }
+
+  document.addEventListener('contextmenu', function (e) {
+    if (isOn() && !isEditable(e.target)) e.preventDefault();
+  });
+  document.addEventListener('dragstart', function (e) {
+    if (isOn() && !isEditable(e.target)) e.preventDefault();
+  });
+  document.addEventListener('copy', function (e) {
+    if (isOn() && !isEditable(document.activeElement)) e.preventDefault();
+  });
+  document.addEventListener('cut', function (e) {
+    if (isOn() && !isEditable(document.activeElement)) e.preventDefault();
+  });
+  document.addEventListener('selectstart', function (e) {
+    if (isOn() && !isEditable(e.target)) e.preventDefault();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!isOn() || !(e.ctrlKey || e.metaKey)) return;
+    var k = (e.key || '').toLowerCase();
+    if (k === 's' || k === 'p' || k === 'u') e.preventDefault();
+  });
+
+  window.addEventListener('hashchange', update);
+  update();
+})();
