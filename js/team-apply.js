@@ -1,0 +1,251 @@
+// 730스킨이어테라피 팀(가맹) 신청서 (2026-11-20)
+// - #/apply : 로그인 없이 누구나 신청 (메뉴에는 없고, 링크로만 안내)
+// - #/admin-apply : 관리자 전용 신청 목록 (마이페이지 관리자 메뉴)
+// 신청 저장·조회는 Supabase 함수(submit_team_application, admin_list_team_applications,
+// admin_update_team_application)로만 한다. 금액은 공개 페이지에 쓰지 않는다(개별 안내).
+window.TeamApply = (function () {
+  function esc(v) {
+    if (v === null || v === undefined) return '';
+    return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  var ROLE_LABEL = { owner: '원장', therapist: '관리사', beginner: '입문(처음 시작)' };
+  var EXP_LABEL = { seminar: '730 세미나 참석', advanced: '730 심화 교육 이수', reflexer: '이어리플렉서 보유' };
+  var STATUS_LABEL = { new: '새 신청', contacted: '연락함', accepted: '합류', declined: '보류' };
+
+  // ===================== 신청 페이지 =====================
+  function renderApply(container) {
+    container.innerHTML =
+      '<section class="page-section apply-page">' +
+      '<div class="apply-hero">' +
+      '<p class="apply-kicker">730 SKIN EAR THERAPY TEAM</p>' +
+      '<h2 class="apply-title">730스킨이어테라피 팀<br>신청서</h2>' +
+      '<p class="apply-lead">같은 제품, 같은 프로토콜, 같은 리딩으로<br>함께 공부하고 함께 성장하는 팀이다.</p>' +
+      '</div>' +
+
+      '<div class="apply-card apply-intro">' +
+      '<h3>이런 분과 함께하고 싶다</h3>' +
+      '<ul class="apply-dots">' +
+      '<li>원장·관리사·처음 시작하는 분 모두 가능하다.</li>' +
+      '<li>실력보다 태도가 먼저다. 돈보다 이어테라피에 진심인 분.</li>' +
+      '<li>아직 생소한 관리라 당장 결과가 늦어도 소신 있게 기다려 줄 분.</li>' +
+      '</ul>' +
+      '<h3>팀이 되면</h3>' +
+      '<ul class="apply-dots">' +
+      '<li>매달 온라인 이론 교육 + 오프라인 실습 모임</li>' +
+      '<li>단체방에서 실제 케이스 피드백</li>' +
+      '<li>730 이어리더(Certified Ear Reader) 인증, 730스킨이어테라피 공식 인증점</li>' +
+      '</ul>' +
+      '<p class="apply-note">비용과 자세한 조건은 신청서를 확인한 뒤 개별로 안내한다.</p>' +
+      '</div>' +
+
+      '<form class="apply-card apply-form" novalidate>' +
+      '<input type="text" name="website" class="apply-hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+
+      '<h3>기본 정보</h3>' +
+      field('이름', true, '<input name="name" type="text" maxlength="30" autocomplete="name" required>') +
+      field('연락처', true, '<input name="phone" type="tel" inputmode="numeric" maxlength="15" placeholder="010-0000-0000" autocomplete="tel" required>') +
+      field('구분', true,
+        '<div class="apply-choices">' +
+        ['owner', 'therapist', 'beginner'].map(function (r) {
+          return '<label class="apply-choice"><input type="radio" name="role" value="' + r + '"><span>' + ROLE_LABEL[r] + '</span></label>';
+        }).join('') + '</div>') +
+      field('샵 상호명', false, '<input name="shop_name" type="text" maxlength="60" placeholder="샵이 없으면 비워 두면 된다">') +
+      field('활동 지역', true, '<input name="region" type="text" maxlength="50" placeholder="예: 서울 강남구, 대구 수성구" required>') +
+      field('인스타그램', false, '<input name="instagram" type="text" maxlength="60" placeholder="@아이디">') +
+
+      '<h3>이어테라피 경험</h3>' +
+      '<p class="apply-help">해당하는 것을 모두 골라 주면 된다. 없으면 넘어가도 된다.</p>' +
+      '<div class="apply-choices apply-choices--col">' +
+      ['seminar', 'advanced', 'reflexer'].map(function (k) {
+        return '<label class="apply-choice"><input type="checkbox" name="experience" value="' + k + '"><span>' + EXP_LABEL[k] + '</span></label>';
+      }).join('') + '</div>' +
+
+      '<h3>이야기</h3>' +
+      field('팀에 함께하고 싶은 이유', true, '<textarea name="motivation" rows="5" maxlength="2000" placeholder="이어테라피를 시작하게 된 계기, 요즘 고민 등 편하게 적어 주면 된다." required></textarea>') +
+      field('팀에서 기대하는 것', false, '<textarea name="expectation" rows="3" maxlength="2000"></textarea>') +
+      field('연락받기 편한 시간', false, '<input name="contact_time" type="text" maxlength="60" placeholder="예: 평일 오후 2~5시">') +
+
+      '<h3>팀 약속</h3>' +
+      '<div class="apply-promise">' +
+      '<p><b>진단하지 않는다.</b> 우리는 의사·한의사가 아닌 에스테틱이다.</p>' +
+      '<p><b>확신하지 않는다.</b> 과장하거나 단정하지 않는다.</p>' +
+      '<p><b>마음을 읽는 공간이 된다.</b> 증상만 보지 않고 원인과 마음까지 헤아려 다독인다.</p>' +
+      '</div>' +
+      '<label class="apply-agree"><input type="checkbox" name="agreed_principles"><span>위 팀 약속을 읽었고, 지키겠다. (필수)</span></label>' +
+      '<label class="apply-agree"><input type="checkbox" name="agreed_privacy"><span>개인정보 수집·이용에 동의한다. (필수)</span></label>' +
+      '<p class="apply-privacy">수집 항목: 이름, 연락처, 샵 상호명, 지역, 인스타그램, 작성 내용 · 이용 목적: 팀 신청 확인과 연락 · 보관 기간: 신청일로부터 1년 (요청하면 바로 삭제)</p>' +
+
+      '<p class="apply-error" role="alert" hidden></p>' +
+      '<button type="submit" class="apply-submit">신청하기</button>' +
+      '</form>' +
+      '</section>';
+
+    function field(label, required, input) {
+      return '<label class="apply-field"><span class="apply-label">' + label + (required ? ' <em>*</em>' : '') + '</span>' + input + '</label>';
+    }
+
+    var form = container.querySelector('.apply-form');
+    var errEl = form.querySelector('.apply-error');
+    var btn = form.querySelector('.apply-submit');
+
+    function showError(msg) {
+      errEl.textContent = msg;
+      errEl.hidden = false;
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      errEl.hidden = true;
+      var f = form.elements;
+      if (f.website.value) return; // 자동 입력 봇
+      var role = (form.querySelector('input[name="role"]:checked') || {}).value;
+      var phoneDigits = f.phone.value.replace(/[^0-9]/g, '');
+      if (!f.name.value.trim()) return showError('이름을 적어 주세요.');
+      if (phoneDigits.length < 9 || phoneDigits.length > 12) return showError('연락처를 정확히 적어 주세요.');
+      if (!role) return showError('구분(원장/관리사/입문)을 골라 주세요.');
+      if (!f.region.value.trim()) return showError('활동 지역을 적어 주세요.');
+      if (!f.motivation.value.trim()) return showError('팀에 함께하고 싶은 이유를 적어 주세요.');
+      if (!f.agreed_principles.checked) return showError('팀 약속에 동의해 주세요.');
+      if (!f.agreed_privacy.checked) return showError('개인정보 수집·이용에 동의해 주세요.');
+
+      var client = window.supabaseClient;
+      if (!client) return showError('잠시 후 다시 시도해 주세요.');
+      btn.disabled = true;
+      btn.textContent = '보내는 중…';
+      var exp = Array.prototype.map.call(form.querySelectorAll('input[name="experience"]:checked'), function (x) { return x.value; });
+      client.rpc('submit_team_application', {
+        p_name: f.name.value, p_phone: f.phone.value, p_shop_name: f.shop_name.value,
+        p_region: f.region.value, p_role: role, p_instagram: f.instagram.value,
+        p_experience: exp, p_motivation: f.motivation.value, p_expectation: f.expectation.value,
+        p_contact_time: f.contact_time.value, p_agreed_principles: true, p_agreed_privacy: true
+      }).then(function (res) {
+        if (res.error) {
+          btn.disabled = false;
+          btn.textContent = '신청하기';
+          var m = res.error.message || '';
+          showError(/[가-힣]/.test(m) ? m : '신청을 보내지 못했어요. 잠시 후 다시 시도해 주세요.');
+          return;
+        }
+        var name = esc(f.name.value.trim());
+        container.querySelector('.apply-page').innerHTML =
+          '<div class="apply-card apply-done">' +
+          '<p class="apply-kicker">730 SKIN EAR THERAPY TEAM</p>' +
+          '<h2>신청이 접수됐다</h2>' +
+          '<p>' + name + '님, 마음 내어 줘서 고맙다.<br>신청서를 꼼꼼히 읽고 남겨 준 연락처로 연락드리겠다.</p>' +
+          '<a class="apply-submit apply-home" href="#/">홈으로</a>' +
+          '</div>';
+        window.scrollTo(0, 0);
+      }, function () {
+        btn.disabled = false;
+        btn.textContent = '신청하기';
+        showError('신청을 보내지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.');
+      });
+    });
+  }
+
+  // ===================== 관리자: 신청 목록 =====================
+  function renderAdmin(container) {
+    var client = window.supabaseClient;
+    var filter = 'new', list = [];
+    container.innerHTML =
+      '<section class="page-section admin-page">' +
+      '<div class="section-title"><h2>팀 신청 관리</h2></div>' +
+      '<div class="admin-card"><p class="admin-loading">불러오는 중…</p></div>' +
+      '</section>';
+    var card = container.querySelector('.admin-card');
+
+    function fmt(v) {
+      var d = new Date(v);
+      return isNaN(d) ? '' : (d.getMonth() + 1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    }
+    function phone(p) {
+      return p.length === 11 ? p.slice(0, 3) + '-' + p.slice(3, 7) + '-' + p.slice(7) : p;
+    }
+
+    function draw() {
+      var count = { all: list.length };
+      Object.keys(STATUS_LABEL).forEach(function (k) { count[k] = list.filter(function (a) { return a.status === k; }).length; });
+      var link = window.location.origin + window.location.pathname + '#/apply';
+      var html = '<div class="apply-admin-link"><span>신청서 링크</span><code>' + esc(link) + '</code>' +
+        '<button type="button" class="admin-btn" data-copy="' + esc(link) + '">복사</button></div>';
+      html += '<div class="admin-tabs">' + ['new', 'contacted', 'accepted', 'declined', 'all'].map(function (k) {
+        return '<button type="button" class="admin-tab' + (filter === k ? ' is-active' : '') + '" data-filter="' + k + '">' +
+          (k === 'all' ? '전체' : STATUS_LABEL[k]) + ' <span class="admin-count">' + count[k] + '</span></button>';
+      }).join('') + '</div>';
+      var shown = list.filter(function (a) { return filter === 'all' || a.status === filter; });
+      if (!shown.length) {
+        card.innerHTML = html + '<p class="admin-empty">해당하는 신청이 없어요.</p>';
+        return;
+      }
+      html += '<ul class="admin-list">' + shown.map(function (a) {
+        var exp = (a.experience || []).map(function (k) { return EXP_LABEL[k] || k; }).join(', ');
+        return '<li class="apply-admin-item" data-id="' + a.id + '">' +
+          '<div class="admin-order-head"><b>' + esc(a.name) + '</b> <span class="admin-status admin-status--' + (a.status === 'new' ? 'pending' : 'approved') + '">' + STATUS_LABEL[a.status] + '</span>' +
+          '<span class="admin-order-date">' + fmt(a.created_at) + '</span></div>' +
+          '<p class="admin-order-who"><a href="tel:' + esc(a.phone) + '">' + esc(phone(a.phone)) + '</a> · ' + esc(ROLE_LABEL[a.role] || a.role) + ' · ' + esc(a.region) +
+          (a.shop_name ? ' · ' + esc(a.shop_name) : '') + (a.instagram ? ' · ' + esc(a.instagram) : '') + '</p>' +
+          '<p class="apply-admin-meta">경험: ' + (exp ? esc(exp) : '없음') + (a.contact_time ? ' · 연락 편한 시간: ' + esc(a.contact_time) : '') + '</p>' +
+          '<p class="apply-admin-text"><b>함께하고 싶은 이유</b><br>' + esc(a.motivation) + '</p>' +
+          (a.expectation ? '<p class="apply-admin-text"><b>기대하는 것</b><br>' + esc(a.expectation) + '</p>' : '') +
+          '<div class="admin-order-edit">' +
+          '<select class="aa-status">' + Object.keys(STATUS_LABEL).map(function (k) {
+            return '<option value="' + k + '"' + (a.status === k ? ' selected' : '') + '>' + STATUS_LABEL[k] + '</option>';
+          }).join('') + '</select>' +
+          '<input class="aa-memo" type="text" placeholder="메모 (나만 보임)" value="' + esc(a.admin_memo || '') + '">' +
+          '<button type="button" class="admin-btn admin-btn--approve aa-save">저장</button>' +
+          '</div></li>';
+      }).join('') + '</ul>';
+      card.innerHTML = html;
+    }
+
+    function load() {
+      return client.rpc('admin_list_team_applications').then(function (res) {
+        if (!container.isConnected) return;
+        if (res.error) {
+          card.innerHTML = '<p class="admin-empty">신청 목록을 불러오지 못했어요. 관리자 계정으로 로그인했는지, 신청서 SQL을 실행했는지 확인해 주세요.</p>';
+          return;
+        }
+        list = res.data || [];
+        draw();
+      });
+    }
+
+    card.addEventListener('click', function (e) {
+      var tab = e.target.closest('.admin-tab');
+      if (tab) { filter = tab.dataset.filter; draw(); return; }
+      var copy = e.target.closest('[data-copy]');
+      if (copy) {
+        var text = copy.dataset.copy;
+        (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () {
+          copy.textContent = '복사됨';
+        }, function () { window.prompt('아래 링크를 복사해 주세요', text); });
+        return;
+      }
+      var save = e.target.closest('.aa-save');
+      if (!save) return;
+      var li = save.closest('[data-id]');
+      save.disabled = true;
+      save.textContent = '저장 중…';
+      client.rpc('admin_update_team_application', {
+        p_id: li.dataset.id,
+        p_status: li.querySelector('.aa-status').value,
+        p_admin_memo: li.querySelector('.aa-memo').value
+      }).then(function (r) {
+        if (r.error) {
+          save.disabled = false;
+          save.textContent = '다시 시도';
+          window.alert('저장하지 못했어요: ' + r.error.message);
+          return;
+        }
+        load();
+      });
+    });
+
+    load();
+  }
+
+  return { renderApply: renderApply, renderAdmin: renderAdmin };
+})();

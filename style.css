@@ -4823,3 +4823,67 @@ a.auth-user-email[hidden],
 .auth-field-hint {
   color: #171717;
 }
+
+/* ===== 730스킨이어테라피 팀 신청서 (#/apply) ===== */
+.apply-page { max-width: 640px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+.apply-hero { text-align: center; padding: 1.5rem 0 1.75rem; }
+.apply-kicker { margin: 0 0 0.6rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; color: #3D3833; }
+.apply-title { margin: 0; font-size: clamp(1.6rem, 6vw, 2.1rem); line-height: 1.3; font-weight: 800; }
+.apply-lead { margin: 0.9rem 0 0; font-size: 0.98rem; line-height: 1.7; color: #3D3833; }
+.apply-card {
+  background: #FFFFFF; border: 1px solid #DDD6C8; border-radius: 20px;
+  padding: 1.5rem 1.25rem; margin-bottom: 1rem;
+}
+.apply-card h3 { margin: 1.6rem 0 0.8rem; font-size: 1.05rem; font-weight: 800; }
+.apply-card h3:first-of-type { margin-top: 0; }
+.apply-dots { list-style: none; margin: 0; padding: 0; }
+.apply-dots li { position: relative; padding-left: 1rem; margin: 0.45rem 0; line-height: 1.6; font-size: 0.95rem; }
+.apply-dots li::before { content: ''; position: absolute; left: 0; top: 0.62em; width: 6px; height: 6px; border-radius: 50%; background: #FFCC00; }
+.apply-note { margin: 1.2rem 0 0; padding-top: 1rem; border-top: 1px solid #EEE8DD; font-size: 0.88rem; color: #6B6258; }
+.apply-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.apply-field { display: block; margin-bottom: 1rem; }
+.apply-label { display: block; margin-bottom: 0.4rem; font-size: 0.9rem; font-weight: 700; }
+.apply-label em { font-style: normal; color: #B0563A; }
+.apply-field input, .apply-field textarea {
+  width: 100%; padding: 0.8rem 0.9rem; border: 1px solid #DDD6C8; border-radius: 12px;
+  font: inherit; font-size: 16px; background: #FFFFFF; color: #171717;
+}
+.apply-field textarea { resize: vertical; line-height: 1.6; }
+.apply-field input:focus, .apply-field textarea:focus { outline: none; border-color: #171717; }
+.apply-help { margin: -0.4rem 0 0.7rem; font-size: 0.85rem; color: #6B6258; }
+.apply-choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.apply-choices--col { flex-direction: column; }
+.apply-choice { cursor: pointer; }
+.apply-choice input { position: absolute; opacity: 0; pointer-events: none; }
+.apply-choice span {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px;
+  border: 1px solid #DDD6C8; border-radius: 999px; font-size: 0.92rem; font-weight: 600; background: #FFFFFF;
+}
+.apply-choices--col .apply-choice span { display: flex; border-radius: 12px; }
+.apply-choice input:checked + span { background: #FFF6CC; border-color: #171717; }
+.apply-choice input:focus-visible + span { outline: 2px solid #171717; outline-offset: 2px; }
+.apply-promise { border: 1px solid #EEE8DD; border-radius: 14px; padding: 0.9rem 1rem; margin-bottom: 0.9rem; }
+.apply-promise p { margin: 0.35rem 0; font-size: 0.92rem; line-height: 1.6; }
+.apply-agree { display: flex; align-items: flex-start; gap: 10px; margin: 0.6rem 0; font-size: 0.93rem; line-height: 1.5; cursor: pointer; }
+.apply-agree input { width: 20px; height: 20px; margin-top: 1px; flex-shrink: 0; accent-color: #171717; }
+.apply-privacy { margin: 0.4rem 0 0; font-size: 0.78rem; line-height: 1.6; color: #8A7F73; }
+.apply-error { margin: 1.2rem 0 0; padding: 0.75rem 1rem; border-radius: 12px; background: #FBEDE7; color: #B0563A; font-size: 0.9rem; font-weight: 600; }
+.apply-submit {
+  display: block; width: 100%; min-height: 54px; margin-top: 1.4rem; border: none; border-radius: 999px;
+  background: #171717; color: #FFFFFF; font-size: 1.02rem; font-weight: 700; cursor: pointer; text-align: center;
+  line-height: 54px; text-decoration: none;
+}
+.apply-submit:disabled { opacity: 0.6; cursor: default; }
+.apply-done { text-align: center; padding: 2.5rem 1.5rem; }
+.apply-done h2 { margin: 0 0 1rem; font-size: 1.5rem; }
+.apply-done p { line-height: 1.7; color: #3D3833; }
+
+/* 관리자: 팀 신청 관리 */
+.apply-admin-link { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 1rem; padding: 0.75rem 1rem; border: 1px dashed #DDD6C8; border-radius: 14px; font-size: 0.85rem; }
+.apply-admin-link span { font-weight: 700; }
+.apply-admin-link code { flex: 1; min-width: 0; word-break: break-all; color: #3D3833; }
+.apply-admin-item { padding: 16px 0; border-top: 1px solid #EEE8DD; }
+.apply-admin-item:first-child { border-top: none; }
+.apply-admin-meta { margin: 4px 0 0; font-size: 0.84rem; color: #6B6258; }
+.apply-admin-text { margin: 10px 0 0; font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; }
+.apply-admin-text b { font-size: 0.8rem; color: #6B6258; }
