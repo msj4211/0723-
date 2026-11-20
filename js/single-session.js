@@ -51,14 +51,25 @@
   }
 
   // 로그인 직후 호출: 이 기기를 "지금 쓰는 기기"로 등록하고 다른 기기를 끊는다.
+  // 이 기기가 방금 등록(claim)한 세션. 등록이 끝나기 전에 다른 확인(ensure)이
+  // 먼저 돌면 옛 기록과 비교해서 잘못 로그아웃시키는 문제가 있어, 등록 중인
+  // 세션은 등록이 끝날 때까지 기다렸다가 '정상'으로 본다.
+  var claimedSid = null;
+  var claimPromise = null;
+  var claimPending = false;
+
   function claim(session) {
     var sid = sessionIdOf(session);
     if (!client() || !session || !sid) return Promise.resolve();
-    return writeActive(session.user.id, sid).then(function () {
+    if (claimPending && claimedSid === sid) return claimPromise;
+    claimedSid = sid;
+    claimPending = true;
+    claimPromise = writeActive(session.user.id, sid).then(function () {
       // 다른 기기의 갱신 토큰을 서버에서 폐기한다. 실패해도 위 등록만으로
       // 다른 기기는 다음 확인 때 로그아웃된다.
       return client().auth.signOut({ scope: 'others' }).catch(function () {});
-    }).catch(function () {});
+    }).catch(function () {}).then(function () { claimPending = false; });
+    return claimPromise;
   }
 
   // 현재 기기가 유효한지 확인한다.
@@ -68,9 +79,12 @@
     var sid = sessionIdOf(session);
     if (!sid) return Promise.resolve(true);
 
+    // 이 기기가 지금 등록 중인 세션이면 등록이 끝날 때까지 기다린 뒤 정상으로 본다.
+    if (claimPending && claimedSid === sid) return claimPromise.then(function () { return true; });
     // 비밀번호 찾기 메일 링크로 막 들어온 경우는 '새로 로그인한 기기'다.
     // 예전 기기 기록과 다르다고 로그아웃시키면 새 비밀번호를 저장할 수 없으므로,
-    // 이 기기를 지금 쓰는 기기로 등록한다.
+    // 이 기기를 지금 쓰는 기기로 등록한다. 등록이 진행되는 동안 다른 확인은
+    // 위의 claimPending 분기에서 기다린다.
     if (window.__authRecovery) {
       window.__authRecovery = false;
       return claim(session).then(function () { return true; });
