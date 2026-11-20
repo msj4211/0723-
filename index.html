@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>730 SKIN EAR THERAPY</title>
-<link rel="stylesheet" href="style.css?v=20261120b">
+<link rel="stylesheet" href="style.css?v=20261120c">
 </head>
 <body>
 
@@ -46,7 +46,7 @@
         <div class="auth-area" id="auth-area">
           <button type="button" class="auth-login-btn" id="auth-login-btn" data-i18n="login">로그인</button>
           <div class="auth-user" id="auth-user">
-            <span class="auth-user-email" id="auth-user-email" hidden></span>
+            <a href="#/mypage" class="auth-user-email" id="auth-user-email" title="마이페이지" hidden></a>
             <button type="button" class="auth-profile-btn" id="auth-profile-btn" data-i18n="profileBtn" hidden>내 프로필</button>
             <a href="#/favorites" class="auth-profile-btn" id="auth-favorites-link" data-i18n="navFavorites" hidden>관심 이어포인트</a>
             <button type="button" class="auth-logout-btn" id="auth-logout-btn" data-i18n="logout" hidden>로그아웃</button>
@@ -104,7 +104,7 @@
         <li><a href="#/favorites" data-route="favorites" data-i18n="navFavoritesNav" data-access-state="approved" hidden>관심 혈자리</a></li>
         <li><a href="#/seminar" data-route="seminar" data-i18n="navSeminarShort" data-access-state="approved" hidden>세미나</a></li>
         <li><a href="#/shop" data-route="shop" data-i18n="navShop" data-access-state="approved" hidden>파트너 전용몰</a></li>
-        <li><a href="#/mypage" data-route="mypage" data-i18n="navMyPage" data-access-state="approved" hidden>마이페이지</a></li>
+        <!-- 마이페이지 메뉴는 숨김: 오른쪽 위 이름(별명)을 누르면 마이페이지로 간다 -->
       </ul>
 
       <!-- 모바일 화면에서만 header.js가 로그인/프로필/인스타그램/언어선택/로그아웃
@@ -333,7 +333,7 @@
 <script src="js/translations.js?v=20261119b"></script>
 <script src="js/i18n.js"></script>
 <script src="js/search-data.js"></script>
-<script src="js/header.js"></script>
+<script src="js/header.js?v=20261120c"></script>
 <script src="js/header-scroll.js"></script>
 <script src="js/scroll-top.js"></script>
 <!-- Firebase(Firestore): Supabase 전환 테스트가 끝날 때까지 임시로 함께 로드해둔다. -->

@@ -4591,3 +4591,16 @@ a.shop-name:hover, a.product-name:hover { text-decoration: underline; }
 .admin-detail-del { position: absolute; top: 2px; right: 2px; width: 22px; height: 22px; border-radius: 999px; border: none; background: rgba(0,0,0,0.6); color: #fff; cursor: pointer; line-height: 1; }
 #pf-desc { border: 1px solid #DDD6C8; border-radius: 12px; padding: 10px 12px; font: inherit; font-weight: 500; resize: vertical; }
 @media (max-width: 700px) { .pd-top { grid-template-columns: 1fr; gap: 1.25rem; } }
+
+/* 오른쪽 위 이름(별명) = 마이페이지 바로가기 */
+a.auth-user-email {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 999px;
+}
+a.auth-user-email:hover,
+a.auth-user-email:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

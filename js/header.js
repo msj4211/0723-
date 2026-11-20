@@ -38,6 +38,11 @@
   mainNav.querySelectorAll('.main-nav > ul a').forEach(function (link) {
     link.addEventListener('click', closeMenu);
   });
+  // 이름(별명)을 눌러 마이페이지로 갈 때도 모바일 드로어를 닫는다.
+  var userNameLink = document.getElementById('auth-user-email');
+  if (userNameLink) userNameLink.addEventListener('click', function () {
+    if (mainNav.classList.contains('is-open')) closeMenu();
+  });
 
   overlay.addEventListener('click', closeMenu);
 
