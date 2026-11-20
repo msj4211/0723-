@@ -1820,6 +1820,7 @@ window.Pages = (function () {
 
     container.innerHTML =
       '<section class="page-section favorites-page">' +
+      '<a class="mypage-back-link" href="#/mypage" data-i18n="mypageBackLink">' + window.t('mypageBackLink') + '</a>' +
       '<div class="section-title"><h2 data-i18n="navFavorites">' + window.t('navFavorites') + '</h2></div>' +
       '<div id="favorites-body"></div>' +
       '</section>';
