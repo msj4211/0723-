@@ -2683,13 +2683,20 @@ window.Pages = (function () {
       box.innerHTML =
         '<p class="my-area-nav-sub">관리자</p>' +
         itemHtml('admin', '회원 승인 관리', '<em class="my-area-count" data-count="members"></em>') +
-        itemHtml('admin-orders', '파트너 전용몰 관리', '<em class="my-area-count" data-count="orders"></em>');
+        itemHtml('admin-orders', '파트너 전용몰 관리', '<em class="my-area-count" data-count="orders"></em>') +
+        itemHtml('admin-apply', '팀 신청 관리', '<em class="my-area-count" data-count="apply"></em>');
       var client = window.supabaseClient;
       client.rpc('admin_list_members').then(function (r) {
         if (r.error || !nav.isConnected) return;
         var n = (r.data || []).filter(function (m) { return (m.education_status || 'pending') === 'pending'; }).length;
         var el = box.querySelector('[data-count="members"]');
         if (n) { el.textContent = n; el.classList.add('has-pending'); el.title = '승인 대기 ' + n + '명'; }
+      });
+      client.rpc('admin_list_team_applications').then(function (r) {
+        if (r.error || !nav.isConnected) return;
+        var n = (r.data || []).filter(function (a) { return a.status === 'new'; }).length;
+        var el = box.querySelector('[data-count="apply"]');
+        if (n) { el.textContent = n; el.classList.add('has-pending'); el.title = '새 신청 ' + n + '건'; }
       });
       client.rpc('admin_list_orders').then(function (r) {
         if (r.error || !nav.isConnected) return;
@@ -2855,6 +2862,17 @@ window.Pages = (function () {
     adminOrders: function (container) {
       window.AccessControl.checkEducationAccess(container, withMyArea('admin-orders', function (c) {
         renderAdminOrders(c);
+      }));
+    },
+
+    // 팀(가맹) 신청서: 로그인 없이 누구나 신청할 수 있어야 해서 접근 확인으로 감싸지 않는다.
+    apply: function (container) {
+      window.TeamApply.renderApply(container);
+    },
+
+    adminApply: function (container) {
+      window.AccessControl.checkEducationAccess(container, withMyArea('admin-apply', function (c) {
+        window.TeamApply.renderAdmin(c);
       }));
     },
 

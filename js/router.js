@@ -15,6 +15,8 @@
     'mypage': window.Pages.mypage,
     'admin': window.Pages.admin,
     'admin-orders': window.Pages.adminOrders,
+    'admin-apply': window.Pages.adminApply,
+    'apply': window.Pages.apply,
     'shop': window.Pages.shop,
     'product-detail': window.Pages.productDetail
   };
@@ -67,7 +69,7 @@
     var activeRoute = routeName === '' ? 'home' : routeName;
     if (activeRoute === 'ear-point-detail') activeRoute = 'ear-point';
     if (activeRoute === 'product-detail') activeRoute = 'shop';
-    if (activeRoute === 'admin' || activeRoute === 'admin-orders' || activeRoute === 'favorites') activeRoute = 'mypage';
+    if (activeRoute === 'admin' || activeRoute === 'admin-orders' || activeRoute === 'admin-apply' || activeRoute === 'favorites') activeRoute = 'mypage';
     document.querySelectorAll('[data-route]').forEach(function (link) {
       if (link.dataset.route === activeRoute) {
         link.setAttribute('aria-current', 'page');
