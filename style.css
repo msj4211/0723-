@@ -4799,3 +4799,9 @@ a.auth-user-email:focus-visible {
   cursor: pointer;
 }
 .mypage-password-btn:hover { background: #FFF8F2; }
+
+/* 로그아웃 상태에서는 이름 버튼을 완전히 숨긴다 (위 display 규칙이 hidden을 덮어쓰지 않게) */
+a.auth-user-email[hidden],
+.mobile-account-section a.auth-user-email[hidden] {
+  display: none;
+}
