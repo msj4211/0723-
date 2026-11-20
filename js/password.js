@@ -99,13 +99,19 @@
     saving = true;
     submitBtn.disabled = true;
     submitBtn.textContent = T('pwSaving');
-    client.auth.updateUser({ password: pw }).then(function (res) {
+    client.auth.getSession().then(function (r) {
+      if (!r || !r.data || !r.data.session) return { error: { message: 'Auth session missing' } };
+      return client.auth.updateUser({ password: pw });
+    }).then(function (res) {
       saving = false;
       submitBtn.disabled = false;
       submitBtn.textContent = T('pwSave');
       if (res.error) {
         var m = res.error.message || '';
-        errEl.textContent = /different|same/i.test(m) ? T('pwSameError') : T('pwSaveError');
+        console.warn('[password] updateUser', res.error);
+        if (/different|same/i.test(m)) errEl.textContent = T('pwSameError');
+        else if (/weak|short|characters|pwned|leaked/i.test(m)) errEl.textContent = T('errPasswordFormat') + ' (' + m + ')';
+        else errEl.textContent = T('pwSaveError') + (m ? ' (' + m + ')' : '');
         errEl.hidden = false;
         return;
       }
