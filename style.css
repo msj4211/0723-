@@ -4614,3 +4614,144 @@ a.auth-user-email:focus-visible {
   text-decoration: none;
 }
 .mypage-back-link:hover { text-decoration: underline; }
+
+/* ===== 오른쪽 위 이름 버튼 (누르면 마이페이지) ===== */
+.auth-user { position: relative; }
+a.auth-user-email {
+  display: inline-block;
+  position: relative;
+  max-width: 190px;
+  padding: 6px 24px 6px 30px;
+  border: 1px solid rgba(23, 23, 23, 0.25);
+  border-radius: 999px;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237A5C3E' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21c0-4 3.6-7 8-7s8 3 8 7'/%3E%3C/svg%3E") no-repeat 10px center / 14px;
+  line-height: 1.35;
+  font-weight: 600;
+  text-decoration: none;
+}
+a.auth-user-email::after {
+  content: "›";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-55%);
+  color: #8A8378;
+  font-weight: 400;
+}
+a.auth-user-email:hover,
+a.auth-user-email:focus-visible {
+  text-decoration: none;
+  border-color: #171717;
+}
+.auth-name-hint {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 30;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #171717;
+  color: #fff;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: authNameHint 1.6s ease-in-out infinite;
+}
+.auth-name-hint::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 18px;
+  border: 5px solid transparent;
+  border-top: 0;
+  border-bottom-color: #171717;
+}
+.auth-name-hint[hidden] { display: none; }
+@keyframes authNameHint { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
+@media (prefers-reduced-motion: reduce) { .auth-name-hint { animation: none; } }
+
+@media (max-width: 768px) {
+  .mobile-account-section a.auth-user-email {
+    display: inline-block;
+    width: auto;
+    padding: 8px 26px 8px 32px;
+    margin: 4px 0 2px;
+    color: #171717;
+  }
+}
+
+/* ===== 마이페이지 영역: 왼쪽 세로 메뉴 ===== */
+.my-area-layout {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+.my-area-nav {
+  position: sticky;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 10px;
+  background: #FFFDFA;
+  border: 1px solid #DDD6C8;
+  border-radius: 20px;
+}
+.my-area-nav-title {
+  margin: 0 8px 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #8A8378;
+  letter-spacing: 0.02em;
+}
+.my-area-nav-sub {
+  margin: 12px 8px 4px;
+  padding-top: 10px;
+  border-top: 1px solid #EEE8DD;
+  font-size: 0.75rem;
+  color: #A99C8C;
+}
+.my-area-admin[hidden] { display: none; }
+.my-area-admin { display: flex; flex-direction: column; gap: 4px; }
+.my-area-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #171717;
+  font: inherit;
+  font-size: 0.92rem;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.my-area-link:hover { background: #F7F3EC; }
+.my-area-link.is-active { background: #171717; color: #fff; font-weight: 700; }
+.my-area-link.is-active .my-area-count.has-pending { background: #FFCC00; color: #171717; }
+.my-area-logout { margin-top: 10px; color: #8A8378; font-size: 0.85rem; border-top: 1px solid #EEE8DD; border-radius: 0 0 12px 12px; padding-top: 12px; }
+.my-area-count { font-style: normal; font-size: 0.75rem; }
+.my-area-count.has-pending { min-width: 20px; padding: 1px 6px; border-radius: 999px; background: #A5563F; color: #fff; text-align: center; font-weight: 700; }
+.my-area-main > .page-section { padding: 0; }
+.my-area-main > .page-section > .section-title:first-child { margin-top: 0; }
+
+@media (max-width: 768px) {
+  .my-area-layout { grid-template-columns: 1fr; gap: 1rem; }
+  .my-area-nav {
+    position: static;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .my-area-nav-title, .my-area-nav-sub { display: none; }
+  .my-area-admin { flex-direction: row; gap: 4px; }
+  .my-area-link { width: auto; white-space: nowrap; padding: 8px 12px; font-size: 0.85rem; }
+  .my-area-logout { margin: 0; border-top: 0; border-radius: 12px; padding-top: 8px; }
+}
