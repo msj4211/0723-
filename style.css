@@ -4909,3 +4909,9 @@ a.auth-user-email[hidden],
   .auth-name-hint { left: 50%; translate: -50% 0; }
   .auth-name-hint::before { left: 50%; margin-left: -5px; }
 }
+
+/* 데스크톱 헤더의 '로그아웃' 버튼은 숨기고 마이페이지 왼쪽 메뉴에서 로그아웃한다 (2026-11-20).
+   버튼 자체는 남겨 두어 마이페이지 메뉴의 로그아웃이 이 버튼을 눌러 동작한다. 모바일 메뉴에서는 그대로 보인다. */
+@media (min-width: 769px) {
+  #auth-logout-btn { display: none !important; }
+}
