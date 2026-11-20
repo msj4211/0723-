@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>관리 동의서 | 730스킨이어테라피</title>
+<meta name="robots" content="noindex">
+<style>
+  :root { --ink: #2E2A26; --sub: #8A8378; --line: #DDD6C8; --brand: #FFCC00; --brown: #7A5C3E; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; color: var(--ink); font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; font-size: 14px; line-height: 1.6; word-break: keep-all; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 20px 16px 60px; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 16px; }
+  .toolbar p { margin: 0; font-size: 13px; color: var(--sub); }
+  .btn { border: 0; border-radius: 999px; padding: 10px 18px; font: inherit; font-size: 14px; font-weight: 700; background: var(--brand); color: #000; cursor: pointer; white-space: nowrap; }
+  .sheet { border: 1px solid var(--line); border-radius: 16px; padding: 28px 28px 24px; }
+  .brand { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--brown); margin: 0 0 4px; }
+  h1 { font-size: 22px; margin: 0 0 18px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); }
+  h2 { font-size: 15px; margin: 22px 0 8px; }
+  ul { margin: 0; padding-left: 18px; }
+  li { margin: 2px 0; }
+  .checks { list-style: none; padding: 0; }
+  .checks li { display: flex; gap: 8px; }
+  .box { flex: none; width: 15px; height: 15px; border: 1.5px solid var(--ink); border-radius: 3px; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13px; }
+  th, td { border: 1px solid var(--line); padding: 7px 9px; text-align: left; vertical-align: top; }
+  th { background: #FAF7F1; font-weight: 700; }
+  .note { color: var(--sub); font-size: 13px; margin: 6px 0 8px; }
+  .sign td { height: 40px; }
+  .sign th { width: 130px; }
+  @media print {
+    @page { size: A4; margin: 14mm; }
+    .toolbar { display: none; }
+    .wrap { max-width: none; padding: 0; }
+    .sheet { border: 0; padding: 0; }
+    @page { size: A4; margin: 10mm 12mm; }
+    body { font-size: 10.5px; line-height: 1.45; }
+    h1 { font-size: 18px; margin-bottom: 10px; padding-bottom: 8px; }
+    h2 { font-size: 12.5px; margin: 10px 0 4px; }
+    table { margin: 4px 0; font-size: 10.5px; }
+    th, td { padding: 4px 7px; }
+    .sign td { height: 26px; }
+    .note { font-size: 10.5px; margin: 3px 0 4px; }
+    .box { width: 12px; height: 12px; margin-top: 2px; }
+    th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="toolbar">
+    <p>고객님께 보여드리거나 인쇄해서 서명을 받아 보관하세요.</p>
+    <button class="btn" type="button" onclick="window.print()">인쇄하기</button>
+  </div>
+
+  <div class="sheet">
+    <p class="brand">730 SKIN EAR THERAPY</p>
+    <h1>730스킨이어테라피 관리 동의서</h1>
+
+    <h2>관리 안내</h2>
+    <p>이어테라피는 귀에 볼을 붙이고 부드럽게 자극해 몸과 마음의 편안함을 돕는 관리입니다.</p>
+    <ul>
+      <li>의료행위가 아니며, 질병을 진단하거나 치료하지 않습니다.</li>
+      <li>관리 효과는 사람마다 다르며, 특정 결과를 약속하지 않습니다.</li>
+      <li>치료 중인 질환이 있으면 담당 의료진의 안내를 먼저 따라 주세요.</li>
+    </ul>
+
+    <h2>관리 전 확인</h2>
+    <p>아래 내용을 안내받고 이해했습니다.</p>
+    <ul class="checks">
+      <li><span class="box"></span><span>이어테라피는 의료행위가 아닌 관리이며, 진단이나 치료를 하지 않는다는 점</span></li>
+      <li><span class="box"></span><span>관리 후 귀에 붙인 볼은 불편하면 언제든 떼어낼 수 있다는 점</span></li>
+      <li><span class="box"></span><span>붙인 자리가 가렵거나 붉어지면 볼을 떼고 관리사에게 알려야 한다는 점</span></li>
+      <li><span class="box"></span><span>임신 중이거나 귀에 상처·염증이 있으면 관리 전에 미리 말해야 한다는 점</span></li>
+    </ul>
+
+    <h2>개인정보 수집·이용 동의</h2>
+    <p>관리와 상담 기록을 위해 아래 정보를 받습니다.</p>
+    <table>
+      <tr><th>구분</th><th>항목</th><th>이용 목적</th><th>보유 기간</th></tr>
+      <tr><td>필수</td><td>이름, 연락처, 성별, 나이대, 직업</td><td>예약, 관리 기록, 상담 차트 작성</td><td>관리 종료 후 (&nbsp;&nbsp;&nbsp;)년</td></tr>
+      <tr><td>민감정보</td><td>불편한 점, 건강 관련 상태</td><td>관리 방향 정하기</td><td>관리 종료 후 (&nbsp;&nbsp;&nbsp;)년</td></tr>
+    </table>
+    <p class="note">동의를 거부할 수 있으며, 필수 항목에 동의하지 않으면 관리를 받기 어렵습니다.</p>
+    <ul class="checks">
+      <li><span class="box"></span><span>필수 항목 수집·이용에 동의합니다.</span></li>
+      <li><span class="box"></span><span>민감정보(불편한 점, 건강 관련 상태) 수집·이용에 따로 동의합니다.</span></li>
+    </ul>
+
+    <h2>귀 사진 촬영·팀 내 공유 동의 (선택)</h2>
+    <p>더 정확한 관리를 위해 귀 사진을 730스킨이어테라피 팀 원장님들과 함께 보고 의견을 나눌 수 있습니다.</p>
+    <table>
+      <tr><th>제공받는 곳</th><th>이용 목적</th><th>공유 항목</th><th>보유 기간</th></tr>
+      <tr><td>730스킨이어테라피 팀 (팀 단체방)</td><td>관리 방향 피드백, 팀 교육</td><td>귀 사진, 성별, 나이대, 직업, 불편한 점</td><td>관리 종료 후 (&nbsp;&nbsp;&nbsp;)년</td></tr>
+    </table>
+    <ul>
+      <li>얼굴은 찍지 않고 귀만 촬영합니다.</li>
+      <li>이름과 연락처는 공유하지 않습니다.</li>
+      <li>팀 밖으로 내보내거나 홍보에 쓰지 않습니다.</li>
+      <li>동의하지 않아도 관리를 받는 데 불이익은 없습니다.</li>
+    </ul>
+    <ul class="checks" style="margin-top:6px">
+      <li><span class="box"></span><span>귀 사진 촬영과 팀 내 공유에 동의합니다.</span></li>
+    </ul>
+
+    <h2>서명</h2>
+    <p>위 내용을 충분히 안내받고 동의합니다.</p>
+    <table class="sign">
+      <tr><th>날짜</th><td></td></tr>
+      <tr><th>고객 이름</th><td></td></tr>
+      <tr><th>고객 서명</th><td></td></tr>
+      <tr><th>관리샵</th><td></td></tr>
+      <tr><th>담당 원장님</th><td></td></tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

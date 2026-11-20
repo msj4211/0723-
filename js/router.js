@@ -5,6 +5,7 @@
     'ear-reading': window.Pages.earReading,
     'diary': window.Pages.diary,
     'trouble': window.Pages.trouble,
+    'consent': window.Pages.consent,
     'ear-point': window.Pages.earPoint,
     'ear-point-detail': window.Pages.earPointDetail,
     'seminar': window.Pages.seminar,
@@ -97,7 +98,7 @@
   // 언어를 바꾸면, 글자를 그릴 때 언어를 정하는 화면(검색 결과, 전용몰, 관리자 등)이
   // 바뀐 언어로 다시 보이도록 지금 화면을 다시 그린다.
   // 다이어리·체크 같은 내장 도구 화면은 스스로 언어를 바꾸므로 다시 그리지 않는다.
-  var SELF_TRANSLATING = { 'diary': 1, 'trouble': 1, 'ear-check': 1, 'ear-reading': 1 };
+  var SELF_TRANSLATING = { 'diary': 1, 'trouble': 1, 'consent': 1, 'ear-check': 1, 'ear-reading': 1 };
   if (window.i18nOnLanguageChange) {
     window.i18nOnLanguageChange.push(function () {
       var parsed = parseHash();
