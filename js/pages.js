@@ -2761,12 +2761,15 @@ window.Pages = (function () {
       approvedSinceHtml +
       '<div class="mypage-actions">' +
       '<button type="button" class="mypage-edit-btn" id="mypage-edit-btn" data-i18n="mypageEditProfileBtn">' + window.t('mypageEditProfileBtn') + '</button>' +
+      '<button type="button" class="mypage-password-btn" id="mypage-password-btn" data-i18n="pwChangeBtn">' + window.t('pwChangeBtn') + '</button>' +
       '</div>' +
       (missingInfo ? '<p class="mypage-missing-note">' + window.t('mypageMissingNote') + '</p>' : '') +
       '<p class="mypage-seminar-note" data-i18n="mypageSeminarNote">' + window.t('mypageSeminarNote') + '</p>' +
       '</div>' +
       '</section>';
 
+    var pwBtn = container.querySelector('#mypage-password-btn');
+    if (pwBtn) pwBtn.addEventListener('click', function () { if (window.PasswordUI) window.PasswordUI.open('change'); });
     var editBtn = container.querySelector('#mypage-edit-btn');
     if (editBtn) {
       editBtn.addEventListener('click', function () {

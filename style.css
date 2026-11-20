@@ -4764,3 +4764,38 @@ a.auth-user-email:focus-visible {
   color: #6E4933;
   font-size: 0.82rem;
 }
+
+/* 비밀번호 찾기 링크 (로그인 창) */
+.auth-forgot-link {
+  display: block;
+  margin: 6px 0 0 auto;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: rgba(255, 255, 255, 0.92);
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.auth-forgot-link:disabled { opacity: 0.5; cursor: default; }
+.auth-forgot-link[hidden] { display: none; }
+
+/* 마이페이지 '비밀번호 변경' */
+.mypage-password-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  border: 1px solid #DDD6C8;
+  background: transparent;
+  color: #171717;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.mypage-password-btn:hover { background: #FFF8F2; }
