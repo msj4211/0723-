@@ -270,6 +270,7 @@
   </div>
 </div>
 
+<script src="../js/diary-clients.js?v=20261120a"></script>
 <script>
 /* ===== 730 PMS 마법의그날 케어 — 시기별 내용 (원장님이 이 부분만 고치면 됩니다) ===== */
 const PHASES = {
@@ -488,6 +489,7 @@ function setLang(l) {
   l = l === "en" ? "en" : "ko";
   if (l === LANG) return;
   LANG = l; applyStatic(); renderAll();
+  if (window.DiaryClients) DiaryClients.refreshLanguage();
 }
 (function hookParentLanguage() {
   try {
@@ -510,7 +512,29 @@ function load() {
   if (!mem) mem = { setup: false, cycle: 28, len: 5, starts: [], logs: {} };
   return mem;
 }
-function save() { try { localStorage.setItem(KEY, JSON.stringify(mem)); } catch (e) {} }
+function save() {
+  /* 고객을 골라 둔 상태면 원장님 계정(서버)에, 아니면 이 기기에 저장 */
+  if (window.DiaryClients && DiaryClients.active()) { DiaryClients.queueSave(mem); return; }
+  try { localStorage.setItem(KEY, JSON.stringify(mem)); } catch (e) {}
+}
+/* 고객을 바꾸면 그 고객 기록으로 화면을 다시 그린다 (data가 null이면 '내 기록 (이 기기)') */
+function applyClient(data) {
+  if (data) mem = Object.assign({ setup: false, cycle: 28, len: 5, starts: [], logs: {} }, data);
+  else { mem = null; load(); }
+  const m = load();
+  const setupEl = document.getElementById("setup");
+  ["s-start"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+  const sc = document.getElementById("s-cycle"), sl = document.getElementById("s-len");
+  if (sc) sc.value = m.cycle || 28; if (sl) sl.value = m.len || 5;
+  if (!m.setup) {
+    setupEl.style.display = "block";
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("on"));
+  } else {
+    setupEl.style.display = "none";
+    goHome();
+  }
+  renderAll();
+}
 
 /* ===== date helpers ===== */
 const pad = n => String(n).padStart(2, "0");
@@ -836,6 +860,7 @@ LANG = detectLang();
 applyStatic();
 initSetup();
 renderAll();
+if (window.DiaryClients) DiaryClients.init({ kind: "pms", defaults: () => ({ setup: false, cycle: 28, len: 5, starts: [], logs: {} }), onSwitch: applyClient });
 </script>
 </body>
 </html>

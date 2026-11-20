@@ -230,6 +230,7 @@
   </div>
 </div>
 
+<script src="../js/diary-clients.js?v=20261120a"></script>
 <script>
 /* ===== 기록 항목 (원장님이 이 부분만 고치면 됩니다) ===== */
 const LIFE = ["잠 부족", "스트레스 많음", "마스크 오래", "운동·땀", "면도", "메이크업 오래", "새 제품 사용", "손으로 만짐"];
@@ -362,6 +363,7 @@ function setLang(l) {
   l = l === "en" ? "en" : "ko";
   if (l === LANG) return;
   LANG = l; applyStatic(); renderAll();
+  if (window.DiaryClients) DiaryClients.refreshLanguage();
 }
 (function hookParentLanguage() {
   try {
@@ -384,7 +386,18 @@ function load() {
   if (!mem) mem = { logs: {} };
   return mem;
 }
-function save() { try { localStorage.setItem(KEY, JSON.stringify(mem)); } catch (e) {} }
+function save() {
+  /* 고객을 골라 둔 상태면 원장님 계정(서버)에, 아니면 이 기기에 저장 */
+  if (window.DiaryClients && DiaryClients.active()) { DiaryClients.queueSave(mem); return; }
+  try { localStorage.setItem(KEY, JSON.stringify(mem)); } catch (e) {}
+}
+/* 고객을 바꾸면 그 고객 기록으로 화면을 다시 그린다 (data가 null이면 '내 기록 (이 기기)') */
+function applyClient(data) {
+  if (data) mem = Object.assign({ logs: {} }, data);
+  else { mem = null; load(); }
+  goHome();
+  renderAll();
+}
 
 /* ===== date helpers ===== */
 const pad = n => String(n).padStart(2, "0");
@@ -552,6 +565,7 @@ function renderAll() { renderToday(); renderCal(); renderReport(); }
 LANG = detectLang();
 applyStatic();
 renderAll();
+if (window.DiaryClients) DiaryClients.init({ kind: "trouble", defaults: () => ({ logs: {} }), onSwitch: applyClient });
 </script>
 </body>
 </html>
