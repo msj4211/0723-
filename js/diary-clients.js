@@ -161,7 +161,7 @@
   function toast(msg) { try { if (typeof window.toast === "function") window.toast(msg); } catch (e) {} }
 
   async function loadClients() {
-    var res = await client().from("diary_clients").select("id,name,memo").order("created_at", { ascending: true });
+    var res = await client().from("diary_clients").select("id,name,memo").eq("kind", opts.kind).order("created_at", { ascending: true });
     if (res.error) throw res.error;
     clients = res.data || [];
   }
@@ -214,7 +214,7 @@
         editing.name = name; editing.memo = memo;
         closeModal(); renderSelect(); toast(t("고객 정보를 저장했어요"));
       } else {
-        var ins = await client().from("diary_clients").insert({ name: name, memo: memo }).select("id,name,memo").single();
+        var ins = await client().from("diary_clients").insert({ name: name, memo: memo, kind: opts.kind }).select("id,name,memo").single();
         if (ins.error) throw ins.error;
         clients.push(ins.data);
         closeModal(); toast(t("고객을 추가했어요"));
