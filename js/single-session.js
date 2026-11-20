@@ -68,6 +68,14 @@
     var sid = sessionIdOf(session);
     if (!sid) return Promise.resolve(true);
 
+    // 비밀번호 찾기 메일 링크로 막 들어온 경우는 '새로 로그인한 기기'다.
+    // 예전 기기 기록과 다르다고 로그아웃시키면 새 비밀번호를 저장할 수 없으므로,
+    // 이 기기를 지금 쓰는 기기로 등록한다.
+    if (window.__authRecovery) {
+      window.__authRecovery = false;
+      return claim(session).then(function () { return true; });
+    }
+
     return fetchActive(session.user.id).then(function (res) {
       if (res.error) return true; // 테이블 없음·권한·네트워크 문제 → 판단 보류
       if (!res.data) {
