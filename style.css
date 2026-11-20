@@ -5079,3 +5079,13 @@ a.auth-user-email[hidden],
   /* 묶음 뒤에 오는 세미나·파트너 전용몰은 묶음 안 항목처럼 보이지 않게 띄운다 */
   .main-nav .nav-group + li:not(.nav-group) { margin-top: 16px; padding-top: 12px; border-top: 1px solid #E5DED2; }
 }
+
+/* 팀 신청 관리: 방문 숫자 */
+.apply-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 0.5rem; }
+.apply-stat { padding: 0.9rem 1rem; border: 1px solid #DDD6C8; border-radius: 14px; }
+.apply-stat-label { margin: 0; font-size: 0.8rem; font-weight: 600; color: #6B6258; }
+.apply-stat-num { margin: 0.3rem 0 0; font-size: 1.7rem; font-weight: 800; line-height: 1.1; }
+.apply-stat-num small { margin-left: 2px; font-size: 0.85rem; font-weight: 600; }
+.apply-stat-today { margin: 0.3rem 0 0; font-size: 0.8rem; color: #6B6258; }
+.apply-stat-note { margin: 0 0 1rem; font-size: 0.78rem; }
+@media (max-width: 520px) { .apply-stats { grid-template-columns: 1fr 1fr; } .apply-stat:last-child { grid-column: 1 / -1; } }

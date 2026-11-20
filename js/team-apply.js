@@ -14,8 +14,29 @@ window.TeamApply = (function () {
   var EXP_LABEL = { seminar: '730 세미나 참석', advanced: '730 심화 교육 이수', reflexer: '이어리플렉서 보유' };
   var STATUS_LABEL = { new: '새 신청', contacted: '연락함', accepted: '합류', declined: '보류' };
 
+  // 기기마다 무작위 번호를 하나 만들어 두고, 신청서를 열 때 방문 기록을 남긴다.
+  // (이름·연락처는 남기지 않음. 같은 기기 30분 안 재방문·관리자 방문은 서버에서 안 셈)
+  function visitorId() {
+    var key = '730-visitor-id', id = null;
+    try { id = localStorage.getItem(key); } catch (e) {}
+    if (!id || !/^[A-Za-z0-9-]{8,64}$/.test(id)) {
+      id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+        : 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
+      try { localStorage.setItem(key, id); } catch (e) {}
+    }
+    return id;
+  }
+  function logView(page) {
+    var client = window.supabaseClient;
+    if (!client) return;
+    try {
+      client.rpc('log_page_view', { p_page: page, p_visitor: visitorId() }).then(function () {}, function () {});
+    } catch (e) {}
+  }
+
   // ===================== 신청 페이지 =====================
   function renderApply(container) {
+    logView('apply');
     container.innerHTML =
       '<section class="page-section apply-page">' +
       '<div class="apply-hero">' +
@@ -169,7 +190,7 @@ window.TeamApply = (function () {
       var count = { all: list.length };
       Object.keys(STATUS_LABEL).forEach(function (k) { count[k] = list.filter(function (a) { return a.status === k; }).length; });
       var link = window.location.origin + window.location.pathname + '#/apply';
-      var html = '<div class="apply-admin-link"><span>신청서 링크</span><code>' + esc(link) + '</code>' +
+      var html = statsHtml() + '<div class="apply-admin-link"><span>신청서 링크</span><code>' + esc(link) + '</code>' +
         '<button type="button" class="admin-btn" data-copy="' + esc(link) + '">복사</button></div>';
       html += '<div class="admin-tabs">' + ['new', 'contacted', 'accepted', 'declined', 'all'].map(function (k) {
         return '<button type="button" class="admin-tab' + (filter === k ? ' is-active' : '') + '" data-filter="' + k + '">' +
@@ -201,7 +222,31 @@ window.TeamApply = (function () {
       card.innerHTML = html;
     }
 
+    var stats = null;
+    function statsHtml() {
+      if (!stats) return '';
+      function box(label, today, total, unit) {
+        return '<div class="apply-stat"><p class="apply-stat-label">' + label + '</p>' +
+          '<p class="apply-stat-num">' + total + '<small>' + unit + '</small></p>' +
+          '<p class="apply-stat-today">오늘 ' + today + unit + '</p></div>';
+      }
+      var rate = stats.total_visitors > 0 ? Math.round(stats.total_applications / stats.total_visitors * 100) : 0;
+      return '<div class="apply-stats">' +
+        box('신청서를 열어 본 사람', stats.today_visitors, stats.total_visitors, '명') +
+        box('실제 신청', stats.today_applications, stats.total_applications, '건') +
+        '<div class="apply-stat"><p class="apply-stat-label">신청한 비율</p><p class="apply-stat-num">' + rate + '<small>%</small></p>' +
+        '<p class="apply-stat-today">열어 본 횟수 ' + stats.total_views + '회</p></div>' +
+        '</div>' +
+        '<p class="admin-note apply-stat-note">같은 기기로 30분 안에 다시 열면 한 번으로 세고, 관리자가 연 것은 세지 않는다. 2026년 11월 20일 밤부터 센 숫자다.</p>';
+    }
+
     function load() {
+      client.rpc('admin_page_view_stats', { p_page: 'apply' }).then(function (r) {
+        if (r.error || !r.data || !r.data[0] || !container.isConnected) return;
+        stats = {};
+        Object.keys(r.data[0]).forEach(function (k) { stats[k] = Number(r.data[0][k]) || 0; });
+        if (list) draw();
+      });
       return client.rpc('admin_list_team_applications').then(function (res) {
         if (!container.isConnected) return;
         if (res.error) {
