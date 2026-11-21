@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /diary/
+Disallow: /trouble/
+Disallow: /consent/
+Disallow: /supabase/
+
+Sitemap: https://730skineartherapy.com/sitemap.xml
