@@ -5089,3 +5089,45 @@ a.auth-user-email[hidden],
 .apply-stat-today { margin: 0.3rem 0 0; font-size: 0.8rem; color: #6B6258; }
 .apply-stat-note { margin: 0 0 1rem; font-size: 0.78rem; }
 @media (max-width: 520px) { .apply-stats { grid-template-columns: 1fr 1fr; } .apply-stat:last-child { grid-column: 1 / -1; } }
+
+/* 팀 신청서 위쪽 안내 (A4 요약본 내용, 2026-11-21) */
+.apply-guide-kicker { margin: 0 0 0.4rem; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; color: #6B6258; }
+.apply-guide-title { margin: 0 !important; font-size: 1.4rem !important; line-height: 1.35; }
+.apply-guide-lead { margin: 0.5rem 0 1.2rem; font-size: 0.93rem; line-height: 1.6; color: #3D3833; }
+.apply-guide h4 { margin: 0 0 0.6rem; font-size: 0.98rem; font-weight: 800; }
+.apply-guide-h { margin: 1.6rem 0 0.7rem !important; padding-top: 1.2rem; border-top: 1px solid #EEE8DD; }
+.apply-guide-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.apply-guide-three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.apply-box { border: 1px solid #DDD6C8; border-radius: 14px; padding: 1rem; }
+.apply-box--dark { background: #171717; border-color: #171717; color: #FFFFFF; }
+.apply-box--dark .apply-dots li::before { background: #FFCC00; }
+.apply-box .apply-dots li { font-size: 0.88rem; margin: 0.3rem 0; }
+.apply-box-strong { margin: 0.7rem 0 0; font-size: 0.9rem; font-weight: 800; line-height: 1.5; }
+.apply-mini { border: 1px solid #DDD6C8; border-radius: 12px; padding: 0.8rem; font-size: 0.85rem; line-height: 1.5; }
+.apply-mini p { margin: 0; }
+.apply-mini-tag { margin: 0 0 0.2rem !important; font-size: 0.75rem; font-weight: 700; color: #8A6A00; }
+.apply-mini-name { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.2rem !important; }
+.apply-guide-sub { margin: 0.8rem 0 0.6rem; font-size: 0.85rem; line-height: 1.6; color: #3D3833; }
+.apply-guide-sub b { color: #171717; margin-right: 4px; }
+.apply-months { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.apply-months li { padding: 0.45rem 0.5rem; border-radius: 10px; background: #FFF6CC; font-size: 0.8rem; text-align: center; }
+.apply-months b { margin-right: 2px; }
+.apply-benefits { display: grid; grid-template-columns: 76px 1fr; gap: 6px 10px; margin: 0; font-size: 0.87rem; line-height: 1.6; }
+.apply-benefits dt { font-weight: 800; }
+.apply-benefits dd { margin: 0; color: #3D3833; }
+.apply-price { border: 2px solid #171717; border-radius: 14px; padding: 0.9rem 1rem; }
+.apply-price p { margin: 0; }
+.apply-price-num { font-size: 1.9rem; font-weight: 800; line-height: 1.2; }
+.apply-price-sub { margin-top: 0.2rem !important; font-size: 0.8rem; color: #6B6258; line-height: 1.5; }
+.apply-deduct { padding: 0.8rem 1rem; border-radius: 12px; background: #FFF6CC; font-size: 0.87rem; line-height: 1.6; }
+.apply-steps { margin-top: 1.2rem; padding: 1rem; border-radius: 14px; background: #171717; color: #FFFFFF; }
+.apply-steps p { margin: 0; }
+.apply-steps .apply-mini-tag { color: #FFCC00; }
+.apply-steps-flow { font-size: 1rem; font-weight: 800; }
+.apply-steps-note { margin-top: 0.3rem !important; font-size: 0.8rem; opacity: 0.85; }
+@media (max-width: 560px) {
+  .apply-guide-two, .apply-guide-three { grid-template-columns: 1fr; }
+  .apply-months { grid-template-columns: repeat(3, 1fr); }
+  .apply-benefits { grid-template-columns: 1fr; gap: 0 0; }
+  .apply-benefits dd { margin-bottom: 0.6rem; }
+}
