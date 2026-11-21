@@ -5131,3 +5131,5 @@ a.auth-user-email[hidden],
   .apply-benefits { grid-template-columns: 1fr; gap: 0 0; }
   .apply-benefits dd { margin-bottom: 0.6rem; }
 }
+/* 1년 커리큘럼 달 칸: 사이트 배경과 같은 노란색 (2026-11-21) */
+.apply-months li { background: #FFCC00; }
