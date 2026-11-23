@@ -92,7 +92,7 @@ window.TeamApply = (function () {
       '<h4 class="apply-guide-h">비용</h4>' +
       '<div class="apply-guide-two">' +
       '<div class="apply-price"><p class="apply-mini-tag">패키지</p><p class="apply-price-num">180만 원</p><p class="apply-price-sub">1기 특가 · 2기부터 220만 원</p></div>' +
-      '<div class="apply-price"><p class="apply-mini-tag">월 회비</p><p class="apply-price-num">20만 원</p><p class="apply-price-sub">첫 달부터 · 교육과 팀 활동 포함 · 의무 발주 없음</p></div>' +
+      '<div class="apply-price"><p class="apply-mini-tag">월 회비</p><p class="apply-price-num">무료</p><p class="apply-price-sub">교육과 팀 활동 포함 · 의무 발주 없음</p></div>' +
       '</div>' +
       '<p class="apply-guide-sub"><b>패키지 포함</b> 심화 교육(온라인 3시간) · 디플로마 · 인증 현판 · 웹사이트 이용 · 이어리플렉서 1대 · 테라피볼 10박스 · 허브볼 10개(바디 5개, 페이스 5개) · 730 괄사 · 소독 키트</p>' +
       '<div class="apply-deduct"><b>이미 함께한 분은 낸 만큼 빼드립니다</b><br>기존 심화 교육 50만 원 · 이어리플렉서 실제로 낸 기기값(정가 40만 원, 기기 재지급 없음)</div>' +
@@ -133,7 +133,7 @@ window.TeamApply = (function () {
       '<p><b>확신하지 않습니다</b> 과장하거나 단정하지 않습니다</p>' +
       '<p><b>마음을 읽는 공간이 됩니다</b> 증상만 보지 않고 원인과 마음까지 헤아려 다독입니다</p>' +
       '</div>' +
-      '<label class="apply-agree"><input type="checkbox" name="agreed_cost"><span>위 비용(패키지 180만 원, 월 회비 20만 원, VAT 별도)을 확인했어요 (필수)</span></label>' +
+      '<label class="apply-agree"><input type="checkbox" name="agreed_cost"><span>위 비용(패키지 180만 원, 월 회비 무료, VAT 별도)을 확인했어요 (필수)</span></label>' +
       '<label class="apply-agree"><input type="checkbox" name="agreed_principles"><span>위 팀 약속을 읽었고, 지키겠습니다 (필수)</span></label>' +
       '<label class="apply-agree"><input type="checkbox" name="agreed_privacy"><span>개인정보 수집·이용에 동의합니다 (필수)</span></label>' +
       '<p class="apply-privacy">수집 항목: 이름, 연락처, 샵 상호명, 지역, 인스타그램, 작성 내용 · 이용 목적: 팀 신청 확인과 연락 · 보관 기간: 신청일로부터 1년 (요청하면 바로 삭제)</p>' +
