@@ -3,7 +3,8 @@
 // 글자 드래그 복사, 저장·인쇄 단축키를 막고 화면에 흐린 워터마크를 깐다.
 // 스크린샷 자체는 브라우저에서 막을 수 없으므로 워터마크로 출처를 남긴다.
 //
-// 메인 사이트(index.html)에서는 해시 라우트를 보고 교육 페이지일 때만 켠다.
+// 메인 사이트(index.html)에서는 해시 라우트를 보고, 입력·관리용 페이지
+// (관리자·신청서·마이페이지·고객 기록)를 뺀 모든 페이지에서 켠다.
 // iframe이나 단독 페이지에서는 <html data-protect="always">로 항상 켠다.
 (function () {
   var root = document.documentElement;
@@ -13,7 +14,11 @@
   try { framed = window.parent !== window; } catch (e) { framed = true; }
   if (framed) root.classList.add('cp-framed');
   var ALWAYS = root.getAttribute('data-protect') === 'always';
-  var PROTECTED_PREFIXES = ['ear-point', 'ear-reading', 'recommend/'];
+  // 동의서처럼 '저장·인쇄'가 꼭 필요한 페이지는 <html data-protect-print="allow">로
+  // 인쇄만 허용한다(복사·이미지 저장 방지와 화면 워터마크는 그대로).
+  var ALLOW_PRINT = root.getAttribute('data-protect-print') === 'allow';
+  // 보호를 끄는 라우트(앞부분 일치). 나머지 라우트와 홈은 모두 보호한다.
+  var UNPROTECTED_PREFIXES = ['admin', 'apply', 'mypage', 'diary', 'trouble'];
 
   var WM_TEXT = '730스킨이어테라피';
   var svg =
@@ -28,8 +33,10 @@
     'html.cp-on input,html.cp-on textarea,html.cp-on select,html.cp-on [contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}' +
     'html.cp-on img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}' +
     'html.cp-on:not(.cp-framed) body::after{content:"";position:fixed;inset:0;z-index:2147483000;pointer-events:none;background-image:' + wmUrl + ';background-repeat:repeat}' +
-    '@media print{html.cp-on body>*{display:none!important}html.cp-on body::after{display:none}' +
-    'html.cp-on body::before{content:"이 페이지는 인쇄할 수 없습니다. (730스킨이어테라피)";display:block;padding:40px;font-size:16px;color:#333}}';
+    (ALLOW_PRINT
+      ? '@media print{html.cp-on body::after{display:none}}'
+      : '@media print{html.cp-on body>*{display:none!important}html.cp-on body::after{display:none}' +
+        'html.cp-on body::before{content:"이 페이지는 인쇄할 수 없습니다. (730스킨이어테라피)";display:block;padding:40px;font-size:16px;color:#333}}');
   var style = document.createElement('style');
   style.setAttribute('data-content-protect', '');
   style.textContent = css;
@@ -55,8 +62,9 @@
     var on = ALWAYS;
     if (!on) {
       var r = currentRoute();
-      for (var i = 0; i < PROTECTED_PREFIXES.length; i++) {
-        if (r.indexOf(PROTECTED_PREFIXES[i]) === 0) { on = true; break; }
+      on = true;
+      for (var i = 0; i < UNPROTECTED_PREFIXES.length; i++) {
+        if (r.indexOf(UNPROTECTED_PREFIXES[i]) === 0) { on = false; break; }
       }
     }
     root.classList.toggle('cp-on', on);
@@ -80,7 +88,7 @@
   document.addEventListener('keydown', function (e) {
     if (!isOn() || !(e.ctrlKey || e.metaKey)) return;
     var k = (e.key || '').toLowerCase();
-    if (k === 's' || k === 'p' || k === 'u') e.preventDefault();
+    if (k === 's' || k === 'u' || (k === 'p' && !ALLOW_PRINT)) e.preventDefault();
   });
 
   window.addEventListener('hashchange', update);
