@@ -24,6 +24,49 @@ window.Certified = (function () {
   }
   function safeUrl(u) { return /^https:\/\//i.test(u || '') ? u : ''; }
 
+  // 카카오맵 SDK를 한 번만 불러온다. 키가 없거나 불러오지 못하면 실패로 끝난다.
+  var kakaoPromise = null;
+  function loadKakao() {
+    if (kakaoPromise) return kakaoPromise;
+    kakaoPromise = new Promise(function (resolve, reject) {
+      var key = window.KAKAO_MAP_JS_KEY;
+      if (!key) { reject(new Error('no key')); return; }
+      if (window.kakao && window.kakao.maps && window.kakao.maps.services) { resolve(window.kakao); return; }
+      var sc = document.createElement('script');
+      sc.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=' + encodeURIComponent(key) + '&autoload=false&libraries=services';
+      sc.async = true;
+      sc.onload = function () {
+        if (!window.kakao || !window.kakao.maps) { reject(new Error('sdk')); return; }
+        window.kakao.maps.load(function () { resolve(window.kakao); });
+      };
+      sc.onerror = function () { reject(new Error('sdk')); };
+      document.head.appendChild(sc);
+    });
+    kakaoPromise.catch(function () { kakaoPromise = null; });
+    return kakaoPromise;
+  }
+
+  // 주소 → 위치(위도·경도). 못 찾으면 null.
+  function geocode(address) {
+    return loadKakao().then(function (kakao) {
+      return new Promise(function (resolve) {
+        var g = new kakao.maps.services.Geocoder();
+        g.addressSearch(address, function (res, status) {
+          if (status === kakao.maps.services.Status.OK && res && res[0]) {
+            resolve({ lat: parseFloat(res[0].y), lng: parseFloat(res[0].x) });
+            return;
+          }
+          // 도로명·지번으로 못 찾으면 장소 이름으로 한 번 더 찾는다.
+          var ps = new kakao.maps.services.Places();
+          ps.keywordSearch(address, function (r2, st2) {
+            if (st2 === kakao.maps.services.Status.OK && r2 && r2[0]) resolve({ lat: parseFloat(r2[0].y), lng: parseFloat(r2[0].x) });
+            else resolve(null);
+          });
+        });
+      });
+    }, function () { return null; });
+  }
+
   // ===================== 공개 페이지 =====================
   function renderPublic(container) {
     var client = window.supabaseClient;
@@ -44,6 +87,7 @@ window.Certified = (function () {
       '</div>' +
       '<div class="cert-verify-result" aria-live="polite"></div>' +
       '</form>' +
+      '<div class="cert-map" hidden></div>' +
       '<div class="cert-filters" hidden></div>' +
       '<div class="cert-list"><p class="cert-loading">불러오는 중…</p></div>' +
       '</section>';
@@ -53,6 +97,52 @@ window.Certified = (function () {
     var result = container.querySelector('.cert-verify-result');
     var listEl = container.querySelector('.cert-list');
     var filtersEl = container.querySelector('.cert-filters');
+    var mapEl = container.querySelector('.cert-map');
+    var map = null, mapItems = [];
+
+    function drawMap(shown) {
+      var pts = shown.filter(function (s) { return typeof s.lat === 'number' && typeof s.lng === 'number'; });
+      if (!pts.length) { mapEl.hidden = true; return; }
+      loadKakao().then(function (kakao) {
+        if (!mapEl.isConnected) return;
+        mapEl.hidden = false;
+        if (!map) {
+          map = new kakao.maps.Map(mapEl, { center: new kakao.maps.LatLng(36.3, 127.8), level: 13 });
+          map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
+        } else {
+          map.relayout();
+        }
+        mapItems.forEach(function (it) { it.setMap(null); });
+        mapItems = [];
+        var bounds = new kakao.maps.LatLngBounds();
+        pts.forEach(function (s) {
+          var pos = new kakao.maps.LatLng(s.lat, s.lng);
+          bounds.extend(pos);
+          var marker = new kakao.maps.Marker({ position: pos, title: fullName(s) });
+          marker.setMap(map);
+          var label = document.createElement('button');
+          label.type = 'button';
+          label.className = 'cert-map-label';
+          label.textContent = s.branch + ' ' + s.shop_name;
+          label.addEventListener('click', function () { focusCard(s.cert_no); });
+          kakao.maps.event.addListener(marker, 'click', function () { focusCard(s.cert_no); });
+          var ov = new kakao.maps.CustomOverlay({ position: pos, content: label, yAnchor: 2.6, clickable: true });
+          ov.setMap(map);
+          mapItems.push(marker, ov);
+        });
+        if (pts.length === 1) { map.setCenter(bounds.getSouthWest()); map.setLevel(5); }
+        else map.setBounds(bounds, 60, 40, 40, 40);
+      }, function () { mapEl.hidden = true; });
+    }
+
+    function focusCard(certNo) {
+      var card = listEl.querySelector('[data-cert="' + certNo + '"]');
+      if (!card) return;
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.classList.remove('is-focus');
+      void card.offsetWidth;
+      card.classList.add('is-focus');
+    }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -93,6 +183,7 @@ window.Certified = (function () {
         filtersEl.hidden = true;
       }
       var shown = shops.filter(function (s) { return region === 'all' || s.region === region; });
+      drawMap(shown);
       if (!shown.length) {
         listEl.innerHTML = '<div class="cert-empty"><p>공식 인증점이 곧 공개됩니다</p>' +
           '<p class="cert-empty-sub">730스킨이어테라피 팀 1기가 교육을 마치면 이곳에 소개됩니다</p></div>';
@@ -100,7 +191,7 @@ window.Certified = (function () {
       }
       listEl.innerHTML = '<ul class="cert-grid">' + shown.map(function (s) {
         var map = safeUrl(s.map_url);
-        return '<li class="cert-card">' +
+        return '<li class="cert-card" data-cert="' + esc(s.cert_no) + '">' +
           '<p class="cert-card-badge">공식 인증점</p>' +
           '<p class="cert-card-brand">' + BRAND + ' ' + esc(s.branch) + '</p>' +
           '<h3 class="cert-card-name">' + esc(s.shop_name) + '</h3>' +
@@ -182,6 +273,7 @@ window.Certified = (function () {
       var html = '<div class="apply-admin-link"><span>공식 인증점 화면</span><code>' + esc(link) + '</code>' +
         '<a class="admin-btn" href="#/certified">보기</a></div>';
       html += formHtml(editing);
+      if (lastNote) html += '<p class="cert-form-msg cert-admin-note">' + esc(lastNote) + '</p>';
       if (!list.length) {
         html += '<p class="admin-empty">아직 등록한 인증점이 없어요. 위에서 추가해 주세요.</p>';
       } else {
@@ -191,14 +283,25 @@ window.Certified = (function () {
           return '<li class="cert-admin-item">' +
             '<div class="admin-order-head"><b>' + esc(fullName(s)) + '</b> <span class="admin-status admin-status--' + badge + '">' + badgeText + '</span></div>' +
             '<p class="admin-order-who">' + esc(s.cert_no) + ' · 이어리더 ' + esc(s.reader_name) + ' · ' + esc(s.region) + ' · 인증일 ' + esc(fmtDate(s.certified_at)) + '</p>' +
-            (s.address ? '<p class="apply-admin-meta">' + esc(s.address) + '</p>' : '') +
+            (s.address ? '<p class="apply-admin-meta">' + esc(s.address) + ' · 지도 위치 ' + (s.lat != null ? '있음' : '<b>없음</b>') + '</p>' : '<p class="apply-admin-meta">주소가 없어 지도에 표시되지 않아요</p>') +
             (s.admin_memo ? '<p class="apply-admin-meta">메모: ' + esc(s.admin_memo) + '</p>' : '') +
             '<div class="admin-order-edit"><button type="button" class="admin-btn" data-edit="' + s.id + '">수정</button>' +
-            '<button type="button" class="admin-btn" data-copy="' + esc(s.cert_no) + '">인증번호 복사</button></div>' +
+            '<button type="button" class="admin-btn" data-copy="' + esc(s.cert_no) + '">인증번호 복사</button>' +
+            (s.address ? '<button type="button" class="admin-btn" data-locate="' + esc(s.cert_no) + '">지도 위치 다시 찾기</button>' : '') +
+            '</div>' +
             '</li>';
         }).join('') + '</ul>';
       }
       card.innerHTML = html;
+    }
+
+    var lastNote = '';
+    function locate(certNo, addr) {
+      return geocode(addr).then(function (pos) {
+        if (!pos) return false;
+        return client.rpc('admin_set_certified_shop_location', { p_cert_no: certNo, p_lat: pos.lat, p_lng: pos.lng })
+          .then(function (r) { return !r.error; });
+      });
     }
 
     function load() {
@@ -219,6 +322,17 @@ window.Certified = (function () {
         return;
       }
       if (e.target.closest('.cert-form-cancel')) { editing = null; draw(); return; }
+      var lc = e.target.closest('[data-locate]');
+      if (lc) {
+        var row = list.filter(function (s) { return s.cert_no === lc.getAttribute('data-locate'); })[0];
+        if (!row) return;
+        lc.disabled = true; lc.textContent = '찾는 중…';
+        locate(row.cert_no, row.address).then(function (ok) {
+          lastNote = ok ? '' : '주소로 지도 위치를 찾지 못했어요: ' + row.address + (window.KAKAO_MAP_JS_KEY ? '' : ' (카카오맵 키가 아직 없어요)');
+          load();
+        });
+        return;
+      }
       var cp = e.target.closest('[data-copy]');
       if (cp && navigator.clipboard) {
         navigator.clipboard.writeText(cp.getAttribute('data-copy')).then(function () {
@@ -258,8 +372,17 @@ window.Certified = (function () {
       }).then(function (r) {
         btn.disabled = false;
         if (r.error) { msg.textContent = r.error.message; return; }
+        var certNo = r.data, addr = v('address');
         editing = null;
-        load();
+        if (!addr) {
+          client.rpc('admin_set_certified_shop_location', { p_cert_no: certNo, p_lat: null, p_lng: null }).then(function () { load(); });
+          return;
+        }
+        msg.textContent = '저장했어요. 지도 위치 찾는 중…';
+        locate(certNo, addr).then(function (ok) {
+          lastNote = ok ? '' : '저장했지만 주소로 지도 위치를 찾지 못했어요. 주소를 도로명 주소로 고쳐 다시 저장해 주세요' + (window.KAKAO_MAP_JS_KEY ? '' : ' (카카오맵 키가 아직 없어요)');
+          load();
+        });
       });
     });
 
