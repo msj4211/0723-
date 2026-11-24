@@ -3,4 +3,4 @@
 // 이 키는 웹페이지에 그대로 드러나는 공개용 키라 저장소에 넣어도 된다.
 // 대신 카카오 디벨로퍼스의 'JavaScript SDK 도메인'에 등록한 사이트에서만 동작한다.
 // 비어 있으면 지도 없이 샵 목록만 보인다.
-window.KAKAO_MAP_JS_KEY = '';
+window.KAKAO_MAP_JS_KEY = 'ba0ad9ba8e6f6fd1bffde2eaf5712167';
