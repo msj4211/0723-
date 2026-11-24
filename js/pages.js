@@ -2698,7 +2698,8 @@ window.Pages = (function () {
         '<p class="my-area-nav-sub">관리자</p>' +
         itemHtml('admin', '회원 승인 관리', '<em class="my-area-count" data-count="members"></em>') +
         itemHtml('admin-orders', '파트너 전용몰 관리', '<em class="my-area-count" data-count="orders"></em>') +
-        itemHtml('admin-apply', '팀 신청 관리', '<em class="my-area-count" data-count="apply"></em>');
+        itemHtml('admin-apply', '팀 신청 관리', '<em class="my-area-count" data-count="apply"></em>') +
+        itemHtml('admin-certified', '인증점 관리');
       var client = window.supabaseClient;
       client.rpc('admin_list_members').then(function (r) {
         if (r.error || !nav.isConnected) return;
@@ -2888,6 +2889,17 @@ window.Pages = (function () {
     // 팀(가맹) 신청서: 로그인 없이 누구나 신청할 수 있어야 해서 접근 확인으로 감싸지 않는다.
     apply: function (container) {
       window.TeamApply.renderApply(container);
+    },
+
+    // 공식 인증점: 손님도 보고 인증번호를 조회해야 해서 로그인 없이 연다.
+    certified: function (container) {
+      window.Certified.renderPublic(container);
+    },
+
+    adminCertified: function (container) {
+      window.AccessControl.checkEducationAccess(container, withMyArea('admin-certified', function (c) {
+        window.Certified.renderAdmin(c);
+      }));
     },
 
     adminApply: function (container) {

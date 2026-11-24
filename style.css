@@ -5136,3 +5136,55 @@ a.auth-user-email[hidden],
 /* 신청서의 연한 노란색을 모두 사이트 배경 노란색으로 통일 (2026-11-21) */
 .apply-deduct { background: #FFCC00; }
 .apply-choice input:checked + span { background: #FFCC00; }
+
+/* ===== 공식 인증점 (#/certified, #/admin-certified) 2026-11-24 ===== */
+.cert-page { max-width: 960px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+.cert-hero { text-align: center; padding: 1.5rem 0 1.75rem; }
+.cert-kicker { margin: 0 0 0.6rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; color: #3D3833; }
+.cert-title { margin: 0; font-size: clamp(1.6rem, 6vw, 2.2rem); font-weight: 800; }
+.cert-lead { margin: 0.9rem 0 0; font-size: 0.98rem; line-height: 1.7; color: #3D3833; }
+.cert-verify { max-width: 560px; margin: 0 auto 2rem; padding: 1.25rem; background: #FFFFFF; border-radius: 16px; }
+.cert-verify-label { display: block; font-weight: 800; font-size: 1rem; }
+.cert-verify-help { margin: 0.35rem 0 0.8rem; font-size: 0.86rem; color: #6B6258; line-height: 1.5; }
+.cert-verify-row { display: flex; gap: 8px; }
+.cert-verify-row input { flex: 1; min-width: 0; padding: 0.75rem 0.9rem; border: 1px solid #DDD6C8; border-radius: 10px; font-size: 1rem; text-transform: uppercase; }
+.cert-verify-row input:focus { outline: none; border-color: #171717; }
+.cert-verify-btn { padding: 0 1.2rem; border: 0; border-radius: 10px; background: #171717; color: #FFFFFF; font-weight: 700; font-size: 0.95rem; cursor: pointer; }
+.cert-result { margin: 0.9rem 0 0; padding: 0.8rem 0.9rem; border-radius: 10px; font-size: 0.9rem; line-height: 1.6; background: #F7F4EE; }
+.cert-result b { display: block; margin-bottom: 0.2rem; }
+.cert-result span { display: block; color: #3D3833; }
+.cert-result-name { font-weight: 700; color: #171717 !important; }
+.cert-result--ok { background: #EEF7EC; border: 1px solid #9CC79A; }
+.cert-result--bad { background: #FBEDEA; border: 1px solid #E2A898; }
+.cert-result--warn { background: #FFF6CC; }
+.cert-filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 1.25rem; }
+.cert-chip { padding: 0.45rem 1rem; border: 1px solid #171717; border-radius: 999px; background: transparent; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+.cert-chip.is-active { background: #171717; color: #FFFFFF; }
+.cert-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.cert-card { display: flex; flex-direction: column; padding: 1.4rem 1.25rem 1.2rem; background: #FFFFFF; border-radius: 16px; }
+.cert-card-badge { align-self: flex-start; margin: 0 0 0.8rem; padding: 3px 10px; border-radius: 999px; background: #171717; color: #FFCC00; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; }
+.cert-card-brand { margin: 0; font-size: 0.85rem; color: #6B6258; font-weight: 600; }
+.cert-card-name { margin: 0.15rem 0 0.6rem; font-size: 1.25rem; font-weight: 800; }
+.cert-card-addr { margin: 0 0 0.9rem; font-size: 0.9rem; line-height: 1.55; color: #3D3833; }
+.cert-card-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+.cert-link { display: inline-block; padding: 0.5rem 0.9rem; border: 1px solid #171717; border-radius: 999px; font-size: 0.85rem; font-weight: 600; color: #171717; text-decoration: none; }
+.cert-link:hover { background: #171717; color: #FFFFFF; }
+.cert-card-since { margin: 0.9rem 0 0; font-size: 0.78rem; color: #8A7F73; }
+.cert-empty { text-align: center; padding: 2.5rem 1rem; background: #FFFFFF; border-radius: 16px; }
+.cert-empty p { margin: 0; font-weight: 700; font-size: 1.05rem; }
+.cert-empty .cert-empty-sub { margin-top: 0.5rem; font-weight: 400; font-size: 0.9rem; color: #6B6258; }
+.cert-loading { text-align: center; color: #3D3833; }
+.cert-form { margin: 0 0 1.5rem; padding: 1.1rem; border: 1px solid #EEE8DD; border-radius: 12px; background: #FCFAF6; }
+.cert-form h3 { margin: 0 0 0.9rem; font-size: 1rem; font-weight: 800; }
+.cert-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; }
+.cert-form-field { display: flex; flex-direction: column; gap: 4px; font-size: 0.82rem; font-weight: 700; }
+.cert-form-field em { font-style: normal; color: #B0563A; }
+.cert-form-field--wide { grid-column: 1 / -1; }
+.cert-form-field input, .cert-form-field select { padding: 0.55rem 0.7rem; border: 1px solid #DDD6C8; border-radius: 8px; font-size: 0.92rem; font-weight: 400; background: #FFFFFF; }
+.cert-form-check { display: flex; align-items: center; gap: 6px; font-size: 0.88rem; align-self: end; padding-bottom: 0.5rem; }
+.cert-form-msg { min-height: 1.2em; margin: 0.7rem 0 0; font-size: 0.88rem; color: #B0563A; }
+.cert-form-actions { display: flex; gap: 8px; margin-top: 0.4rem; }
+.cert-admin-item { padding: 0.9rem 0; border-bottom: 1px solid #EEE8DD; }
+@media (max-width: 600px) {
+  .cert-form-grid { grid-template-columns: 1fr; }
+}
