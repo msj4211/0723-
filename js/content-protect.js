@@ -19,6 +19,9 @@
   var ALLOW_PRINT = root.getAttribute('data-protect-print') === 'allow';
   // 보호를 끄는 라우트(앞부분 일치). 나머지 라우트와 홈은 모두 보호한다.
   var UNPROTECTED_PREFIXES = ['admin', 'apply', 'mypage', 'diary', 'trouble'];
+  // 화면 워터마크는 교육 자료 페이지에서만 깐다(2026-11-24). 홈·공식 인증점·상품 같은
+  // 공개 페이지는 복사·저장만 막고 워터마크는 깔지 않는다.
+  var WATERMARK_PREFIXES = ['ear-point', 'ear-reading', 'recommend/', 'consent'];
 
   var WM_TEXT = '730스킨이어테라피';
   var svg =
@@ -32,7 +35,7 @@
     'html.cp-on body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}' +
     'html.cp-on input,html.cp-on textarea,html.cp-on select,html.cp-on [contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}' +
     'html.cp-on img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}' +
-    'html.cp-on:not(.cp-framed) body::after{content:"";position:fixed;inset:0;z-index:2147483000;pointer-events:none;background-image:' + wmUrl + ';background-repeat:repeat}' +
+    'html.cp-on.cp-wm:not(.cp-framed) body::after{content:"";position:fixed;inset:0;z-index:2147483000;pointer-events:none;background-image:' + wmUrl + ';background-repeat:repeat}' +
     (ALLOW_PRINT
       ? '@media print{html.cp-on body::after{display:none}}'
       : '@media print{html.cp-on body>*{display:none!important}html.cp-on body::after{display:none}' +
@@ -68,6 +71,14 @@
       }
     }
     root.classList.toggle('cp-on', on);
+    var wm = ALWAYS;
+    if (!wm && on) {
+      var rr = currentRoute();
+      for (var j = 0; j < WATERMARK_PREFIXES.length; j++) {
+        if (rr.indexOf(WATERMARK_PREFIXES[j]) === 0) { wm = true; break; }
+      }
+    }
+    root.classList.toggle('cp-wm', wm);
   }
 
   document.addEventListener('contextmenu', function (e) {
