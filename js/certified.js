@@ -130,8 +130,26 @@ window.Certified = (function () {
           ov.setMap(map);
           mapItems.push(marker, ov);
         });
-        if (pts.length === 1) { map.setCenter(bounds.getSouthWest()); map.setLevel(5); }
-        else map.setBounds(bounds, 60, 40, 40, 40);
+        // 지도 칸이 화면에 그려지는 도중에 크기가 바뀌면 카카오맵 중심이 어긋난다.
+        // 그래서 크기를 다시 잰 뒤 핀 위치로 맞추는 일을 화면이 자리 잡을 때까지 몇 번 반복한다.
+        function fit() {
+          if (!mapEl.isConnected) return;
+          map.relayout();
+          if (pts.length === 1) { map.setLevel(5); map.setCenter(new kakao.maps.LatLng(pts[0].lat, pts[0].lng)); }
+          else map.setBounds(bounds, 60, 40, 40, 40);
+        }
+        fit();
+        requestAnimationFrame(fit);
+        setTimeout(fit, 300);
+        setTimeout(fit, 1000);
+        if (!mapEl._certResizeBound && window.ResizeObserver) {
+          mapEl._certResizeBound = true;
+          var lastW = mapEl.clientWidth;
+          new ResizeObserver(function () {
+            if (mapEl.clientWidth !== lastW) { lastW = mapEl.clientWidth; if (mapEl._certFit) mapEl._certFit(); }
+          }).observe(mapEl);
+        }
+        mapEl._certFit = fit;
       }, function () { mapEl.hidden = true; });
     }
 
