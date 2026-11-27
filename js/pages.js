@@ -40,11 +40,11 @@ window.Pages = (function () {
   function renderHome(container) {
     var purposeCards = [
       { key: 'purposeSleep', tone: 'lavender', href: '#/recommend/sleep' },
-      { key: 'purposeCalm', tone: 'mint' },
-      { key: 'purposeDigest', tone: 'yellow' },
-      { key: 'purposeFatigue', tone: 'coral' },
-      { key: 'purposeShoulder', tone: 'blue' },
-      { key: 'purposeWomen', tone: 'pink' }
+      { key: 'purposeCalm', tone: 'mint', href: '#/recommend/calm' },
+      { key: 'purposeDigest', tone: 'yellow', href: '#/recommend/digest' },
+      { key: 'purposeFatigue', tone: 'coral', href: '#/recommend/fatigue' },
+      { key: 'purposeShoulder', tone: 'blue', href: '#/recommend/shoulder' },
+      { key: 'purposeWomen', tone: 'pink', href: '#/recommend/women' }
     ];
 
     var purposeCardsHtml = purposeCards.map(function (card) {
@@ -1156,6 +1156,98 @@ window.Pages = (function () {
       var matchingTab = container.querySelector('.sd-point-tab[data-target="sd-point-' + CSS.escape(sleepHighlightId) + '"]');
       if (matchingTab) matchingTab.click();
     }
+  }
+
+  // 메인 '오늘 어떤 관리가 필요하신가요' 버튼별 추천 이어포인트 페이지.
+  // '푹 자고 싶어요'(renderSleepDetail)와 똑같은 화면 구성·클래스(sd-*)를 쓰고,
+  // 문구는 js/translations.js의 cr{Calm|Digest|Fatigue|Shoulder|Women}* 키에 있다.
+  // 이미지는 images/{care}-ear-map.png 로 올리면 자동으로 표시된다(없으면 안내 박스).
+  var CARE_PAGES = {
+    calm: { prefix: 'crCalm', image: 'images/calm-ear-map.png' },
+    digest: { prefix: 'crDigest', image: 'images/digest-ear-map.png' },
+    fatigue: { prefix: 'crFatigue', image: 'images/fatigue-ear-map.png' },
+    shoulder: { prefix: 'crShoulder', image: 'images/shoulder-ear-map.png' },
+    women: { prefix: 'crWomen', image: 'images/women-ear-map.png' }
+  };
+
+  function renderCareDetail(container, queryString, careKey) {
+    var cfg = CARE_PAGES[careKey];
+    var P = cfg.prefix;
+    var t = window.t;
+    var nums = [1, 2, 3, 4];
+
+    var tabsHtml = nums.map(function (i) {
+      return '<button class="sd-point-tab' + (i === 1 ? ' sd-is-active' : '') + '" type="button" data-target="sd-point-' + i + '" data-i18n="' + P + 'Tab' + i + '">' + t(P + 'Tab' + i) + '</button>';
+    }).join('');
+
+    var itemsHtml = nums.map(function (i) {
+      return '<article class="sd-point-item' + (i === 1 ? ' sd-is-active' : '') + '" id="sd-point-' + i + '">' +
+        '<div class="sd-point-heading"><span class="sd-point-dot" aria-hidden="true"></span>' +
+        '<h3 data-i18n="' + P + 'Tab' + i + '">' + t(P + 'Tab' + i) + '</h3></div>' +
+        '<p data-i18n="' + P + 'Desc' + i + '">' + t(P + 'Desc' + i) + '</p>' +
+        '</article>';
+    }).join('');
+
+    container.innerHTML =
+      '<main class="sd-page"><article class="sd-detail-card">' +
+        '<header class="sd-hero">' +
+          '<button class="sd-back-button" type="button" aria-label="이전 페이지로 이동" data-i18n-aria-label="sdBackAriaLabel"><span aria-hidden="true">‹</span></button>' +
+          '<div class="sd-hero-content">' +
+            '<h1 data-i18n="' + P + 'HeroTitle">' + t(P + 'HeroTitle') + '</h1>' +
+            '<p data-i18n="' + P + 'HeroDesc">' + t(P + 'HeroDesc') + '</p>' +
+          '</div>' +
+        '</header>' +
+        '<div class="sd-content">' +
+          '<section aria-labelledby="sd-recommended-points-title">' +
+            '<h2 class="sd-section-title" id="sd-recommended-points-title" data-i18n="sdSectionTitle">' + t('sdSectionTitle') + '</h2>' +
+            '<div class="sd-point-tabs" role="tablist" aria-label="추천 이어포인트" data-i18n-aria-label="sdSectionTitle">' + tabsHtml + '</div>' +
+            '<div class="sd-map-section">' +
+              '<div class="sd-map-image-wrap">' +
+                '<img class="sd-map-image" src="' + cfg.image + '" alt="' + t(P + 'MapAlt') + '" data-i18n-alt="' + P + 'MapAlt">' +
+                '<div class="sd-map-placeholder"><div>' +
+                  '<strong data-i18n="sdMapPlaceholderStrong">' + t('sdMapPlaceholderStrong') + '</strong>' +
+                  '<span data-i18n="' + P + 'MapPlaceholderBody">' + t(P + 'MapPlaceholderBody') + '</span>' +
+                '</div></div>' +
+              '</div>' +
+              '<div class="sd-point-list">' + itemsHtml + '</div>' +
+            '</div>' +
+          '</section>' +
+          '<section class="sd-reason-section">' +
+            '<div class="sd-reason-icon" aria-hidden="true">◌</div>' +
+            '<div><h2 data-i18n="sdReasonTitle">' + t('sdReasonTitle') + '</h2>' +
+            '<p data-i18n="' + P + 'ReasonDesc">' + t(P + 'ReasonDesc') + '</p></div>' +
+          '</section>' +
+          '<aside class="sd-notice"><span class="sd-notice-symbol" aria-hidden="true">△</span>' +
+            '<span data-i18n="sdNotice">' + t('sdNotice') + '</span></aside>' +
+        '</div>' +
+      '</article></main>';
+
+    var backBtn = container.querySelector('.sd-back-button');
+    if (backBtn) backBtn.addEventListener('click', function () { window.history.back(); });
+
+    var mapImg = container.querySelector('.sd-map-image');
+    var mapPlaceholder = container.querySelector('.sd-map-placeholder');
+    if (mapImg && mapPlaceholder) {
+      mapImg.addEventListener('error', function () {
+        mapImg.style.display = 'none';
+        mapPlaceholder.style.display = 'grid';
+      });
+    }
+
+    var tabs = container.querySelectorAll('.sd-point-tab');
+    var items = container.querySelectorAll('.sd-point-item');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var target = container.querySelector('#' + tab.dataset.target);
+        tabs.forEach(function (b) { b.classList.remove('sd-is-active'); });
+        items.forEach(function (it) { it.classList.remove('sd-is-active'); });
+        tab.classList.add('sd-is-active');
+        if (target) target.classList.add('sd-is-active');
+        if (window.innerWidth <= 840 && target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
   }
 
   // 개인정보 수집·이용 동의 버전. 동의 문구(seminarPrivacyConsentText 번역
@@ -2859,6 +2951,12 @@ window.Pages = (function () {
         renderSleepDetail(c, queryString);
       });
     },
+
+    recommendCalm: function (c0, q) { window.AccessControl.checkEducationAccess(c0, function (c) { renderCareDetail(c, q, 'calm'); }); },
+    recommendDigest: function (c0, q) { window.AccessControl.checkEducationAccess(c0, function (c) { renderCareDetail(c, q, 'digest'); }); },
+    recommendFatigue: function (c0, q) { window.AccessControl.checkEducationAccess(c0, function (c) { renderCareDetail(c, q, 'fatigue'); }); },
+    recommendShoulder: function (c0, q) { window.AccessControl.checkEducationAccess(c0, function (c) { renderCareDetail(c, q, 'shoulder'); }); },
+    recommendWomen: function (c0, q) { window.AccessControl.checkEducationAccess(c0, function (c) { renderCareDetail(c, q, 'women'); }); },
 
     search: renderSearchResults,
 
