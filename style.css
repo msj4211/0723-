@@ -1422,6 +1422,37 @@ body.no-scroll {
   gap: 2rem 1.5rem;
 }
 
+.care-header {
+  text-align: center;
+}
+
+.care-all-link {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  color: #66615D;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.care-all-link:hover {
+  color: #000000;
+}
+
+.care-desc {
+  margin-top: 0.75rem;
+  color: #66615D;
+  line-height: 1.6;
+}
+
+.care-notice {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #E5E1DC;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #8A847E;
+}
+
 .point-grid-empty {
   grid-column: 1 / -1;
   padding: 3rem 0;
