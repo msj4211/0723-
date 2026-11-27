@@ -309,6 +309,10 @@ window.translations = {
     sdNotice: '본 정보는 일상적인 셀프케어를 위한 참고 자료이며 질환의 진단이나 치료를 대신하지 않습니다',
 
     // 메인 관리 버튼별 추천 이어포인트 페이지(#/recommend/calm 등)
+    crSleepSign1: "잠들기까지 오래 걸리는 날",
+    crSleepSign2: "자다가 자주 깨는 날",
+    crSleepSign3: "아침에 일어나도 피곤이 풀리지 않는 날",
+    crSleepReasonDesc: "잠은 몸이 긴장을 내려놓아야 찾아와요. 귀를 부드럽게 살피는 셀프케어는 하루 동안 쌓인 긴장을 풀고 편안한 휴식을 준비하는 데 도움이 될 수 있어요",
     crWomenSign3: "몸이 차고 컨디션이 들쭉날쭉한 날",
     crWomenSign2: "생리 전 유난히 예민하고 몸이 붓는 날",
     crWomenSign1: "생리 기간에 아랫배가 묵직하고 불편한 날",
@@ -749,6 +753,10 @@ window.translations = {
     sdNotice: 'This information is provided for general self-care reference and is not a substitute for medical diagnosis or treatment',
 
     // Care pages (#/recommend/calm etc.)
+    crSleepSign1: "Nights when it takes a long time to fall asleep",
+    crSleepSign2: "Nights when you wake up often",
+    crSleepSign3: "Mornings when you still feel tired after waking up",
+    crSleepReasonDesc: "Sleep comes when the body lets go of tension. Gently caring for the ear can help release the tension of the day and prepare for restful sleep",
     crWomenSign3: "Days when your body feels cold and your condition is up and down",
     crWomenSign2: "Days before your period when you feel extra sensitive and puffy",
     crWomenSign1: "Days when your lower belly feels heavy and uncomfortable during your period",
