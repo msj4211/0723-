@@ -1244,13 +1244,11 @@ window.Pages = (function () {
     }
   }
 
-  // 메인 '오늘 어떤 관리가 필요하신가요' 버튼 6개(수면 포함)의 추천 이어포인트 페이지.
-  // 화면 구성·클래스(sd-*)는 기존 수면 페이지와 같다.
-  // - 그림: 이어포인트 메뉴의 해당 증상 카드 이미지(js/care-pages-data.js의 image)
-  // - 탭/설명: 그림에 표시된 혈자리 + 이어 리딩 가이드의 한 줄 설명(js/care-pages-data.js)
-  // - 제목·소개·추천 이유 문구: js/translations.js (수면은 sdHero*, 나머지는 cr{Care}*)
+  // 메인 '오늘 어떤 관리가 필요하신가요' 버튼 5개(마음·소화·피로·목어깨·여성건강)의 페이지.
+  // 화면 구성·클래스(sd-*)는 수면 페이지와 같다. '푹 자고 싶어요'는 기존 renderSleepDetail 그대로.
+  // - 문구(제목·소개·이런 날·이유): js/translations.js 의 cr{Care}*
+  // - 혈자리·귀 그림: js/care-pages-data.js (비어 있으면 '준비 중' 문구만 나온다)
   var CARE_TEXT = {
-    sleep: { title: 'sdHeroTitle', desc: 'sdHeroDesc', reason: 'crSleepReasonDesc' },
     calm: { title: 'crCalmHeroTitle', desc: 'crCalmHeroDesc', reason: 'crCalmReasonDesc' },
     digest: { title: 'crDigestHeroTitle', desc: 'crDigestHeroDesc', reason: 'crDigestReasonDesc' },
     fatigue: { title: 'crFatigueHeroTitle', desc: 'crFatigueHeroDesc', reason: 'crFatigueReasonDesc' },
@@ -1289,6 +1287,14 @@ window.Pages = (function () {
       }).join('');
 
       var alt = (isEn() ? 'Ear point map: ' : '귀 혈자리 이미지: ') + data.points.map(nameOf).join(', ');
+      var P = txt.title.replace('HeroTitle', '');
+      var signsHtml =
+        '<section class="cr-signs" aria-labelledby="cr-signs-title">' +
+          '<h2 class="sd-section-title" id="cr-signs-title">' + t('crSignsTitle') + '</h2>' +
+          '<ul class="cr-sign-list">' +
+            [1, 2, 3].map(function (i) { return '<li><span class="sd-point-dot" aria-hidden="true"></span><span>' + t(P + 'Sign' + i) + '</span></li>'; }).join('') +
+          '</ul>' +
+        '</section>';
 
       container.innerHTML =
         '<main class="sd-page"><article class="sd-detail-card">' +
@@ -1300,16 +1306,17 @@ window.Pages = (function () {
             '</div>' +
           '</header>' +
           '<div class="sd-content">' +
+            signsHtml +
+            (data.points.length ? (
             '<section aria-labelledby="sd-recommended-points-title">' +
               '<h2 class="sd-section-title" id="sd-recommended-points-title">' + t('sdSectionTitle') + '</h2>' +
               '<div class="sd-point-tabs sd-point-tabs--chips" role="tablist" aria-label="' + escapeHtml(t('sdSectionTitle')) + '">' + tabsHtml + '</div>' +
               '<div class="sd-map-section sd-map-section--care">' +
-                '<div class="sd-map-image-wrap">' +
-                  '<img class="sd-map-image" src="' + escapeHtml(data.image) + '" alt="' + escapeHtml(alt) + '">' +
-                '</div>' +
+                (data.image ? '<div class="sd-map-image-wrap"><img class="sd-map-image" src="' + escapeHtml(data.image) + '" alt="' + escapeHtml(alt) + '"></div>' : '') +
                 '<div class="sd-point-list">' + itemsHtml + '</div>' +
               '</div>' +
-            '</section>' +
+            '</section>'
+            ) : '<p class="cr-coming-soon">' + t('crComingSoon') + '</p>') +
             '<section class="sd-reason-section">' +
               '<div class="sd-reason-icon" aria-hidden="true">◌</div>' +
               '<div><h2>' + t('sdReasonTitle') + '</h2>' +
@@ -3053,7 +3060,7 @@ window.Pages = (function () {
 
     recommendSleep: function (container, queryString) {
       window.AccessControl.checkEducationAccess(container, function (c) {
-        renderCareDetail(c, queryString, 'sleep');
+        renderSleepDetail(c, queryString);
       });
     },
 
