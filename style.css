@@ -5384,3 +5384,19 @@ a.auth-user-email[hidden],
 .vid-watch-bar { flex: 0 0 80px; height: 6px; border-radius: 3px; background: #EEE8DD; overflow: hidden; }
 .vid-watch-bar i { display: block; height: 100%; background: #FFCC00; }
 .vid-watch-no { color: #8A8276; }
+.act-section { margin: 1.4rem 0 0.6rem; font-size: 1rem; font-weight: 800; }
+.act-nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.act-nums div { padding: 0.7rem; border: 1px solid #EEE8DD; border-radius: 10px; background: #FFFFFF; }
+.act-nums span { display: block; font-size: 0.75rem; color: #8A8276; }
+.act-nums b { font-size: 1.4rem; font-weight: 800; }
+.act-chart { display: flex; align-items: flex-end; gap: 3px; height: 140px; margin: 1rem 0 0.4rem; padding-bottom: 18px; }
+.act-bar { position: relative; flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+.act-bar i { display: block; width: 100%; min-height: 2px; border-radius: 4px 4px 0 0; background: #FFCC00; }
+.act-bar em { font-style: normal; font-size: 0.68rem; color: #5A544A; }
+.act-bar span { position: absolute; bottom: -18px; font-size: 0.66rem; color: #8A8276; white-space: nowrap; }
+.act-pages { margin: 0; padding-left: 1.2rem; }
+.act-pages li { padding: 0.35rem 0; border-bottom: 1px solid #F1ECE3; font-size: 0.86rem; }
+.act-pages li span { display: inline-block; min-width: 55%; }
+.act-pages li b { margin-right: 6px; }
+.act-pages li small { color: #8A8276; }
+@media (max-width: 560px) { .act-nums { grid-template-columns: repeat(2, 1fr); } }
