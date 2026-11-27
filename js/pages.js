@@ -2879,7 +2879,8 @@ window.Pages = (function () {
         itemHtml('admin-orders', '파트너 전용몰 관리', '<em class="my-area-count" data-count="orders"></em>') +
         itemHtml('admin-apply', '팀 신청 관리', '<em class="my-area-count" data-count="apply"></em>') +
         itemHtml('admin-certified', '인증점 관리') +
-        itemHtml('admin-videos', '교육 영상 관리');
+        itemHtml('admin-videos', '교육 영상 관리') +
+        itemHtml('admin-activity', '회원 방문 기록');
       var client = window.supabaseClient;
       client.rpc('admin_list_members').then(function (r) {
         if (r.error || !nav.isConnected) return;
@@ -3091,6 +3092,12 @@ window.Pages = (function () {
     adminVideos: function (container) {
       window.AccessControl.checkEducationAccess(container, withMyArea('admin-videos', function (c) {
         window.EduVideos.renderAdmin(c);
+      }));
+    },
+
+    adminActivity: function (container) {
+      window.AccessControl.checkEducationAccess(container, withMyArea('admin-activity', function (c) {
+        window.AdminActivity.render(c);
       }));
     },
 
