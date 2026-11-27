@@ -99,13 +99,23 @@ window.EduVideos = (function () {
         listEl.innerHTML = '<div class="vid-empty"><p>아직 볼 수 있는 교육 영상이 없어요</p><p class="vid-empty-sub">교육에 참여하신 영상은 원장님이 열어 드리면 여기에 나타납니다</p></div>';
         return;
       }
-      listEl.innerHTML = list.map(function (v) {
+      var groups = [], byCat = {};
+      list.forEach(function (v) {
+        var c = v.category || '기타 교육';
+        if (!byCat[c]) { byCat[c] = []; groups.push(c); }
+        byCat[c].push(v);
+      });
+      function cardHtml(v) {
         return '<article class="vid-card" data-id="' + esc(v.id) + '">' +
           (v.month_label ? '<p class="vid-month">' + esc(v.month_label) + '</p>' : '') +
           '<h3 class="vid-title">' + esc(v.title) + '</h3>' +
           (v.description ? '<p class="vid-desc">' + esc(v.description).replace(/\n/g, '<br>') + '</p>' : '') +
           '<div class="vid-player"><button type="button" class="vid-play-btn" data-play="' + esc(v.id) + '">▶ 영상 보기</button></div>' +
           '</article>';
+      }
+      listEl.innerHTML = groups.map(function (c) {
+        return '<section class="vid-group">' + (groups.length > 1 || byCat[c][0].category ? '<h3 class="vid-group-title">' + esc(c) + '</h3>' : '') +
+          byCat[c].map(cardHtml).join('') + '</section>';
       }).join('');
 
       listEl.addEventListener('click', function (e) {
@@ -204,12 +214,22 @@ window.EduVideos = (function () {
       return members.filter(function (m) { return (m.education_status || 'pending') === 'approved'; });
     }
 
+    function categoryField(value) {
+      var seen = {}, opts = [];
+      ['팀 교육', '피부관리 교육'].concat(videos.map(function (v) { return v.category; })).forEach(function (c) {
+        if (c && !seen[c]) { seen[c] = true; opts.push(c); }
+      });
+      return '<label class="cert-form-field"><span>교육 종류</span><input name="category" list="vid-cat-list" value="' + esc(value || '') + '" placeholder="예: 피부관리 교육">' +
+        '<datalist id="vid-cat-list">' + opts.map(function (c) { return '<option value="' + esc(c) + '">'; }).join('') + '</datalist></label>';
+    }
+
     function uploadFormHtml() {
       return '<form class="cert-form vid-upload" novalidate>' +
         '<h3>새 영상 올리기</h3>' +
         '<div class="cert-form-grid">' +
         '<label class="cert-form-field"><span>제목 <em>*</em></span><input name="title" placeholder="예: 1기 1회차 · 이혈의 기초"></label>' +
         '<label class="cert-form-field"><span>교육 달 · 회차</span><input name="month_label" placeholder="예: 2026년 12월"></label>' +
+        categoryField('') +
         '<label class="cert-form-field cert-form-field--wide"><span>설명</span><textarea name="description" rows="2" placeholder="영상에서 다루는 내용 (선택)"></textarea></label>' +
         '<label class="cert-form-field cert-form-field--wide"><span>영상 파일 <em>*</em></span><input name="file" type="file" accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.m4v,.webm"></label>' +
         '</div>' +
@@ -225,6 +245,7 @@ window.EduVideos = (function () {
         '<div class="cert-form-grid">' +
         '<label class="cert-form-field"><span>제목 <em>*</em></span><input name="title" value="' + esc(v.title) + '"></label>' +
         '<label class="cert-form-field"><span>교육 달 · 회차</span><input name="month_label" value="' + esc(v.month_label || '') + '"></label>' +
+        categoryField(v.category) +
         '<label class="cert-form-field cert-form-field--wide"><span>설명</span><textarea name="description" rows="2">' + esc(v.description || '') + '</textarea></label>' +
         '<label class="cert-form-field"><span>보여주는 순서</span><input name="sort_order" type="number" value="' + (v.sort_order || 0) + '" placeholder="작을수록 앞"></label>' +
         '</div>' +
@@ -270,7 +291,7 @@ window.EduVideos = (function () {
           var names = (v.viewer_ids || []).map(function (id) { return nameOf[id] || '알 수 없는 회원'; });
           return '<li class="cert-admin-item vid-admin-item">' +
             '<div class="admin-order-head"><b>' + esc(v.title) + '</b> <span class="admin-status admin-status--' + badge + '">' + badgeText + '</span></div>' +
-            '<p class="admin-order-who">' + [v.month_label, '올린 날 ' + fmtDate(v.created_at), fmtSize(v.file_size)].filter(Boolean).map(esc).join(' · ') + '</p>' +
+            '<p class="admin-order-who">' + [v.category, v.month_label, '올린 날 ' + fmtDate(v.created_at), fmtSize(v.file_size)].filter(Boolean).map(esc).join(' · ') + '</p>' +
             '<p class="apply-admin-meta">볼 수 있는 사람 ' + names.length + '명' + (names.length ? ': ' + esc(names.slice(0, 8).join(', ')) + (names.length > 8 ? ' 외 ' + (names.length - 8) + '명' : '') : '') + '</p>' +
             '<div class="admin-order-edit">' +
             '<button type="button" class="admin-btn" data-pick="' + esc(v.id) + '">볼 사람 고르기</button>' +
@@ -304,7 +325,7 @@ window.EduVideos = (function () {
         p_id: x.id, p_title: x.title, p_description: x.description || '', p_month_label: x.month_label || '',
         p_storage_path: patch && patch.storage_path ? patch.storage_path : null,
         p_file_size: patch && patch.file_size ? patch.file_size : null,
-        p_is_active: !!x.is_active, p_sort_order: x.sort_order || 0
+        p_is_active: !!x.is_active, p_sort_order: x.sort_order || 0, p_category: x.category || ''
       });
     }
 
@@ -326,7 +347,7 @@ window.EduVideos = (function () {
         client.rpc('admin_save_video', {
           p_id: null, p_title: title, p_description: f.elements.description.value.trim(),
           p_month_label: f.elements.month_label.value.trim(), p_storage_path: null, p_file_size: null,
-          p_is_active: false, p_sort_order: 0
+          p_is_active: false, p_sort_order: 0, p_category: f.elements.category.value.trim()
         }).then(function (r) {
           if (r.error) throw new Error(r.error.message);
           newId = r.data;
@@ -340,7 +361,8 @@ window.EduVideos = (function () {
             return client.rpc('admin_save_video', {
               p_id: newId, p_title: title, p_description: f.elements.description.value.trim(),
               p_month_label: f.elements.month_label.value.trim(), p_storage_path: objectName,
-              p_file_size: file.size, p_is_active: false, p_sort_order: 0
+              p_file_size: file.size, p_is_active: false, p_sort_order: 0,
+              p_category: f.elements.category.value.trim()
             });
           });
         }).then(function (r2) {
@@ -372,7 +394,8 @@ window.EduVideos = (function () {
         if (!f.elements.title.value.trim()) { m2.textContent = '제목을 적어 주세요'; return; }
         save(v, {
           title: f.elements.title.value.trim(), month_label: f.elements.month_label.value.trim(),
-          description: f.elements.description.value.trim(), sort_order: parseInt(f.elements.sort_order.value, 10) || 0
+          description: f.elements.description.value.trim(), sort_order: parseInt(f.elements.sort_order.value, 10) || 0,
+          category: f.elements.category.value.trim()
         }).then(function (r) {
           if (r.error) { m2.textContent = r.error.message; return; }
           editing = null; load();

@@ -26,6 +26,9 @@
     '아직 볼 수 있는 교육 영상이 없어요': 'There are no training videos for you yet',
     '교육에 참여하신 영상은 원장님이 열어 드리면 여기에 나타납니다': 'Videos from sessions you joined appear here once the director opens them for you',
     '▶ 영상 보기': '▶ Watch',
+    '팀 교육': 'Team Training',
+    '피부관리 교육': 'Skin Care Training',
+    '기타 교육': 'Other Training',
     // ===== 공식 인증점 =====
     '공식 인증점': 'Certified Shops',
     '730스킨이어테라피 팀으로 합류해 교육을 마치고': 'These shops joined the 730 Skin Ear Therapy team, completed training',
