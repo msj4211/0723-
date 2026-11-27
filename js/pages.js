@@ -2675,7 +2675,8 @@ window.Pages = (function () {
   function renderMyAreaNav(nav, active) {
     var items = [
       ['mypage', window.t('myNavInfo')],
-      ['favorites', window.t('myNavFavorites')]
+      ['favorites', window.t('myNavFavorites')],
+      ['videos', '교육 영상']
     ];
     function itemHtml(route, label, extra) {
       return '<a class="my-area-link' + (route === active ? ' is-active' : '') + '" href="#/' + route + '"' +
@@ -2699,7 +2700,8 @@ window.Pages = (function () {
         itemHtml('admin', '회원 승인 관리', '<em class="my-area-count" data-count="members"></em>') +
         itemHtml('admin-orders', '파트너 전용몰 관리', '<em class="my-area-count" data-count="orders"></em>') +
         itemHtml('admin-apply', '팀 신청 관리', '<em class="my-area-count" data-count="apply"></em>') +
-        itemHtml('admin-certified', '인증점 관리');
+        itemHtml('admin-certified', '인증점 관리') +
+        itemHtml('admin-videos', '교육 영상 관리');
       var client = window.supabaseClient;
       client.rpc('admin_list_members').then(function (r) {
         if (r.error || !nav.isConnected) return;
@@ -2894,6 +2896,18 @@ window.Pages = (function () {
     // 공식 인증점: 손님도 보고 인증번호를 조회해야 해서 로그인 없이 연다.
     certified: function (container) {
       window.Certified.renderPublic(container);
+    },
+
+    videos: function (container) {
+      window.AccessControl.checkEducationAccess(container, withMyArea('videos', function (c, session, profile) {
+        window.EduVideos.renderMember(c, session, profile);
+      }));
+    },
+
+    adminVideos: function (container) {
+      window.AccessControl.checkEducationAccess(container, withMyArea('admin-videos', function (c) {
+        window.EduVideos.renderAdmin(c);
+      }));
     },
 
     adminCertified: function (container) {

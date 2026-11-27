@@ -19,6 +19,13 @@
     '저장': 'Save',
     '저장 중…': 'Saving…',
     '저장됨': 'Saved',
+    // ===== 교육 영상 =====
+    '교육 영상': 'Training Videos',
+    '교육 영상 관리': 'Training Videos (Admin)',
+    '온라인 교육 녹화 영상입니다. 영상은 이 화면에서만 볼 수 있고, 내려받거나 다른 분께 공유할 수 없습니다': 'Recordings of our online training. Videos can only be watched on this page and cannot be downloaded or shared',
+    '아직 볼 수 있는 교육 영상이 없어요': 'There are no training videos for you yet',
+    '교육에 참여하신 영상은 원장님이 열어 드리면 여기에 나타납니다': 'Videos from sessions you joined appear here once the director opens them for you',
+    '▶ 영상 보기': '▶ Watch',
     // ===== 공식 인증점 =====
     '공식 인증점': 'Certified Shops',
     '730스킨이어테라피 팀으로 합류해 교육을 마치고': 'These shops joined the 730 Skin Ear Therapy team, completed training',
