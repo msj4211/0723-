@@ -5195,3 +5195,38 @@ a.auth-user-email[hidden],
 @keyframes certFocus { 0%, 60% { box-shadow: 0 0 0 3px #171717; } 100% { box-shadow: 0 0 0 0 transparent; } }
 .cert-admin-note { margin: -0.8rem 0 1rem; }
 @media (max-width: 600px) { .cert-map { height: 300px; } }
+
+/* ===== 교육 영상 (2026-11-27) ===== */
+.vid-lead { margin: -0.4rem 0 1.2rem; font-size: 0.92rem; color: #6B6458; line-height: 1.6; }
+.vid-list { display: grid; gap: 1rem; }
+.vid-card { padding: 1.1rem; border: 1px solid #EEE8DD; border-radius: 14px; background: #FFFFFF; }
+.vid-month { margin: 0 0 0.25rem; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em; color: #B0563A; }
+.vid-title { margin: 0 0 0.4rem; font-size: 1.05rem; font-weight: 800; }
+.vid-desc { margin: 0 0 0.8rem; font-size: 0.9rem; color: #5A544A; line-height: 1.6; }
+.vid-play-btn { width: 100%; padding: 2.4rem 1rem; border: 0; border-radius: 12px; background: #2B2722; color: #FFFFFF; font-size: 1rem; font-weight: 800; cursor: pointer; }
+.vid-play-btn:disabled { opacity: 0.7; cursor: wait; }
+.vid-stage { position: relative; width: 100%; background: #000000; border-radius: 12px; overflow: hidden; user-select: none; -webkit-user-select: none; }
+.vid-stage:fullscreen, .vid-stage:-webkit-full-screen { border-radius: 0; display: flex; align-items: center; }
+.vid-video { display: block; width: 100%; max-height: 72vh; background: #000000; }
+.vid-stage:fullscreen .vid-video { max-height: 100vh; height: 100%; }
+.vid-wm { position: absolute; z-index: 2; pointer-events: none; padding: 2px 8px; font-size: 0.8rem; font-weight: 700; color: rgba(255, 255, 255, 0.55); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); white-space: nowrap; transition: left 1.2s ease, top 1.2s ease; }
+.vid-full { position: absolute; z-index: 3; top: 8px; right: 8px; width: 34px; height: 34px; border: 0; border-radius: 8px; background: rgba(0, 0, 0, 0.45); color: #FFFFFF; font-size: 1.05rem; cursor: pointer; }
+.vid-empty { padding: 2rem 1rem; text-align: center; border: 1px dashed #DDD6C8; border-radius: 14px; color: #5A544A; }
+.vid-empty p { margin: 0; }
+.vid-empty-sub { margin-top: 0.4rem !important; font-size: 0.85rem; color: #8A8276; }
+.vid-upload textarea, .vid-edit textarea { padding: 0.55rem 0.7rem; border: 1px solid #DDD6C8; border-radius: 8px; font: inherit; font-size: 0.92rem; font-weight: 400; resize: vertical; }
+.vid-upload input[type="file"] { padding: 0.45rem 0; border: 0; background: transparent; }
+.vid-hint { margin: 0.4rem 0 0.6rem; font-size: 0.8rem; color: #8A8276; line-height: 1.5; }
+.vid-progress { position: relative; height: 26px; margin-top: 0.8rem; border-radius: 13px; background: #EEE8DD; overflow: hidden; }
+.vid-progress-bar { width: 0; height: 100%; background: #FFCC00; transition: width 0.3s ease; }
+.vid-progress-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; }
+.vid-admin-item .vid-edit, .vid-admin-item .vid-picker { margin-top: 0.8rem; }
+.vid-admin-preview:not(:empty) { margin-top: 0.8rem; }
+.vid-picker { padding: 0.9rem; border: 1px solid #EEE8DD; border-radius: 12px; background: #FCFAF6; }
+.vid-picker-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0.6rem; }
+.vid-picker-search { flex: 1 1 180px; padding: 0.5rem 0.7rem; border: 1px solid #DDD6C8; border-radius: 8px; font-size: 0.9rem; }
+.vid-picker-list { max-height: 320px; overflow-y: auto; margin: 0; padding: 0; list-style: none; border-top: 1px solid #EEE8DD; }
+.vid-picker-list li { border-bottom: 1px solid #EEE8DD; }
+.vid-picker-list label { display: flex; align-items: center; gap: 8px; padding: 0.5rem 0.2rem; font-size: 0.9rem; cursor: pointer; }
+.vid-picker-list small { color: #8A8276; font-size: 0.78rem; }
+.admin-btn--reject { color: #B0563A; border-color: #E8C9BE; }
