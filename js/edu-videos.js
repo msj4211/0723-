@@ -166,9 +166,12 @@ window.EduVideos = (function () {
         if (!session) throw new Error('다시 로그인해 주세요');
         return new Promise(function (resolve, reject) {
           var up = new tus.Upload(file, {
-            endpoint: window.SUPABASE_URL + '/storage/v1/upload/resumable',
+            // 큰 파일은 저장소 전용 주소로 보내는 것이 Supabase 권장 방식이다
+            endpoint: window.SUPABASE_URL.replace('.supabase.co', '.storage.supabase.co') + '/storage/v1/upload/resumable',
             retryDelays: [0, 3000, 5000, 10000, 20000, 30000, 60000],
-            headers: { authorization: 'Bearer ' + session.access_token, apikey: window.SUPABASE_KEY },
+            // authorization은 여기 넣지 않는다. 아래 onBeforeRequest에서 한 번만 넣는다
+            // (두 곳에 넣으면 브라우저가 'Bearer A, Bearer A'로 합쳐 보내 Invalid Compact JWS 오류가 난다)
+            headers: { apikey: window.SUPABASE_KEY },
             uploadDataDuringCreation: true,
             storeFingerprintForResuming: false,
             metadata: { bucketName: BUCKET, objectName: objectName, contentType: file.type || 'video/mp4', cacheControl: '3600' },
@@ -176,8 +179,8 @@ window.EduVideos = (function () {
             // 1시간 넘게 걸려도 로그인 표가 바뀐 것을 따라가도록 매번 새로 넣는다
             onBeforeRequest: function (req) {
               return client.auth.getSession().then(function (s) {
-                var t = s.data && s.data.session && s.data.session.access_token;
-                if (t) req.setHeader('authorization', 'Bearer ' + t);
+                var t = (s.data && s.data.session && s.data.session.access_token) || session.access_token;
+                req.setHeader('authorization', 'Bearer ' + t);
               });
             },
             onError: function (err) { reject(err); },
@@ -397,7 +400,7 @@ window.EduVideos = (function () {
           msg.textContent = uploadErrorText(err);
           msg.style.wordBreak = 'break-all';
           // 파일 없이 남은 기록은 지운다
-          if (newId) client.rpc('admin_delete_video', { p_id: newId });
+          if (newId) client.rpc('admin_delete_video', { p_id: newId }).then(function () { load(); });
         });
         return;
       }
