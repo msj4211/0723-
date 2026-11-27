@@ -27,6 +27,7 @@
     'admin-certified': window.Pages.adminCertified,
     'videos': window.Pages.videos,
     'admin-videos': window.Pages.adminVideos,
+    'admin-activity': window.Pages.adminActivity,
     'shop': window.Pages.shop,
     'product-detail': window.Pages.productDetail
   };
@@ -79,7 +80,7 @@
     var activeRoute = routeName === '' ? 'home' : routeName;
     if (activeRoute === 'ear-point-detail') activeRoute = 'ear-point';
     if (activeRoute === 'product-detail') activeRoute = 'shop';
-    if (activeRoute === 'admin' || activeRoute === 'admin-orders' || activeRoute === 'admin-apply' || activeRoute === 'admin-certified' || activeRoute === 'admin-videos' || activeRoute === 'favorites') activeRoute = 'mypage';
+    if (activeRoute === 'admin' || activeRoute === 'admin-orders' || activeRoute === 'admin-apply' || activeRoute === 'admin-certified' || activeRoute === 'admin-videos' || activeRoute === 'admin-activity' || activeRoute === 'favorites') activeRoute = 'mypage';
     document.querySelectorAll('[data-route]').forEach(function (link) {
       if (link.dataset.route === activeRoute) {
         link.setAttribute('aria-current', 'page');

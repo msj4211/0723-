@@ -32,7 +32,7 @@ window.EduVideos = (function () {
   }
 
   // ===================== 재생기 (이름 워터마크) =====================
-  function mountPlayer(box, url, name) {
+  function mountPlayer(box, url, name, onTrack) {
     box.innerHTML =
       '<div class="vid-stage">' +
       '<video class="vid-video" controls playsinline preload="metadata" controlsList="nodownload" disablePictureInPicture></video>' +
@@ -78,6 +78,19 @@ window.EduVideos = (function () {
     }
     document.addEventListener('fullscreenchange', onFs);
     document.addEventListener('webkitfullscreenchange', onFs);
+    // 시청 기록: 재생 중 30초마다, 멈추거나 끝날 때 어디까지 봤는지 보낸다
+    if (onTrack) {
+      var lastSent = 0;
+      var send = function () {
+        if (!isFinite(video.duration)) return;
+        lastSent = Date.now();
+        onTrack(video.currentTime, video.duration);
+      };
+      video.addEventListener('timeupdate', function () { if (Date.now() - lastSent > 30000) send(); });
+      video.addEventListener('pause', send);
+      video.addEventListener('ended', send);
+      video.addEventListener('play', function () { if (!lastSent) send(); });
+    }
     return video;
   }
 
@@ -134,7 +147,9 @@ window.EduVideos = (function () {
             btn.insertAdjacentHTML('afterend', '<p class="admin-empty">영상을 열지 못했어요. 볼 수 있는 기간이 끝났거나 권한이 바뀌었을 수 있어요</p>');
             return;
           }
-          var video = mountPlayer(btn.parentNode, s.data.signedUrl, name);
+          var video = mountPlayer(btn.parentNode, s.data.signedUrl, name, function (pos, dur) {
+            client.rpc('log_video_progress', { p_video_id: v.id, p_position: pos, p_duration: dur }).then(function () {}, function () {});
+          });
           video.play().catch(function () {});
         });
       });
@@ -217,7 +232,7 @@ window.EduVideos = (function () {
 
   function renderAdmin(container) {
     var client = window.supabaseClient;
-    var videos = [], members = [], picking = null, editing = null, busy = false;
+    var videos = [], members = [], watch = {}, picking = null, editing = null, busy = false;
     container.innerHTML =
       '<div class="section-title"><h2>교육 영상 관리</h2></div>' +
       '<div class="admin-card"><p class="admin-loading">불러오는 중…</p></div>';
@@ -305,10 +320,21 @@ window.EduVideos = (function () {
           var badge = !hasFile ? 'suspended' : (v.is_active ? 'approved' : 'pending');
           var badgeText = !hasFile ? '파일 없음' : (v.is_active ? '공개 중' : '숨김');
           var names = (v.viewer_ids || []).map(function (id) { return nameOf[id] || '알 수 없는 회원'; });
+          var watched = 0;
+          var watchRows = (v.viewer_ids || []).map(function (id) {
+            var w = watch[v.id + '|' + id];
+            var nm = esc(nameOf[id] || '알 수 없는 회원');
+            if (!w) return '<li><b>' + nm + '</b><span class="vid-watch-no">아직 안 봄</span></li>';
+            watched++;
+            var pct = w.duration_seconds ? Math.min(100, Math.round(w.watched_seconds / w.duration_seconds * 100)) : null;
+            return '<li><b>' + nm + '</b><span class="vid-watch-bar"><i style="width:' + (pct || 0) + '%"></i></span>' +
+              '<span>' + (pct !== null ? pct + '%까지' : '봄') + ' · 마지막 ' + esc(fmtDate(w.last_at)) + '</span></li>';
+          }).join('');
           return '<li class="cert-admin-item vid-admin-item">' +
             '<div class="admin-order-head"><b>' + esc(v.title) + '</b> <span class="admin-status admin-status--' + badge + '">' + badgeText + '</span></div>' +
             '<p class="admin-order-who">' + [v.category, v.month_label, '올린 날 ' + fmtDate(v.created_at), fmtSize(v.file_size)].filter(Boolean).map(esc).join(' · ') + '</p>' +
             '<p class="apply-admin-meta">볼 수 있는 사람 ' + names.length + '명' + (names.length ? ': ' + esc(names.slice(0, 8).join(', ')) + (names.length > 8 ? ' 외 ' + (names.length - 8) + '명' : '') : '') + '</p>' +
+            (names.length ? '<details class="vid-watch"><summary>시청 기록 · ' + watched + '/' + names.length + '명 봄</summary><ul>' + watchRows + '</ul></details>' : '') +
             '<div class="admin-order-edit">' +
             '<button type="button" class="admin-btn" data-pick="' + esc(v.id) + '">볼 사람 고르기</button>' +
             (hasFile ? '<button type="button" class="admin-btn' + (v.is_active ? '' : ' admin-btn--approve') + '" data-toggle="' + esc(v.id) + '">' + (v.is_active ? '숨기기' : '공개하기') + '</button>' : '') +
@@ -326,11 +352,13 @@ window.EduVideos = (function () {
     }
 
     function load() {
-      return Promise.all([client.rpc('admin_list_videos'), client.rpc('admin_list_members')]).then(function (rs) {
+      return Promise.all([client.rpc('admin_list_videos'), client.rpc('admin_list_members'), client.rpc('admin_list_video_watch')]).then(function (rs) {
         if (!card.isConnected) return;
         if (rs[0].error) { card.innerHTML = '<p class="admin-empty">불러오지 못했어요: ' + esc(rs[0].error.message) + '</p>'; return; }
         videos = rs[0].data || [];
         members = (rs[1] && rs[1].data) || [];
+        watch = {};
+        ((rs[2] && rs[2].data) || []).forEach(function (w) { watch[w.video_id + '|' + w.user_id] = w; });
         if (!busy) draw();
       });
     }
