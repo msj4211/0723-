@@ -39,11 +39,13 @@ window.Pages = (function () {
 
   function renderHome(container) {
     var purposeCards = [
+      // 2026-11-27 메인 버튼을 3개로 줄임. 마음(calm)·피로(fatigue)·목어깨(shoulder)
+      // 페이지(#/recommend/...)는 지우지 않고 남겨 두었다 — 다시 넣을 때 아래에 한 줄씩 추가하면 된다.
+      //   { key: 'purposeCalm', tone: 'mint', href: '#/recommend/calm' },
+      //   { key: 'purposeFatigue', tone: 'coral', href: '#/recommend/fatigue' },
+      //   { key: 'purposeShoulder', tone: 'blue', href: '#/recommend/shoulder' },
       { key: 'purposeSleep', tone: 'lavender', href: '#/recommend/sleep' },
-      { key: 'purposeCalm', tone: 'mint', href: '#/recommend/calm' },
       { key: 'purposeDigest', tone: 'yellow', href: '#/recommend/digest' },
-      { key: 'purposeFatigue', tone: 'coral', href: '#/recommend/fatigue' },
-      { key: 'purposeShoulder', tone: 'blue', href: '#/recommend/shoulder' },
       { key: 'purposeWomen', tone: 'pink', href: '#/recommend/women' }
     ];
 
