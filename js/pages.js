@@ -40,11 +40,11 @@ window.Pages = (function () {
   function renderHome(container) {
     var purposeCards = [
       { key: 'purposeSleep', tone: 'lavender', href: '#/recommend/sleep' },
-      { key: 'purposeCalm', tone: 'mint' },
-      { key: 'purposeDigest', tone: 'yellow' },
-      { key: 'purposeFatigue', tone: 'coral' },
-      { key: 'purposeShoulder', tone: 'blue' },
-      { key: 'purposeWomen', tone: 'pink' }
+      { key: 'purposeCalm', tone: 'mint', href: '#/ear-point?care=calm' },
+      { key: 'purposeDigest', tone: 'yellow', href: '#/ear-point?care=digest' },
+      { key: 'purposeFatigue', tone: 'coral', href: '#/ear-point?care=fatigue' },
+      { key: 'purposeShoulder', tone: 'blue', href: '#/ear-point?care=shoulder' },
+      { key: 'purposeWomen', tone: 'pink', href: '#/ear-point?care=women' }
     ];
 
     var purposeCardsHtml = purposeCards.map(function (card) {
@@ -417,11 +417,88 @@ window.Pages = (function () {
   // id/name/description/image_url만 있어서(영문 이름·정렬순서·키워드 컬럼
   // 없음), 여기서는 그 4개 필드만 그대로 그린다 — 언어를 영어로 바꿔도
   // 이 DB 기반 이름/설명 자체는 바뀌지 않는다(사이트 UI 문구만 번역됨).
+  // 메인 화면 '오늘 어떤 관리가 필요하신가요' 버튼(#/ear-point?care=digest 등)을
+  // 눌렀을 때, 이어포인트 목록에서 그 관리와 관련된 카드만 골라 보여준다.
+  // 새 데이터를 만들지 않고 이미 등록된 이어포인트 카드(ear_points)를 그대로
+  // 쓴다 — ids는 지금 등록된 카드 id, keywords는 나중에 대시보드에서 새로
+  // 추가하는 카드도 이름으로 자동으로 묶이게 하기 위한 것이다.
+  // exclude는 '목' 키워드가 '발목'·'손목'에 잘못 걸리는 것처럼 엉뚱하게
+  // 묶이는 이름을 빼기 위한 것이다.
+  var CARE_GROUPS = {
+    calm: {
+      ids: ['anxiety', 'holiday-syndrome', 'sleep'],
+      keywords: ['불안', '스트레스', '우울', '긴장', '화병', '공황', '자율신경'],
+      exclude: []
+    },
+    digest: {
+      ids: ['stomach', 'bloating', 'abdominal-pain', 'reflux-esophagitis', 'appetite-control', 'holiday-syndrome'],
+      keywords: ['소화', '복통', '복부', '식도', '변비', '설사', '식욕', '속쓰림', '체기', '구토', '멀미', '과민성'],
+      exclude: []
+    },
+    fatigue: {
+      ids: ['holiday-syndrome', 'anemia', 'immune', 'edema', 'sleep'],
+      keywords: ['피로', '빈혈', '면역', '기력', '무기력', '부종'],
+      exclude: []
+    },
+    shoulder: {
+      ids: ['fibromyalgia', 'acute-pain', 'mid-back-pain'],
+      keywords: ['어깨', '목', '거북목', '경추', '오십견', '두통', '담'],
+      exclude: ['발목', '손목', '담배', '담낭', '담석']
+    },
+    women: {
+      ids: ['menstrual-pain', 'endometriosis', 'infertility', 'edema'],
+      keywords: ['생리', '자궁', '난임', '불임', '갱년기', 'PMS', '여성', '유방', '질염', '난소', '임신'],
+      exclude: []
+    }
+  };
+
+  var CARE_TEXT_KEYS = {
+    calm: { title: 'careCalmTitle', desc: 'careCalmDesc' },
+    digest: { title: 'careDigestTitle', desc: 'careDigestDesc' },
+    fatigue: { title: 'careFatigueTitle', desc: 'careFatigueDesc' },
+    shoulder: { title: 'careShoulderTitle', desc: 'careShoulderDesc' },
+    women: { title: 'careWomenTitle', desc: 'careWomenDesc' }
+  };
+
+  function matchesCareGroup(point, group) {
+    if (group.ids.indexOf(point.id) !== -1) return true;
+    var name = String(point.name_ko || point.name || '');
+    var cleaned = name;
+    group.exclude.forEach(function (word) { cleaned = cleaned.split(word).join(''); });
+    return group.keywords.some(function (word) { return cleaned.indexOf(word) !== -1; });
+  }
+
+  function filterByCare(points, careKey) {
+    var group = CARE_GROUPS[careKey];
+    if (!group) return points;
+    var matched = points.filter(function (p) { return matchesCareGroup(p, group); });
+    // ids에 적은 순서(대표 카드)가 먼저 오고, 키워드로 묶인 카드는 그 뒤에 온다.
+    matched.sort(function (a, b) {
+      var ia = group.ids.indexOf(a.id), ib = group.ids.indexOf(b.id);
+      if (ia === -1) ia = 999;
+      if (ib === -1) ib = 999;
+      return ia - ib;
+    });
+    return matched;
+  }
+
   function renderEarPointList(container, queryString) {
+    var careKey = new URLSearchParams(queryString || '').get('care');
+    var careText = CARE_TEXT_KEYS[careKey] || null;
+
+    var headerHtml = careText
+      ? '<div class="section-title care-header">' +
+          '<a href="#/ear-point" class="care-all-link" data-i18n="careSeeAll">' + window.t('careSeeAll') + '</a>' +
+          '<h2 data-i18n="' + careText.title + '">' + window.t(careText.title) + '</h2>' +
+          '<p class="care-desc" data-i18n="' + careText.desc + '">' + window.t(careText.desc) + '</p>' +
+        '</div>'
+      : '<div class="section-title"><h2 data-i18n="navEarPoints">' + window.t('navEarPoints') + '</h2></div>';
+
     container.innerHTML =
       '<section class="page-section">' +
-      '<div class="section-title"><h2 data-i18n="navEarPoints">' + window.t('navEarPoints') + '</h2></div>' +
+      headerHtml +
       '<div class="point-grid" id="ear-point-grid"><p class="products-loading">' + window.t('productsLoading') + '</p></div>' +
+      (careText ? '<p class="care-notice" data-i18n="sdNotice">' + window.t('sdNotice') + '</p>' : '') +
       '</section>';
 
     var grid = container.querySelector('#ear-point-grid');
@@ -429,6 +506,15 @@ window.Pages = (function () {
 
     window.EarPointsRepo.load().then(function (points) {
       if (myToken !== window.__routeToken) return;
+      if (careText && points && points.length) {
+        var careCards = filterByCare(points, careKey);
+        if (careCards.length === 0) {
+          grid.innerHTML = '<p class="point-grid-empty" data-i18n="careEmpty">' + window.t('careEmpty') + '</p>';
+          return;
+        }
+        renderCards(careCards);
+        return;
+      }
       renderCards(points);
     });
 
