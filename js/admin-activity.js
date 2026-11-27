@@ -30,8 +30,48 @@ window.AdminActivity = (function () {
     var client = window.supabaseClient;
     var days = 7, member = '', rows = [];
     container.innerHTML =
-      '<div class="section-title"><h2>회원 방문 기록</h2></div>' +
+      '<div class="section-title"><h2>방문 기록</h2></div>' +
+      '<div class="admin-card act-stats"><p class="admin-loading">불러오는 중…</p></div>' +
+      '<h3 class="act-section">회원 방문 기록</h3>' +
       '<div class="admin-card act-card"><p class="admin-loading">불러오는 중…</p></div>';
+    var statsBox = container.querySelector('.act-stats');
+    var statDays = 7;
+
+    function drawStats(st) {
+      var daily = st.daily || [], pages = st.pages || [];
+      var max = Math.max.apply(null, [1].concat(daily.map(function (d) { return d.visitors; })));
+      statsBox.innerHTML =
+        '<div class="act-tools"><label>기간 <select data-stat-days>' + [[7, '최근 7일'], [30, '최근 30일'], [90, '최근 90일']].map(function (o) {
+          return '<option value="' + o[0] + '"' + (o[0] === statDays ? ' selected' : '') + '>' + o[1] + '</option>';
+        }).join('') + '</select></label></div>' +
+        '<div class="act-nums">' +
+        '<div><span>오늘 방문자</span><b>' + st.today_visitors + '</b></div>' +
+        '<div><span>오늘 조회수</span><b>' + st.today_views + '</b></div>' +
+        '<div><span>기간 방문자</span><b>' + st.visitors + '</b></div>' +
+        '<div><span>기간 조회수</span><b>' + st.views + '</b></div>' +
+        '</div>' +
+        '<div class="act-chart" role="img" aria-label="날짜별 방문자 수">' + daily.map(function (d) {
+          var md = String(d.d).slice(5).replace('-', '.').replace(/^0/, '');
+          return '<div class="act-bar" title="' + esc(md) + ' 방문자 ' + d.visitors + '명 · 조회 ' + d.views + '"><em>' + (d.visitors || '') + '</em>' +
+            '<i style="height:' + Math.round(d.visitors / max * 100) + '%"></i><span>' + (daily.length <= 14 ? esc(md) : '') + '</span></div>';
+        }).join('') + '</div>' +
+        '<h4 class="act-h">많이 본 페이지</h4>' +
+        (pages.length ? '<ol class="act-pages">' + pages.map(function (p) {
+          return '<li><span>' + esc(label(p.path)) + '</span><b>' + p.views + '회</b><small>' + p.visitors + '명</small></li>';
+        }).join('') + '</ol>' : '<p class="admin-empty">아직 기록이 없어요</p>') +
+        '<p class="act-note">로그인 안 한 방문자도 포함해요. 방문자는 브라우저마다 따로 셉니다(같은 사람이 휴대폰과 컴퓨터로 들어오면 2명). 관리자 본인 방문은 세지 않아요. 기록은 이 기능이 생긴 뒤부터 쌓입니다</p>';
+    }
+    function loadStats() {
+      client.rpc('admin_site_stats', { p_days: statDays }).then(function (r) {
+        if (!statsBox.isConnected) return;
+        if (r.error || !r.data) { statsBox.innerHTML = '<p class="admin-empty">방문 숫자를 불러오지 못했어요' + (r.error ? ': ' + esc(r.error.message) : '') + '</p>'; return; }
+        drawStats(r.data);
+      });
+    }
+    statsBox.addEventListener('change', function (e) {
+      if (e.target.matches('[data-stat-days]')) { statDays = parseInt(e.target.value, 10) || 7; loadStats(); }
+    });
+    loadStats();
     var card = container.querySelector('.act-card');
 
     function draw() {

@@ -2907,7 +2907,7 @@ window.Pages = (function () {
         itemHtml('admin-apply', '팀 신청 관리', '<em class="my-area-count" data-count="apply"></em>') +
         itemHtml('admin-certified', '인증점 관리') +
         itemHtml('admin-videos', '교육 영상 관리') +
-        itemHtml('admin-activity', '회원 방문 기록');
+        itemHtml('admin-activity', '방문 기록');
       var client = window.supabaseClient;
       client.rpc('admin_list_members').then(function (r) {
         if (r.error || !nav.isConnected) return;
