@@ -1194,15 +1194,14 @@ body.no-scroll {
   color: #000000;
 }
 
-@media (max-width: 900px) {
-  .purpose-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 359px) {
+/* 버튼 3개: 넓은 화면은 한 줄에 3개, 폰에서는 한 줄에 1개씩 */
+@media (max-width: 640px) {
   .purpose-grid {
     grid-template-columns: 1fr;
+  }
+
+  .purpose-card {
+    min-height: 72px;
   }
 }
 
