@@ -3810,6 +3810,102 @@ body.no-scroll {
   word-break: keep-all;
 }
 
+/* 버튼 페이지 '이런 날 살펴보세요' */
+.cr-signs {
+  margin-bottom: 38px;
+}
+
+.cr-sign-list {
+  list-style: none;
+  margin: 0;
+  padding: 26px 30px;
+  display: grid;
+  gap: 16px;
+  border: 1px solid var(--sd-line);
+  border-radius: 20px;
+  background: #fffdfb;
+}
+
+.cr-sign-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 19px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+.cr-sign-list li:nth-child(1) .sd-point-dot { background: #a98cdb; }
+.cr-sign-list li:nth-child(2) .sd-point-dot { background: #7fc2a4; }
+.cr-sign-list li:nth-child(3) .sd-point-dot { background: #f1bd3f; }
+
+.cr-coming-soon {
+  margin: 0 0 38px;
+  text-align: center;
+  color: var(--sd-muted);
+  font-size: 16px;
+}
+
+@media (max-width: 480px) {
+  .cr-sign-list { padding: 20px 18px; }
+  .cr-sign-list li { font-size: 16px; }
+}
+
+/* 추천 이어포인트 페이지(그림에 표시된 혈자리가 많아 탭을 작은 칩으로) */
+.sd-point-tabs--chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.sd-point-tabs--chips .sd-point-tab {
+  min-height: 0;
+  padding: 12px 22px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sd-point-tabs--chips .sd-point-tab:nth-child(4n+1) { background: var(--sd-point-1); }
+.sd-point-tabs--chips .sd-point-tab:nth-child(4n+2) { background: var(--sd-point-2); }
+.sd-point-tabs--chips .sd-point-tab:nth-child(4n+3) { background: var(--sd-point-3); }
+.sd-point-tabs--chips .sd-point-tab:nth-child(4n+4) { background: var(--sd-point-4); }
+
+.sd-map-section--care {
+  align-items: start;
+}
+
+.sd-map-section--care .sd-map-image-wrap {
+  position: sticky;
+  top: 100px;
+  background: #ffffff;
+}
+
+.sd-map-section--care .sd-point-list {
+  gap: 10px;
+}
+
+.sd-map-section--care .sd-point-item {
+  cursor: pointer;
+}
+
+.sd-map-section--care .sd-point-item:nth-child(4n+1) .sd-point-dot { background: #a98cdb; }
+.sd-map-section--care .sd-point-item:nth-child(4n+2) .sd-point-dot { background: #7fc2a4; }
+.sd-map-section--care .sd-point-item:nth-child(4n+3) .sd-point-dot { background: #73a7df; }
+.sd-map-section--care .sd-point-item:nth-child(4n+4) .sd-point-dot { background: #f1bd3f; }
+
+@media (max-width: 840px) {
+  .sd-map-section--care .sd-map-image-wrap {
+    position: relative;
+    top: 0;
+  }
+
+  .sd-point-tabs--chips .sd-point-tab {
+    padding: 10px 16px;
+    font-size: 16px;
+  }
+}
+
 .sd-reason-section {
   display: grid;
   grid-template-columns: 72px 1fr;
