@@ -168,7 +168,7 @@ window.EduVideos = (function () {
           var up = new tus.Upload(file, {
             endpoint: window.SUPABASE_URL + '/storage/v1/upload/resumable',
             retryDelays: [0, 3000, 5000, 10000, 20000, 30000, 60000],
-            headers: { authorization: 'Bearer ' + session.access_token, apikey: window.SUPABASE_KEY, 'x-upsert': 'true' },
+            headers: { authorization: 'Bearer ' + session.access_token, apikey: window.SUPABASE_KEY },
             uploadDataDuringCreation: true,
             storeFingerprintForResuming: false,
             metadata: { bucketName: BUCKET, objectName: objectName, contentType: file.type || 'video/mp4', cacheControl: '3600' },
@@ -192,11 +192,24 @@ window.EduVideos = (function () {
 
   function uploadErrorText(err) {
     var m = String((err && err.message) || err || '');
-    if (/413|Payload too large|maximum allowed size|exceeded/i.test(m)) {
+    var code = 0, body = '';
+    try {
+      if (err && err.originalResponse) {
+        code = err.originalResponse.getStatus();
+        body = String(err.originalResponse.getBody() || '');
+      }
+    } catch (e) {}
+    if (!code) { var cm = m.match(/response code: (\d+)/); if (cm) code = parseInt(cm[1], 10); }
+    if (!body) { var bm = m.match(/response text: ([\s\S]*?)(, request id|\)$)/); if (bm) body = bm[1]; }
+    try { console.warn('[edu-videos] upload failed', code, body, m); } catch (e) {}
+    var all = m + ' ' + body;
+    if (code === 413 || /Payload too large|maximum allowed size|exceeded the maximum/i.test(all)) {
       return '파일이 저장소 한도보다 커요. Supabase 저장소 설정에서 파일 크기 한도를 올려 주세요';
     }
-    if (/mime|content type|invalid_mime/i.test(m)) return 'mp4·mov·webm 영상만 올릴 수 있어요';
-    return '올리지 못했어요: ' + m.slice(0, 160);
+    if (/mime|content type|invalid_mime/i.test(all)) return 'mp4·mov·webm 영상만 올릴 수 있어요';
+    if (code === 401 || /jwt|exp/i.test(body)) return '로그인이 만료됐어요. 로그아웃했다가 다시 로그인한 뒤 올려 주세요 (코드 ' + code + ')';
+    var detail = body ? body.replace(/\s+/g, ' ').slice(0, 240) : m.slice(-240);
+    return '올리지 못했어요 (코드 ' + (code || '없음') + '): ' + detail;
   }
 
   function renderAdmin(container) {
@@ -382,6 +395,7 @@ window.EduVideos = (function () {
           btn.disabled = false;
           bar.hidden = true;
           msg.textContent = uploadErrorText(err);
+          msg.style.wordBreak = 'break-all';
           // 파일 없이 남은 기록은 지운다
           if (newId) client.rpc('admin_delete_video', { p_id: newId });
         });
