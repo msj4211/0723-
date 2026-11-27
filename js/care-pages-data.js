@@ -4,6 +4,7 @@
 //   points: [{ id: '신문', name: '신문', name_en: 'Shenmen', desc: '쉬운 설명', desc_en: 'Easy description' }, ...]
 // image나 points가 비어 있으면 그 부분은 화면에 나오지 않는다.
 window.CarePagesData = {
+  sleep: { image: null, points: [] },
   calm: { image: null, points: [] },
   digest: { image: null, points: [] },
   fatigue: { image: null, points: [] },

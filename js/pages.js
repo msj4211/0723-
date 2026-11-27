@@ -1244,11 +1244,12 @@ window.Pages = (function () {
     }
   }
 
-  // 메인 '오늘 어떤 관리가 필요하신가요' 버튼 5개(마음·소화·피로·목어깨·여성건강)의 페이지.
-  // 화면 구성·클래스(sd-*)는 수면 페이지와 같다. '푹 자고 싶어요'는 기존 renderSleepDetail 그대로.
+  // 메인 '오늘 어떤 관리가 필요하신가요' 버튼 6개(수면·마음·소화·피로·목어깨·여성건강)의 페이지.
+  // 화면 구성·클래스(sd-*)는 예전 수면 페이지와 같다(renderSleepDetail은 더 이상 쓰지 않음).
   // - 문구(제목·소개·이런 날·이유): js/translations.js 의 cr{Care}*
   // - 혈자리·귀 그림: js/care-pages-data.js (비어 있으면 '준비 중' 문구만 나온다)
   var CARE_TEXT = {
+    sleep: { title: 'sdHeroTitle', desc: 'sdHeroDesc', reason: 'crSleepReasonDesc', signs: 'crSleep' },
     calm: { title: 'crCalmHeroTitle', desc: 'crCalmHeroDesc', reason: 'crCalmReasonDesc' },
     digest: { title: 'crDigestHeroTitle', desc: 'crDigestHeroDesc', reason: 'crDigestReasonDesc' },
     fatigue: { title: 'crFatigueHeroTitle', desc: 'crFatigueHeroDesc', reason: 'crFatigueReasonDesc' },
@@ -1287,7 +1288,7 @@ window.Pages = (function () {
       }).join('');
 
       var alt = (isEn() ? 'Ear point map: ' : '귀 혈자리 이미지: ') + data.points.map(nameOf).join(', ');
-      var P = txt.title.replace('HeroTitle', '');
+      var P = txt.signs || txt.title.replace('HeroTitle', '');
       var signsHtml =
         '<section class="cr-signs" aria-labelledby="cr-signs-title">' +
           '<h2 class="sd-section-title" id="cr-signs-title">' + t('crSignsTitle') + '</h2>' +
@@ -3061,7 +3062,7 @@ window.Pages = (function () {
 
     recommendSleep: function (container, queryString) {
       window.AccessControl.checkEducationAccess(container, function (c) {
-        renderSleepDetail(c, queryString);
+        renderCareDetail(c, queryString, 'sleep');
       });
     },
 
