@@ -35,7 +35,7 @@
     'html.cp-on body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}' +
     'html.cp-on input,html.cp-on textarea,html.cp-on select,html.cp-on [contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}' +
     'html.cp-on img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}' +
-    'html.cp-on.cp-wm:not(.cp-framed) body::after{content:"";position:fixed;inset:0;z-index:2147483000;pointer-events:none;background-image:' + wmUrl + ';background-repeat:repeat}' +
+    'html.cp-on.cp-wm:not(.cp-framed) body::after{content:"";position:fixed;top:var(--cp-wm-top,0px);right:0;bottom:0;left:0;z-index:2147483000;pointer-events:none;background-image:' + wmUrl + ';background-repeat:repeat}' +
     (ALLOW_PRINT
       ? '@media print{html.cp-on body::after{display:none}}'
       : '@media print{html.cp-on body>*{display:none!important}html.cp-on body::after{display:none}' +
@@ -102,6 +102,20 @@
     if (k === 's' || k === 'u' || (k === 'p' && !ALLOW_PRINT)) e.preventDefault();
   });
 
+  // 상단바(.site-header)에는 워터마크가 겹치지 않도록, 워터마크를 상단바 높이만큼 아래에서 시작한다(2026-11-27).
+  function syncHeaderOffset() {
+    var header = document.querySelector('.site-header');
+    var h = header ? header.offsetHeight : 0;
+    root.style.setProperty('--cp-wm-top', h + 'px');
+  }
+
   window.addEventListener('hashchange', update);
+  window.addEventListener('resize', syncHeaderOffset);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncHeaderOffset);
+  } else {
+    syncHeaderOffset();
+  }
+  window.addEventListener('load', syncHeaderOffset);
   update();
 })();
