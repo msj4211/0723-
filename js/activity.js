@@ -1,4 +1,5 @@
 // 방문 기록 · 방문 통계 (2026-11-27)
+// 0) 로그인 안 한 방문자까지 포함한 방문 숫자를 Supabase에 센다 (관리자 > 방문 기록 위쪽 숫자)
 // 1) 로그인한 회원이 어떤 페이지에 들어왔는지 Supabase에 남긴다 (관리자 > 회원 방문 기록에서 봄)
 //    - 주소 뒤 검색어(?q=...)는 남기지 않고 페이지 이름만 남긴다
 //    - 같은 페이지는 10분에 한 번만, 관리자 본인은 남기지 않는다 (서버에서 처리)
@@ -68,6 +69,31 @@ window.Activity = (function () {
     }, function () {});
   }
 
+  // ---------- 사이트 전체 방문 숫자 (로그인 안 한 방문자 포함) ----------
+  // 방문자는 브라우저마다 한 번 정해지는 무작위 번호로만 구분한다
+  function visitorId() {
+    try {
+      var v = localStorage.getItem('730-visitor');
+      if (!v || !/^[A-Za-z0-9-]{8,64}$/.test(v)) {
+        v = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+          : 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
+        localStorage.setItem('730-visitor', v);
+      }
+      return v;
+    } catch (e) { return null; }
+  }
+  var lastVisit = '';
+  function logVisit() {
+    var client = window.supabaseClient;
+    if (!client) return;
+    var path = currentPath();
+    if (path.indexOf('admin') === 0 || path === lastVisit) return;
+    var vid = visitorId();
+    if (!vid) return;
+    lastVisit = path;
+    client.rpc('log_site_visit', { p_visitor: vid, p_path: path }).then(function () {}, function () {});
+  }
+
   // ---------- 구글 애널리틱스 ----------
   var gaReady = false;
   function setupGa() {
@@ -97,6 +123,7 @@ window.Activity = (function () {
 
   function onRoute() {
     sendGa();
+    logVisit();
     logMember();
   }
 
